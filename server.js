@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 const POEMS_DIR = path.join(__dirname, 'poems');
+const DATA_DIR = path.join(__dirname, 'data');
 
 // --- Middleware ---
 app.use(cors()); // Enable Cross-Origin Resource Sharing
@@ -17,7 +18,12 @@ if (!fs.existsSync(POEMS_DIR)) {
     fs.mkdirSync(POEMS_DIR, { recursive: true });
 }
 
-// --- API Endpoints ---
+// Ensure the data directory exists
+if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// --- Helper Functions ---
 
 // Helper function to recursively get all .txt files from a directory
 const getAllPoemFiles = (dirPath, arrayOfFiles = []) => {
@@ -35,25 +41,7 @@ const getAllPoemFiles = (dirPath, arrayOfFiles = []) => {
     return arrayOfFiles;
 };
 
-// 1. Get all poems for the main quiz app (now recursive)
-app.get('/api/poems-all', (req, res) => {
-    try {
-        const poems = {};
-        const files = getAllPoemFiles(POEMS_DIR);
-
-        for (const filePath of files) {
-            const content = fs.readFileSync(filePath, 'utf-8');
-            const title = path.basename(filePath, '.txt');
-            poems[title] = content;
-        }
-        res.json(poems);
-    } catch (error) {
-        console.error('Error getting all poems:', error);
-        res.status(500).send('Server error');
-    }
-});
-
-// 2. Get the directory tree for the admin panel
+// Helper function to get the directory tree
 const getPoemsTree = (dirPath) => {
     const items = fs.readdirSync(dirPath, { withFileTypes: true });
     const tree = items.map(item => {
@@ -82,6 +70,27 @@ const getPoemsTree = (dirPath) => {
     });
 };
 
+// --- API Endpoints ---
+
+// 1. Get all poems for the main quiz app (now recursive)
+app.get('/api/poems-all', (req, res) => {
+    try {
+        const poems = {};
+        const files = getAllPoemFiles(POEMS_DIR);
+
+        for (const filePath of files) {
+            const content = fs.readFileSync(filePath, 'utf-8');
+            const title = path.basename(filePath, '.txt');
+            poems[title] = content;
+        }
+        res.json(poems);
+    } catch (error) {
+        console.error('Error getting all poems:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+// 2. Get the directory tree for the admin panel
 app.get('/api/poems-tree', (req, res) => {
     try {
         const tree = getPoemsTree(POEMS_DIR);
@@ -227,7 +236,6 @@ app.put('/api/item/move', (req, res) => {
             return res.status(404).send('Source item not found');
         }
 
-        // If the destination exists, check for conflicts or handle overwrite
         if (fs.existsSync(fullNewPath)) {
             if (!overwrite) {
                 return res.status(409).send('An item with the same name already exists in the destination folder.');
@@ -263,6 +271,69 @@ app.put('/api/item/move', (req, res) => {
     }
 });
 
+// 8. Get all questions
+app.get('/api/questions', (req, res) => {
+    try {
+        const questionsPath = path.join(DATA_DIR, 'questions.json');
+        if (fs.existsSync(questionsPath)) {
+            const questions = JSON.parse(fs.readFileSync(questionsPath, 'utf-8'));
+            res.json(questions);
+        } else {
+            res.status(404).send('Questions file not found');
+        }
+    } catch (error) {
+        console.error('Error getting questions:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+// 9. Update questions
+app.put('/api/questions', (req, res) => {
+    try {
+        const questions = req.body;
+        if (!Array.isArray(questions)) {
+            return res.status(400).send('Questions must be an array');
+        }
+        const questionsPath = path.join(DATA_DIR, 'questions.json');
+        fs.writeFileSync(questionsPath, JSON.stringify(questions, null, 2), 'utf-8');
+        res.send('Questions updated successfully');
+    } catch (error) {
+        console.error('Error updating questions:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+// 10. Get mappings
+app.get('/api/mappings', (req, res) => {
+    try {
+        const mappingsPath = path.join(DATA_DIR, 'mappings.json');
+        if (fs.existsSync(mappingsPath)) {
+            const mappings = JSON.parse(fs.readFileSync(mappingsPath, 'utf-8'));
+            res.json(mappings);
+        } else {
+            res.status(404).send('Mappings file not found');
+        }
+    } catch (error) {
+        console.error('Error getting mappings:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+// 11. Update mappings
+app.put('/api/mappings', (req, res) => {
+    try {
+        const mappings = req.body;
+        if (!mappings || typeof mappings !== 'object') {
+            return res.status(400).send('Mappings must be an object');
+        }
+        const mappingsPath = path.join(DATA_DIR, 'mappings.json');
+        fs.writeFileSync(mappingsPath, JSON.stringify(mappings, null, 2), 'utf-8');
+        res.send('Mappings updated successfully');
+    } catch (error) {
+        console.error('Error updating mappings:', error);
+        res.status(500).send('Server error');
+    }
+});
 
 // --- Server Start ---
 app.listen(PORT, () => {
