@@ -931,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Invert selection functionality
     document.getElementById('invert-selection-btn').addEventListener('click', () => {
         const currentMapping = mappings[currentUnit] || {};
-        const selectedCells = document.querySelectorAll('.selected-cell');
+        const selectedCells = document.querySelectorAll('.selected');
         
         if (selectedCells.length === 0) {
             alert('当前没有任何选择可以反选。');
@@ -941,16 +941,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('确定要反选所有当前选择吗？这将清除所有已选择的映射。')) {
             // Clear all selected cells
             selectedCells.forEach(cell => {
-                cell.classList.remove('selected-cell');
-                cell.innerHTML = '';
+                cell.classList.remove('selected');
             });
             
             // Clear mappings in memory
             mappings[currentUnit] = {};
             
+            // Update statistics
+            updateMappingStats();
+            
             alert('已清除所有选择。');
         }
     });
+
+    // Auto mapping functionality
+    document.getElementById('auto-map-btn').addEventListener('click', autoMapCombinations);
+
+    // Clear all mappings functionality
+    document.getElementById('clear-all-btn').addEventListener('click', clearAllMappings);
 
     document.getElementById('refresh-poems-btn').addEventListener('click', async () => {
         await fetchPoems();
