@@ -1,4 +1,38 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // ===============================
+    // Authentication Check
+    // ===============================
+
+    // 检查用户是否已登录
+    try {
+        const authResponse = await fetch('/api/auth/status', {
+            credentials: 'include',
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        });
+
+        if (!authResponse.ok) {
+            console.log('Auth check failed, redirecting to login');
+            window.location.href = '/login.html';
+            return;
+        }
+
+        const authData = await authResponse.json();
+
+        if (!authData.authenticated) {
+            console.log('User not authenticated, redirecting to login');
+            window.location.href = '/login.html';
+            return;
+        }
+
+        console.log('User authenticated:', authData.user);
+    } catch (error) {
+        console.error('Authentication check failed:', error);
+        window.location.href = '/login.html';
+        return;
+    }
+
     // ===============================
     // Global State and API Functions
     // ===============================
@@ -15,13 +49,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // API wrapper
     const api = {
         async fetchTree() {
-            const response = await fetch('/api/poems-tree');
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            console.log('Fetching poems tree...');
+            const response = await fetch('/api/poems-tree', {
+                credentials: 'include',
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            });
+            console.log('Poems tree response status:', response.status);
+            if (!response.ok) {
+                if (response.status === 401) {
+                    console.log('Unauthorized, redirecting to login');
+                    window.location.href = '/login.html';
+                    return;
+                }
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             return response.json();
         },
 
         async fetchFile(path) {
-            const response = await fetch(`/api/poem?path=${encodeURIComponent(path)}`);
+            const response = await fetch(`/api/poem?path=${encodeURIComponent(path)}`, {
+                credentials: 'include'
+            });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return response.text();
         },
@@ -30,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/poem', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ path, content })
             });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -40,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/poem', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ path, content, isFolder })
             });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -50,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/poem', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ path })
             });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -60,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/item/move', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ oldPath, newPath, overwrite })
             });
             if (!response.ok) {
@@ -77,7 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         async fetchQuestions() {
-            const response = await fetch('/api/questions');
+            const response = await fetch('/api/questions', {
+                credentials: 'include'
+            });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return response.json();
         },
@@ -86,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/questions', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify(questionsData)
             });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -93,7 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         async fetchMappings() {
-            const response = await fetch('/api/mappings');
+            const response = await fetch('/api/mappings', {
+                credentials: 'include'
+            });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return response.json();
         },
@@ -102,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/mappings', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify(mappingsData)
             });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -156,20 +216,134 @@ document.addEventListener('DOMContentLoaded', () => {
     // Poems Management Module
     // ===============================
     let sortableInstance = null;
+    let openTabs = new Map(); // 存储打开的标签页
+    let activeTab = null; // 当前活动的标签页
+    let clipboard = null; // 剪贴板
+    let currentView = 'tree'; // 当前视图模式
+    let searchQuery = ''; // 搜索查询
 
     async function initPoemsTab() {
         await loadFileTree();
+        setupPoemsEventListeners();
         setupContextMenu();
+        initializeModernUI();
     }
 
     async function loadFileTree() {
         try {
+            const loadingIndicator = document.querySelector('.loading-indicator');
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'flex';
+            }
+
             const tree = await api.fetchTree();
             renderTree(tree);
+
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
         } catch (error) {
             console.error('Error loading file tree:', error);
-            alert('加载文件树失败: ' + error.message);
+            const treeContainer = document.getElementById('file-tree');
+            if (treeContainer) {
+                treeContainer.innerHTML = '<div class="error-message" style="color: #ef4444; padding: 16px; text-align: center;">加载文件树失败: ' + error.message + '</div>';
+            }
         }
+    }
+
+    function initializeModernUI() {
+        // 初始化搜索功能
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', handleSearch);
+        }
+
+        // 初始化视图切换
+        const treeViewBtn = document.getElementById('tree-view-btn');
+        const listViewBtn = document.getElementById('list-view-btn');
+
+        if (treeViewBtn) {
+            treeViewBtn.addEventListener('click', () => switchView('tree'));
+        }
+        if (listViewBtn) {
+            listViewBtn.addEventListener('click', () => switchView('list'));
+        }
+
+        // 初始化刷新按钮
+        const refreshBtn = document.getElementById('refresh-btn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', loadFileTree);
+        }
+
+        // 启用拖拽功能
+        enableDragAndDrop();
+    }
+
+    function handleSearch(event) {
+        searchQuery = event.target.value.toLowerCase();
+        filterFileTree();
+    }
+
+    function switchView(viewType) {
+        currentView = viewType;
+
+        // 更新按钮状态
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById(`${viewType}-view-btn`).classList.add('active');
+
+        // 切换视图
+        document.querySelectorAll('.file-view').forEach(view => {
+            view.classList.remove('active');
+        });
+        document.getElementById(`${viewType}-view`).classList.add('active');
+
+        if (viewType === 'list') {
+            renderListView();
+        }
+    }
+
+    function filterFileTree() {
+        const treeItems = document.querySelectorAll('.tree-item');
+        treeItems.forEach(item => {
+            const name = item.querySelector('.name').textContent.toLowerCase();
+            const matches = name.includes(searchQuery);
+            item.style.display = matches ? 'flex' : 'none';
+        });
+    }
+
+    function enableDragAndDrop() {
+        const treeContainer = document.getElementById('file-tree');
+        if (!treeContainer) return;
+
+        // 使用SortableJS启用拖拽
+        if (typeof Sortable !== 'undefined') {
+            sortableInstance = Sortable.create(treeContainer, {
+                animation: 150,
+                ghostClass: 'tree-item-ghost',
+                chosenClass: 'tree-item-chosen',
+                dragClass: 'tree-item-drag',
+                onStart: function(evt) {
+                    console.log('Drag started:', evt.item);
+                },
+                onEnd: function(evt) {
+                    console.log('Drag ended:', evt.item);
+                    // 这里可以添加拖拽完成后的处理逻辑
+                    handleDragEnd(evt);
+                }
+            });
+        }
+    }
+
+    function handleDragEnd(evt) {
+        // 处理拖拽结束事件
+        const draggedItem = evt.item;
+        const newIndex = evt.newIndex;
+        const oldIndex = evt.oldIndex;
+
+        console.log(`Item moved from ${oldIndex} to ${newIndex}`);
+        // 这里可以添加服务器端的移动逻辑
     }
 
     function renderTree(tree, container = document.getElementById('file-tree'), depth = 0) {
@@ -467,10 +641,92 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Button event listeners
-    document.getElementById('new-file-btn').addEventListener('click', () => createNewFile());
-    document.getElementById('new-folder-btn').addEventListener('click', () => createNewFolder());
-    document.getElementById('refresh-tree-btn').addEventListener('click', loadFileTree);
+    function setupPoemsEventListeners() {
+        // 新建文件和文件夹按钮
+        const newFileBtn = document.getElementById('new-file-btn');
+        const newFolderBtn = document.getElementById('new-folder-btn');
+
+        if (newFileBtn) {
+            newFileBtn.addEventListener('click', () => {
+                // 获取当前选中的文件夹路径
+                const parentPath = selectedTreeItem && selectedTreeItem.type === 'folder'
+                    ? selectedTreeItem.path
+                    : '';
+                createNewFile(parentPath);
+            });
+        }
+        if (newFolderBtn) {
+            newFolderBtn.addEventListener('click', () => {
+                // 获取当前选中的文件夹路径
+                const parentPath = selectedTreeItem && selectedTreeItem.type === 'folder'
+                    ? selectedTreeItem.path
+                    : '';
+                createNewFolder(parentPath);
+            });
+        }
+
+        // 操作按钮
+        const cutBtn = document.getElementById('cut-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const pasteBtn = document.getElementById('paste-btn');
+        const renameBtn = document.getElementById('rename-btn');
+        const deleteBtn = document.getElementById('delete-btn');
+
+        if (cutBtn) cutBtn.addEventListener('click', () => cutItem());
+        if (copyBtn) copyBtn.addEventListener('click', () => copyItem());
+        if (pasteBtn) pasteBtn.addEventListener('click', () => pasteItem());
+        if (renameBtn) renameBtn.addEventListener('click', () => renameItem());
+        if (deleteBtn) deleteBtn.addEventListener('click', () => deleteSelectedItem());
+
+        // 编辑器按钮
+        const saveBtn = document.getElementById('save-btn');
+        const saveAllBtn = document.getElementById('save-all-btn');
+
+        if (saveBtn) saveBtn.addEventListener('click', () => saveCurrentFile());
+        if (saveAllBtn) saveAllBtn.addEventListener('click', () => saveAllFiles());
+    }
+
+    // 剪贴板操作
+    function cutItem() {
+        if (!selectedTreeItem) return;
+        clipboard = { type: 'cut', item: selectedTreeItem };
+        updateClipboardButtons();
+    }
+
+    function copyItem() {
+        if (!selectedTreeItem) return;
+        clipboard = { type: 'copy', item: selectedTreeItem };
+        updateClipboardButtons();
+    }
+
+    function pasteItem() {
+        if (!clipboard || !selectedTreeItem) return;
+        // 实现粘贴逻辑
+        console.log('Paste operation:', clipboard);
+    }
+
+    function updateClipboardButtons() {
+        const pasteBtn = document.getElementById('paste-btn');
+        if (pasteBtn) {
+            pasteBtn.disabled = !clipboard;
+        }
+    }
+
+    function deleteSelectedItem() {
+        if (!selectedTreeItem) return;
+        deleteItem();
+    }
+
+    function saveCurrentFile() {
+        if (!activeTab) return;
+        // 实现保存当前文件
+        console.log('Save current file:', activeTab);
+    }
+
+    function saveAllFiles() {
+        // 实现保存所有文件
+        console.log('Save all files');
+    }
 
     document.getElementById('save-btn').addEventListener('click', async () => {
         if (!currentFile) return;
@@ -987,8 +1243,186 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ===============================
+    // Logout Functionality
+    // ===============================
+
+    // 添加注销功能（如果页面上有注销按钮）
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await fetch('/api/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/login.html';
+            } catch (error) {
+                console.error('Logout failed:', error);
+                window.location.href = '/login.html';
+            }
+        });
+    }
+
+    // ===============================
+    // FileBrowser Integration
+    // ===============================
+
+    function initFileBrowser() {
+        // 打开文件管理器按钮
+        const openFileBrowserBtn = document.getElementById('open-filebrowser-btn');
+        if (openFileBrowserBtn) {
+            openFileBrowserBtn.addEventListener('click', () => {
+                window.open('/files/', '_blank');
+            });
+        }
+
+        // 刷新FileBrowser
+        const refreshFileBrowserBtn = document.getElementById('refresh-filebrowser-btn');
+        if (refreshFileBrowserBtn) {
+            refreshFileBrowserBtn.addEventListener('click', () => {
+                const iframe = document.getElementById('filebrowser-iframe');
+                if (iframe) {
+                    iframe.src = iframe.src;
+                }
+            });
+        }
+
+        // 全屏模式
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+        }
+
+        // 新窗口打开
+        const newWindowBtn = document.getElementById('new-window-btn');
+        if (newWindowBtn) {
+            newWindowBtn.addEventListener('click', () => {
+                window.open('/files/', '_blank', 'width=1200,height=800');
+            });
+        }
+
+        // 快速操作
+        setupQuickActions();
+    }
+
+    function toggleFullscreen() {
+        const container = document.querySelector('.filebrowser-container');
+        const btn = document.getElementById('fullscreen-btn');
+        const icon = btn.querySelector('i');
+
+        if (container.classList.contains('filebrowser-fullscreen')) {
+            container.classList.remove('filebrowser-fullscreen');
+            icon.className = 'fas fa-expand';
+            btn.title = '全屏模式';
+        } else {
+            container.classList.add('filebrowser-fullscreen');
+            icon.className = 'fas fa-compress';
+            btn.title = '退出全屏';
+        }
+    }
+
+    function setupQuickActions() {
+        // 快速创建诗歌
+        const quickNewPoemBtn = document.getElementById('quick-new-poem-btn');
+        if (quickNewPoemBtn) {
+            quickNewPoemBtn.addEventListener('click', async () => {
+                const fileName = prompt('请输入诗歌文件名（不需要扩展名）：');
+                if (fileName) {
+                    try {
+                        const response = await fetch('/api/poem', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                path: `${fileName}.txt`,
+                                content: `# ${fileName}\n\n在此编写您的诗歌...\n`,
+                                isFolder: false
+                            })
+                        });
+
+                        if (response.ok) {
+                            alert('诗歌文件创建成功！');
+                            // 刷新FileBrowser
+                            const iframe = document.getElementById('filebrowser-iframe');
+                            if (iframe) {
+                                iframe.src = iframe.src;
+                            }
+                        } else {
+                            throw new Error('创建失败');
+                        }
+                    } catch (error) {
+                        alert('创建诗歌文件失败: ' + error.message);
+                    }
+                }
+            });
+        }
+
+        // 快速上传
+        const quickUploadBtn = document.getElementById('quick-upload-btn');
+        if (quickUploadBtn) {
+            quickUploadBtn.addEventListener('click', () => {
+                // 创建隐藏的文件输入
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.multiple = true;
+                fileInput.accept = '.txt,.md,.poem';
+
+                fileInput.onchange = async (e) => {
+                    const files = e.target.files;
+                    if (files.length > 0) {
+                        for (let file of files) {
+                            try {
+                                const content = await file.text();
+                                const response = await fetch('/api/poem', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    credentials: 'include',
+                                    body: JSON.stringify({
+                                        path: file.name,
+                                        content: content,
+                                        isFolder: false
+                                    })
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`上传 ${file.name} 失败`);
+                                }
+                            } catch (error) {
+                                alert('上传文件失败: ' + error.message);
+                                return;
+                            }
+                        }
+
+                        alert(`成功上传 ${files.length} 个文件！`);
+                        // 刷新FileBrowser
+                        const iframe = document.getElementById('filebrowser-iframe');
+                        if (iframe) {
+                            iframe.src = iframe.src;
+                        }
+                    }
+                };
+
+                fileInput.click();
+            });
+        }
+
+        // 快速导出
+        const quickExportBtn = document.getElementById('quick-export-btn');
+        if (quickExportBtn) {
+            quickExportBtn.addEventListener('click', () => {
+                // 打开FileBrowser的下载页面
+                window.open('/files/', '_blank');
+                alert('请在文件管理器中选择要导出的文件，然后使用下载功能。');
+            });
+        }
+    }
+
+    // ===============================
     // Initialize Application
     // ===============================
     // Initialize with poems tab
     switchTab('poems');
-}); 
+
+    // Initialize FileBrowser integration
+    initFileBrowser();
+});

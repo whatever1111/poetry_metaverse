@@ -11,22 +11,18 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// 信任代理设置（用于正确处理X-Forwarded-For头和HTTPS）
+app.set('trust proxy', 1);
+
 // 目录配置
 const POEMS_DIR = path.join(__dirname, 'poems');
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const DATA_DIR = path.join(__dirname, 'data');
 
-// 安全中间件
+// 安全中间件 - 移除可能导致COEP问题的配置
 app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net"],
-            fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-            imgSrc: ["'self'", "data:", "https:"],
-        },
-    },
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false
 }));
 
 // 速率限制
@@ -66,12 +62,20 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production', // HTTPS in production
+        secure: 'auto', // 自动检测HTTPS
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24小时
+        maxAge: 24 * 60 * 60 * 1000, // 24小时
+        sameSite: 'lax' // 添加sameSite设置
     },
-    name: 'poetry.sid' // 自定义session名称
+    name: 'poetry.sid', // 自定义session名称
+    proxy: true // 信任代理
 }));
+
+// 调试中间件
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path} - Session ID: ${req.sessionID || 'none'} - Authenticated: ${req.session?.isAuthenticated || false}`);
+    next();
+});
 
 // 静态文件服务
 app.use(express.static(PUBLIC_DIR));
@@ -431,10 +435,10 @@ app.put('/api/item/move', requireAuth, async (req, res) => {
     }
 });
 
-// ============ 问题管理 API（需要认证）============
+// ============ 问题管理 API ============
 
-// Get questions
-app.get('/api/questions', requireAuth, async (req, res) => {
+// Get questions (公开接口，主页需要)
+app.get('/api/questions', async (req, res) => {
     try {
         const questionsPath = path.join(DATA_DIR, 'questions.json');
         try {
@@ -481,7 +485,7 @@ app.get('/api/questions', requireAuth, async (req, res) => {
     }
 });
 
-// Update questions
+// Update questions (需要认证的管理接口)
 app.put('/api/questions', requireAuth, async (req, res) => {
     try {
         const questionsPath = path.join(DATA_DIR, 'questions.json');
@@ -493,10 +497,10 @@ app.put('/api/questions', requireAuth, async (req, res) => {
     }
 });
 
-// ============ 映射管理 API（需要认证）============
+// ============ 映射管理 API ============
 
-// Get mappings
-app.get('/api/mappings', requireAuth, async (req, res) => {
+// Get mappings (公开接口，主页需要)
+app.get('/api/mappings', async (req, res) => {
     try {
         const mappingsPath = path.join(DATA_DIR, 'mappings.json');
         try {
@@ -540,7 +544,7 @@ app.get('/api/mappings', requireAuth, async (req, res) => {
     }
 });
 
-// Update mappings
+// Update mappings (需要认证的管理接口)
 app.put('/api/mappings', requireAuth, async (req, res) => {
     try {
         const mappingsPath = path.join(DATA_DIR, 'mappings.json');

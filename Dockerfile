@@ -1,5 +1,5 @@
 # 使用官方Node.js运行时作为父镜像
-FROM node:18-alpine
+FROM docker.xuanyuan.run/node:18-alpine
 
 # 设置工作目录
 WORKDIR /usr/src/app
@@ -25,11 +25,11 @@ RUN mkdir -p data poems && \
 USER nodejs
 
 # 暴露端口
-EXPOSE 3000
+EXPOSE 3889
 
 # 设置健康检查
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/ || exit 1
+  CMD curl -f http://localhost:3889/ || exit 1
 
 # 启动应用
 CMD ["node", "server.js"] 
