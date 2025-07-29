@@ -1,0 +1,20 @@
+{
+  "name": "poetry-app-backend",
+  "version": "1.0.0",
+  "description": "“诗歌庄园”的后院服务",
+  "main": "api.js",
+  "type": "module",
+  "scripts": {
+    "start": "node api.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "陆家明",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-fetch": "^2.7.0",
+    "uuid": "^9.0.1"
+  }
+}
