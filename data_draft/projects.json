@@ -1,0 +1,35 @@
+{
+    "projects": [
+        {
+            "id": "project_zhou_spring_autumn_001",
+            "name": "周与春秋练习",
+            "description": "也是你的诗歌在场",
+            "poet": "吴任几",
+            "subProjects": [
+                {
+                    "id": "subproject_guanwosheng_001",
+                    "name": "观我生",
+                    "description": "关于你如何看待自己，和你的处境。"
+                },
+                {
+                    "id": "subproject_yumubing_002",
+                    "name": "雨，木冰",
+                    "description": "关于你如何看待他人，和你们的关系。"
+                },
+                {
+                    "id": "subproject_shezhi_003",
+                    "name": "是折枝",
+                    "description": "关于你如何看待知识、行动与规则。"
+                }
+            ],
+            "status": "published"
+        },
+        {
+            "id": "3a5ef183-8585-4ca6-9211-8d96667c1458",
+            "name": "毛小豆宇宙",
+            "description": "也是你的故事演绎",
+            "poet": "西尔",
+            "subProjects": []
+        }
+    ]
+}
