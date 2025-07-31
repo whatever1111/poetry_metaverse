@@ -3,713 +3,552 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>后台管理 - 观我生</title>
-    <!-- 本地样式 -->
-    <link rel="stylesheet" href="/admin-styles.css">
-    <!-- Font Awesome 图标 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- SortableJS -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <title>陆家花园 | 中央控制室</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .tab-button {
-            transition: all 0.3s ease;
-        }
-        .tab-button.active {
-            background-color: #3b82f6;
-            color: white;
-        }
-        .question-card {
-            transition: all 0.3s ease;
-        }
-        .question-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* 现代化映射表格样式 */
-        .mapping-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .mapping-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 14px;
-        }
-        .mapping-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 16px 12px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border: none;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .mapping-table th:first-child {
-            text-align: left;
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            min-width: 200px;
-            max-width: 250px;
-        }
-        .mapping-table td {
-            padding: 12px;
-            border-bottom: 1px solid #f1f5f9;
-            border-right: 1px solid #f1f5f9;
-            transition: all 0.15s ease;
-            text-align: center;
-        }
-        .mapping-table td:first-child {
-            text-align: left;
-            font-weight: 500;
-            background-color: #f8fafc;
-            border-right: 2px solid #e2e8f0;
-            position: sticky;
-            left: 0;
-            z-index: 5;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            min-width: 200px;
-            max-width: 250px;
-        }
-        .mapping-table tbody tr:hover {
-            background-color: #f8fafc;
-        }
-        .mapping-table tbody tr:hover td:first-child {
-            background-color: #e2e8f0;
-        }
-        
-        /* 映射单元格样式 */
-        .mapping-cell {
-            cursor: pointer;
-            width: 60px;
-            height: 40px;
-            position: relative;
-            user-select: none;
-        }
-        .mapping-cell:hover {
-            background-color: #e0f2fe !important;
-            transform: scale(1.05);
-        }
-        .mapping-cell.selected {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-            color: white;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-        }
-        .mapping-cell.selected:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-        }
-        .mapping-cell .check-icon {
-            font-size: 16px;
-            opacity: 0;
-            transition: opacity 0.15s ease;
-        }
-        .mapping-cell.selected .check-icon {
-            opacity: 1;
-        }
-        
-        /* 答案组合标签样式 */
-        .combo-header {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-weight: 600;
-            min-width: 60px;
-        }
-        .combo-header:hover {
-            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-        }
-        
-        /* 搜索和筛选样式 */
-        .search-container {
-            padding: 20px;
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .search-input {
-            width: 100%;
-            max-width: 400px;
-            padding: 12px 16px 12px 40px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.15s ease;
-        }
-        .search-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-        }
-        
-        /* 统计信息样式 */
-        .mapping-stats {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-top: 12px;
-            font-size: 13px;
-            color: #64748b;
-        }
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .stat-badge {
-            background: #f1f5f9;
-            color: #475569;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-weight: 500;
-            font-size: 12px;
-        }
-        .stat-badge.completed {
-            background: #dcfce7;
-            color: #166534;
-        }
-        .stat-badge.pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        /* 表格容器样式 */
-        .table-container {
-            max-height: 70vh;
-            overflow: auto;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-        }
-        .table-container::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        .table-container::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        .table-container::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .table-container::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-        
-        /* 改进的文件树样式 */
-        .file-tree {
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        .tree-item {
-            display: flex;
-            align-items: center;
-            padding: 2px 0;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: all 0.15s ease;
-            user-select: none;
-        }
-        .tree-item:hover {
-            background-color: #e5f3ff;
-        }
-        .tree-item.selected {
-            background-color: #0078d4;
-            color: white;
-        }
-        .tree-item.selected .tree-icon {
-            color: white !important;
-        }
-        .tree-indent {
-            display: inline-block;
-            width: 16px;
-            flex-shrink: 0;
-        }
-        .tree-expand {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-            border-radius: 2px;
-            flex-shrink: 0;
-        }
-        .tree-expand:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-        .tree-expand.empty {
-            pointer-events: none;
-        }
-        .tree-expand i {
-            font-size: 10px;
-            transition: transform 0.15s ease;
-        }
-        .tree-expand.expanded i {
-            transform: rotate(90deg);
-        }
-        .tree-icon {
-            margin: 0 6px;
-            width: 16px;
-            flex-shrink: 0;
-            text-align: center;
-        }
-        .tree-label {
-            flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .tree-children {
-            display: none;
-        }
-        .tree-children.expanded {
-            display: block;
-        }
-        .folder-icon {
-            color: #dcb67a;
-        }
-        .folder-icon.open {
-            color: #dcb67a;
-        }
-        .file-icon {
-            color: #4db8db;
-        }
-        
-        /* 文件树容器样式 */
-        #file-tree {
-            max-height: 70vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 8px;
-            border: 1px solid #e1e5e9;
-            border-radius: 6px;
-            background-color: #ffffff;
-        }
-        #file-tree::-webkit-scrollbar {
-            width: 8px;
-        }
-        #file-tree::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        #file-tree::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-        #file-tree::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-        
-        /* 上下文菜单样式 */
-        .context-menu {
-            position: fixed;
-            background: white;
-            border: 1px solid #e1e5e9;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            min-width: 180px;
-            display: none;
-        }
-        .context-menu-item {
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-        }
-        .context-menu-item:hover {
-            background-color: #f8f9fa;
-        }
-        .context-menu-item i {
-            margin-right: 8px;
-            width: 16px;
-            text-align: center;
-        }
-        .context-menu-separator {
-            height: 1px;
-            background-color: #e1e5e9;
-            margin: 4px 0;
-        }
+        body { font-family: 'Noto Serif SC', serif; }
+        .form-input { border: 1px solid #d1d5db; padding: 0.5rem 0.75rem; border-radius: 0.375rem; width: 100%; }
+        .form-textarea { border: 1px solid #d1d5db; padding: 0.5rem 0.75rem; border-radius: 0.375rem; width: 100%; min-height: 100px; }
+        .btn { padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-secondary { background-color: #4b5563; color: white; }
+        .btn-secondary:hover { background-color: #374151; }
+        .btn-success { background-color: #16a34a; color: white; }
+        .btn-success:hover { background-color: #15803d; }
+        .btn-danger { background-color: #dc2626; color: white; }
+        .btn-danger:hover { background-color: #b91c1c; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <div class="main-container">
-        <!-- Header -->
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="main-content" class="container mx-auto p-4 md:p-8">
         <div class="flex justify-between items-center mb-6">
+            <h1 class="text-4xl font-bold">陆家花园 控制室</h1>
             <div>
-                <h1 class="text-2xl font-bold">后台管理</h1>
-                <p class="text-gray-600">诗歌、问题与映射管理</p>
-            </div>
-            <div class="flex gap-4">
-                <a href="/" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    <i class="fas fa-home mr-1"></i> 返回主页
-                </a>
-                <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                    <i class="fas fa-sign-out-alt mr-1"></i> 注销
-                </button>
+                <button id="publish-all-btn" class="btn btn-danger mr-4">发布所有更新</button>
+                <button id="logout-button" class="btn btn-secondary">退出</button>
             </div>
         </div>
 
-        <!-- Tab Navigation -->
-        <div class="bg-white rounded-lg shadow-sm mb-6">
-            <div class="border-b border-gray-200">
-                <nav class="flex space-x-8 px-6">
-                    <button id="tab-poems" class="tab-button py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm active">
-                        <i class="fas fa-book mr-2"></i>诗歌管理
-                    </button>
-                    <button id="tab-questions" class="tab-button py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm">
-                        <i class="fas fa-question-circle mr-2"></i>问题管理
-                    </button>
-                    <button id="tab-mapping" class="tab-button py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm">
-                        <i class="fas fa-table mr-2"></i>映射管理
-                    </button>
-                </nav>
-            </div>
-        </div>
-
-        <!-- Poems Management Tab -->
-        <div id="content-poems" class="tab-content active">
-            <div class="filebrowser-container">
-                <div class="filebrowser-header">
-                    <h2 class="text-2xl font-bold mb-4">诗歌文件管理</h2>
-                    <div class="filebrowser-actions">
-                        <button id="open-filebrowser-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
-                            <i class="fas fa-folder-open mr-2"></i>
-                            打开文件管理器
-                        </button>
-                        <button id="refresh-filebrowser-btn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors">
-                            <i class="fas fa-sync-alt mr-2"></i>
-                            刷新
-                        </button>
-                    </div>
-                </div>
-
-                <div class="filebrowser-info bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                    <div class="flex items-start">
-                        <i class="fas fa-info-circle text-blue-500 mt-1 mr-3"></i>
-                        <div>
-                            <h3 class="font-semibold text-blue-800 mb-2">使用FileBrowser管理诗歌文件</h3>
-                            <p class="text-blue-700 mb-2">
-                                我们集成了专业的FileBrowser文件管理器，提供完整的文件管理功能：
-                            </p>
-                            <ul class="text-blue-700 text-sm space-y-1 ml-4">
-                                <li>• <strong>文件操作</strong>：创建、编辑、删除、重命名文件和文件夹</li>
-                                <li>• <strong>拖拽上传</strong>：支持拖拽上传多个文件</li>
-                                <li>• <strong>在线编辑</strong>：内置代码编辑器，支持语法高亮</li>
-                                <li>• <strong>文件预览</strong>：支持图片、文本等多种格式预览</li>
-                                <li>• <strong>搜索功能</strong>：快速搜索文件和内容</li>
-                                <li>• <strong>权限管理</strong>：安全的文件访问控制</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FileBrowser嵌入式界面 -->
-                <div class="filebrowser-embed">
-                    <div class="embed-header">
-                        <div class="embed-title">
-                            <i class="fas fa-folder mr-2"></i>
-                            文件管理器
-                        </div>
-                        <div class="embed-actions">
-                            <button id="fullscreen-btn" class="embed-btn" title="全屏模式">
-                                <i class="fas fa-expand"></i>
-                            </button>
-                            <button id="new-window-btn" class="embed-btn" title="在新窗口打开">
-                                <i class="fas fa-external-link-alt"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="embed-content">
-                        <iframe
-                            id="filebrowser-iframe"
-                            src="/files/"
-                            frameborder="0"
-                            width="100%"
-                            height="600px"
-                            style="border: 1px solid #e5e7eb; border-radius: 8px;">
-                        </iframe>
-                    </div>
-                </div>
-
-                <!-- 快速操作面板 -->
-                <div class="quick-actions mt-6">
-                    <h3 class="text-lg font-semibold mb-3">快速操作</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="quick-action-card">
-                            <div class="card-icon">
-                                <i class="fas fa-file-plus text-green-500"></i>
-                            </div>
-                            <div class="card-content">
-                                <h4 class="font-medium">创建新诗歌</h4>
-                                <p class="text-sm text-gray-600">快速创建新的诗歌文件</p>
-                                <button id="quick-new-poem-btn" class="quick-btn">创建</button>
-                            </div>
-                        </div>
-
-                        <div class="quick-action-card">
-                            <div class="card-icon">
-                                <i class="fas fa-upload text-blue-500"></i>
-                            </div>
-                            <div class="card-content">
-                                <h4 class="font-medium">批量上传</h4>
-                                <p class="text-sm text-gray-600">上传多个诗歌文件</p>
-                                <button id="quick-upload-btn" class="quick-btn">上传</button>
-                            </div>
-                        </div>
-
-                        <div class="quick-action-card">
-                            <div class="card-icon">
-                                <i class="fas fa-download text-purple-500"></i>
-                            </div>
-                            <div class="card-content">
-                                <h4 class="font-medium">导出备份</h4>
-                                <p class="text-sm text-gray-600">导出所有诗歌文件</p>
-                                <button id="quick-export-btn" class="quick-btn">导出</button>
-                            </div>
-                        </div>
-                    </div>
+        <!-- 主项目列表 -->
+        <div id="main-projects-list-section">
+            <h2 class="text-2xl font-bold mb-4">主项目列表</h2>
+            <div id="main-project-list" class="space-y-4"></div>
+            <div class="mt-8 p-6 bg-white rounded-lg shadow">
+                <h3 class="text-xl font-bold mb-4">创建新主项目</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <input type="text" id="new-main-project-name" placeholder="新项目名称" class="form-input md:col-span-1">
+                    <input type="text" id="new-main-project-desc" placeholder="新项目描述" class="form-input md:col-span-1">
+                    <input type="text" id="new-main-project-poet" placeholder="导游/作者" class="form-input md:col-span-1">
+                    <button id="create-main-project-btn" class="btn btn-primary w-full md:col-span-1">创建</button>
                 </div>
             </div>
         </div>
 
-        <!-- Questions Management Tab -->
-        <div id="content-questions" class="tab-content">
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-semibold">测试问题列表</h2>
-                    <button id="add-question-btn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                        <i class="fas fa-plus mr-1"></i> 添加问题
-                    </button>
-                </div>
-
-                <div id="questions-container" class="space-y-4">
-                    <!-- Questions will be rendered here -->
-                </div>
-
-                <div class="mt-8 flex justify-end">
-                    <button id="save-questions-btn" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">
-                        <i class="fas fa-save mr-1"></i> 保存所有更改
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mapping Management Tab -->
-        <div id="content-mapping" class="tab-content">
-            <!-- Unit Selection -->
-            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-semibold">测试单元</h2>
-                    <div class="flex gap-4">
-                        <button id="add-unit-btn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                            <i class="fas fa-plus mr-1"></i> 添加单元
-                        </button>
-                        <button id="delete-unit-btn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                            <i class="fas fa-trash mr-1"></i> 删除单元
-                        </button>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <label for="unit-select" class="mr-2 font-medium">当前单元:</label>
-                    <select id="unit-select" class="border border-gray-300 rounded p-2 w-64">
-                        <option value="观我生">观我生</option>
-                    </select>
-                    <div class="ml-4">
-                        <label class="inline-flex items-center">
-                            <input type="checkbox" id="default-unit-checkbox" class="form-checkbox h-5 w-5 text-blue-600">
-                            <span class="ml-2">设为默认单元</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mapping Table -->
-            <div class="mapping-container">
-                <div class="flex justify-between items-center p-6 pb-4">
-                    <h2 class="text-xl font-semibold flex items-center">
-                        <i class="fas fa-table mr-2 text-blue-500"></i>
-                        映射表
-                    </h2>
-                    <div class="flex gap-3">
-                        <button id="auto-map-btn" class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors text-sm">
-                            <i class="fas fa-magic mr-1"></i> 自动映射
-                        </button>
-                        <button id="clear-all-btn" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm">
-                            <i class="fas fa-eraser mr-1"></i> 清空所有
-                        </button>
-                        <button id="invert-selection-btn" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors text-sm">
-                            <i class="fas fa-exchange-alt mr-1"></i> 反选
-                        </button>
-                        <button id="refresh-poems-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm">
-                            <i class="fas fa-sync-alt mr-1"></i> 刷新
-                        </button>
-                        <button id="save-mapping-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm">
-                            <i class="fas fa-save mr-1"></i> 保存
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Search and Stats -->
-                <div class="search-container">
-                    <div class="relative">
-                        <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="poem-search" class="search-input" placeholder="搜索诗歌标题...">
-                    </div>
-                    
-                    <!-- Statistics -->
-                    <div class="mapping-stats">
-                        <div class="stat-item">
-                            <i class="fas fa-book text-blue-500"></i>
-                            <span>总诗歌数:</span>
-                            <span class="stat-badge" id="total-poems">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-puzzle-piece text-purple-500"></i>
-                            <span>答案组合:</span>
-                            <span class="stat-badge" id="total-combinations">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-check-circle text-green-500"></i>
-                            <span>已映射:</span>
-                            <span class="stat-badge completed" id="mapped-count">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-clock text-yellow-500"></i>
-                            <span>待映射:</span>
-                            <span class="stat-badge pending" id="unmapped-count">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-percentage text-indigo-500"></i>
-                            <span>完成度:</span>
-                            <span class="stat-badge" id="completion-rate">0%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Table Container -->
-                <div class="table-container" id="mapping-table-container">
-                    <table id="mapping-table" class="mapping-table">
-                        <thead>
-                            <tr>
-                                <th>诗歌标题</th>
-                                <!-- Answer combinations will be generated here -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Poem rows will be generated here -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Help Text -->
-                <div class="p-4 bg-gray-50 border-t border-gray-200 text-sm text-gray-600">
-                    <div class="flex items-start gap-2">
-                        <i class="fas fa-lightbulb text-yellow-500 mt-0.5"></i>
-                        <div>
-                            <strong>使用提示:</strong>
-                            <ul class="mt-1 ml-4 list-disc space-y-1">
-                                <li>点击表格单元格选择对应答案组合的诗歌</li>
-                                <li>使用搜索功能快速定位特定诗歌</li>
-                                <li>绿色单元格表示已选中的映射关系</li>
-                                <li>使用"自动映射"可以按顺序自动分配未映射的组合</li>
-                                <li>每个答案组合必须映射到一首诗歌才能保存</li>
-                            </ul>
-                        </div>
-                    </div>
+        <!-- 子项目管理界面 -->
+        <div id="sub-project-management-section" class="hidden mt-8">
+             <button id="back-to-main-projects-button" class="btn btn-secondary mb-6">&larr; 返回主项目列表</button>
+            <h2 id="current-main-project-name" class="text-3xl font-bold"></h2>
+            <p id="current-main-project-desc" class="text-gray-600 mb-6"></p>
+            
+            <div id="sub-project-list" class="space-y-6"></div>
+            <div class="mt-8 p-6 bg-gray-50 rounded-lg border">
+                <h3 class="text-xl font-bold mb-4">创建新子项目 (篇章)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input type="text" id="new-sub-project-name" placeholder="新篇章名称" class="form-input md:col-span-1">
+                    <input type="text" id="new-sub-project-desc" placeholder="篇章描述" class="form-input md:col-span-1">
+                    <button id="create-sub-project-btn" class="btn btn-primary w-full md:col-span-1">创建篇章</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Context Menu -->
-    <div id="context-menu" class="context-menu">
-        <div class="context-menu-item" data-action="new-file">
-            <i class="fas fa-file-plus"></i>新建文件
-        </div>
-        <div class="context-menu-item" data-action="new-folder">
-            <i class="fas fa-folder-plus"></i>新建文件夹
-        </div>
-        <div class="context-menu-separator"></div>
-        <div class="context-menu-item" data-action="rename">
-            <i class="fas fa-edit"></i>重命名
-        </div>
-        <div class="context-menu-item" data-action="delete">
-            <i class="fas fa-trash"></i>删除
-        </div>
-        <div class="context-menu-separator"></div>
-        <div class="context-menu-item" data-action="refresh">
-            <i class="fas fa-sync-alt"></i>刷新
+    <!-- 模态框 -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <h3 id="modal-title" class="text-2xl font-bold mb-6"></h3>
+            <div id="modal-body"></div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="modal-cancel-button" class="btn btn-secondary">取消</button>
+                <button id="modal-save-button" class="btn btn-primary">保存</button>
+            </div>
         </div>
     </div>
 
-    <!-- Question Template (hidden) -->
-    <template id="question-template">
-        <div class="question-card bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <div class="flex justify-between items-start mb-4">
-                <div class="flex-1">
-                    <input type="text" class="question-id hidden" value="">
-                    <input type="text" class="question-text w-full p-2 border border-gray-300 rounded" placeholder="输入问题文本...">
-                </div>
-                <button class="delete-question-btn text-red-500 hover:text-red-700 ml-2">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <div class="flex items-center mb-1">
-                        <span class="font-semibold mr-2">选项 A:</span>
-                    </div>
-                    <input type="text" class="option-a w-full p-2 border border-gray-300 rounded" placeholder="选项A文本...">
-                </div>
-                <div>
-                    <div class="flex items-center mb-1">
-                        <span class="font-semibold mr-2">选项 B:</span>
-                    </div>
-                    <input type="text" class="option-b w-full p-2 border border-gray-300 rounded" placeholder="选项B文本...">
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <div class="flex items-center mb-1">
-                        <span class="font-semibold mr-2">选项 A 含义:</span>
-                    </div>
-                    <input type="text" class="meaning-a w-full p-2 border border-gray-300 rounded" placeholder="选项A的含义...">
-                </div>
-                <div>
-                    <div class="flex items-center mb-1">
-                        <span class="font-semibold mr-2">选项 B 含义:</span>
-                    </div>
-                    <input type="text" class="meaning-b w-full p-2 border border-gray-300 rounded" placeholder="选项B的含义...">
-                </div>
-            </div>
-        </div>
-    </template>
+    <script>
+    let state = {
+        mainProjects: [],
+        currentMainProjectId: null,
+        currentSubProject: null, 
+        get currentMainProject() {
+            return this.mainProjects.find(p => p.id === this.currentMainProjectId);
+        },
+    };
 
-    <script src="admin.js"></script>
+    const logoutButton = document.getElementById('logout-button');
+    const mainProjectsListSection = document.getElementById('main-projects-list-section');
+    const mainProjectList = document.getElementById('main-project-list');
+    const subProjectManagementSection = document.getElementById('sub-project-management-section');
+    const backToMainProjectsButton = document.getElementById('back-to-main-projects-button');
+    const currentMainProjectName = document.getElementById('current-main-project-name');
+    const currentMainProjectDesc = document.getElementById('current-main-project-desc');
+    const subProjectList = document.getElementById('sub-project-list');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalCancelButton = document.getElementById('modal-cancel-button');
+    const modalSaveButton = document.getElementById('modal-save-button');
+    const publishAllButton = document.getElementById('publish-all-btn');
+
+    async function apiRequest(endpoint, method = 'GET', body = null) {
+        const headers = { 'Content-Type': 'application/json' };
+        const config = { method, headers, ...(body && { body: JSON.stringify(body) }) };
+        const response = await fetch(endpoint, config);
+        if (!response.ok) {
+            if (response.status === 401) {
+                alert('您的登录会话已过期，请重新登录。');
+                window.location.href = '/login.html';
+            }
+            const errorData = await response.json().catch(() => ({ message: '未知服务器错误' }));
+            throw new Error(errorData.message);
+        }
+        return response.status === 204 ? null : response.json();
+    }
+
+    async function publishAllChanges() {
+        if (!confirm('【高危操作】\n\n您确定要执行“全量发布”吗？\n\n此操作将使线上内容严格同步为后台所有“已上架”项目的当前状态，不可逆转。')) {
+            return;
+        }
+        try {
+            publishAllButton.disabled = true;
+            publishAllButton.textContent = '发布中...';
+            const result = await apiRequest('/api/admin/publish-all', 'POST');
+            alert(result.message || '发布成功！');
+        } catch (error) {
+            alert(`发布失败: ${error.message}`);
+        } finally {
+            publishAllButton.disabled = false;
+            publishAllButton.textContent = '发布所有更新';
+        }
+    }
+
+    async function updateSingleProject(projectId) {
+        if (!confirm('确定要将这个项目的最新修改“更新”到线上吗？此操作只影响这一个项目。')) {
+            return;
+        }
+        try {
+            const result = await apiRequest(`/api/admin/projects/${projectId}/update`, 'POST');
+            alert(result.message || '项目更新成功！');
+        } catch (error) {
+            alert(`更新失败: ${error.message}`);
+        }
+    }
+
+    async function toggleProjectStatus(projectId, newStatus) {
+        const actionText = newStatus === 'published' ? '上架' : '下架';
+        if (!confirm(`确定要“${actionText}”这个项目吗？`)) {
+            return;
+        }
+        try {
+            const updatedProject = await apiRequest(`/api/admin/projects/${projectId}/status`, 'PUT', { status: newStatus });
+            const index = state.mainProjects.findIndex(p => p.id === projectId);
+            state.mainProjects[index] = updatedProject;
+            renderMainProjects();
+        } catch (error) {
+            alert(`切换状态失败: ${error.message}`);
+        }
+    }
+
+    async function logout() {
+        try {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login.html';
+        } catch (error) {
+            alert('登出失败，请稍后再试。');
+        }
+    }
+
+    function renderMainProjects() {
+        mainProjectList.innerHTML = '';
+        state.mainProjects.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'bg-white p-4 rounded-lg shadow flex justify-between items-center';
+
+            const statusBadge = p.status === 'published' 
+                ? `<span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">已上架</span>`
+                : `<span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">草稿</span>`;
+            
+            let statusButtons = '';
+            if (p.status === 'published') {
+                statusButtons = `
+                    <button data-id="${p.id}" class="update-project-btn btn btn-success mr-2">更新</button>
+                    <button data-id="${p.id}" data-status="draft" class="toggle-status-btn btn btn-secondary mr-2">下架</button>
+                `;
+            } else {
+                statusButtons = `<button data-id="${p.id}" data-status="published" class="toggle-status-btn btn btn-success mr-2">上架</button>`;
+            }
+
+            div.innerHTML = `
+                <div>
+                    <h3 class="text-xl font-bold flex items-center">${p.name} ${statusBadge}</h3>
+                    <p class="text-sm text-gray-500">${p.description || '暂无描述'}</p>
+                    <p class="text-xs text-gray-400 mt-1">导游: ${p.poet || '未指定'}</p>
+                </div>
+                <div>
+                     ${statusButtons}
+                     <button data-id="${p.id}" class="edit-main-project-btn btn btn-secondary mr-2">编辑信息</button>
+                     <button data-id="${p.id}" class="enter-main-project-btn btn btn-primary mr-2">管理子项目</button>
+                     <button data-id="${p.id}" class="delete-main-project-btn btn btn-danger">删除项目</button>
+                </div>
+            `;
+            mainProjectList.appendChild(div);
+        });
+    }
+
+    function renderSubProjects() {
+        const project = state.currentMainProject;
+        if (!project) return;
+        currentMainProjectName.textContent = project.name;
+        currentMainProjectDesc.textContent = project.description;
+        subProjectList.innerHTML = '';
+        project.subProjects.forEach(sp => {
+            const div = document.createElement('div');
+            div.className = 'bg-white p-6 rounded-lg shadow';
+            div.innerHTML = `
+                <h4 class="text-xl font-bold mb-2">${sp.name}</h4>
+                <p class="text-gray-600 mb-4">${sp.description}</p>
+                <div class="flex gap-2">
+                    <button data-sub-name="${sp.name}" class="manage-poems-btn btn btn-secondary">诗歌管理</button>
+                    <button data-sub-name="${sp.name}" class="manage-questions-btn btn btn-secondary">问题管理</button>
+                    <button data-sub-name="${sp.name}" class="manage-map-btn btn btn-secondary">结果映射</button>
+                </div>
+            `;
+            subProjectList.appendChild(div);
+        });
+    }
+
+    async function openContentModal(subProjectName, modalType) {
+        try {
+            const fullSubProject = await apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub/${subProjectName}`);
+            state.currentSubProject = fullSubProject;
+            switch(modalType) {
+                case 'poems': renderPoemsModal(); break;
+                case 'questions': renderQuestionsModal(); break;
+                case 'map': renderMapModal(); break;
+            }
+        } catch (error) {
+            alert(`加载内容失败: ${error.message}`);
+        }
+    }
+
+    function renderPoemsModal() {
+        const subProject = state.currentSubProject;
+        modalTitle.textContent = `管理诗歌 - ${subProject.name}`;
+        let poemsHtml = '<div class="space-y-2">';
+        (subProject.poems || []).forEach(p => {
+            poemsHtml += `
+                <div class="bg-gray-50 p-3 rounded flex justify-between items-center">
+                    <span>${p.title}</span>
+                    <div>
+                        <button data-poem-id="${p.id}" class="edit-poem-btn btn btn-sm btn-primary mr-2">编辑</button>
+                        <button data-poem-id="${p.id}" class="delete-poem-btn btn btn-sm btn-danger">删除</button>
+                    </div>
+                </div>
+            `;
+        });
+        poemsHtml += '</div><button id="add-poem-btn" class="btn btn-success mt-4">添加新诗歌</button>';
+        modalBody.innerHTML = poemsHtml;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.add('hidden');
+    }
+    
+    function renderQuestionsModal() {
+        const subProject = state.currentSubProject;
+        modalTitle.textContent = `管理问题 - ${subProject.name}`;
+        let questionsHtml = '<div id="questions-form-container" class="space-y-4">';
+        (subProject.questions || []).forEach((q, index) => {
+            questionsHtml += `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h5 class="font-bold mb-2">问题 ${index + 1}</h5>
+                    <textarea data-index="${index}" data-field="question" class="form-textarea mb-2" placeholder="问题文本">${q.question}</textarea>
+                    <input type="text" data-index="${index}" data-field="options.A" class="form-input mb-2" placeholder="选项A文本" value="${q.options.A}">
+                    <input type="text" data-index="${index}" data-field="options.B" class="form-input" placeholder="选项B文本" value="${q.options.B}">
+                </div>
+            `;
+        });
+        questionsHtml += '</div>';
+        modalBody.innerHTML = questionsHtml;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.remove('hidden');
+        modalSaveButton.onclick = saveQuestions;
+    }
+    
+    function renderMapModal() {
+        const subProject = state.currentSubProject;
+        modalTitle.textContent = `管理结果映射 - ${subProject.name}`;
+        let mapHtml = '<div id="map-form-container" class="space-y-2">';
+        const combinations = Object.keys(subProject.resultMap || {}).sort();
+        combinations.forEach(combo => {
+            const selectedPoemId = subProject.resultMap[combo];
+            let optionsHtml = '<option value="">-- 请选择 --</option>';
+            (subProject.poems || []).forEach(p => {
+                optionsHtml += `<option value="${p.id}" ${p.id === selectedPoemId ? 'selected' : ''}>${p.title}</option>`;
+            });
+            mapHtml += `
+                <div class="flex items-center gap-4">
+                    <label class="font-mono font-bold w-1/4">${combo}</label>
+                    <select data-combo="${combo}" class="form-input w-3/4">${optionsHtml}</select>
+                </div>
+            `;
+        });
+        mapHtml += '</div>';
+        modalBody.innerHTML = mapHtml;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.remove('hidden');
+        modalSaveButton.onclick = saveMap;
+    }
+
+    function openPoemEditModal(poem = null) {
+        const isEditing = poem !== null;
+        const editModal = document.createElement('div');
+        editModal.id = 'poem-edit-modal';
+        editModal.className = 'fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[60]';
+        editModal.innerHTML = `
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+                <h3 class="text-2xl font-bold mb-6">${isEditing ? '编辑诗歌' : '添加新诗歌'}</h3>
+                <input type="text" id="edit-poem-title" class="form-input mb-4" placeholder="诗歌标题" value="${isEditing ? poem.title : ''}">
+                <textarea id="edit-poem-body" class="form-textarea" style="min-height: 250px;" placeholder="诗歌正文...">${isEditing ? poem.body : ''}</textarea>
+                <div class="mt-6 flex justify-end gap-4">
+                    <button id="cancel-edit-poem" class="btn btn-secondary">取消</button>
+                    <button id="save-edit-poem" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(editModal);
+
+        document.getElementById('cancel-edit-poem').onclick = () => editModal.remove();
+        editModal.onclick = (e) => { if(e.target === editModal) editModal.remove(); };
+        
+        document.getElementById('save-edit-poem').onclick = async () => {
+            const title = document.getElementById('edit-poem-title').value.trim();
+            const body = document.getElementById('edit-poem-body').value.trim();
+            if (!title || !body) return alert('标题和正文不能为空');
+
+            try {
+                const endpoint = isEditing 
+                    ? `/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/poems/${poem.id}`
+                    : `/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/poems`;
+                const method = isEditing ? 'PUT' : 'POST';
+                await apiRequest(endpoint, method, { title, body });
+                await openContentModal(state.currentSubProject.name, 'poems');
+                editModal.remove();
+            } catch (error) {
+                alert(`保存诗歌失败: ${error.message}`);
+            }
+        };
+    }
+    
+    function openMainProjectInfoModal(mainProjectId) {
+        const project = state.mainProjects.find(p => p.id === mainProjectId);
+        if (!project) return;
+        modalTitle.textContent = '编辑主项目信息';
+        modalBody.innerHTML = `
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-bold mb-1">项目名称</label>
+                    <input type="text" id="modal-main-project-name" class="form-input" value="${project.name}">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">项目描述</label>
+                    <textarea id="modal-main-project-desc" class="form-textarea">${project.description || ''}</textarea>
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">导游</label>
+                    <input type="text" id="modal-main-project-poet" class="form-input" value="${project.poet || ''}">
+                </div>
+            </div>
+        `;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.remove('hidden');
+        modalSaveButton.onclick = async () => {
+            const name = document.getElementById('modal-main-project-name').value.trim();
+            const description = document.getElementById('modal-main-project-desc').value.trim();
+            const poet = document.getElementById('modal-main-project-poet').value.trim();
+            if (!name) return alert('项目名称不能为空');
+
+            try {
+                const updatedProject = await apiRequest(`/api/admin/projects/${mainProjectId}`, 'PUT', { name, description, poet });
+                const index = state.mainProjects.findIndex(p => p.id === mainProjectId);
+                state.mainProjects[index] = updatedProject;
+                renderMainProjects();
+                modal.classList.add('hidden');
+            } catch (error) {
+                alert(`保存失败: ${error.message}`);
+            }
+        };
+    }
+
+    async function loadMainProjects() {
+        state.mainProjects = await apiRequest('/api/admin/projects');
+        renderMainProjects();
+    }
+
+    function enterMainProject(mainProjectId) {
+        state.currentMainProjectId = mainProjectId;
+        mainProjectsListSection.classList.add('hidden');
+        subProjectManagementSection.classList.remove('hidden');
+        renderSubProjects();
+    }
+
+    async function createMainProject() {
+        const nameInput = document.getElementById('new-main-project-name');
+        const descInput = document.getElementById('new-main-project-desc');
+        const poetInput = document.getElementById('new-main-project-poet');
+        const name = nameInput.value.trim();
+        const description = descInput.value.trim();
+        const poet = poetInput.value.trim();
+        if (!name) return alert('新项目名称不能为空！');
+        try {
+            await apiRequest('/api/admin/projects', 'POST', { name, description, poet });
+            nameInput.value = '';
+            descInput.value = '';
+            poetInput.value = '';
+            await loadMainProjects();
+        } catch (error) {
+            alert(`创建项目失败: ${error.message}`);
+        }
+    }
+
+    async function createSubProject() {
+        const nameInput = document.getElementById('new-sub-project-name');
+        const descInput = document.getElementById('new-sub-project-desc');
+        const name = nameInput.value.trim();
+        const description = descInput.value.trim();
+        if (!name) return alert('新篇章名称不能为空！');
+        try {
+            const newSubProject = await apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub`, 'POST', { name, description });
+            state.currentMainProject.subProjects.push(newSubProject);
+            renderSubProjects();
+            nameInput.value = '';
+            descInput.value = '';
+        } catch (error) {
+            alert(`创建篇章失败: ${error.message}`);
+        }
+    }
+
+    async function saveQuestions() {
+        const newQuestions = JSON.parse(JSON.stringify(state.currentSubProject.questions));
+        let isValid = true;
+        document.querySelectorAll('#questions-form-container [data-index]').forEach(input => {
+            const index = input.dataset.index;
+            const field = input.dataset.field;
+            const value = input.value.trim();
+            if (!value) isValid = false;
+            const [key1, key2] = field.split('.');
+            if (key2) newQuestions[index][key1][key2] = value;
+            else newQuestions[index][field] = value;
+        });
+        if (!isValid) return alert('所有字段均不能为空！');
+        try {
+            await apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/questions`, 'PUT', { questions: newQuestions });
+            state.currentSubProject.questions = newQuestions;
+            alert('问题已保存！');
+            modal.classList.add('hidden');
+        } catch (error) {
+            alert(`保存问题失败: ${error.message}`);
+        }
+    }
+    
+    async function saveMap() {
+        const newMap = { ...state.currentSubProject.resultMap };
+        document.querySelectorAll('#map-form-container select[data-combo]').forEach(select => {
+            newMap[select.dataset.combo] = select.value;
+        });
+        try {
+            await apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/resultMap`, 'PUT', { resultMap: newMap });
+            state.currentSubProject.resultMap = newMap;
+            alert('映射关系已保存！');
+            modal.classList.add('hidden');
+        } catch (error) {
+            alert(`保存映射失败: ${error.message}`);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadMainProjects().catch(error => {
+            console.error("加载初始数据失败:", error);
+        });
+        document.getElementById('create-main-project-btn').addEventListener('click', createMainProject);
+        publishAllButton.addEventListener('click', publishAllChanges);
+    });
+    logoutButton.addEventListener('click', logout);
+    backToMainProjectsButton.addEventListener('click', () => {
+        subProjectManagementSection.classList.add('hidden');
+        mainProjectsListSection.classList.remove('hidden');
+        state.currentMainProjectId = null;
+    });
+    mainProjectList.addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if (!button) return;
+        const projectId = button.dataset.id;
+        if (button.matches('.enter-main-project-btn')) {
+            enterMainProject(projectId);
+        }
+        if (button.matches('.edit-main-project-btn')) {
+            openMainProjectInfoModal(projectId);
+        }
+        if (button.matches('.toggle-status-btn')) {
+            const newStatus = button.dataset.status;
+            toggleProjectStatus(projectId, newStatus);
+        }
+        if (button.matches('.update-project-btn')) {
+            updateSingleProject(projectId);
+        }
+        if (button.matches('.delete-main-project-btn')) {
+            if (confirm('确定要永久删除这个项目及其所有内容吗？此操作不可逆。')) {
+                apiRequest(`/api/admin/projects/${projectId}`, 'DELETE')
+                    .then(() => {
+                        alert('项目已成功删除。');
+                        loadMainProjects();
+                    })
+                    .catch(err => alert(`删除失败: ${err.message}`));
+            }
+        }
+    });
+    subProjectManagementSection.addEventListener('click', (e) => {
+        if (e.target.id === 'create-sub-project-btn') {
+            createSubProject();
+        }
+    });
+    subProjectList.addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if (!button) return;
+        const subProjectName = button.dataset.subName;
+        if (button.matches('.manage-poems-btn')) openContentModal(subProjectName, 'poems');
+        if (button.matches('.manage-questions-btn')) openContentModal(subProjectName, 'questions');
+        if (button.matches('.manage-map-btn')) openContentModal(subProjectName, 'map');
+    });
+    modalCancelButton.addEventListener('click', () => modal.classList.add('hidden'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+    modalBody.addEventListener('click', (e) => {
+        if (e.target.matches('#add-poem-btn')) openPoemEditModal();
+        if (e.target.matches('.edit-poem-btn')) {
+            const poem = state.currentSubProject.poems.find(p => p.id === e.target.dataset.poemId);
+            openPoemEditModal(poem);
+        }
+        if (e.target.matches('.delete-poem-btn')) {
+            const poemId = e.target.dataset.poemId;
+            if (confirm('确定要删除这首诗吗？')) {
+                apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/poems/${poemId}`, 'DELETE')
+                    .then(() => {
+                        openContentModal(state.currentSubProject.name, 'poems');
+                    })
+                    .catch(err => alert(`删除失败: ${err.message}`));
+            }
+        }
+    });
+    </script>
 </body>
-</html> 
+</html>
