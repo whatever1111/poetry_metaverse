@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "2.0",
+    "description": "当代都市生活的文学镜像，通过毛小豆及其周围人物的故事，展现消费主义、权力运作和身份焦虑等当代社会议题",
+    "created_at": "2025-07-30",
+    "last_updated": "2025-07-30",
+    "data_sources": {
+      "primary": "《毛小豆故事演绎》西尔.txt",
+      "analysis": "《毛小豆故事演绎》叙事结构梳理.txt",
+      "structure": "《毛小豆宇宙》结构化知识库 v1.0.json"
+    },
+    "validation_rules": {
+      "characters": {
+        "required_fields": [
+          "id",
+          "name",
+          "role",
+          "description"
+        ],
+        "id_format": "lowercase_with_underscores",
+        "relationship_references": "must_exist"
+      },
+      "poems": {
+        "required_fields": [
+          "id",
+          "title",
+          "section",
+          "summary"
+        ],
+        "character_references": "must_exist_in_characters",
+        "theme_references": "must_exist_in_themes"
+      }
+    }
+  },
+  "statistics": {
+    "total_characters": 30,
+    "total_poems": 14,
+    "total_themes": 6,
+    "total_terminology": 125,
+    "sections": {
+      "正篇": 7,
+      "前篇": 3,
+      "番外": 4
+    },
+    "character_categories": {
+      "core": 4,
+      "secondary": 3,
+      "tertiary": 23
+    }
+  },
+  "relationships": {
+    "character_relationships": 38,
+    "poem_character_references": 65,
+    "theme_character_references": 106,
+    "poem_terminology_references": 48
+  }
+}

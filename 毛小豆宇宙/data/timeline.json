@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "2.0",
+    "description": "毛小豆宇宙时间线数据库",
+    "created_at": "2025-07-30",
+    "last_updated": "2025-07-30"
+  },
+  "timeline": {
+    "periods": [
+      {
+        "id": "period_1",
+        "name": "第一时期：青春期/前史",
+        "time_range": "约2010-2013年",
+        "description": "高中时期，兄弟会早期法则的确立",
+        "scenes": [
+          "sodium",
+          "wheat",
+          "museum",
+          "canned_tuna"
+        ],
+        "key_events": [
+          "钠派与盖帮的竞争",
+          "学生社团的创建",
+          "高三毕业的过敏反应",
+          "与远志的友谊"
+        ],
+        "character_development": {
+          "maoxiaodou": "系统玩家的早期表现",
+          "huashao": "兄弟会成员的形成",
+          "dongxiansheng": "理想主义的萌芽"
+        }
+      },
+      {
+        "id": "period_2",
+        "name": "第二时期：大学/后青春期",
+        "time_range": "约2013-2017年",
+        "description": "大学时期，主要通过回忆呈现",
+        "scenes": [],
+        "key_events": [
+          "与梅朵的恋爱",
+          "云南的翻车经历",
+          "栋先生的创伤",
+          "兄弟会关系的深化"
+        ],
+        "character_development": {
+          "maoxiaodou": "犬儒主义的发展",
+          "dongxiansheng": "创伤后的停滞",
+          "huashao": "理性批评者的形成"
+        }
+      },
+      {
+        "id": "period_3",
+        "name": "第三时期：成年/现在时",
+        "time_range": "约2022-2025年",
+        "description": "成年后的职场和社会生活",
+        "scenes": [
+          "maoxiaodou_story_2",
+          "shark_and_rock",
+          "remake",
+          "gold_medal_winner",
+          "new_year",
+          "temple",
+          "fortune",
+          "watch_out",
+          "interest",
+          "subtitles"
+        ],
+        "key_events": [
+          "与张秋的关系",
+          "职场生活的适应",
+          "兄弟会的维持",
+          "身份焦虑的深化"
+        ],
+        "character_development": {
+          "maoxiaodou": "停滞与循环",
+          "zhangqiu": "持续的专业化与清醒",
+          "huashao": "犬儒的深化"
+        }
+      }
+    ],
+    "character_arcs": [
+      {
+        "character_id": "maoxiaodou",
+        "arc_summary": "停滞与循环。从《前篇》中展现出的早熟的'系统玩家'特质，到《正篇》中社会化的'犬儒表演者'，其核心行为逻辑（在规则中博弈、用戏谑防御真实）并未发生本质改变。其弧光是一条不断自我重复、无法突破的圆形轨迹，最终在《新年快乐》中以自我质问'不可以吗?'的形式，暴露出对这种停滞状态的深层焦虑。",
+        "key_turning_points": [
+          "高中时期的系统玩家表现",
+          "大学时期的犬儒主义发展",
+          "成年后的停滞状态"
+        ],
+        "themes": [
+          "停滞",
+          "循环",
+          "系统玩家",
+          "犬儒"
+        ]
+      },
+      {
+        "character_id": "huashao",
+        "arc_summary": "犬儒的深化。从《前篇》中作为兄弟会的一员，到《正篇》中成为'理性批评者'，再到《番外》中成为'犬儒的立法者'，他的弧光是不断走向彻底和强硬的过程。他从一个参与者，逐渐演变为这个小世界意识形态最坚定的捍卫者。",
+        "key_turning_points": [
+          "兄弟会成员的形成",
+          "理性批评者的确立",
+          "犬儒立法者的角色"
+        ],
+        "themes": [
+          "犬儒",
+          "理性",
+          "立法者",
+          "兄弟会"
+        ]
+      },
+      {
+        "character_id": "zhangqiu",
+        "arc_summary": "持续的专业化与清醒。在《金牌得主》中，她是一个在多重压力下寻求自主的能动主体。在后续诗篇中，她始终扮演着最清醒的观察者角色，其弧光是一条不断向上、与毛小豆的停滞形成鲜明对比的直线。",
+        "key_turning_points": [
+          "职场专业化的过程",
+          "对毛小豆的清醒观察",
+          "持续的个人成长"
+        ],
+        "themes": [
+          "专业化",
+          "清醒",
+          "成长",
+          "观察者"
+        ]
+      }
+    ]
+  }
+}
