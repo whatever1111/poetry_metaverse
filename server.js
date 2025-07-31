@@ -17,10 +17,10 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const DATA_DIR = path.join(__dirname, 'data');
-const POEMS_DIR = path.join(__dirname, 'poems');
-const DATA_DRAFT_DIR = path.join(__dirname, 'data_draft');
-const POEMS_DRAFT_DIR = path.join(__dirname, 'poems_draft');
+const DATA_DIR = path.join(__dirname, 'poeject_zhou_spring_autumn', 'data');
+const POEMS_DIR = path.join(__dirname, 'poeject_zhou_spring_autumn', 'poems');
+const DATA_DRAFT_DIR = path.join(__dirname, 'poeject_zhou_spring_autumn', 'data_draft');
+const POEMS_DRAFT_DIR = path.join(__dirname, 'poeject_zhou_spring_autumn', 'poems_draft');
 
 const PROJECTS_PATH = path.join(DATA_DIR, 'projects.json');
 const QUESTIONS_PATH = path.join(DATA_DIR, 'questions.json');

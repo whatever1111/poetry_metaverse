@@ -15,8 +15,8 @@ services:
       - RATE_LIMIT_WINDOW_MS=900000
       - RATE_LIMIT_MAX_REQUESTS=100
     volumes:
-      - ./data:/usr/src/app/data
-      - ./poems:/usr/src/app/poems
+      - ./poeject_zhou_spring_autumn/data:/usr/src/app/data
+      - ./poeject_zhou_spring_autumn/poems:/usr/src/app/poems
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3889/"]
@@ -33,7 +33,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./poems:/srv/poems
+      - ./poeject_zhou_spring_autumn/poems:/srv/poems
       - ./filebrowser.db:/database.db
       - ./filebrowser.json:/config.json
     environment:
