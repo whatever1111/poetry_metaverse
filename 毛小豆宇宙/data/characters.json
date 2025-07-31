@@ -1,0 +1,1341 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "2.0",
+    "description": "毛小豆宇宙角色数据库",
+    "created_at": "2025-07-30",
+    "last_updated": "2025-07-30"
+  },
+  "characters": {
+    "core": [
+      {
+        "id": "maoxiaodou",
+        "name": "毛小豆",
+        "aliases": [
+          "豆娘",
+          "大豆哥",
+          "毛经理",
+          "毛老师",
+          "毛总"
+        ],
+        "role": "主角，观察者",
+        "description": "本诗集的核心主人公与主要叙事视角。他是一位生活在当代都市的年轻男性，职业背景与网络技术或咨询相关，在职场、社交圈和亲密关系中挣扎。",
+        "personality": {
+          "traits": [
+            "疏离",
+            "观察",
+            "自嘲",
+            "焦虑"
+          ],
+          "motivations": [
+            "理解生活",
+            "寻找意义",
+            "保持真实"
+          ],
+          "conflicts": [
+            "理想与现实",
+            "个人与集体",
+            "真实与表演"
+          ],
+          "defense_mechanisms": [
+            "幽默",
+            "观察",
+            "逃避"
+          ]
+        },
+        "core_motivation": "在一个充满表演性、被消费符号定义的外部世界中，寻求并确认一种内在的、真实的自我，但常常陷入犬儒、疏离和成长停滞的困境。",
+        "relationships": [
+          {
+            "target_id": "zhangqiu",
+            "type": "恋人",
+            "description": "复杂的情感纠葛，权力动态微妙",
+            "strength": 0.8
+          },
+          {
+            "target_id": "huashao",
+            "type": "朋友",
+            "description": "理性批评者，兄弟情谊",
+            "strength": 0.9
+          },
+          {
+            "target_id": "dongxiansheng",
+            "type": "朋友",
+            "description": "感性参照物，精神流浪者",
+            "strength": 0.7
+          },
+          {
+            "target_id": "yuanzhi",
+            "type": "朋友",
+            "description": "青春期挚友，另一轨迹的参照",
+            "strength": 0.6
+          }
+        ],
+        "key_quotes": [
+          "这定律，我比毕啸天发现得早",
+          "生活确实是越来越好了",
+          "我才是真正的A片之王",
+          "但是我不会河牌偷你"
+        ],
+        "appearances": [
+          {
+            "poem_id": "maoxiaodou_story_2",
+            "poem_title": "毛小豆故事演绎 Ⅱ"
+          },
+          {
+            "poem_id": "shark_and_rock",
+            "poem_title": "鲨鱼与岩石"
+          },
+          {
+            "poem_id": "gold_medal_winner",
+            "poem_title": "金牌得主"
+          },
+          {
+            "poem_id": "remake",
+            "poem_title": "毛小豆故事演绎 | REMAKE"
+          },
+          {
+            "poem_id": "new_year",
+            "poem_title": "新年快乐"
+          },
+          {
+            "poem_id": "temple",
+            "poem_title": "拆庙"
+          },
+          {
+            "poem_id": "fortune",
+            "poem_title": "八方来财"
+          },
+          {
+            "poem_id": "sodium",
+            "poem_title": "钠"
+          },
+          {
+            "poem_id": "wheat",
+            "poem_title": "麦"
+          },
+          {
+            "poem_id": "museum",
+            "poem_title": "馆"
+          },
+          {
+            "poem_id": "canned_tuna",
+            "poem_title": "高级罐头装金枪鱼"
+          },
+          {
+            "poem_id": "watch_out",
+            "poem_title": "注意看"
+          },
+          {
+            "poem_id": "interest",
+            "poem_title": "你的兴趣是什么"
+          },
+          {
+            "poem_id": "subtitles",
+            "poem_title": "论字幕的必要性"
+          }
+        ],
+        "development_arc": {
+          "beginning": "高中时期的纯真",
+          "middle": "职场中的适应与妥协",
+          "end": "对生活本质的思考"
+        },
+        "notes": "毛小豆是'丑陋情感'的集合体。他的犬儒和疏离是一种防御机制，用以掩盖其深刻的身份焦虑和对'本真性'失落的创伤。他被困在青春期的行为模式中，呈现出'长胖但未长大'的停滞状态。"
+      },
+      {
+        "id": "huashao",
+        "name": "华少",
+        "aliases": [
+          "华逼"
+        ],
+        "role": "理性批评者，犬儒实践者",
+        "description": "'兄弟会'的核心成员，毛小豆最重要、也最具批判性的朋友。",
+        "personality": {
+          "traits": [
+            "理性",
+            "批判",
+            "犬儒",
+            "彻底"
+          ],
+          "motivations": [
+            "维护兄弟会法则",
+            "对抗外部虚伪"
+          ],
+          "conflicts": [
+            "理想与现实",
+            "内部与外部"
+          ],
+          "defense_mechanisms": [
+            "彻底犬儒",
+            "排他性认同"
+          ]
+        },
+        "core_motivation": "维护'兄弟会'内部法则的纯粹性与忠诚度，以一种彻底的、硬核的犬儒主义姿态对抗外部世界的虚伪。",
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "朋友",
+            "description": "兄弟会核心成员，被批评与剖析的对象",
+            "strength": 0.9
+          },
+          {
+            "target_id": "dongxiansheng",
+            "type": "朋友",
+            "description": "兄弟会核心成员",
+            "strength": 0.8
+          }
+        ],
+        "key_quotes": [
+          "你属于偏弱的听牌怪",
+          "有屁用",
+          "我让你亏的钱还少吗",
+          "第一要瘦。其次白。然后要不太聪明"
+        ],
+        "notes": "华少扮演着'超我'和'理性缰绳'的角色，但其理性建立在一种排他的、甚至厌女的男性共同体法则之上。他是犬儒主义更彻底的实践者，其视角为宇宙提供了最冷酷、最不加掩饰的内部批判。",
+        "appearances": [
+          {
+            "poem_id": "shark_and_rock",
+            "poem_title": "鲨鱼与岩石"
+          },
+          {
+            "poem_id": "remake",
+            "poem_title": "毛小豆故事演绎 | REMAKE"
+          },
+          {
+            "poem_id": "temple",
+            "poem_title": "拆庙"
+          },
+          {
+            "poem_id": "fortune",
+            "poem_title": "八方来财"
+          },
+          {
+            "poem_id": "sodium",
+            "poem_title": "钠"
+          },
+          {
+            "poem_id": "interest",
+            "poem_title": "你的兴趣是什么"
+          },
+          {
+            "poem_id": "subtitles",
+            "poem_title": "论字幕的必要性"
+          }
+        ]
+      },
+      {
+        "id": "dongxiansheng",
+        "name": "栋先生",
+        "aliases": [
+          "阿栋"
+        ],
+        "role": "感性流浪者，精神参照物",
+        "description": "'兄弟会'的核心成员，人类学研究生，一个看似游离于主流之外的、充满感性的角色。",
+        "personality": {
+          "traits": [
+            "感性",
+            "游离",
+            "创伤",
+            "回溯"
+          ],
+          "motivations": [
+            "寻求精神超越",
+            "逃避现实创伤"
+          ],
+          "conflicts": [
+            "过去与现在",
+            "理想与现实"
+          ],
+          "defense_mechanisms": [
+            "回溯过去",
+            "游离现实"
+          ]
+        },
+        "core_motivation": "寻求一种超越物质与功利的、更偏向精神与艺术的生存方式，但似乎被过去的创伤所困，难以真正前行。",
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "朋友",
+            "description": "兄弟会核心成员，被观察与分析的对象",
+            "strength": 0.7
+          },
+          {
+            "target_id": "huashao",
+            "type": "朋友",
+            "description": "兄弟会核心成员",
+            "strength": 0.8
+          }
+        ],
+        "key_quotes": [
+          "我依然觉得，她是我见过，最温暖的人"
+        ],
+        "notes": "栋先生是'兄弟会'中的'出世'参照物。云南的'翻车'事件是理解其行为逻辑的关键创伤节点，使他呈现出一种与现实脱节的、不断回溯过去的状态。",
+        "appearances": [
+          {
+            "poem_id": "remake",
+            "poem_title": "毛小豆故事演绎 | REMAKE"
+          },
+          {
+            "poem_id": "temple",
+            "poem_title": "拆庙"
+          },
+          {
+            "poem_id": "sodium",
+            "poem_title": "钠"
+          },
+          {
+            "poem_id": "wheat",
+            "poem_title": "麦"
+          },
+          {
+            "poem_id": "museum",
+            "poem_title": "馆"
+          },
+          {
+            "poem_id": "interest",
+            "poem_title": "你的兴趣是什么"
+          },
+          {
+            "poem_id": "subtitles",
+            "poem_title": "论字幕的必要性"
+          }
+        ]
+      },
+      {
+        "id": "zhangqiu",
+        "name": "张秋",
+        "aliases": [],
+        "role": "长期伴侣，清醒观察者",
+        "description": "毛小豆的长期伴侣，一位在咨询或相关行业的顶尖专业人士。",
+        "personality": {
+          "traits": [
+            "独立",
+            "理性",
+            "有主见",
+            "专业"
+          ],
+          "motivations": [
+            "职业发展",
+            "个人成长",
+            "关系平衡"
+          ],
+          "conflicts": [
+            "与毛小豆的关系",
+            "职场与个人生活的平衡"
+          ],
+          "defense_mechanisms": [
+            "理性分析",
+            "专业态度"
+          ]
+        },
+        "core_motivation": "在职业内卷和身体内卷的双重压力下，寻求并维持个人意志的自主与生活的掌控感。",
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "恋人",
+            "description": "长期伴侣，清醒的观察者与批评者",
+            "strength": 0.8
+          }
+        ],
+        "key_quotes": [
+          "这是典型的穷人思维",
+          "还好还好，你只是长胖，没有长大"
+        ],
+        "notes": "张秋是宇宙中最重要的女性角色，她代表了成熟、专业、清醒的外部视角，是对'兄弟会'拒绝长大的世界的直接挑战。她的存在极大地平衡了诗集的性别视角，并构成了与毛小豆关系中最核心的戏剧张力。",
+        "appearances": [
+          {
+            "poem_id": "gold_medal_winner",
+            "poem_title": "金牌得主"
+          },
+          {
+            "poem_id": "new_year",
+            "poem_title": "新年快乐"
+          },
+          {
+            "poem_id": "temple",
+            "poem_title": "拆庙"
+          }
+        ]
+      }
+    ],
+    "secondary": [
+      {
+        "id": "yuanzhi",
+        "name": "远志",
+        "aliases": [],
+        "role": "青春期挚友，另一轨迹参照",
+        "description": "毛小豆高中时代的朋友。",
+        "personality": {
+          "traits": [
+            "开放",
+            "探索",
+            "不同轨迹"
+          ],
+          "motivations": [
+            "走向更广阔世界"
+          ],
+          "conflicts": [
+            "与毛小豆的不同选择"
+          ],
+          "defense_mechanisms": [
+            "选择不同道路"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "朋友",
+            "description": "青春期挚友",
+            "strength": 0.6
+          }
+        ],
+        "notes": "远志代表了与毛小豆不同的青春期轨迹——'GAP了一年/出国'，象征着走向更广阔世界的可能性。",
+        "appearances": [
+          {
+            "poem_id": "sodium",
+            "poem_title": "钠"
+          },
+          {
+            "poem_id": "museum",
+            "poem_title": "馆"
+          },
+          {
+            "poem_id": "canned_tuna",
+            "poem_title": "高级罐头装金枪鱼"
+          }
+        ]
+      },
+      {
+        "id": "laojiang",
+        "name": "老蒋",
+        "aliases": [],
+        "role": "商业伙伴，男性共谋者",
+        "description": "毛小豆的客户或商业伙伴。",
+        "personality": {
+          "traits": [
+            "功利",
+            "共谋",
+            "男性凝视"
+          ],
+          "motivations": [
+            "商业利益",
+            "男性同盟"
+          ],
+          "conflicts": [
+            "商业与道德"
+          ],
+          "defense_mechanisms": [
+            "男性黑话"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "商业伙伴",
+            "description": "商业伙伴，男性共谋者",
+            "strength": 0.5
+          },
+          {
+            "target_id": "yaozong",
+            "type": "商业伙伴",
+            "description": "与姚总共同参与商务酒局，构成权力三角的一环",
+            "strength": 0.4
+          }
+        ],
+        "key_quotes": [
+          "脚白才是真白"
+        ],
+        "notes": "他是'淫秽补充'的典型代表，通过'脚白才是真白'等黑话，巩固着男性主导的商业文化潜规则。",
+        "appearances": [
+          {
+            "poem_id": "maoxiaodou_story_2",
+            "poem_title": "毛小豆故事演绎 Ⅱ"
+          }
+        ]
+      },
+      {
+        "id": "laochu",
+        "name": "老楚",
+        "aliases": [],
+        "role": "朋友，已婚参照",
+        "description": "毛小豆和华少的朋友，已婚。",
+        "personality": {
+          "traits": [
+            "传统",
+            "稳定",
+            "已婚"
+          ],
+          "motivations": [
+            "传统生活"
+          ],
+          "conflicts": [
+            "与兄弟会的不同选择"
+          ],
+          "defense_mechanisms": [
+            "选择传统道路"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "朋友",
+            "description": "朋友",
+            "strength": 0.6
+          },
+          {
+            "target_id": "yuanyuan",
+            "type": "夫妻",
+            "description": "妻子",
+            "strength": 0.9
+          }
+        ],
+        "notes": "在'兄弟会'外围，是较早进入婚姻等传统生活轨道的参照人物。",
+        "appearances": [
+          {
+            "poem_id": "remake",
+            "poem_title": "毛小豆故事演绎 | REMAKE"
+          },
+          {
+            "poem_id": "temple",
+            "poem_title": "拆庙"
+          },
+          {
+            "poem_id": "sodium",
+            "poem_title": "钠"
+          },
+          {
+            "poem_id": "wheat",
+            "poem_title": "麦"
+          },
+          {
+            "poem_id": "museum",
+            "poem_title": "馆"
+          }
+        ]
+      }
+    ],
+    "tertiary": [
+      {
+        "id": "yaozong",
+        "name": "姚总",
+        "aliases": [],
+        "role": "客户，权力代表",
+        "description": "毛小豆的客户，一位能干、强势的女性。",
+        "personality": {
+          "traits": [
+            "能干",
+            "强势",
+            "权力"
+          ],
+          "motivations": [
+            "商业成功",
+            "权力展示"
+          ],
+          "conflicts": [
+            "女性身份与权力地位"
+          ],
+          "defense_mechanisms": [
+            "专业能力"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "商业关系",
+            "description": "客户，权力上位者",
+            "strength": 0.3
+          },
+          {
+            "target_id": "laojiang",
+            "type": "商业关系",
+            "description": "权力博弈的参与者",
+            "strength": 0.3
+          }
+        ],
+        "notes": "代表职场中的权力关系，展现了女性在男性主导商业世界中的处境。",
+        "appearances": [
+          {
+            "poem_id": "maoxiaodou_story_2",
+            "poem_title": "毛小豆故事演绎 Ⅱ"
+          }
+        ]
+      },
+      {
+        "id": "fifi",
+        "name": "菲菲",
+        "aliases": [],
+        "role": "同事，职场新人",
+        "description": "毛小豆的同事，职场新人。",
+        "personality": {
+          "traits": [
+            "新人",
+            "好奇",
+            "职场适应"
+          ],
+          "motivations": [
+            "职场发展"
+          ],
+          "conflicts": [
+            "职场适应"
+          ],
+          "defense_mechanisms": [
+            "学习适应"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "同事",
+            "description": "同事",
+            "strength": 0.4
+          }
+        ],
+        "notes": "代表职场新人的视角，展现了职场环境的复杂性。",
+        "appearances": [
+          {
+            "poem_id": "maoxiaodou_story_2",
+            "poem_title": "毛小豆故事演绎 Ⅱ"
+          },
+          {
+            "poem_id": "fortune",
+            "poem_title": "八方来财"
+          }
+        ]
+      },
+      {
+        "id": "aning",
+        "name": "阿宁",
+        "aliases": [],
+        "role": "牌友，精明玩家",
+        "description": "毛小豆的牌友，打法精明。",
+        "personality": {
+          "traits": [
+            "精明",
+            "竞争",
+            "策略"
+          ],
+          "motivations": [
+            "牌局胜利"
+          ],
+          "conflicts": [
+            "与其他牌友的竞争"
+          ],
+          "defense_mechanisms": [
+            "策略性思考"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "牌友",
+            "description": "牌局中的对手",
+            "strength": 0.3
+          }
+        ],
+        "notes": "在牌局中展现了竞争的一面，是毛小豆观察的对象。",
+        "appearances": [
+          {
+            "poem_id": "shark_and_rock",
+            "poem_title": "鲨鱼与岩石"
+          }
+        ]
+      },
+      {
+        "id": "dapao",
+        "name": "大炮",
+        "aliases": [],
+        "role": "牌友",
+        "description": "毛小豆的牌友。",
+        "personality": {
+          "traits": [
+            "直接",
+            "冲动"
+          ],
+          "motivations": [
+            "牌局参与"
+          ],
+          "conflicts": [
+            "牌局策略"
+          ],
+          "defense_mechanisms": [
+            "直接行动"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "牌友",
+            "description": "牌局中的参与者",
+            "strength": 0.3
+          }
+        ],
+        "notes": "牌局中的参与者，展现了不同的牌风。",
+        "appearances": [
+          {
+            "poem_id": "shark_and_rock",
+            "poem_title": "鲨鱼与岩石"
+          }
+        ]
+      },
+      {
+        "id": "husuo",
+        "name": "胡所",
+        "aliases": [],
+        "role": "牌局组织者",
+        "description": "牌局组织者。",
+        "personality": {
+          "traits": [
+            "组织",
+            "权威"
+          ],
+          "motivations": [
+            "维持牌局秩序"
+          ],
+          "conflicts": [
+            "管理牌局"
+          ],
+          "defense_mechanisms": [
+            "规则制定"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "组织者",
+            "description": "牌局的组织者",
+            "strength": 0.2
+          }
+        ],
+        "notes": "牌局的组织者，维护牌局的秩序和规则。",
+        "appearances": [
+          {
+            "poem_id": "shark_and_rock",
+            "poem_title": "鲨鱼与岩石"
+          }
+        ]
+      },
+      {
+        "id": "chenyuanzhuo",
+        "name": "陈远卓",
+        "aliases": [],
+        "role": "同行，牌友",
+        "description": "毛小豆的同行，牌友。",
+        "personality": {
+          "traits": [
+            "专业",
+            "竞争"
+          ],
+          "motivations": [
+            "职业发展",
+            "牌局胜利"
+          ],
+          "conflicts": [
+            "职场竞争",
+            "牌局竞争"
+          ],
+          "defense_mechanisms": [
+            "专业能力"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "同行",
+            "description": "职场同行，牌局参与者",
+            "strength": 0.3
+          }
+        ],
+        "notes": "既是职场同行又是牌友，体现了工作与娱乐的交织。",
+        "appearances": [
+          {
+            "poem_id": "shark_and_rock",
+            "poem_title": "鲨鱼与岩石"
+          }
+        ]
+      },
+      {
+        "id": "jianning",
+        "name": "简宁",
+        "aliases": [],
+        "role": "张秋的同事",
+        "description": "张秋的同事。",
+        "personality": {
+          "traits": [
+            "专业",
+            "同事"
+          ],
+          "motivations": [
+            "职场合作"
+          ],
+          "conflicts": [
+            "职场关系"
+          ],
+          "defense_mechanisms": [
+            "专业态度"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "zhangqiu",
+            "type": "同事",
+            "description": "张秋的同事",
+            "strength": 0.4
+          }
+        ],
+        "notes": "张秋的同事，展现了职场女性之间的关系。",
+        "appearances": [
+          {
+            "poem_id": "gold_medal_winner",
+            "poem_title": "金牌得主"
+          }
+        ]
+      },
+      {
+        "id": "fanlaoge",
+        "name": "范老哥",
+        "aliases": [],
+        "role": "张秋的上司",
+        "description": "张秋的上司。",
+        "personality": {
+          "traits": [
+            "权威",
+            "管理"
+          ],
+          "motivations": [
+            "团队管理"
+          ],
+          "conflicts": [
+            "上下级关系"
+          ],
+          "defense_mechanisms": [
+            "权威地位"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "zhangqiu",
+            "type": "上下级",
+            "description": "张秋的上司",
+            "strength": 0.3
+          }
+        ],
+        "notes": "张秋的上司，体现了职场中的权力关系。",
+        "appearances": [
+          {
+            "poem_id": "gold_medal_winner",
+            "poem_title": "金牌得主"
+          }
+        ]
+      },
+      {
+        "id": "tianqi",
+        "name": "天琦",
+        "aliases": [],
+        "role": "张秋的同事，摸鱼搭子",
+        "description": "张秋的同事，摸鱼搭子",
+        "personality": {
+          "traits": [
+            "轻松",
+            "摸鱼"
+          ],
+          "motivations": [
+            "工作轻松"
+          ],
+          "conflicts": [
+            "工作压力"
+          ],
+          "defense_mechanisms": [
+            "摸鱼策略"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "zhangqiu",
+            "type": "同事",
+            "description": "摸鱼搭子",
+            "strength": 0.5
+          }
+        ],
+        "notes": "张秋的摸鱼搭子，展现了职场中的轻松关系。",
+        "appearances": [
+          {
+            "poem_id": "gold_medal_winner",
+            "poem_title": "金牌得主"
+          }
+        ]
+      },
+      {
+        "id": "mingjie",
+        "name": "明姐",
+        "aliases": [],
+        "role": "健身教练的妻子，师娘",
+        "description": "张秋的健身教练的妻子，师娘。",
+        "personality": {
+          "traits": [
+            "成熟",
+            "指导"
+          ],
+          "motivations": [
+            "身体改造"
+          ],
+          "conflicts": [
+            "身体焦虑"
+          ],
+          "defense_mechanisms": [
+            "身体改造"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "zhangqiu",
+            "type": "指导者",
+            "description": "健身指导",
+            "strength": 0.3
+          }
+        ],
+        "notes": "健身教练的妻子，体现了身体改造和审美标准。",
+        "appearances": [
+          {
+            "poem_id": "gold_medal_winner",
+            "poem_title": "金牌得主"
+          }
+        ]
+      },
+      {
+        "id": "baoge",
+        "name": "鲍哥",
+        "aliases": [],
+        "role": "毛小豆的高中同学",
+        "description": "毛小豆的高中同学。",
+        "personality": {
+          "traits": [
+            "同学",
+            "青春"
+          ],
+          "motivations": [
+            "青春回忆"
+          ],
+          "conflicts": [
+            "青春期的竞争"
+          ],
+          "defense_mechanisms": [
+            "同学情谊"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "同学",
+            "description": "高中同学",
+            "strength": 0.5
+          }
+        ],
+        "notes": "毛小豆的高中同学，代表了青春期的回忆。",
+        "appearances": [
+          {
+            "poem_id": "sodium",
+            "poem_title": "钠"
+          },
+          {
+            "poem_id": "wheat",
+            "poem_title": "麦"
+          }
+        ]
+      },
+      {
+        "id": "keren",
+        "name": "可人",
+        "aliases": [],
+        "role": "毛小豆的高中同学",
+        "description": "毛小豆的高中同学。",
+        "personality": {
+          "traits": [
+            "同学",
+            "青春"
+          ],
+          "motivations": [
+            "青春回忆"
+          ],
+          "conflicts": [
+            "青春期的竞争"
+          ],
+          "defense_mechanisms": [
+            "同学情谊"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "同学",
+            "description": "高中同学",
+            "strength": 0.5
+          }
+        ],
+        "notes": "毛小豆的高中同学，代表了青春期的回忆。",
+        "appearances": [
+          {
+            "poem_id": "wheat",
+            "poem_title": "麦"
+          }
+        ]
+      },
+      {
+        "id": "lizhong",
+        "name": "李种",
+        "aliases": [],
+        "role": "毛小豆的高中同学",
+        "description": "毛小豆的高中同学。",
+        "personality": {
+          "traits": [
+            "同学",
+            "青春"
+          ],
+          "motivations": [
+            "青春回忆"
+          ],
+          "conflicts": [
+            "青春期的竞争"
+          ],
+          "defense_mechanisms": [
+            "同学情谊"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "同学",
+            "description": "高中同学",
+            "strength": 0.5
+          }
+        ],
+        "notes": "毛小豆的高中同学，代表了青春期的回忆。",
+        "appearances": [
+          {
+            "poem_id": "wheat",
+            "poem_title": "麦"
+          },
+          {
+            "poem_id": "museum",
+            "poem_title": "馆"
+          }
+        ]
+      },
+      {
+        "id": "xiaowu",
+        "name": "小吴",
+        "aliases": [],
+        "role": "毛小豆的朋友，与小廖结婚",
+        "description": "毛小豆的朋友，与小廖结婚。",
+        "personality": {
+          "traits": [
+            "朋友",
+            "已婚"
+          ],
+          "motivations": [
+            "婚姻生活"
+          ],
+          "conflicts": [
+            "婚姻与友谊"
+          ],
+          "defense_mechanisms": [
+            "婚姻认同"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "朋友",
+            "description": "朋友",
+            "strength": 0.6
+          },
+          {
+            "target_id": "xiaoliao",
+            "type": "夫妻",
+            "description": "与小廖结婚",
+            "strength": 0.9
+          }
+        ],
+        "notes": "毛小豆的朋友，与小廖结婚，体现了传统生活轨迹。",
+        "appearances": [
+          {
+            "poem_id": "temple",
+            "poem_title": "拆庙"
+          }
+        ]
+      },
+      {
+        "id": "xiaoliao",
+        "name": "小廖",
+        "aliases": [],
+        "role": "毛小豆的朋友，与小吴结婚",
+        "description": "毛小豆的朋友，与小吴结婚。",
+        "personality": {
+          "traits": [
+            "朋友",
+            "已婚"
+          ],
+          "motivations": [
+            "婚姻生活"
+          ],
+          "conflicts": [
+            "婚姻与友谊"
+          ],
+          "defense_mechanisms": [
+            "婚姻认同"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "朋友",
+            "description": "朋友",
+            "strength": 0.6
+          },
+          {
+            "target_id": "xiaowu",
+            "type": "夫妻",
+            "description": "与小吴结婚",
+            "strength": 0.9
+          }
+        ],
+        "notes": "毛小豆的朋友，与小吴结婚，体现了传统生活轨迹。",
+        "appearances": [
+          {
+            "poem_id": "temple",
+            "poem_title": "拆庙"
+          }
+        ]
+      },
+      {
+        "id": "yuanyuan",
+        "name": "圆圆",
+        "aliases": [],
+        "role": "老楚的妻子",
+        "description": "老楚的妻子。",
+        "personality": {
+          "traits": [
+            "妻子",
+            "传统"
+          ],
+          "motivations": [
+            "婚姻生活"
+          ],
+          "conflicts": [
+            "婚姻关系"
+          ],
+          "defense_mechanisms": [
+            "婚姻认同"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "laochu",
+            "type": "夫妻",
+            "description": "老楚的妻子",
+            "strength": 0.9
+          }
+        ],
+        "notes": "老楚的妻子，体现了传统婚姻关系。",
+        "appearances": [
+          {
+            "poem_id": "temple",
+            "poem_title": "拆庙"
+          }
+        ]
+      },
+      {
+        "id": "me_duo",
+        "name": "梅朵",
+        "aliases": [],
+        "role": "毛小豆的前女友，历史系系花",
+        "description": "毛小豆的前女友，历史系系花。",
+        "personality": {
+          "traits": [
+            "前女友",
+            "系花"
+          ],
+          "motivations": [
+            "过去的爱情"
+          ],
+          "conflicts": [
+            "过去的创伤"
+          ],
+          "defense_mechanisms": [
+            "回忆美化"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "前女友",
+            "description": "历史系系花，前女友",
+            "strength": 0.2
+          }
+        ],
+        "notes": "毛小豆的前女友，历史系系花，代表了过去的爱情创伤。",
+        "appearances": []
+      },
+      {
+        "id": "xiao_tuzi_xiao_limin",
+        "name": "小兔子，小丽敏?",
+        "aliases": [
+          "兔子",
+          "丽敏"
+        ],
+        "role": "符号化的女性，回忆的碎片",
+        "description": "在《毛小豆故事演绎 II》中被回忆起的女性形象，身份模糊，是青春期欲望和记忆的符号化载体。",
+        "personality": {
+          "traits": [
+            "符号化",
+            "模糊",
+            "被凝视"
+          ],
+          "motivations": [
+            "作为欲望对象存在"
+          ],
+          "conflicts": [],
+          "defense_mechanisms": []
+        },
+        "relationships": [
+          {
+            "target_id": "maoxiaodou",
+            "type": "回忆对象",
+            "description": "在毛小豆的回忆中出现",
+            "strength": 0.1
+          }
+        ],
+        "notes": "这个角色的不确定性（名字的疑问）和扁平化特征，使其成为'兄弟会'外部、被凝视和物化的女性的典型代表。她不是一个完整的人，而是一个欲望的投射对象。",
+        "appearances": [
+          {
+            "poem_id": "maoxiaodou_story_2",
+            "poem_title": "毛小豆故事演绎 Ⅱ"
+          }
+        ]
+      },
+      {
+        "id": "poker_girl",
+        "name": "牌局上的女孩",
+        "aliases": [],
+        "role": "功能化的女性，空间入侵者",
+        "description": "在《鲨鱼与岩石》中由刘伟带来的女性，她的出现短暂地改变了牌局的动态。",
+        "personality": {
+          "traits": [
+            "功能性",
+            "沉默",
+            "外部"
+          ],
+          "motivations": [
+            "不明确"
+          ],
+          "conflicts": [],
+          "defense_mechanisms": []
+        },
+        "relationships": [],
+        "notes": "她是一个典型的功能性角色，其存在是为了引出关于空间、性别和社交规则的讨论。她的沉默和'拎不清'的行为，反衬出牌局这个男性空间的封闭性和排他性。",
+        "appearances": [
+          {
+            "poem_id": "shark_and_rock",
+            "poem_title": "鲨鱼与岩石"
+          }
+        ]
+      },
+      {
+        "id": "mumu",
+        "name": "木木",
+        "aliases": [],
+        "role": "张秋的朋友",
+        "description": "出现在《新年快乐》的跨年派对上，是张秋的姐妹之一。",
+        "personality": {
+          "traits": [
+            "社交",
+            "朋友"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "zhangqiu",
+            "type": "朋友",
+            "strength": 0.5
+          }
+        ],
+        "appearances": [
+          {
+            "poem_id": "new_year",
+            "poem_title": "新年快乐"
+          }
+        ]
+      },
+      {
+        "id": "xiaoyueshan",
+        "name": "小月山",
+        "aliases": [],
+        "role": "张秋的朋友",
+        "description": "出现在《新年快乐》的跨年派对上，是张秋的姐妹之一。",
+        "personality": {
+          "traits": [
+            "社交",
+            "朋友"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "zhangqiu",
+            "type": "朋友",
+            "strength": 0.5
+          }
+        ],
+        "appearances": [
+          {
+            "poem_id": "new_year",
+            "poem_title": "新年快乐"
+          }
+        ]
+      },
+      {
+        "id": "qianjie",
+        "name": "倩姐",
+        "aliases": [],
+        "role": "张秋的朋友",
+        "description": "出现在《新年快乐》的跨年派对上，是张秋的姐妹之一。",
+        "personality": {
+          "traits": [
+            "社交",
+            "朋友"
+          ]
+        },
+        "relationships": [
+          {
+            "target_id": "zhangqiu",
+            "type": "朋友",
+            "strength": 0.5
+          }
+        ],
+        "appearances": [
+          {
+            "poem_id": "new_year",
+            "poem_title": "新年快乐"
+          }
+        ]
+      },
+      {
+        "id": "xiaoluo",
+        "name": "小罗",
+        "aliases": [],
+        "role": "张秋的朋友的伴侣",
+        "description": "出现在《新年快乐》的跨年派对上，是其中一位姐妹的伴侣。",
+        "personality": {
+          "traits": [
+            "社交",
+            "伴侣"
+          ]
+        },
+        "relationships": [],
+        "appearances": [
+          {
+            "poem_id": "new_year",
+            "poem_title": "新年快乐"
+          }
+        ]
+      }
+    ]
+  }
+}

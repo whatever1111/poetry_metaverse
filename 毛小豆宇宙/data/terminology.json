@@ -1,0 +1,1011 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "2.0",
+    "description": "毛小豆宇宙术语与象征总数据库",
+    "created_at": "2025-07-30",
+    "last_updated": "2025-07-30"
+  },
+  "terminology": [
+    {
+      "id": "3_bet",
+      "term": "3-Bet (再加注)",
+      "category": "poker",
+      "definition": "德州扑克术语，指在已有一次加注（Raise）的情况下，再次进行加注。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "阿宁“照样3-Bet挤压”，展现了他激进的牌风。"
+    },
+    {
+      "id": "abject_restroom",
+      "term": "烧烤店的“贱斥”厕所",
+      "category": "symbol",
+      "definition": "被压抑之物回归的场所，是内心世界崩塌的外部投射。",
+      "context": "《八方来财》",
+      "usage": "得知母亲患癌的创伤消息后，主人公在厕所经历了生理性崩溃。"
+    },
+    {
+      "id": "allergic_reaction",
+      "term": "过敏反应",
+      "category": "symbol",
+      "definition": "被压抑情感的生理性爆发，是无意识的眼泪和身体的失控。",
+      "context": "《馆》",
+      "usage": "面对青春终结，意识上“无所谓”，但身体却通过打喷嚏、流鼻涕和眼泪来表达巨大的悲伤。"
+    },
+    {
+      "id": "art_vs_porn",
+      "term": "画、诗 vs. A片",
+      "category": "symbol",
+      "definition": "“高雅”文化资本与亚文化资本的对立，挑战了关于“何为有价值的兴趣”的传统定义。",
+      "context": "《你的兴趣是什么》",
+      "usage": "主人公在艺术创作的赛道上受挫，转而宣称自己在A片收藏领域的“王者”地位。"
+    },
+    {
+      "id": "barber_replacement",
+      "term": "理发师的更替 (索尼 vs. 维尼)",
+      "category": "symbol",
+      "definition": "熟悉感的丧失和日常被重塑的象征。",
+      "context": "《毛小豆故事演绎 | REMAKE》",
+      "usage": "熟悉的理发师索尼被陌生的维尼取代。"
+    },
+    {
+      "id": "bathtub",
+      "term": "浴缸/浴室",
+      "category": "symbol",
+      "definition": "一个上演内心独白的私密剧场，揭示了物质舒适与精神空虚的矛盾。",
+      "context": "《毛小豆故事演绎 | REMAKE》",
+      "usage": "毛小豆在工作日的下午独自泡澡，并发表了反讽式的独白。"
+    },
+    {
+      "id": "bikini_workout",
+      "term": "比基尼动作",
+      "category": "fitness",
+      "definition": "一种严苛的、以竞赛为导向的健身训练，象征着身体被项目化和指标化。",
+      "context": "《金牌得主》",
+      "usage": "张秋在健身房学习‘比基尼动作’，作为其身体改造项目的一部分。"
+    },
+    {
+      "id": "byod",
+      "term": "BYOD (Bring Your Own Device)",
+      "category": "business",
+      "definition": "指允许员工使用个人设备（如笔记本电脑、手机）来处理公司事务的政策。",
+      "context": "《金牌得主》",
+      "usage": "张秋通过公司的BYOD政策，将工作无缝衔接到个人设备上。"
+    },
+    {
+      "id": "byol",
+      "term": "BYOL (Bring Your Own Lunch)",
+      "category": "business",
+      "definition": "自带午餐。在诗中用于指代一种非正式的团队建设活动。",
+      "context": "《金牌得主》",
+      "usage": "范老哥每月一次BYOL的Team Building。"
+    },
+    {
+      "id": "c_bet",
+      "term": "C-Bet (持续下注)",
+      "category": "poker",
+      "definition": "德州扑克术语，指翻牌前加注的玩家在翻牌后继续下注，以延续其攻击性姿态。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "阿宁“翻牌高频C-Bet”。"
+    },
+    {
+      "id": "certified_breasts",
+      "term": "九院认证的胸",
+      "category": "symbol",
+      "definition": "一个代表身体改造的终极形态和权威认证的符号。",
+      "context": "《金牌得主》",
+      "usage": "健身房的师娘明姐拥有‘九院认证的胸’。"
+    },
+    {
+      "id": "check_raise",
+      "term": "Check-Raise (过牌-加注)",
+      "category": "poker",
+      "definition": "一种德州扑克策略，指先过牌示弱，等对手下注后再进行加注，是一种具有欺骗性的攻击性玩法。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "毛小豆用 ♥ A ♣ J 时进行了“Check-Raise 600”。"
+    },
+    {
+      "id": "childhood_fantasy",
+      "term": "童年的幻想",
+      "category": "psychoanalysis",
+      "definition": "将早期性启蒙与对秩序的迷恋相结合的心理防御机制。",
+      "context": "《八方来财》",
+      "usage": "将对女性身体的好奇（巩俐阿姨）与对九九乘法表的迷恋结合在一起。"
+    },
+    {
+      "id": "cynicism_levels",
+      "term": "不同程度的犬儒主义",
+      "category": "concept",
+      "definition": "“硬核犬儒”与“摇摆犬儒”的对立。",
+      "context": "《论字幕的必要性》",
+      "usage": "华少的彻底犬儒与毛小豆在内部法则和外部情感间的摇摆形成冲突。"
+    },
+    {
+      "id": "deliverables",
+      "term": "Deliverables (项目交付物)",
+      "category": "business",
+      "definition": "在项目管理中，指在项目完成时必须交付给客户的有形的或无形的产品、服务或成果。",
+      "context": "《金牌得主》",
+      "usage": "RFP中包含了张秋所熟悉的各种Deliverables。"
+    },
+    {
+      "id": "disappearing_landmarks",
+      "term": "消逝的地标",
+      "category": "symbol",
+      "definition": "青春的逝去和记忆坐标的消失的象征。",
+      "context": "《馆》",
+      "usage": "足浴馆、苏州面馆等承载着记忆的物理空间正在消失。"
+    },
+    {
+      "id": "dota_rank",
+      "term": "Dota天梯分",
+      "category": "gaming",
+      "definition": "网络游戏Dota中的玩家水平评分系统。",
+      "context": "《新年快乐》",
+      "usage": "毛小豆打了13年Dota，但水平依然很菜，甚至开挂。"
+    },
+    {
+      "id": "female_body_standard",
+      "term": "物化的女性身体标准",
+      "category": "concept",
+      "definition": "“兄弟会”内部的法则，一种将女性彻底简化为一组可供评判的物理属性的观念。",
+      "context": "《论字幕的必要性》",
+      "usage": "华少在内心独白中明确了他的择偶标准：“第一要瘦。其次白。然后要不太聪明”。"
+    },
+    {
+      "id": "historical_montage",
+      "term": "历史碎片的蒙太奇",
+      "category": "technique",
+      "definition": "一种叙事手法，将VCD、避孕药、比特币、特斯拉等毫无关联的历史符号并置。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "诗歌通过蒙太奇手法创造了一种晕眩、混乱、信息过载的阅读体验。"
+    },
+    {
+      "id": "hot_coffee_mod",
+      "term": "热咖啡模组",
+      "category": "gaming",
+      "definition": "一个著名的游戏模组（Mod），特指在《侠盗猎车手：圣安地列斯》中解锁隐藏色情内容的游戏补丁。",
+      "context": "《新年快乐》",
+      "usage": "“就像我们都了解‘热咖啡模组’”，用于在私密对话中快速建立排他性的亲密感。"
+    },
+    {
+      "id": "leipingyang_quote",
+      "term": "雷平阳的诗句",
+      "category": "citation",
+      "definition": "一个强烈的外部符号，引入了一种无端的、形而上的恐惧。",
+      "context": "《毛小豆故事演绎 | REMAKE》",
+      "usage": "诗歌结尾引用了“一只闪电般的乌鸦，和它发红的眼睛”。"
+    },
+    {
+      "id": "limp",
+      "term": "Limp (跛入)",
+      "category": "poker",
+      "definition": "德州扑克术语，指在翻牌前仅以跟注大盲注的方式入池，而不是加注。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "第一手牌时“Limp一圈”。"
+    },
+    {
+      "id": "louboutin_shoes",
+      "term": "路铂廷高跟鞋",
+      "category": "consumer_brand",
+      "definition": "法国奢侈品牌Christian Louboutin的高跟鞋，不仅是女性身份的象征，更是权力和品味的测试工具。",
+      "context": "《毛小豆故事演绎 II》",
+      "usage": "客户姚总穿着的鞋子，引发了关于品味和阶层的讨论。"
+    },
+    {
+      "id": "mechanics_exam",
+      "term": "理论力学考试",
+      "category": "event",
+      "definition": "一个关于失败、交易和被窥视的创伤性记忆。",
+      "context": "《八方来财》",
+      "usage": "毛小豆反复重修四次，最终依靠非正式的“通融”而非自身努力通过考试。"
+    },
+    {
+      "id": "mirror",
+      "term": "镜子",
+      "category": "symbol",
+      "definition": "自我审视、身份确认的工具，是表演与真实之间的边界。",
+      "context": "《毛小豆故事演绎 II》",
+      "usage": "毛小豆在进入社交场合前，在卫生间通过镜子检查和调整自己的“演出状态”。"
+    },
+    {
+      "id": "office_stretch",
+      "term": "办公室拉伸",
+      "category": "behavior",
+      "definition": "一种被允许的、被驯化的微小抵抗形式。",
+      "context": "《注意看》",
+      "usage": "面对压力，主人公通过“办公室友好”的身体拉伸动作进行微小的抵抗。"
+    },
+    {
+      "id": "panopticon_office",
+      "term": "全景敞视的办公室",
+      "category": "symbol",
+      "definition": "一个现代的规训空间，一个无处不在的监控网络。",
+      "context": "《注意看》",
+      "usage": "开放式工位、无线网络、经理的声音共同构建了一个福柯意义上的全景敞视监狱。"
+    },
+    {
+      "id": "personal_moment",
+      "term": "个人瞬间",
+      "category": "symbol",
+      "definition": "对抗宏大叙事的个人经验，是生命内核的真实载体。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在所有宏大历史的喧嚣之后，诗歌的结尾突然将镜头拉回到一个极其私密的、前历史的个人时刻。"
+    },
+    {
+      "id": "plus_one",
+      "term": "Plus One",
+      "category": "social",
+      "definition": "社交术语，指被邀请者携带的同伴，通常用于婚礼或派对等场合。",
+      "context": "《拆庙》",
+      "usage": "毛小豆和小李除了份子钱，还带上了“Plus One”（指他们的伴侣）。"
+    },
+    {
+      "id": "porn_king",
+      "term": "“A片之王”的身份",
+      "category": "identity",
+      "definition": "一种另类的“本真性”，一种暴力的自我赋权策略。",
+      "context": "《你的兴趣是什么》",
+      "usage": "主人公放弃寻求外部认可，转而宣称自己是“真正的A片之王”。"
+    },
+    {
+      "id": "ps5_platinum_trophy",
+      "term": "PS5白金奖杯",
+      "category": "gaming",
+      "definition": "PlayStation 5游戏中最高等级的成就奖杯，通常需要玩家完成游戏中的所有挑战。",
+      "context": "《新年快乐》",
+      "usage": "毛小豆获得了人生中第一座白金奖杯。"
+    },
+    {
+      "id": "rfp",
+      "term": "RFP (Request for Proposal)",
+      "category": "business",
+      "definition": "需求建议书。在商业活动中，指客户向潜在供应商发出的、详细说明项目需求的正式文件。",
+      "context": "《金牌得主》",
+      "usage": "张秋熟练地处理着清晰的RFP。"
+    },
+    {
+      "id": "slowroll",
+      "term": "Slowroll",
+      "category": "poker",
+      "definition": "在确定自己将赢得底池的情况下，故意延迟亮出自己的底牌，通常被认为是对对手极不尊重的羞辱性行为。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "牌友小铭在河牌击中三条7，对另一位牌友进行了Slowroll。"
+    },
+    {
+      "id": "sodium",
+      "term": "钠",
+      "category": "symbol",
+      "definition": "兄弟会友谊的“圣物”和“硬通货”，内部法则的象征。",
+      "context": "《钠》",
+      "usage": "因“抢女友”引发的冲突，被转化为“是他先不和我吃钠的”，从而将外部冲突内部化。"
+    },
+    {
+      "id": "stairwell",
+      "term": "楼梯间",
+      "category": "symbol",
+      "definition": "一个可以短暂卸下伪装、进行真诚交流的“后台”空间或“避难所”。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "毛小豆与华少在楼梯间进行了关于信任的私密对话。"
+    },
+    {
+      "id": "teams",
+      "term": "Teams (Microsoft Teams)",
+      "category": "technology",
+      "definition": "微软公司开发的团队协作软件，在诗中代表了现代办公室的沟通方式。",
+      "context": "《金牌得主》",
+      "usage": "张秋通过Teams与同事简宁和天琦沟通。"
+    },
+    {
+      "id": "utg",
+      "term": "UTG (Under The Gun)",
+      "category": "poker",
+      "definition": "德州扑克中第一个行动的位置，通常被认为是最不利的位置。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "毛小豆在UTG位置拿到了非同花的2和3。"
+    },
+    {
+      "id": "vans_anaheim",
+      "term": "VANS 安纳海姆",
+      "category": "consumer_brand",
+      "definition": "VANS品牌的一个高端复古支线，注重原始的美产细节。",
+      "context": "《新年快乐》",
+      "usage": "毛小豆买了一双海军蓝VANS 安纳海姆。"
+    },
+    {
+      "id": "weak_drawing_player",
+      "term": "听牌怪",
+      "category": "poker",
+      "definition": "德州扑克中的一类玩家，指那些倾向于用较弱的、尚未成牌的“听牌”进行跟注或加注，寄希望于在后续回合中凑成强力牌型的玩家。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "华少评价毛小豆是“偏弱的听牌怪”。"
+    },
+    {
+      "id": "wechat_voice",
+      "term": "微信语音",
+      "category": "technology",
+      "definition": "一种现代通信技术手段，象征着情感关系的疏离与廉价化。",
+      "context": "《毛小豆故事演绎 II》",
+      "usage": "毛小豆通过微信语音与前女友梅朵分手。"
+    },
+    {
+      "id": "wedding",
+      "term": "婚礼",
+      "category": "symbol",
+      "definition": "传统的人生仪式节点，反衬出“兄弟会”成员的精神停滞状态。",
+      "context": "《拆庙》",
+      "usage": "朋友的婚礼成为一个参照物，主人公们则以反仪式的行为（播放《求佛》）来应对。"
+    },
+    {
+      "id": "xianjian_game",
+      "term": "《仙剑奇侠传》",
+      "category": "gaming",
+      "definition": "一款经典的国产RPG游戏，在诗中代表了集体的青春记忆。",
+      "context": "《拆庙》",
+      "usage": "在面对成人世界的复杂后，兄弟会成员通过观看《仙剑》来重温共同的、纯粹的过去。"
+    },
+    {
+      "id": "yimengweima_plaque",
+      "term": "“以梦为马”的亚克力板",
+      "category": "symbol",
+      "definition": "理想主义口号与犬儒主义行为的矛盾统一体。",
+      "context": "《麦》",
+      "usage": "通过偷窃这一投机方式，获得了最理想主义的口号，作为社团招牌。"
+    },
+    {
+      "id": "yunnan_crash",
+      "term": "云南翻车",
+      "category": "event",
+      "definition": "一个关键的创伤性记忆事件，指毛小豆和栋先生在云南骑电驴时发生的事故。",
+      "context": "《拆庙》",
+      "usage": "诗歌详细回忆了在云南发生的物理“翻车”事件。"
+    },
+    {
+      "id": "shanghai_new_place",
+      "term": "上生新所",
+      "category": "location",
+      "definition": "上海的一个文创园区，位于长宁区，由原上海生物制品研究所改造而成。",
+      "context": "《论字幕的必要性》",
+      "usage": "在诗中作为现代都市生活的背景地标出现。"
+    },
+    {
+      "id": "hooters",
+      "term": "Hooters",
+      "category": "restaurant",
+      "definition": "美国连锁餐厅品牌，以女性服务员穿着紧身上衣和短裤为特色。",
+      "context": "《新年快乐》",
+      "usage": "在诗中作为消费文化和性别符号出现。"
+    },
+    {
+      "id": "b52",
+      "term": "B52",
+      "category": "cocktail",
+      "definition": "一种鸡尾酒，由咖啡利口酒、爱尔兰奶油和伏特加分层调制而成。",
+      "context": "《新年快乐》",
+      "usage": "在诗中作为社交场合的饮品出现。"
+    },
+    {
+      "id": "dian",
+      "term": "典",
+      "category": "internet_slang",
+      "definition": "网络流行语，通常用于嘲讽性的评论，表示'经典'。",
+      "context": "《论字幕的必要性》",
+      "usage": "华少在内心独白中使用的网络用语之一。"
+    },
+    {
+      "id": "ji",
+      "term": "急",
+      "category": "internet_slang",
+      "definition": "网络流行语，通常用于嘲讽性的评论，表示'着急'。",
+      "context": "《论字幕的必要性》",
+      "usage": "华少在内心独白中使用的网络用语之一。"
+    },
+    {
+      "id": "xiao",
+      "term": "孝",
+      "category": "internet_slang",
+      "definition": "网络流行语，通常用于嘲讽性的评论，表示'孝顺'。",
+      "context": "《论字幕的必要性》",
+      "usage": "华少在内心独白中使用的网络用语之一。"
+    },
+    {
+      "id": "le",
+      "term": "乐",
+      "category": "internet_slang",
+      "definition": "网络流行语，通常用于嘲讽性的评论，表示'快乐'。",
+      "context": "《论字幕的必要性》",
+      "usage": "华少在内心独白中使用的网络用语之一。"
+    },
+    {
+      "id": "bang",
+      "term": "蚌",
+      "category": "internet_slang",
+      "definition": "网络流行语，通常用于嘲讽性的评论，表示'蚌埠住了'。",
+      "context": "《论字幕的必要性》",
+      "usage": "华少在内心独白中使用的网络用语之一。"
+    },
+    {
+      "id": "ma",
+      "term": "麻",
+      "category": "internet_slang",
+      "definition": "网络流行语，通常用于嘲讽性的评论，表示'麻木'。",
+      "context": "《论字幕的必要性》",
+      "usage": "华少在内心独白中使用的网络用语之一。"
+    },
+    {
+      "id": "pinduoduo",
+      "term": "拼多多",
+      "category": "ecommerce",
+      "definition": "中国电商平台，以低价商品和社交电商模式著称。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "毛小豆穿的球鞋来自拼多多平台。"
+    },
+    {
+      "id": "baiyi_butie",
+      "term": "百亿补贴",
+      "category": "marketing",
+      "definition": "拼多多平台的营销活动，通过大量补贴来吸引用户。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "毛小豆穿的球鞋是通过百亿补贴活动购买的。"
+    },
+    {
+      "id": "adidas",
+      "term": "阿迪达斯",
+      "category": "consumer_brand",
+      "definition": "德国运动品牌，以运动鞋和运动服装著称。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "毛小豆穿的球鞋是阿迪达斯品牌。"
+    },
+    {
+      "id": "team_basketball_shoes",
+      "term": "团队篮球鞋",
+      "category": "consumer_brand",
+      "definition": "阿迪达斯的一款篮球鞋，强调团队合作精神。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "毛小豆穿的具体鞋款是团队篮球鞋。"
+    },
+    {
+      "id": "sodium_sect",
+      "term": "钠派",
+      "category": "group",
+      "definition": "毛小豆高中时期的一个男生小团体，以吃泡面为特色。",
+      "context": "《钠》",
+      "usage": "钠派与盖帮进行吃饭比赛。"
+    },
+    {
+      "id": "gai_gang",
+      "term": "盖帮",
+      "category": "group",
+      "definition": "毛小豆高中时期的另一个男生小团体，与钠派形成对立。",
+      "context": "《钠》",
+      "usage": "盖帮与钠派进行吃饭比赛。"
+    },
+    {
+      "id": "staccato",
+      "term": "思加图",
+      "category": "consumer_brand",
+      "definition": "鞋履品牌，在诗中与路铂廷形成对比。",
+      "context": "《毛小豆故事演绎 II》",
+      "usage": "张秋选择的鞋履品牌之一。"
+    },
+    {
+      "id": "jimmychoo",
+      "term": "周仰杰",
+      "category": "consumer_brand",
+      "definition": "鞋履品牌，在诗中与路铂廷形成对比。",
+      "context": "《毛小豆故事演绎 II》",
+      "usage": "张秋选择的鞋履品牌之一。"
+    },
+    {
+      "id": "supra",
+      "term": "Supra",
+      "category": "consumer_brand",
+      "definition": "美国运动鞋品牌，以滑板鞋著称。",
+      "context": "《新年快乐》",
+      "usage": "毛小豆和远志在高中时曾穿过盗版Supra。"
+    },
+    {
+      "id": "converse_allstar",
+      "term": "匡威Allstar",
+      "category": "consumer_brand",
+      "definition": "匡威品牌的经典帆布鞋款式。",
+      "context": "《新年快乐》",
+      "usage": "在诗中作为青春期的鞋履选择出现。"
+    },
+    {
+      "id": "converse_allstar_knockoff",
+      "term": "盗版匡威Allstar",
+      "category": "consumer_brand",
+      "definition": "匡威Allstar的仿冒品。",
+      "context": "《新年快乐》",
+      "usage": "在诗中作为青春期的消费选择出现。"
+    },
+    {
+      "id": "toe_loop",
+      "term": "后外点冰跳",
+      "category": "sports",
+      "definition": "花样滑冰跳跃动作之一",
+      "context": "《金牌得主》",
+      "usage": "作为身体改造项目的一部分"
+    },
+    {
+      "id": "salchow",
+      "term": "后内结环跳",
+      "category": "sports",
+      "definition": "花样滑冰跳跃动作之一",
+      "context": "《金牌得主》",
+      "usage": "作为身体改造项目的一部分"
+    },
+    {
+      "id": "axel",
+      "term": "阿克塞尔跳",
+      "category": "sports",
+      "definition": "花样滑冰跳跃动作之一",
+      "context": "《金牌得主》",
+      "usage": "作为身体改造项目的一部分"
+    },
+    {
+      "id": "platform_09",
+      "term": "09平台",
+      "category": "gaming",
+      "definition": "一个流行的Dota对战平台，由著名Dota职业选手2009创建。",
+      "context": "《新年快乐》",
+      "usage": "在诗中用于指代Dota游戏环境的变迁：“从11平台到09平台再到09人都进去了，你还在打”。"
+    },
+    {
+      "id": "natural_look",
+      "term": "妈生感",
+      "category": "beauty",
+      "definition": "网络流行语，形容妆容效果非常自然，仿佛天生丽质。",
+      "context": "《八方来财》",
+      "usage": "在诗中用于讽刺当代美妆话语：“姐妹们，什么叫/妈生感？丁真的含金量还在上升。”"
+    },
+    {
+      "id": "powder_cake",
+      "term": "卡粉",
+      "category": "beauty",
+      "definition": "化妆术语，指粉底液或粉饼在皮肤上未能均匀推开，出现卡在皮肤纹理中的斑驳现象。",
+      "context": "《八方来财》",
+      "usage": "在诗中作为美妆产品的宣传语出现：“顶流同款，保证不卡粉”。"
+    },
+    {
+      "id": "jelly_lips",
+      "term": "果冻唇",
+      "category": "beauty",
+      "definition": "一种唇妆效果，指嘴唇看起来像果冻一样水润、饱满、有光泽。",
+      "context": "《八方来财》",
+      "usage": "在诗中用于描述一种精致的妆容：“睫毛刷成太阳花，唇妆是微笑型果冻唇”。"
+    },
+    {
+      "id": "guanghua_building",
+      "term": "光华楼",
+      "category": "location",
+      "definition": "复旦大学的标志性建筑之一，位于邯郸校区。",
+      "context": "《八方来财》",
+      "usage": "在诗中作为理论力学补考事件的背景，主角感叹“光华楼的楼梯，真的有人会走的”。"
+    },
+    {
+      "id": "guoquan_road",
+      "term": "国权路",
+      "category": "location",
+      "definition": "位于上海市杨浦区的一条著名道路，周边有复旦大学等高校和商业区。",
+      "context": "《八方来财》",
+      "usage": "在诗中作为主角与华少高中毕业后活动的地点：“穿过整个校园，准备去国权路坐地铁”。"
+    },
+    {
+      "id": "zhengmin_road",
+      "term": "政民路",
+      "category": "location",
+      "definition": "位于上海市杨浦区的一条道路，与国权路等交汇，构成大学区的核心地带。",
+      "context": "《八方来财》",
+      "usage": "在诗中作为主角与华少通宵网吧的地点：“他们从政民路的网吧出来”。"
+    },
+    {
+      "id": "leipingyang",
+      "term": "雷平阳",
+      "category": "person",
+      "definition": "中国诗人",
+      "context": "《八方来财》",
+      "usage": "在诗中作为被引用的诗人出现：“一五年雷平阳来上海”。"
+    },
+    {
+      "id": "dealer",
+      "term": "dealer",
+      "category": "poker",
+      "definition": "在德州扑克中负责洗牌、发牌并主持牌局进程的人员。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中由胡所提议，用于决定牌局的开始：“我们抽Dealer，六个人先打起来”。"
+    },
+    {
+      "id": "big_blind",
+      "term": "大盲",
+      "category": "poker",
+      "definition": "德州扑克中的强制下注，由按钮位置左手第二位玩家投放，是开赛前必须下的注。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中由大白下注：“大盲是大白，点10个10”。"
+    },
+    {
+      "id": "small_blind",
+      "term": "小盲",
+      "category": "poker",
+      "definition": "德州扑克中的强制下注，由按钮位置左手第一位玩家投放，通常为大盲注的一半。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中由刘伟带来的女生下注：“女生小盲已经交好”。"
+    },
+    {
+      "id": "button",
+      "term": "button",
+      "category": "poker",
+      "definition": "德州扑克中的庄家位置标志，该位置的玩家在每一轮下注中最后行动，拥有位置优势。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中由阿宁担任，并对CO位的大炮进行语言挑衅：“Button 阿宁看他一眼，上来就十块钱是吧”。"
+    },
+    {
+      "id": "co",
+      "term": "CO",
+      "category": "poker",
+      "definition": "Cut-Off, 庄家右手边的位置",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中由大炮担任，并率先加注：“CO位大炮 Open 100”。"
+    },
+    {
+      "id": "backdoor_full_house",
+      "term": "后门葫芦",
+      "category": "poker",
+      "definition": "德州扑克术语，指玩家在转牌和河牌连续拿到两张自己需要的牌，最终凑成葫芦（三条加一对）。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中用于描述毛小豆输掉的一手牌：“刚输大炮一手后门葫芦”。"
+    },
+    {
+      "id": "call",
+      "term": "call",
+      "category": "poker",
+      "definition": "德州扑克术语，指跟注，即下注与前一位玩家相同数量的筹码。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中用于描述阿宁跟注毛小豆的Check-Raise：“阿宁调整一下坐姿，跟400补齐”。"
+    },
+    {
+      "id": "allin",
+      "term": "allin",
+      "category": "poker",
+      "definition": "德州扑克术语，指全押，将自己所有的筹码一次性全部下注。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中用于描述河牌圈的最终对决：“Allin。Call”。"
+    },
+    {
+      "id": "hj",
+      "term": "HJ",
+      "category": "poker",
+      "definition": "Hijack, CO右手边的位置",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中由陈远卓担任并发起加注：“他在HJ位Open 200”。"
+    },
+    {
+      "id": "lj",
+      "term": "LJ",
+      "category": "poker",
+      "definition": "Lojack, HJ右手边的位置",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中由华少担任并发起加注：“LJ 华少 Open 80”。"
+    },
+    {
+      "id": "daxue_road",
+      "term": "大学路",
+      "category": "location",
+      "definition": "位于上海市杨浦区的一条著名道路，以其两旁的餐饮和商业而闻名。",
+      "context": "《鲨鱼与岩石》",
+      "usage": "在诗中作为牌局前晚毛小豆计划与朋友聚会的地点：“本打算去大学路，叫上华少和另一位朋友”。"
+    },
+    {
+      "id": "sanhao_bay",
+      "term": "三号湾",
+      "category": "location",
+      "definition": "位于上海市杨浦区的一个商业综合体，靠近五角场。",
+      "context": "《毛小豆故事演绎 Ⅱ》",
+      "usage": "在诗中作为姚总大学糗事的发生地：“是在三号湾吧。拉芭玛的后门厕所”。"
+    },
+    {
+      "id": "relx",
+      "term": "悦刻",
+      "category": "consumer_brand",
+      "definition": "中国流行的电子烟品牌。",
+      "context": "《毛小豆故事演绎 Ⅰ REMAKE》",
+      "usage": "在诗中并未直接出现，但其通配产品被提及。"
+    },
+    {
+      "id": "relx_wildcard",
+      "term": "悦刻通配",
+      "category": "consumer_brand",
+      "definition": "指可以与悦刻（RELX）电子烟设备兼容的第三方烟弹。",
+      "context": "《毛小豆故事演绎 Ⅰ REMAKE》",
+      "usage": "在诗中作为毛小豆在上班前消遣的工具：“就在吸烟点抽两口悦刻通配”。"
+    },
+    {
+      "id": "outlook",
+      "term": "Outlook",
+      "category": "technology",
+      "definition": "微软公司出品的一款功能强大的电子邮件客户端和个人信息管理软件。",
+      "context": "《金牌得主》",
+      "usage": "在诗中作为张秋查看工作邮件的软件：“她瞟了眼Outlook，感觉和简宁不用假正经”。"
+    },
+    {
+      "id": "rsvp",
+      "term": "RSVP",
+      "category": "social",
+      "definition": "源自法语“Répondez s'il vous plaît”，意为“请回复”，常用于邀请函中，要求被邀请者告知是否参加活动。",
+      "context": "《金牌得主》",
+      "usage": "在诗中用于描述张秋回复范老哥的邮件：“Good. RSVP完，马上给天琦发Teams”。"
+    },
+    {
+      "id": "in_person_or_online",
+      "term": "In person or online",
+      "category": "social",
+      "definition": "指会议或活动的参与方式，可以选择现场出席（in person）或在线参与（online）。",
+      "context": "《金牌得主》",
+      "usage": "在诗中作为范老哥邮件中提供的会议参与选项：“她重新看了一遍老哥的邮件，In person or online”。"
+    },
+    {
+      "id": "critical_year",
+      "term": "Critical Year",
+      "category": "business",
+      "definition": "在商业或项目管理中，指对未来发展具有决定性影响的关键年份。",
+      "context": "《金牌得主》",
+      "usage": "在诗中用于描述张秋当下的职业阶段：“今年是张秋的Critical Year，紧迫感倒是没有的”。"
+    },
+    {
+      "id": "work_from_home",
+      "term": "work from home",
+      "category": "business",
+      "definition": "指远程办公的工作模式，员工在家里而非公司办公室完成工作。",
+      "context": "《金牌得主》",
+      "usage": "在诗中是张秋和天琦用来掩护彼此摸鱼的方式：“work from home基本就是不work”。"
+    },
+    {
+      "id": "round_table_meeting",
+      "term": "Round Table Meeting",
+      "category": "business",
+      "definition": "圆桌会议，一种旨在促进平等对话和自由讨论的会议形式。",
+      "context": "《金牌得主》",
+      "usage": "在诗中是查老板举办的会议，天琦在此会议上负责联系客户。"
+    },
+    {
+      "id": "contact_person",
+      "term": "Contact Person",
+      "category": "business",
+      "definition": "在商业活动或项目中指定的负责沟通和联络的主要人员。",
+      "context": "《金牌得主》",
+      "usage": "在诗中是天琦在Round Table Meeting中扮演的角色：“让他做Contact Person给客户的CISO们发函”。"
+    },
+    {
+      "id": "ciso",
+      "term": "CISO",
+      "category": "business",
+      "definition": "首席信息安全官（Chief Information Security Officer），企业中负责信息安全最高级别的高管。",
+      "context": "《金牌得主》",
+      "usage": "在诗中是Round Table Meeting的参会人员：“给客户的CISO们发函”。"
+    },
+    {
+      "id": "daniel_day_lewis",
+      "term": "丹尼尔·戴-刘易斯",
+      "category": "person",
+      "definition": "英国著名演员，以其精湛的“方法派”表演闻名，三次获得奥斯卡最佳男主角奖。",
+      "context": "《麦》",
+      "usage": "在诗中作为《布拉格之恋》的演员被提及。"
+    },
+    {
+      "id": "juliette_binoche",
+      "term": "朱丽叶·比诺什",
+      "category": "person",
+      "definition": "法国著名女演员，荣获过戛纳、柏林、威尼斯三大电影节和奥斯卡奖的最佳女演员/女配角奖。",
+      "context": "《麦》",
+      "usage": "在诗中作为《布拉格之恋》的演员被提及。"
+    },
+    {
+      "id": "lena_olin",
+      "term": "莉娜·欧琳",
+      "category": "person",
+      "definition": "瑞典著名女演员，曾因在电影《布拉格之恋》中的演出而获得国际声誉。",
+      "context": "《麦》",
+      "usage": "在诗中作为《布拉格之恋》的演员被提及。"
+    },
+    {
+      "id": "jiangwan_town",
+      "term": "江湾镇",
+      "category": "location",
+      "definition": "位于上海市虹口区和宝山区交界处的一个历史悠久的地区。",
+      "context": "《馆》",
+      "usage": "在诗中是主角放学回家会经过的地点：“走去江湾镇坐轻轨回家”。"
+    },
+    {
+      "id": "yingao_road",
+      "term": "殷高路",
+      "category": "location",
+      "definition": "位于上海市宝山区的一条主要道路。",
+      "context": "《馆》",
+      "usage": "在诗中与南何铁路、逸仙路共同构成一个足浴馆密集的三角区。"
+    },
+    {
+      "id": "yixian_road",
+      "term": "逸仙路",
+      "category": "location",
+      "definition": "跨越上海市虹口区和宝山区的一条主干道，是逸仙高架路的地面部分。",
+      "context": "《馆》",
+      "usage": "在诗中与南何铁路、殷高路共同构成一个足浴馆密集的三角区。"
+    },
+    {
+      "id": "nanhe_railway",
+      "term": "南何铁路",
+      "category": "location",
+      "definition": "上海市北部的一条主要用于货运的铁路线路。",
+      "context": "《馆》",
+      "usage": "在诗中是学校西边紧邻的铁路线。"
+    },
+    {
+      "id": "jipu_road",
+      "term": "吉浦路",
+      "category": "location",
+      "definition": "位于上海市虹口区的一条道路。",
+      "context": "《馆》",
+      "usage": "在诗中与一条小河平行，主角会沿着河边走到三门路口。"
+    },
+    {
+      "id": "sanmen_road",
+      "term": "三门路",
+      "category": "location",
+      "definition": "位于上海市虹口区和宝山区的一条道路。",
+      "context": "《馆》",
+      "usage": "在诗中是主角与栋先生吃德克士和千里香馄饨的地方。"
+    },
+    {
+      "id": "friends_restaurant",
+      "term": "老友记",
+      "category": "entertainment",
+      "definition": "著名美剧《老友记》。",
+      "context": "《馆》",
+      "usage": "在诗中作为远志与毛小豆搭讪的话题：“入学前军训，远志用老友记和毛小豆搭讪”。"
+    },
+    {
+      "id": "marvelon",
+      "term": "妈富隆",
+      "category": "medicine",
+      "definition": "一种常见的短效口服避孕药品牌。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在诗中与特居乐、敏定偶、达英-35并列，作为市场上主要的避孕药品牌出现。"
+    },
+    {
+      "id": "triquilar",
+      "term": "特居乐",
+      "category": "medicine",
+      "definition": "一种常见的短效口服避孕药品牌。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在诗中与妈富隆、敏定偶、达英-35并列，作为市场上主要的避孕药品牌出现。"
+    },
+    {
+      "id": "minulet",
+      "term": "敏定偶",
+      "category": "medicine",
+      "definition": "一种常见的短效口服避孕药品牌。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在诗中与妈富隆、特居乐、达英-35并列，作为市场上主要的避孕药品牌出现。"
+    },
+    {
+      "id": "diane_35",
+      "term": "达英-35",
+      "category": "medicine",
+      "definition": "一种常见的短效口服避孕药品牌，也常用于治疗女性痤疮。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在诗中与妈富隆、特居乐、敏定偶并列，作为市场上主要的避孕药品牌出现。"
+    },
+    {
+      "id": "neufert_act",
+      "term": "诺伊维尔特法案",
+      "category": "law",
+      "definition": "可能指与建筑或城市规划相关的法案，参考了恩斯特·诺伊弗特（Ernst Neufert）的建筑设计标准。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在诗中作为历史事件被提及：“六个月前，国民议会一读通过了诺伊维尔特法案”。"
+    },
+    {
+      "id": "tether",
+      "term": "泰达币",
+      "category": "cryptocurrency",
+      "definition": "一种著名的稳定币（Stablecoin），其价值与美元挂钩，常用于加密货币交易。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在诗中作为获取“创造性的快乐”的支付方式：“想创造性的快乐一回，现需200泰达币”。"
+    },
+    {
+      "id": "defi",
+      "term": "DEFI",
+      "category": "cryptocurrency",
+      "definition": "“去中心化金融”（Decentralized Finance）的缩写，指基于区块链技术的开放式金融系统。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在诗中是泰达币支付的去向之一：“注意，小头给DEFI”。"
+    },
+    {
+      "id": "fallon_show",
+      "term": "肥伦秀",
+      "category": "entertainment",
+      "definition": "指由吉米·法伦（Jimmy Fallon）主持的美国著名深夜脱口秀节目《今夜秀》。",
+      "context": "《高级罐头装金枪鱼》",
+      "usage": "在诗中作为金巴尔宣传其厨艺之道的平台：“2022年夏天，金巴尔在肥伦秀上宣传他的厨艺之道”。"
+    },
+    {
+      "id": "nanbo",
+      "term": "南波",
+      "category": "person",
+      "definition": "在诗歌《注 意 看》中出现的一个人物名字。",
+      "context": "《注 意 看》",
+      "usage": "在诗中作为主角去大阪时学会的应对烟雾报警器技巧的来源：“这是他前阵子/去大阪时学会的。南波的信长书店”。"
+    },
+    {
+      "id": "xinchang_bookstore",
+      "term": "信长书店",
+      "category": "location",
+      "definition": "在诗歌《注 意 看》中提到的一个书店名字。",
+      "context": "《注 意 看》",
+      "usage": "在诗中作为主角学会应对烟雾报警器技巧的地点：“南波的信长书店”。"
+    },
+    {
+      "id": "ye_qianyu",
+      "term": "叶浅予",
+      "category": "person",
+      "definition": "中国现代著名画家，以其国画人物和舞蹈速写闻名。",
+      "context": "《你的兴趣是什么》",
+      "usage": "在诗中作为对朱新建画作发表评论的前辈画家出现：“引得前辈画家叶浅予拿一根拐杖/天天到报社楼下，学毛利人”。"
+    },
+    {
+      "id": "li_zongtao",
+      "term": "李宗陶",
+      "category": "person",
+      "definition": "中国当代艺术家、作家。",
+      "context": "《你的兴趣是什么》",
+      "usage": "在诗中作为与朱新建对话的艺术家出现，并被投资人质疑其影响力。"
+    },
+    {
+      "id": "zhu_xinjian",
+      "term": "朱新建",
+      "category": "person",
+      "definition": "中国当代著名画家，以其“新文人画”风格而闻名。",
+      "context": "《你的兴趣是什么》",
+      "usage": "在诗中作为画家被讨论，其对可口可乐的偏爱和A片收藏的传闻被提及。"
+    },
+    {
+      "id": "bian_pingshan",
+      "term": "边平山",
+      "category": "person",
+      "definition": "中国当代艺术家，以其水墨画和书法作品闻名。",
+      "context": "《你的兴趣是什么》",
+      "usage": "在诗中作为向李宗陶讲述朱新建轶事的人出现：“边平山对李宗陶讲，自可口可乐进了中国/朱新建就再没喝过白开水。”"
+    },
+    {
+      "id": "chen_danqing",
+      "term": "陈丹青",
+      "category": "person",
+      "definition": "中国当代著名艺术家、作家和文艺评论家。",
+      "context": "《你的兴趣是什么》",
+      "usage": "在诗中作为认可朱新建画作的艺术家之一被提及：“喜的名单更长。比如钟阿城/陈丹青，程十发。”"
+    },
+    {
+      "id": "cheng_shifa",
+      "term": "程十发",
+      "category": "person",
+      "definition": "中国现代著名画家，海派书画的代表人物之一。",
+      "context": "《你的兴趣是什么》",
+      "usage": "在诗中作为认可朱新建画作的艺术家之一被提及：“喜的名单更长。比如钟阿城/陈丹青，程十发。”"
+    },
+    {
+      "id": "zhong_achen",
+      "term": "钟阿城",
+      "category": "person",
+      "definition": "通常指阿城，中国当代著名作家、编剧，以《棋王》、《树王》、《孩子王》“三王”系列闻名。",
+      "context": "《你的兴趣是什么》",
+      "usage": "在诗中作为认可朱新建画作的艺术家之一被提及：“喜的名单更长。比如钟阿城/陈丹青，程十发。”"
+    },
+    {
+      "id": "maid_cafe",
+      "term": "女仆店",
+      "category": "entertainment",
+      "definition": "女仆咖啡馆，一种源自日本的主题餐厅，服务员身着女仆装为顾客服务。",
+      "context": "《论字幕的必要性》",
+      "usage": "在诗中由老叶和刘总合伙开设：“老叶和刘总合伙开了个女仆店”。"
+    }
+  ]
+}
