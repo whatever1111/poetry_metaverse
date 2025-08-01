@@ -7,6 +7,7 @@ const { validateControlledRedundancy } = require('./validate_controlled_redundan
 const { validateDeepCrossReferences } = require('./validate_deep_cross_references.cjs');
 const { validateSimpleDataReferences } = require('./validate_simple_data_references.cjs');
 const { validateDataStats } = require('./validate_data_stats.cjs');
+const { validateScenes } = require('./validate_scenes.cjs');
 
 /**
  * 验证配置
@@ -43,6 +44,12 @@ const VALIDATION_CONFIG = {
             function: validateDataStats,
             enabled: true,
             description: '验证实际数据数量与元数据统计的一致性'
+        },
+        scenes: {
+            name: '场景数据验证',
+            function: validateScenes,
+            enabled: true,
+            description: '验证scenes.json内部数据一致性和引用关系'
         }
     },
     

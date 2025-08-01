@@ -35,9 +35,9 @@
         }
       ],
       "locations": [
-        "卫生间",
-        "宴会厅",
-        "专车"
+        "maoxiaodou_story_2_restroom_prep",
+        "maoxiaodou_story_2_business_dinner",
+        "maoxiaodou_story_2_private_car"
       ],
       "themes": [
         "microphysics_of_power",
@@ -160,8 +160,8 @@
         }
       ],
       "locations": [
-        "牌局包间",
-        "楼梯间"
+        "shark_and_rock_poker_room",
+        "shark_and_rock_stairwell"
       ],
       "themes": [
         "microphysics_of_power",
@@ -285,9 +285,9 @@
         }
       ],
       "locations": [
-        "办公室",
-        "健身房",
-        "滑冰场"
+        "gold_medal_winner_office",
+        "gold_medal_winner_gym",
+        "gold_medal_winner_skating_rink"
       ],
       "themes": [
         "microphysics_of_power",
@@ -412,9 +412,9 @@
         }
       ],
       "locations": [
-        "浴室",
-        "KTV（回忆）",
-        "理发店（回忆）"
+        "remake_bathroom",
+        "remake_ktv_memory",
+        "remake_barbershop"
       ],
       "themes": [
         "ugly_feelings",
@@ -514,8 +514,8 @@
         }
       ],
       "locations": [
-        "家中",
-        "派对"
+        "new_year_home",
+        "new_year_party"
       ],
       "themes": [
         "identity_anxiety",
@@ -636,9 +636,9 @@
         }
       ],
       "locations": [
-        "婚礼现场",
-        "家中派对",
-        "云南（回忆）"
+        "temple_wedding",
+        "temple_home_party",
+        "temple_yunnan_memory"
       ],
       "themes": [
         "male_community",
@@ -735,8 +735,8 @@
         }
       ],
       "locations": [
-        "办公室",
-        "烧烤店厕所（回忆）"
+        "fortune_office",
+        "fortune_bbq_restroom"
       ],
       "themes": [
         "ugly_feelings",
@@ -832,8 +832,8 @@
         }
       ],
       "locations": [
-        "校园走廊",
-        "露天咖吧"
+        "sodium_school_corridor",
+        "sodium_outdoor_cafe"
       ],
       "themes": [
         "male_community",
@@ -955,7 +955,7 @@
         }
       ],
       "locations": [
-        "校园"
+        "wheat_campus"
       ],
       "themes": [
         "microphysics_of_power",
@@ -1057,8 +1057,8 @@
         }
       ],
       "locations": [
-        "校园",
-        "操场"
+        "museum_school",
+        "museum_playground"
       ],
       "themes": [
         "ugly_feelings",
@@ -1119,7 +1119,7 @@
         }
       ],
       "locations": [
-        "历史的想象空间"
+        "canned_tuna_historical_montage"
       ],
       "themes": [
         "time_and_stagnation",
@@ -1175,8 +1175,8 @@
         }
       ],
       "locations": [
-        "办公室",
-        "卫生间"
+        "watch_out_office",
+        "watch_out_restroom"
       ],
       "themes": [
         "microphysics_of_power",
@@ -1252,8 +1252,8 @@
         }
       ],
       "locations": [
-        "家中",
-        "朋友的住所"
+        "interest_home",
+        "interest_friend_house"
       ],
       "themes": [
         "identity_anxiety",
@@ -1326,7 +1326,7 @@
         }
       ],
       "locations": [
-        "宵夜摊"
+        "subtitles_late_night_stall"
       ],
       "themes": [
         "male_community",

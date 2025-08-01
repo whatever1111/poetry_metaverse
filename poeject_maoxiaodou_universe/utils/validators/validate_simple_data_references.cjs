@@ -1,6 +1,7 @@
 /**
  * 毛小豆宇宙简单数据引用验证脚本 (优化版)
  * 使用公共工具模块，消除重复代码
+ * 新增：场景引用验证功能
  */
 const { dataLoader } = require('../components/data_loader.cjs');
 
@@ -69,6 +70,23 @@ function extractTerminologyIds(terminologyData) {
         terminologyData.terminology.forEach(term => {
             if (term.id) {
                 ids.add(term.id);
+            }
+        });
+    }
+    
+    return Array.from(ids);
+}
+
+/**
+ * 从scenes.json中提取所有场景ID
+ */
+function extractSceneIds(scenesData) {
+    const ids = new Set();
+    
+    if (scenesData.scenes && Array.isArray(scenesData.scenes)) {
+        scenesData.scenes.forEach(scene => {
+            if (scene.id) {
+                ids.add(scene.id);
             }
         });
     }
@@ -330,6 +348,39 @@ function checkTheoryPoemReferences(theoryData, poemIds) {
     return { references, invalidReferences };
 }
 
+/**
+ * 检查诗歌中的场景引用
+ */
+function checkPoemSceneReferences(poemsData, sceneIds) {
+    const references = [];
+    const invalidReferences = [];
+    
+    if (poemsData.poems && Array.isArray(poemsData.poems)) {
+        poemsData.poems.forEach(poem => {
+            // 检查 poems.locations 数组（场景引用）
+            if (poem.locations && Array.isArray(poem.locations)) {
+                poem.locations.forEach(sceneId => {
+                    if (sceneIds.includes(sceneId)) {
+                        references.push({
+                            poemId: poem.id,
+                            sceneId: sceneId,
+                            location: 'locations'
+                        });
+                    } else {
+                        invalidReferences.push({
+                            poemId: poem.id,
+                            sceneId: sceneId,
+                            location: 'locations'
+                        });
+                    }
+                });
+            }
+        });
+    }
+    
+    return { references, invalidReferences };
+}
+
 async function validateSimpleDataReferences() {
     console.log('🔍 开始简化数据引用校验...\n');
     
@@ -343,26 +394,30 @@ async function validateSimpleDataReferences() {
         const themesData = dataObjects['themes.json'];
         const terminologyData = dataObjects['terminology.json'];
         
-        // 还需要加载理论框架文件
+        // 还需要加载理论框架文件和场景文件
         const theoryData = await dataLoader.loadFile('theoretical_framework.json');
+        const scenesData = await dataLoader.loadFile('scenes.json');
         
         console.log('✅ 已读取: characters.json');
         console.log('✅ 已读取: poems.json');
         console.log('✅ 已读取: theoretical_framework.json');
         console.log('✅ 已读取: themes.json');
         console.log('✅ 已读取: terminology.json');
+        console.log('✅ 已读取: scenes.json');
         
         // 提取ID列表
         const characterIds = extractCharacterIds(charactersData);
         const poemIds = extractPoemIds(poemsData);
         const themeIds = extractThemeIds(themesData);
         const terminologyIds = extractTerminologyIds(terminologyData);
+        const sceneIds = extractSceneIds(scenesData);
         
         console.log(`\n📊 数据统计:`);
         console.log(`- 角色数量: ${characterIds.length}`);
         console.log(`- 诗歌数量: ${poemIds.length}`);
         console.log(`- 主题数量: ${themeIds.length}`);
         console.log(`- 术语数量: ${terminologyIds.length}`);
+        console.log(`- 场景数量: ${sceneIds.length}`);
         
         // 检查诗歌中的角色引用
         console.log('\n📋 检查诗歌中的角色引用...');
@@ -399,6 +454,25 @@ async function validateSimpleDataReferences() {
             console.log(`  ❌ 无效引用: ${poemThemeRefs.invalidReferences.length} 个`);
             poemThemeRefs.invalidReferences.forEach(ref => {
                 console.log(`    - 诗歌 "${ref.poemId}" 引用无效主题 "${ref.themeId}"`);
+            });
+        }
+        
+        // 检查诗歌中的场景引用
+        console.log('\n📋 检查诗歌中的场景引用...');
+        const poemSceneRefs = checkPoemSceneReferences(poemsData, sceneIds);
+        
+        console.log(`  ✅ 有效引用: ${poemSceneRefs.references.length} 个`);
+        if (poemSceneRefs.references.length > 0) {
+            console.log('    示例:');
+            poemSceneRefs.references.slice(0, 3).forEach(ref => {
+                console.log(`    - 诗歌 "${ref.poemId}" 在 "${ref.location}" 中引用场景 "${ref.sceneId}"`);
+            });
+        }
+        
+        if (poemSceneRefs.invalidReferences.length > 0) {
+            console.log(`  ❌ 无效引用: ${poemSceneRefs.invalidReferences.length} 个`);
+            poemSceneRefs.invalidReferences.forEach(ref => {
+                console.log(`    - 诗歌 "${ref.poemId}" 引用无效场景 "${ref.sceneId}"`);
             });
         }
         
@@ -481,6 +555,7 @@ async function validateSimpleDataReferences() {
         // 输出总体结果
         const totalValidRefs = poemCharRefs.references.length + 
                              poemThemeRefs.references.length + 
+                             poemSceneRefs.references.length + 
                              themeCharRefs.references.length + 
                              themePoemRefs.references.length + 
                              termPoemRefs.references.length + 
@@ -488,6 +563,7 @@ async function validateSimpleDataReferences() {
         
         const totalInvalidRefs = poemCharRefs.invalidReferences.length + 
                                poemThemeRefs.invalidReferences.length + 
+                               poemSceneRefs.invalidReferences.length + 
                                themeCharRefs.invalidReferences.length + 
                                themePoemRefs.invalidReferences.length + 
                                termPoemRefs.invalidReferences.length + 
@@ -505,6 +581,7 @@ async function validateSimpleDataReferences() {
         console.log(`- 总无效引用: ${totalInvalidRefs}`);
         console.log(`- 诗歌->角色引用: ${poemCharRefs.references.length}`);
         console.log(`- 诗歌->主题引用: ${poemThemeRefs.references.length}`);
+        console.log(`- 诗歌->场景引用: ${poemSceneRefs.references.length}`);
         console.log(`- 主题->角色引用: ${themeCharRefs.references.length}`);
         console.log(`- 主题->诗歌引用: ${themePoemRefs.references.length}`);
         console.log(`- 术语->诗歌引用: ${termPoemRefs.references.length}`);

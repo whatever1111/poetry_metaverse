@@ -106,7 +106,8 @@ class DataLoader {
             'characters.json',
             'poems.json',
             'themes.json',
-            'terminology.json'
+            'terminology.json',
+            'scenes.json'
         ];
         
         return await this.loadFiles(coreFiles, useCache);
