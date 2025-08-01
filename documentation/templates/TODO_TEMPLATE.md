@@ -35,7 +35,6 @@
 - [ ] 创建更新目录：`documentation/changelog/YYYY-MM-DD_[更新内容]/`
 - [ ] 将本TODO文件移动到更新目录并重命名为 `TODO.md`
 - [ ] 创建对应的更新日志文档：`更新日志.md`
-- [ ] 可选：创建 `README.md` 说明本次更新
 - [ ] 更新 `public/更新日志.md` 文件
 - [ ] 提交所有更改到Git
 - [ ] 更新项目状态

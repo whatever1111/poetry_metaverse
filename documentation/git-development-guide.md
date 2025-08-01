@@ -291,8 +291,7 @@ documentation/changelog/
 ├── YYYY-MM-DD_更新内容/
 │   ├── TODO.md              # 原始任务清单
 │   ├── 更新日志.md          # 技术实现文档
-│   ├── 相关文件/            # 其他相关文档
-│   └── README.md            # 目录说明（可选）
+│   └── 相关文件/            # 其他相关文档
 └── README.md                # 目录结构说明
 ```
 
@@ -305,7 +304,6 @@ documentation/changelog/
 **文件命名**：
 - `TODO.md`：原始任务清单
 - `更新日志.md`：技术实现文档
-- `README.md`：目录说明（可选）
 
 #### 陆家花园项目示例
 ```bash
@@ -336,6 +334,8 @@ cp documentation/templates/TODO_TEMPLATE.md TODO_新功能开发.md
 # 填写目标、任务列表、更新日志关联等信息
 ```
 
+**重要说明**：TODO清单应存放在项目根目录中，便于开发过程中的实时更新和团队协作。只有在任务完成后，才将TODO清单移动到对应的changelog目录中，形成历史记录。
+
 **模板内容**:
 ```markdown
 # [项目名称] [功能描述] TODO
@@ -360,7 +360,6 @@ cp documentation/templates/TODO_TEMPLATE.md TODO_新功能开发.md
 - [ ] 创建更新目录：`documentation/changelog/YYYY-MM-DD_[更新内容]/`
 - [ ] 将本TODO文件移动到更新目录并重命名为 `TODO.md`
 - [ ] 创建对应的更新日志文档：`更新日志.md`
-- [ ] 可选：创建 `README.md` 说明本次更新
 - [ ] 更新 `public/更新日志.md` 文件
 - [ ] 提交所有更改到Git
 ```
@@ -368,11 +367,11 @@ cp documentation/templates/TODO_TEMPLATE.md TODO_新功能开发.md
 #### 陆家花园项目示例
 ```bash
 # 开发新功能时
-1. 创建基于模板的TODO清单
+1. 在项目根目录创建基于模板的TODO清单
 2. 明确更新日志关联信息
-3. 按阶段执行任务
-4. 完成所有任务后创建更新日志
-5. 归档TODO清单到对应目录
+3. 按阶段执行任务，实时更新TODO清单
+4. 完成所有任务后创建更新日志目录
+5. 将TODO清单移动到changelog目录并重命名为TODO.md
 6. 提交到Git
 ```
 
@@ -488,7 +487,6 @@ cp documentation/templates/更新日志_TEMPLATE.md "documentation/changelog/YYY
 1. **按日期查找**：在 `documentation/changelog/` 目录下查找对应日期
 2. **查看TODO.md**：了解任务执行过程
 3. **查看更新日志.md**：了解技术实现细节
-4. **查看README.md**：了解更新概述（如果有）
 
 #### 陆家花园项目特殊注意事项
 - **多项目架构**：注意不同项目间的文档关联
