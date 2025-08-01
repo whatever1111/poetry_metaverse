@@ -1,0 +1,272 @@
+{
+  "reading_experience": {
+    "version": "3.0",
+    "created_at": "2025-01-XX",
+    "description": "毛小豆宇宙分层阅读体验设计",
+    "controlled_redundancy": {
+      "referenced_files": [
+        "theoretical_framework.json",
+        "mappings.json",
+        "characters.json",
+        "poems.json",
+        "themes.json"
+      ],
+      "cross_references": {
+        "theory_framework": "theoretical_framework.json.theoretical_framework.theories",
+        "character_mappings": "mappings.json.character_mappings",
+        "poem_mappings": "mappings.json.sections",
+        "character_data": "characters.json.characters",
+        "poem_data": "poems.json.poems",
+        "theme_data": "themes.json.themes"
+      }
+    },
+    "reading_layers": {
+      "open_narrative": {
+        "name": "开放叙事层",
+        "description": "表面的、可被所有读者理解的日常故事",
+        "accessibility": "所有读者",
+        "reading_goals": [
+          "理解基本的情节和人物关系",
+          "体验当代都市生活的日常场景",
+          "感受人物的情感状态"
+        ],
+        "poems": {
+          "maoxiaodou_story_ii": {
+            "title": "毛小豆故事演绎 II",
+            "surface_reading": "商务宴请的日常场景",
+            "key_elements": [
+              "宴会厅的社交互动",
+              "毛小豆的专业表演",
+              "姚总的权力地位"
+            ],
+            "emotional_focus": "社交压力和表演性"
+          },
+          "xin_nian_kuai_le": {
+            "title": "新年快乐",
+            "surface_reading": "新年派对的欢乐场景",
+            "key_elements": [
+              "游戏成就的获得",
+              "派对的社交互动",
+              "消费升级的体现"
+            ],
+            "emotional_focus": "成就感和幸福感"
+          },
+          "jinpai_dezhu": {
+            "title": "金牌得主",
+            "surface_reading": "职场女性的日常生活",
+            "key_elements": [
+              "办公室的工作场景",
+              "健身房的训练过程",
+              "与男友的关系互动"
+            ],
+            "emotional_focus": "职业成就和身体管理"
+          }
+        }
+      },
+      "cognitive_labor": {
+        "name": "认知劳动层",
+        "description": "需要读者进行深度思考和解读的层次",
+        "accessibility": "有一定理论背景的读者",
+        "reading_goals": [
+          "识别文本中的权力动态",
+          "分析人物的行为逻辑",
+          "理解社会规则的运作机制"
+        ],
+        "poems": {
+          "shark_and_rock": {
+            "title": "鲨鱼与岩石",
+            "cognitive_focus": "牌局中的权力动态和信任法则",
+            "key_analyses": [
+              "圈层内外的不同法则",
+              "信任与竞争的关系",
+              "身份认同的冲突"
+            ],
+            "theoretical_elements": [
+              "社会交换理论",
+              "信任机制",
+              "身份理论"
+            ]
+          },
+          "chai_miao": {
+            "title": "拆庙",
+            "cognitive_focus": "仪式、记忆与无法逃离的过去",
+            "key_analyses": [
+              "传统仪式与反仪式的并置",
+              "创伤记忆的影响",
+              "前进与停滞的冲突"
+            ],
+            "theoretical_elements": [
+              "仪式理论",
+              "创伤理论",
+              "记忆研究"
+            ]
+          },
+          "lun_zimu": {
+            "title": "论字幕的必要性",
+            "cognitive_focus": "兄弟会内部的真实之声",
+            "key_analyses": [
+              "男性同盟的内部逻辑",
+              "犬儒主义的彻底性",
+              "性别关系的复杂性"
+            ],
+            "theoretical_elements": [
+              "男性气质研究",
+              "犬儒主义理论",
+              "性别政治"
+            ]
+          }
+        }
+      },
+      "theoretical_depth": {
+        "name": "理论深度层",
+        "description": "涉及复杂理论概念的深层结构",
+        "accessibility": "具备相关理论知识的读者",
+        "reading_goals": [
+          "运用理论框架解读文本",
+          "识别理论概念的具体体现",
+          "进行跨理论的综合分析"
+        ],
+        "poems": {
+          "bafang_laicai": {
+            "title": "八方来财",
+            "theoretical_focus": "精神分析意义上的压抑与症状",
+            "key_theories": [
+              "齐泽克的'淫秽补充'理论",
+              "福柯的'微观权力'理论",
+              "精神分析理论"
+            ],
+            "theoretical_analyses": [
+              "意识与无意识的冲突",
+              "洁净与污秽的对比",
+              "压抑与症状的爆发"
+            ],
+            "complex_interpretations": [
+              "创伤记忆的回归机制",
+              "身体作为无意识的物理形态",
+              "规训与抵抗的辩证法"
+            ]
+          },
+          "gaoji_guantou": {
+            "title": "高级罐头装金枪鱼",
+            "theoretical_focus": "宏大历史与个人记忆的错位",
+            "key_theories": [
+              "历史哲学",
+              "现代性理论",
+              "主体性理论"
+            ],
+            "theoretical_analyses": [
+              "宏大叙事与个人经验的冲突",
+              "创造与毁灭的悖论",
+              "在场与缺席的辩证法"
+            ],
+            "complex_interpretations": [
+              "历史终结与个体生存",
+              "技术理性与人文关怀",
+              "全球化与地方性"
+            ]
+          },
+          "ni_de_xingqu": {
+            "title": "你的兴趣是什么",
+            "theoretical_focus": "本真性的暴力辩护",
+            "key_theories": [
+              "身份理论",
+              "亚文化理论",
+              "本真性理论"
+            ],
+            "theoretical_analyses": [
+              "高雅文化与亚文化的价值冲突",
+              "外部认可与内部标准的矛盾",
+              "本真性焦虑的防御机制"
+            ],
+            "complex_interpretations": [
+              "文化资本的重新定义",
+              "自我赋权的另类路径",
+              "污名化身份的积极意义"
+            ]
+          }
+        }
+      }
+    },
+    "reading_paths": {
+      "beginner_path": {
+        "name": "初学者路径",
+        "description": "适合初次接触的读者",
+        "sequence": [
+          "open_narrative",
+          "basic_character_understanding",
+          "simple_theme_recognition"
+        ],
+        "recommended_poems": [
+          "maoxiaodou_story_ii",
+          "xin_nian_kuai_le",
+          "jinpai_dezhu"
+        ]
+      },
+      "intermediate_path": {
+        "name": "进阶路径",
+        "description": "适合有一定文学理论基础的读者",
+        "sequence": [
+          "open_narrative",
+          "cognitive_labor",
+          "power_dynamics_analysis"
+        ],
+        "recommended_poems": [
+          "shark_and_rock",
+          "chai_miao",
+          "lun_zimu"
+        ]
+      },
+      "advanced_path": {
+        "name": "高级路径",
+        "description": "适合具备相关理论知识的读者",
+        "sequence": [
+          "open_narrative",
+          "cognitive_labor",
+          "theoretical_depth",
+          "cross_theoretical_analysis"
+        ],
+        "recommended_poems": [
+          "bafang_laicai",
+          "gaoji_guantou",
+          "ni_de_xingqu"
+        ]
+      }
+    },
+    "interpretation_tools": {
+      "theoretical_lenses": {
+        "obscene_supplement": {
+          "focus": "识别文本中的潜规则和权力运作",
+          "questions": [
+            "哪些行为体现了正式规则之外的潜规则？",
+            "权力是如何通过非正式方式运作的？",
+            "人物如何应对和利用这些潜规则？"
+          ]
+        },
+        "ugly_emotions": {
+          "focus": "分析人物的情感状态和压抑机制",
+          "questions": [
+            "人物表现出哪些'丑陋情感'？",
+            "这些情感是如何被压抑或表达的？",
+            "情感状态如何影响人物的行为？"
+          ]
+        },
+        "microphysics_of_power": {
+          "focus": "识别日常生活中的规训机制",
+          "questions": [
+            "权力如何通过日常实践运作？",
+            "身体如何被规训和管理？",
+            "知识如何成为权力的工具？"
+          ]
+        },
+        "gated_community_poetics": {
+          "focus": "理解文本的分层结构和阅读体验",
+          "questions": [
+            "文本提供了哪些不同层次的阅读体验？",
+            "不同读者如何与文本互动？",
+            "分层结构如何影响文本的意义？"
+          ]
+        }
+      }
+    }
+  }
+} 
