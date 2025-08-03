@@ -74,7 +74,8 @@ class DataLoader {
             'terminology.json',
             'themes.json',
             'metadata.json',
-            'timeline.json'
+            'timeline.json',
+            'scenes.json'
         ];
         
         return await this.loadFiles(dataFiles, useCache);

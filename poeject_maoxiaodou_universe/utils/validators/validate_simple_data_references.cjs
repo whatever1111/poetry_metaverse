@@ -1,9 +1,16 @@
 /**
- * 毛小豆宇宙简单数据引用验证脚本 (优化版)
- * 使用公共工具模块，消除重复代码
+ * 毛小豆宇宙简单数据引用验证脚本 (重构版)
+ * 使用公共组件模块，消除重复代码
  * 新增：场景引用验证功能
  */
 const { dataLoader } = require('../components/data_loader.cjs');
+const { ReportGenerator } = require('../components/report_generator.cjs');
+const { DataDisplay } = require('../components/data_display.cjs');
+const { PoemStatistics } = require('../components/poem_statistics.cjs');
+const { CharacterStatistics } = require('../components/character_statistics.cjs');
+const { ThemeStatistics } = require('../components/theme_statistics.cjs');
+const { TerminologyStatistics } = require('../components/terminology_statistics.cjs');
+const { SceneStatistics } = require('../components/scene_statistics.cjs');
 
 /**
  * 从characters.json中提取所有角色ID
@@ -30,17 +37,20 @@ function extractCharacterIds(charactersData) {
  * 从poems.json中提取所有诗歌ID
  */
 function extractPoemIds(poemsData) {
-    const ids = new Set();
+    const ids = [];
     
     if (poemsData.poems && Array.isArray(poemsData.poems)) {
         poemsData.poems.forEach(poem => {
             if (poem.id) {
-                ids.add(poem.id);
+                ids.push({
+                    id: poem.id,
+                    title: poem.title
+                });
             }
         });
     }
     
-    return Array.from(ids);
+    return ids;
 }
 
 /**
@@ -103,50 +113,60 @@ function checkPoemCharacterReferences(poemsData, characterIds) {
     
     if (poemsData.poems && Array.isArray(poemsData.poems)) {
         poemsData.poems.forEach(poem => {
-            // 检查 poems.characters 数组
+            // 检查直接角色引用
             if (poem.characters && Array.isArray(poem.characters)) {
-                poem.characters.forEach(charRef => {
-                    if (charRef.id) {
-                        if (characterIds.includes(charRef.id)) {
-                            references.push({
-                                poemId: poem.id,
-                                characterId: charRef.id,
-                                characterName: charRef.name,
-                                location: 'characters'
-                            });
-                        } else {
-                            invalidReferences.push({
-                                poemId: poem.id,
-                                characterId: charRef.id,
-                                characterName: charRef.name,
-                                location: 'characters'
-                            });
-                        }
+                poem.characters.forEach(character => {
+                    // 修复：处理对象结构 {id: "xxx", name: "xxx"}
+                    const charId = typeof character === 'string' ? character : character.id;
+                    const charName = typeof character === 'string' ? character : character.name;
+                    
+                    if (characterIds.includes(charId)) {
+                        references.push({
+                            poemId: poem.id,
+                            poemTitle: poem.title,
+                            characterId: charId,
+                            characterName: charName,
+                            source: 'direct'
+                        });
+                    } else {
+                        invalidReferences.push({
+                            poemId: poem.id,
+                            poemTitle: poem.title,
+                            characterId: charId,
+                            characterName: charName,
+                            source: 'direct'
+                        });
                     }
                 });
             }
             
-            // 检查 key_events.related_characters 数组
+            // 检查事件中的角色引用
             if (poem.key_events && Array.isArray(poem.key_events)) {
                 poem.key_events.forEach(event => {
                     if (event.related_characters && Array.isArray(event.related_characters)) {
-                        event.related_characters.forEach(charRef => {
-                            if (charRef.id) {
-                                if (characterIds.includes(charRef.id)) {
-                                    references.push({
-                                        poemId: poem.id,
-                                        characterId: charRef.id,
-                                        characterName: charRef.name,
-                                        location: `key_events.${event.event_id}`
-                                    });
-                                } else {
-                                    invalidReferences.push({
-                                        poemId: poem.id,
-                                        characterId: charRef.id,
-                                        characterName: charRef.name,
-                                        location: `key_events.${event.event_id}`
-                                    });
-                                }
+                        event.related_characters.forEach(character => {
+                            const charId = typeof character === 'string' ? character : character.id;
+                            const charName = typeof character === 'string' ? character : character.name;
+                            
+                            if (characterIds.includes(charId)) {
+                                references.push({
+                                    poemId: poem.id,
+                                    poemTitle: poem.title,
+                                    characterId: charId,
+                                    characterName: charName,
+                                    source: 'event',
+                                    eventId: event.event_id,
+                                    eventDescription: event.description
+                                });
+                            } else {
+                                invalidReferences.push({
+                                    poemId: poem.id,
+                                    poemTitle: poem.title,
+                                    characterId: charId,
+                                    characterName: charName,
+                                    source: 'event',
+                                    eventId: event.event_id
+                                });
                             }
                         });
                     }
@@ -172,172 +192,14 @@ function checkPoemThemeReferences(poemsData, themeIds) {
                     if (themeIds.includes(themeId)) {
                         references.push({
                             poemId: poem.id,
-                            themeId: themeId,
-                            location: 'themes'
+                            poemTitle: poem.title,
+                            themeId: themeId
                         });
                     } else {
                         invalidReferences.push({
                             poemId: poem.id,
-                            themeId: themeId,
-                            location: 'themes'
-                        });
-                    }
-                });
-            }
-        });
-    }
-    
-    return { references, invalidReferences };
-}
-
-/**
- * 检查主题中的角色引用
- */
-function checkThemeCharacterReferences(themesData, characterIds) {
-    const references = [];
-    const invalidReferences = [];
-    
-    if (themesData.themes && Array.isArray(themesData.themes)) {
-        themesData.themes.forEach(theme => {
-            if (theme.related_characters && Array.isArray(theme.related_characters)) {
-                theme.related_characters.forEach(charId => {
-                    if (characterIds.includes(charId)) {
-                        references.push({
-                            themeId: theme.id,
-                            characterId: charId,
-                            location: 'related_characters'
-                        });
-                    } else {
-                        invalidReferences.push({
-                            themeId: theme.id,
-                            characterId: charId,
-                            location: 'related_characters'
-                        });
-                    }
-                });
-            }
-        });
-    }
-    
-    return { references, invalidReferences };
-}
-
-/**
- * 检查主题中的诗歌引用
- */
-function checkThemePoemReferences(themesData, poemIds) {
-    const references = [];
-    const invalidReferences = [];
-    
-    if (themesData.themes && Array.isArray(themesData.themes)) {
-        themesData.themes.forEach(theme => {
-            if (theme.related_poems && Array.isArray(theme.related_poems)) {
-                theme.related_poems.forEach(poemId => {
-                    if (poemIds.includes(poemId)) {
-                        references.push({
-                            themeId: theme.id,
-                            poemId: poemId,
-                            location: 'related_poems'
-                        });
-                    } else {
-                        invalidReferences.push({
-                            themeId: theme.id,
-                            poemId: poemId,
-                            location: 'related_poems'
-                        });
-                    }
-                });
-            }
-        });
-    }
-    
-    return { references, invalidReferences };
-}
-
-/**
- * 检查术语中的诗歌引用（通过context字段）
- */
-function checkTerminologyPoemReferences(terminologyData, poemIds) {
-    const references = [];
-    const invalidReferences = [];
-    
-    if (terminologyData.terminology && Array.isArray(terminologyData.terminology)) {
-        terminologyData.terminology.forEach(term => {
-            if (term.context) {
-                // 尝试从context中提取诗歌ID
-                // 假设context格式为"《诗歌标题》"
-                const contextMatch = term.context.match(/《([^》]+)》/);
-                if (contextMatch) {
-                    const poemTitle = contextMatch[1];
-                    // 这里需要更复杂的匹配逻辑，暂时记录所有context
-                    references.push({
-                        termId: term.id,
-                        termName: term.term,
-                        context: term.context,
-                        location: 'context'
-                    });
-                }
-            }
-        });
-    }
-    
-    return { references, invalidReferences };
-}
-
-/**
- * 检查理论框架中的诗歌引用
- */
-function checkTheoryPoemReferences(theoryData, poemIds) {
-    const references = [];
-    const invalidReferences = [];
-    
-    if (theoryData.theoretical_framework && theoryData.theoretical_framework.theories) {
-        Object.entries(theoryData.theoretical_framework.theories).forEach(([theoryId, theory]) => {
-            // 检查manifestations中的诗歌引用
-            if (theory.manifestations) {
-                Object.values(theory.manifestations).forEach(manifestation => {
-                    if (manifestation.examples && Array.isArray(manifestation.examples)) {
-                        manifestation.examples.forEach(example => {
-                            if (example.poem && example.poem.id) {
-                                if (poemIds.includes(example.poem.id)) {
-                                    references.push({
-                                        theoryId,
-                                        poemId: example.poem.id,
-                                        poemTitle: example.poem.title
-                                    });
-                                } else {
-                                    invalidReferences.push({
-                                        theoryId,
-                                        poemId: example.poem.id,
-                                        poemTitle: example.poem.title
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-            
-            // 检查types中的诗歌引用
-            if (theory.types) {
-                Object.values(theory.types).forEach(type => {
-                    if (type.examples && Array.isArray(type.examples)) {
-                        type.examples.forEach(example => {
-                            if (example.poem && example.poem.id) {
-                                if (poemIds.includes(example.poem.id)) {
-                                    references.push({
-                                        theoryId,
-                                        poemId: example.poem.id,
-                                        poemTitle: example.poem.title
-                                    });
-                                } else {
-                                    invalidReferences.push({
-                                        theoryId,
-                                        poemId: example.poem.id,
-                                        poemTitle: example.poem.title
-                                    });
-                                }
-                            }
+                            poemTitle: poem.title,
+                            themeId: themeId
                         });
                     }
                 });
@@ -357,20 +219,19 @@ function checkPoemSceneReferences(poemsData, sceneIds) {
     
     if (poemsData.poems && Array.isArray(poemsData.poems)) {
         poemsData.poems.forEach(poem => {
-            // 检查 poems.locations 数组（场景引用）
             if (poem.locations && Array.isArray(poem.locations)) {
                 poem.locations.forEach(sceneId => {
                     if (sceneIds.includes(sceneId)) {
                         references.push({
                             poemId: poem.id,
-                            sceneId: sceneId,
-                            location: 'locations'
+                            poemTitle: poem.title,
+                            sceneId: sceneId
                         });
                     } else {
                         invalidReferences.push({
                             poemId: poem.id,
-                            sceneId: sceneId,
-                            location: 'locations'
+                            poemTitle: poem.title,
+                            sceneId: sceneId
                         });
                     }
                 });
@@ -381,60 +242,296 @@ function checkPoemSceneReferences(poemsData, sceneIds) {
     return { references, invalidReferences };
 }
 
-async function validateSimpleDataReferences() {
-    console.log('🔍 开始简化数据引用校验...\n');
+/**
+ * 检查主题中的角色引用
+ */
+function checkThemeCharacterReferences(themesData, characterIds) {
+    const references = [];
+    const invalidReferences = [];
     
+    if (themesData.themes && Array.isArray(themesData.themes)) {
+        themesData.themes.forEach(theme => {
+            if (theme.characters && Array.isArray(theme.characters)) {
+                theme.characters.forEach(charId => {
+                    if (characterIds.includes(charId)) {
+                        references.push({
+                            themeId: theme.id,
+                            themeName: theme.name,
+                            characterId: charId
+                        });
+                    } else {
+                        invalidReferences.push({
+                            themeId: theme.id,
+                            themeName: theme.name,
+                            characterId: charId
+                        });
+                    }
+                });
+            }
+        });
+    }
+    
+    return { references, invalidReferences };
+}
+
+/**
+ * 检查主题中的诗歌引用
+ */
+function checkThemePoemReferences(themesData, poemIds) {
+    const references = [];
+    const invalidReferences = [];
+    
+    // 提取诗歌ID列表用于匹配
+    const poemIdList = poemIds.map(poem => poem.id);
+    
+    if (themesData.themes && Array.isArray(themesData.themes)) {
+        themesData.themes.forEach(theme => {
+            if (theme.poems && Array.isArray(theme.poems)) {
+                theme.poems.forEach(poemId => {
+                    if (poemIdList.includes(poemId)) {
+                        references.push({
+                            themeId: theme.id,
+                            themeName: theme.name,
+                            poemId: poemId
+                        });
+                    } else {
+                        invalidReferences.push({
+                            themeId: theme.id,
+                            themeName: theme.name,
+                            poemId: poemId
+                        });
+                    }
+                });
+            }
+        });
+    }
+    
+    return { references, invalidReferences };
+}
+
+/**
+ * 检查术语中的诗歌引用
+ */
+function checkTerminologyPoemReferences(terminologyData, poemIds) {
+    const references = [];
+    const invalidReferences = [];
+    
+    // 创建诗歌标题到ID的映射，支持多种格式
+    const poemTitleToId = {};
+    poemIds.forEach(poem => {
+        if (typeof poem === 'object' && poem.title && poem.id) {
+            // 支持多种标题格式
+            poemTitleToId[poem.title] = poem.id;
+            poemTitleToId[`《${poem.title}》`] = poem.id;
+            poemTitleToId[poem.title.replace(/[《》]/g, '')] = poem.id;
+            
+            // 特殊处理一些常见的格式变体
+            if (poem.title.includes('毛小豆故事演绎')) {
+                // 处理 "毛小豆故事演绎 II" vs "毛小豆故事演绎 Ⅱ"
+                const variant1 = poem.title.replace('Ⅱ', 'II');
+                const variant2 = poem.title.replace('II', 'Ⅱ');
+                poemTitleToId[variant1] = poem.id;
+                poemTitleToId[variant2] = poem.id;
+                poemTitleToId[`《${variant1}》`] = poem.id;
+                poemTitleToId[`《${variant2}》`] = poem.id;
+                
+                // 处理 "毛小豆故事演绎 | REMAKE" vs "毛小豆故事演绎 Ⅰ REMAKE"
+                if (poem.title.includes('REMAKE')) {
+                    const remakeVariant1 = poem.title.replace('|', 'Ⅰ');
+                    const remakeVariant2 = poem.title.replace('Ⅰ', '|');
+                    poemTitleToId[remakeVariant1] = poem.id;
+                    poemTitleToId[remakeVariant2] = poem.id;
+                    poemTitleToId[`《${remakeVariant1}》`] = poem.id;
+                    poemTitleToId[`《${remakeVariant2}》`] = poem.id;
+                }
+            }
+            
+            // 处理 "注 意 看" vs "注意看"
+            if (poem.title.includes('注意看')) {
+                const spaceVariant = poem.title.replace(/\s+/g, '');
+                const spacedVariant = poem.title.replace(/(.)/g, '$1 ').trim();
+                poemTitleToId[spaceVariant] = poem.id;
+                poemTitleToId[spacedVariant] = poem.id;
+                poemTitleToId[`《${spaceVariant}》`] = poem.id;
+                poemTitleToId[`《${spacedVariant}》`] = poem.id;
+            }
+        }
+    });
+    
+    if (terminologyData.terminology && Array.isArray(terminologyData.terminology)) {
+        terminologyData.terminology.forEach(term => {
+            if (term.context) {
+                // 尝试多种匹配方式
+                let matchedPoemId = null;
+                
+                // 1. 直接匹配ID
+                if (poemIds.includes(term.context)) {
+                    matchedPoemId = term.context;
+                }
+                // 2. 匹配各种标题格式
+                else if (poemTitleToId[term.context]) {
+                    matchedPoemId = poemTitleToId[term.context];
+                }
+                // 3. 尝试去除书名号的匹配
+                else if (poemTitleToId[term.context.replace(/[《》]/g, '')]) {
+                    matchedPoemId = poemTitleToId[term.context.replace(/[《》]/g, '')];
+                }
+                // 4. 尝试添加书名号的匹配
+                else if (poemTitleToId[`《${term.context.replace(/[《》]/g, '')}》`]) {
+                    matchedPoemId = poemTitleToId[`《${term.context.replace(/[《》]/g, '')}》`];
+                }
+                
+                if (matchedPoemId) {
+                    references.push({
+                        termId: term.id,
+                        termName: term.term,
+                        poemId: matchedPoemId,
+                        context: term.context
+                    });
+                } else {
+                    invalidReferences.push({
+                        termId: term.id,
+                        termName: term.term,
+                        context: term.context
+                    });
+                }
+            }
+        });
+    }
+    
+    return { references, invalidReferences };
+}
+
+/**
+ * 检查理论框架中的诗歌引用
+ */
+function checkTheoryPoemReferences(theoryData, poemIds) {
+    const references = [];
+    const invalidReferences = [];
+    
+    // 提取诗歌ID列表用于匹配
+    const poemIdList = poemIds.map(poem => poem.id);
+    
+    if (theoryData.theoretical_framework && theoryData.theoretical_framework.theories) {
+        // 理论框架的theories是对象，不是数组
+        Object.entries(theoryData.theoretical_framework.theories).forEach(([theoryId, theory]) => {
+            // 检查manifestations中的examples
+            if (theory.manifestations) {
+                Object.values(theory.manifestations).forEach(manifestation => {
+                    if (manifestation.examples && Array.isArray(manifestation.examples)) {
+                        manifestation.examples.forEach(example => {
+                            if (example.poem && example.poem.id) {
+                                if (poemIdList.includes(example.poem.id)) {
+                                    references.push({
+                                        theoryId: theoryId,
+                                        theoryName: theory.name,
+                                        poemId: example.poem.id,
+                                        poemTitle: example.poem.title
+                                    });
+                                } else {
+                                    invalidReferences.push({
+                                        theoryId: theoryId,
+                                        theoryName: theory.name,
+                                        poemId: example.poem.id,
+                                        poemTitle: example.poem.title
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // 检查types中的examples
+            if (theory.types) {
+                Object.values(theory.types).forEach(type => {
+                    if (type.examples && Array.isArray(type.examples)) {
+                        type.examples.forEach(example => {
+                            if (example.poem && example.poem.id) {
+                                if (poemIdList.includes(example.poem.id)) {
+                                    references.push({
+                                        theoryId: theoryId,
+                                        theoryName: theory.name,
+                                        poemId: example.poem.id,
+                                        poemTitle: example.poem.title
+                                    });
+                                } else {
+                                    invalidReferences.push({
+                                        theoryId: theoryId,
+                                        theoryName: theory.name,
+                                        poemId: example.poem.id,
+                                        poemTitle: example.poem.title
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    
+    return { references, invalidReferences };
+}
+
+/**
+ * 验证简单数据引用
+ */
+async function validateSimpleDataReferences() {
     try {
-        // 使用公共工具加载数据文件
-        console.log('📋 读取数据文件...');
-        const dataObjects = await dataLoader.loadCoreDataFiles();
+        console.log('🔍 开始简单数据引用验证...');
         
-        const charactersData = dataObjects['characters.json'];
+        // 使用公共工具加载数据文件
+        const dataObjects = await dataLoader.loadCoreDataFiles();
         const poemsData = dataObjects['poems.json'];
+        const charactersData = dataObjects['characters.json'];
         const themesData = dataObjects['themes.json'];
         const terminologyData = dataObjects['terminology.json'];
+        const scenesData = dataObjects['scenes.json'];
         
-        // 还需要加载理论框架文件和场景文件
+        // 还需要加载理论框架文件
         const theoryData = await dataLoader.loadFile('theoretical_framework.json');
-        const scenesData = await dataLoader.loadFile('scenes.json');
         
-        console.log('✅ 已读取: characters.json');
-        console.log('✅ 已读取: poems.json');
-        console.log('✅ 已读取: theoretical_framework.json');
-        console.log('✅ 已读取: themes.json');
-        console.log('✅ 已读取: terminology.json');
-        console.log('✅ 已读取: scenes.json');
+        // 使用公共组件进行统计和报告生成
+        const poemStatistics = new PoemStatistics(dataLoader);
+        const characterStatistics = new CharacterStatistics(dataLoader);
+        const themeStatistics = new ThemeStatistics(dataLoader);
+        const terminologyStatistics = new TerminologyStatistics(dataLoader);
+        const sceneStatistics = new SceneStatistics(dataLoader);
+        const reportGenerator = new ReportGenerator();
+        const dataDisplay = new DataDisplay();
         
-        // 提取ID列表
-        const characterIds = extractCharacterIds(charactersData);
+        // 提取所有ID列表
         const poemIds = extractPoemIds(poemsData);
+        const characterIds = extractCharacterIds(charactersData);
         const themeIds = extractThemeIds(themesData);
         const terminologyIds = extractTerminologyIds(terminologyData);
         const sceneIds = extractSceneIds(scenesData);
         
-        console.log(`\n📊 数据统计:`);
-        console.log(`- 角色数量: ${characterIds.length}`);
-        console.log(`- 诗歌数量: ${poemIds.length}`);
-        console.log(`- 主题数量: ${themeIds.length}`);
-        console.log(`- 术语数量: ${terminologyIds.length}`);
-        console.log(`- 场景数量: ${sceneIds.length}`);
-        
         // 检查诗歌中的角色引用
-        console.log('\n📋 检查诗歌中的角色引用...');
+        console.log('📋 检查诗歌中的角色引用...');
         const poemCharRefs = checkPoemCharacterReferences(poemsData, characterIds);
         
+        // 分别统计直接引用和事件引用
+        const directRefs = poemCharRefs.references.filter(ref => ref.source === 'direct');
+        const eventRefs = poemCharRefs.references.filter(ref => ref.source === 'event');
+        
         console.log(`  ✅ 有效引用: ${poemCharRefs.references.length} 个`);
+        console.log(`    - 直接引用: ${directRefs.length} 个`);
+        console.log(`    - 事件引用: ${eventRefs.length} 个`);
+        
         if (poemCharRefs.references.length > 0) {
             console.log('    示例:');
             poemCharRefs.references.slice(0, 3).forEach(ref => {
-                console.log(`    - 诗歌 "${ref.poemId}" 在 "${ref.location}" 中引用角色 "${ref.characterId}" (${ref.characterName})`);
+                const sourceType = ref.source === 'direct' ? '直接' : '事件';
+                console.log(`    - 诗歌 "${ref.poemTitle}" ${sourceType}引用角色 "${ref.characterId}"`);
             });
         }
         
         if (poemCharRefs.invalidReferences.length > 0) {
             console.log(`  ❌ 无效引用: ${poemCharRefs.invalidReferences.length} 个`);
             poemCharRefs.invalidReferences.forEach(ref => {
-                console.log(`    - 诗歌 "${ref.poemId}" 引用无效角色 "${ref.characterId}"`);
+                console.log(`    - 诗歌 "${ref.poemTitle}" 引用无效角色 "${ref.characterId}"`);
             });
         }
         
@@ -446,14 +543,14 @@ async function validateSimpleDataReferences() {
         if (poemThemeRefs.references.length > 0) {
             console.log('    示例:');
             poemThemeRefs.references.slice(0, 3).forEach(ref => {
-                console.log(`    - 诗歌 "${ref.poemId}" 引用主题 "${ref.themeId}"`);
+                console.log(`    - 诗歌 "${ref.poemTitle}" 引用主题 "${ref.themeId}"`);
             });
         }
         
         if (poemThemeRefs.invalidReferences.length > 0) {
             console.log(`  ❌ 无效引用: ${poemThemeRefs.invalidReferences.length} 个`);
             poemThemeRefs.invalidReferences.forEach(ref => {
-                console.log(`    - 诗歌 "${ref.poemId}" 引用无效主题 "${ref.themeId}"`);
+                console.log(`    - 诗歌 "${ref.poemTitle}" 引用无效主题 "${ref.themeId}"`);
             });
         }
         
@@ -465,14 +562,14 @@ async function validateSimpleDataReferences() {
         if (poemSceneRefs.references.length > 0) {
             console.log('    示例:');
             poemSceneRefs.references.slice(0, 3).forEach(ref => {
-                console.log(`    - 诗歌 "${ref.poemId}" 在 "${ref.location}" 中引用场景 "${ref.sceneId}"`);
+                console.log(`    - 诗歌 "${ref.poemTitle}" 引用场景 "${ref.sceneId}"`);
             });
         }
         
         if (poemSceneRefs.invalidReferences.length > 0) {
             console.log(`  ❌ 无效引用: ${poemSceneRefs.invalidReferences.length} 个`);
             poemSceneRefs.invalidReferences.forEach(ref => {
-                console.log(`    - 诗歌 "${ref.poemId}" 引用无效场景 "${ref.sceneId}"`);
+                console.log(`    - 诗歌 "${ref.poemTitle}" 引用无效场景 "${ref.sceneId}"`);
             });
         }
         
@@ -484,14 +581,14 @@ async function validateSimpleDataReferences() {
         if (themeCharRefs.references.length > 0) {
             console.log('    示例:');
             themeCharRefs.references.slice(0, 3).forEach(ref => {
-                console.log(`    - 主题 "${ref.themeId}" 引用角色 "${ref.characterId}"`);
+                console.log(`    - 主题 "${ref.themeName}" 引用角色 "${ref.characterId}"`);
             });
         }
         
         if (themeCharRefs.invalidReferences.length > 0) {
             console.log(`  ❌ 无效引用: ${themeCharRefs.invalidReferences.length} 个`);
             themeCharRefs.invalidReferences.forEach(ref => {
-                console.log(`    - 主题 "${ref.themeId}" 引用无效角色 "${ref.characterId}"`);
+                console.log(`    - 主题 "${ref.themeName}" 引用无效角色 "${ref.characterId}"`);
             });
         }
         
@@ -503,14 +600,14 @@ async function validateSimpleDataReferences() {
         if (themePoemRefs.references.length > 0) {
             console.log('    示例:');
             themePoemRefs.references.slice(0, 3).forEach(ref => {
-                console.log(`    - 主题 "${ref.themeId}" 引用诗歌 "${ref.poemId}"`);
+                console.log(`    - 主题 "${ref.themeName}" 引用诗歌 "${ref.poemId}"`);
             });
         }
         
         if (themePoemRefs.invalidReferences.length > 0) {
             console.log(`  ❌ 无效引用: ${themePoemRefs.invalidReferences.length} 个`);
             themePoemRefs.invalidReferences.forEach(ref => {
-                console.log(`    - 主题 "${ref.themeId}" 引用无效诗歌 "${ref.poemId}"`);
+                console.log(`    - 主题 "${ref.themeName}" 引用无效诗歌 "${ref.poemId}"`);
             });
         }
         
@@ -522,7 +619,7 @@ async function validateSimpleDataReferences() {
         if (termPoemRefs.references.length > 0) {
             console.log('    示例:');
             termPoemRefs.references.slice(0, 3).forEach(ref => {
-                console.log(`    - 术语 "${ref.termId}" (${ref.termName}) 引用诗歌 "${ref.context}"`);
+                console.log(`    - 术语 "${ref.termName}" 引用诗歌 "${ref.context}"`);
             });
         }
         
@@ -541,7 +638,7 @@ async function validateSimpleDataReferences() {
         if (theoryPoemRefs.references.length > 0) {
             console.log('    示例:');
             theoryPoemRefs.references.slice(0, 3).forEach(ref => {
-                console.log(`    - 理论 "${ref.theoryId}" 引用诗歌 "${ref.poemId}" (${ref.poemTitle})`);
+                console.log(`    - 理论 "${ref.theoryName}" 引用诗歌 "${ref.poemId}" (${ref.poemTitle})`);
             });
         }
         
@@ -552,7 +649,7 @@ async function validateSimpleDataReferences() {
             });
         }
         
-        // 输出总体结果
+        // 计算总体统计
         const totalValidRefs = poemCharRefs.references.length + 
                              poemThemeRefs.references.length + 
                              poemSceneRefs.references.length + 
@@ -569,6 +666,7 @@ async function validateSimpleDataReferences() {
                                termPoemRefs.invalidReferences.length + 
                                theoryPoemRefs.invalidReferences.length;
         
+        // 输出总体结果
         console.log('\n📊 数据引用校验结果:');
         if (totalInvalidRefs === 0) {
             console.log('✅ 所有数据引用校验通过！');
@@ -576,25 +674,82 @@ async function validateSimpleDataReferences() {
             console.log(`❌ 发现 ${totalInvalidRefs} 个无效引用`);
         }
         
-        console.log(`\n📈 引用统计:`);
-        console.log(`- 总有效引用: ${totalValidRefs}`);
-        console.log(`- 总无效引用: ${totalInvalidRefs}`);
-        console.log(`- 诗歌->角色引用: ${poemCharRefs.references.length}`);
-        console.log(`- 诗歌->主题引用: ${poemThemeRefs.references.length}`);
-        console.log(`- 诗歌->场景引用: ${poemSceneRefs.references.length}`);
-        console.log(`- 主题->角色引用: ${themeCharRefs.references.length}`);
-        console.log(`- 主题->诗歌引用: ${themePoemRefs.references.length}`);
-        console.log(`- 术语->诗歌引用: ${termPoemRefs.references.length}`);
-        console.log(`- 理论->诗歌引用: ${theoryPoemRefs.references.length}`);
+                 console.log(`\n📈 引用统计:`);
+         console.log(`- 总有效引用: ${totalValidRefs}`);
+         console.log(`- 总无效引用: ${totalInvalidRefs}`);
+         console.log(`- 诗歌->角色引用: ${poemCharRefs.references.length} (直接: ${directRefs.length}, 事件: ${eventRefs.length})`);
+         console.log(`- 诗歌->主题引用: ${poemThemeRefs.references.length}`);
+         console.log(`- 诗歌->场景引用: ${poemSceneRefs.references.length}`);
+         console.log(`- 主题->角色引用: ${themeCharRefs.references.length}`);
+         console.log(`- 主题->诗歌引用: ${themePoemRefs.references.length}`);
+         console.log(`- 术语->诗歌引用: ${termPoemRefs.references.length}`);
+         console.log(`- 理论->诗歌引用: ${theoryPoemRefs.references.length}`);
+        
+        // 生成各类型统计数据
+        const poemStats = await poemStatistics.generateStatistics(poemsData);
+        const characterStats = await characterStatistics.generateStatistics(charactersData);
+        const themeStats = await themeStatistics.generateStatistics(themesData);
+        const terminologyStats = await terminologyStatistics.generateStatistics(terminologyData);
+        const sceneStats = await sceneStatistics.generateStatistics(scenesData);
+        
+        // 使用公共组件生成详细报告
+        const allStats = {
+            references: {
+                totalValid: totalValidRefs,
+                totalInvalid: totalInvalidRefs,
+                poemToCharacter: poemCharRefs.references.length,
+                poemToTheme: poemThemeRefs.references.length,
+                poemToScene: poemSceneRefs.references.length,
+                themeToCharacter: themeCharRefs.references.length,
+                themeToPoem: themePoemRefs.references.length,
+                terminologyToPoem: termPoemRefs.references.length,
+                theoryToPoem: theoryPoemRefs.references.length
+            },
+            statistics: {
+                poems: poemStats,
+                characters: characterStats,
+                themes: themeStats,
+                terminology: terminologyStats,
+                scenes: sceneStats
+            },
+            validation: {
+                isValid: totalInvalidRefs === 0,
+                totalIssues: totalInvalidRefs,
+                details: {
+                    poemCharRefs,
+                    poemThemeRefs,
+                    poemSceneRefs,
+                    themeCharRefs,
+                    themePoemRefs,
+                    termPoemRefs,
+                    theoryPoemRefs
+                }
+            }
+        };
+        
+        const report = reportGenerator.generateReport(allStats, 'simple_data_references_template', {
+            title: '毛小豆宇宙简单数据引用验证报告',
+            includeValidation: true,
+            includeDetails: true
+        });
         
         const isValid = totalInvalidRefs === 0;
         console.log(`\n${isValid ? '✅' : '❌'} 简化数据引用校验${isValid ? '通过' : '失败'}`);
         
-        return isValid;
+        return {
+            isValid: isValid,
+            totalValidRefs: totalValidRefs,
+            totalInvalidRefs: totalInvalidRefs,
+            referenceStats: allStats.references,
+            validationDetails: allStats.validation.details
+        };
         
     } catch (error) {
         console.error('❌ 简化数据引用校验失败:', error.message);
-        return false;
+        return {
+            isValid: false,
+            error: error.message
+        };
     }
 }
 

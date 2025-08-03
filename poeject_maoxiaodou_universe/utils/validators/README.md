@@ -19,7 +19,7 @@ utils/
     ├── validate_controlled_redundancy.cjs    # 受控冗余机制验证
     ├── validate_deep_cross_references.cjs    # 深度交叉引用验证
     ├── validate_simple_data_references.cjs   # 简化数据引用验证
-    ├── validate_data_stats.cjs               # 数据统计验证
+    ├── validate_metadata_consistency.cjs     # 元数据统计一致性验证
     ├── validate_all.cjs                      # 统一验证入口
     └── README.md                             # 本文件
 ```
@@ -63,7 +63,7 @@ utils/
   - 术语中的诗歌引用
   - 理论框架中的诗歌引用
 
-### 5. 数据统计验证 (`validate_data_stats.cjs`)
+### 5. 元数据统计一致性验证 (`validate_metadata_consistency.cjs`)
 - **功能**: 验证实际数据数量与元数据统计的一致性
 - **检查内容**:
   - 诗歌条目数统计
@@ -158,7 +158,7 @@ node utils/validators/validate_deep_cross_references.cjs
 node utils/validators/validate_simple_data_references.cjs
 
 # 数据统计验证
-node utils/validators/validate_data_stats.cjs
+node utils/validators/validate_metadata_consistency.cjs
 ```
 
 ## 配置说明

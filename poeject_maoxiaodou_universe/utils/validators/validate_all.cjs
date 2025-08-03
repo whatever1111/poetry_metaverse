@@ -2,12 +2,11 @@
  * 毛小豆宇宙统一验证入口脚本
  * 提供并行验证功能和验证结果汇总报告
  */
-const { validateTheoreticalFramework } = require('./validate_theoretical_framework.cjs');
 const { validateControlledRedundancy } = require('./validate_controlled_redundancy.cjs');
 const { validateDeepCrossReferences } = require('./validate_deep_cross_references.cjs');
 const { validateSimpleDataReferences } = require('./validate_simple_data_references.cjs');
-const { validateDataStats } = require('./validate_data_stats.cjs');
-const { validateScenes } = require('./validate_scenes.cjs');
+const { validateMetadataConsistency } = require('./validate_metadata_consistency.cjs');
+const { validateAllBidirectionalReferences } = require('./validate_bidirectional_references.cjs');
 
 /**
  * 验证配置
@@ -15,12 +14,6 @@ const { validateScenes } = require('./validate_scenes.cjs');
 const VALIDATION_CONFIG = {
     // 验证脚本配置
     validators: {
-        theoretical_framework: {
-            name: '理论框架验证',
-            function: validateTheoreticalFramework,
-            enabled: true,
-            description: '验证理论框架完整性、映射关系和阅读体验设计'
-        },
         controlled_redundancy: {
             name: '受控冗余机制验证',
             function: validateControlledRedundancy,
@@ -39,17 +32,17 @@ const VALIDATION_CONFIG = {
             enabled: true,
             description: '验证直接的数据引用关系（诗歌、角色、主题等）'
         },
-        data_stats: {
-            name: '数据统计验证',
-            function: validateDataStats,
+                       data_stats: {
+                   name: '元数据统计一致性验证',
+                   function: validateMetadataConsistency,
+                   enabled: true,
+                   description: '验证metadata.json中的统计数量与实际数据文件中的真实数量一致性'
+               },
+        bidirectional_references: {
+            name: '双向引用一致性验证',
+            function: validateAllBidirectionalReferences,
             enabled: true,
-            description: '验证实际数据数量与元数据统计的一致性'
-        },
-        scenes: {
-            name: '场景数据验证',
-            function: validateScenes,
-            enabled: true,
-            description: '验证scenes.json内部数据一致性和引用关系'
+            description: '验证两个数据类型之间的双向引用关系一致性'
         }
     },
     
