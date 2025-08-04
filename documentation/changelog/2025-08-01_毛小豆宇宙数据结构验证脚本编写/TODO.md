@@ -18,7 +18,7 @@
 - [x] 重构 `validate_controlled_redundancy.cjs` - 移除重复代码，使用公共工具
 - [x] 优化 `validate_deep_cross_references.cjs` - 使用公共数据加载器
 - [x] 优化 `validate_simple_data_references.cjs` - 使用公共数据加载器
-- [x] 优化 `validate_data_stats.cjs` - 使用公共数据加载器
+- [x] 优化 `validate_metadata_consistency.cjs` (原validate_data_stats.cjs) - 使用公共数据加载器
 
 ### 第三阶段：目录结构重构 ✅
 - [x] 创建 `utils/components/` 目录 - 存放公共组件工具
@@ -130,7 +130,7 @@ poetry_metaverse/
 │   │       ├── validate_controlled_redundancy.cjs
 │   │       ├── validate_deep_cross_references.cjs
 │   │       ├── validate_simple_data_references.cjs
-│   │       └── validate_data_stats.cjs
+│   │       └── validate_metadata_consistency.cjs (原validate_data_stats.cjs)
 │   ├── data/
 │   ├── poems/
 │   └── TODO_毛小豆宇宙_验证脚本重构.md
@@ -164,7 +164,7 @@ poetry_metaverse/
    - `validate_controlled_redundancy.cjs` - 使用公共工具，功能验证通过
    - `validate_deep_cross_references.cjs` - 使用公共数据加载器，功能验证通过
    - `validate_simple_data_references.cjs` - 使用公共数据加载器，功能验证通过
-   - `validate_data_stats.cjs` - 使用公共数据加载器，功能验证通过
+   - `validate_metadata_consistency.cjs` (原validate_data_stats.cjs) - 使用公共数据加载器，功能验证通过
 
 ### 📊 重构成果
 - **代码复用率提升**：消除了30-40%的重复代码
@@ -217,7 +217,7 @@ poeject_maoxiaodou_universe/
 │       ├── validate_controlled_redundancy.cjs
 │       ├── validate_deep_cross_references.cjs
 │       ├── validate_simple_data_references.cjs
-│       ├── validate_data_stats.cjs
+│       ├── validate_metadata_consistency.cjs (原validate_data_stats.cjs)
 │       ├── validate_all.cjs  # 统一验证入口
 │       └── README.md         # 使用文档
 ├── data/
