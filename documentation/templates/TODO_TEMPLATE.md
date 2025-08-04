@@ -1,5 +1,8 @@
 # [项目名称] [功能描述] TODO
 
+> **🤖 AI 助手注意 (AI Assistant Attention)**
+> 在执行本文件中的任何任务前，你必须首先阅读并严格遵守位于 `documentation/ai-collaboration-guide.md` 的全局协作指南。
+
 ## 目标
 [明确描述本次开发的目标和意义]
 
