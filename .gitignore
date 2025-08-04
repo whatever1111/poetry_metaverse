@@ -25,8 +25,8 @@ Thumbs.db
 *.temp
 
 # 环境变量文件（如果以后需要）
-.env
-.env.local
-.env.development
-.env.test
-.env.production
+poeject_zhou_spring_autumn/application/.env
+poeject_zhou_spring_autumn/application/.env.local
+poeject_zhou_spring_autumn/application/.env.development
+poeject_zhou_spring_autumn/application/.env.test
+poeject_zhou_spring_autumn/application/.env.production
