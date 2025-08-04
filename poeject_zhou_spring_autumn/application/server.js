@@ -157,6 +157,18 @@ app.get('/api/mappings', async (req, res) => {
     }
 });
 
+// 保存映射关系
+app.put('/api/mappings', async (req, res) => {
+    try {
+        const mappingsData = req.body;
+        await fs.writeFile(MAPPINGS_PATH, JSON.stringify(mappingsData, null, 4));
+        res.json({ message: '映射关系保存成功' });
+    } catch (error) {
+        console.error('保存映射关系失败:', error);
+        res.status(500).json({ error: 'Failed to save mappings' });
+    }
+});
+
 // 获取所有诗歌
 app.get('/api/poems-all', async (req, res) => {
     try {
@@ -560,7 +572,8 @@ adminRouter.get('/projects/:projectId/sub/:subProjectName', async (req, res) => 
         const questions = JSON.parse(questionsData)[subProjectName] || [];
 
         const mappingsData = await fs.readFile(MAPPINGS_DRAFT_PATH, 'utf-8');
-        const resultMap = JSON.parse(mappingsData)[subProjectName] || {};
+        const mappingsJson = JSON.parse(mappingsData);
+        const resultMap = mappingsJson.units ? mappingsJson.units[subProjectName] || {} : {};
         
         // 从草稿目录读取诗歌
         const subProjectPoemsDir = path.join(POEMS_DRAFT_DIR, subProjectName);
@@ -613,7 +626,10 @@ adminRouter.put('/projects/:projectId/sub/:subProjectName/resultMap', async (req
     try {
         const mappingsData = await fs.readFile(MAPPINGS_DRAFT_PATH, 'utf-8');
         let allMappings = JSON.parse(mappingsData);
-        allMappings[subProjectName] = newResultMap;
+        if (!allMappings.units) {
+            allMappings.units = {};
+        }
+        allMappings.units[subProjectName] = newResultMap;
         await fs.writeFile(MAPPINGS_DRAFT_PATH, JSON.stringify(allMappings, null, 4));
         res.status(204).send();
     } catch (error) {
