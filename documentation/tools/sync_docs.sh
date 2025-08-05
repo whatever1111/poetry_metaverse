@@ -93,45 +93,95 @@ push_to_docs() {
     # 检查是否有未提交的变更
     if ! git diff --quiet; then
         echo -e "${RED}❌ 请先提交当前分支的文档变更${NC}"
+        echo -e "${YELLOW}💡 提示: 所有文档更新都应在当前分支完成并提交${NC}"
         exit 1
     fi
+    
+    # 检查是否有未推送的提交
+    if [ "$(git rev-list HEAD...origin/$(git rev-parse --abbrev-ref HEAD) --count)" -gt 0 ]; then
+        echo -e "${YELLOW}⚠️  检测到未推送的提交${NC}"
+        echo -e "${YELLOW}💡 建议: 先推送当前分支的提交到远程，确保工作已备份${NC}"
+        echo -e "${YELLOW}💡 是否继续同步文档? (y/N)${NC}"
+        read -r response
+        if [[ ! "$response" =~ ^[Yy]$ ]]; then
+            echo -e "${RED}❌ 用户取消操作${NC}"
+            exit 1
+        fi
+        echo -e "${GREEN}✅ 继续执行文档同步${NC}"
+    fi
+    
+    # 先保存源分支名（在切换分支之前）
+    SOURCE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    echo -e "${GREEN}✅ 源分支: $SOURCE_BRANCH${NC}"
     
     # 切换到docs/shared分支
     git checkout docs/shared
     
-    # 从当前分支拉取文档
-    SOURCE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    # 从源分支拉取文档（只同步已commit的内容）
     for doc in "${SHARED_DOCS[@]}"; do
-        if [ -f "$doc" ]; then
-            echo -e "${YELLOW}📝 更新文档: $doc${NC}"
+        if git ls-tree "$SOURCE_BRANCH" "$doc" >/dev/null 2>&1; then
+            echo -e "${YELLOW}📝 同步文档: $doc${NC}"
             git checkout "$SOURCE_BRANCH" -- "$doc"
+        else
+            echo -e "${YELLOW}⚠️  文档不存在: $doc${NC}"
         fi
     done
     
-    # 同步documentation文件夹
-    if [ -d "documentation" ]; then
-        echo -e "${YELLOW}📁 更新documentation文件夹${NC}"
+    # 同步documentation文件夹（只同步已commit的内容）
+    if git ls-tree "$SOURCE_BRANCH" documentation/ >/dev/null 2>&1; then
+        echo -e "${YELLOW}📁 同步documentation文件夹${NC}"
         git checkout "$SOURCE_BRANCH" -- documentation/
-    fi
-    
-    # 同步tools文件夹
-    if [ -d "tools" ]; then
-        echo -e "${YELLOW}🔧 更新tools文件夹${NC}"
-        git checkout "$SOURCE_BRANCH" -- tools/
-    fi
-    
-    # 检查是否有变更
-    if ! git diff --quiet; then
-        git add "${SHARED_DOCS[@]}" documentation/ tools/
-        git commit -m "docs: 同步共享文档更新"
-        git push origin docs/shared
-        echo -e "${GREEN}✅ 文档已推送到docs/shared分支${NC}"
     else
-        echo -e "${YELLOW}ℹ️  文档无变更${NC}"
+        echo -e "${YELLOW}⚠️  documentation文件夹不存在${NC}"
+    fi
+    
+    # 同步documentation/tools文件夹（包含脚本本身）
+    if git ls-tree "$SOURCE_BRANCH" documentation/tools/ >/dev/null 2>&1; then
+        echo -e "${YELLOW}🔧 同步documentation/tools文件夹${NC}"
+        git checkout "$SOURCE_BRANCH" -- documentation/tools/
+    else
+        echo -e "${YELLOW}⚠️  documentation/tools文件夹不存在${NC}"
+    fi
+    
+    # 检查是否有实际变更
+    if ! git diff --quiet || ! git diff --cached --quiet; then
+        echo -e "${GREEN}📤 检测到文档变更，准备提交同步${NC}"
+        
+        # 只添加有变更的文件
+        CHANGED_FILES=()
+        
+        # 检查共享文档
+        for doc in "${SHARED_DOCS[@]}"; do
+            if ! git diff --quiet "$doc" 2>/dev/null || ! git diff --cached --quiet "$doc" 2>/dev/null; then
+                CHANGED_FILES+=("$doc")
+            fi
+        done
+        
+        # 检查documentation文件夹
+        if ! git diff --quiet documentation/ 2>/dev/null || ! git diff --cached --quiet documentation/ 2>/dev/null; then
+            CHANGED_FILES+=("documentation/")
+        fi
+        
+        # 检查documentation/tools文件夹
+        if git ls-tree "$SOURCE_BRANCH" documentation/tools/ >/dev/null 2>&1 && (! git diff --quiet documentation/tools/ 2>/dev/null || ! git diff --cached --quiet documentation/tools/ 2>/dev/null); then
+            CHANGED_FILES+=("documentation/tools/")
+        fi
+        
+        if [ ${#CHANGED_FILES[@]} -gt 0 ]; then
+            git add "${CHANGED_FILES[@]}"
+            git commit -m "docs: 同步来自 $SOURCE_BRANCH 分支的文档更新"
+            git push origin docs/shared
+            echo -e "${GREEN}✅ 文档已成功推送到docs/shared分支${NC}"
+        else
+            echo -e "${YELLOW}ℹ️  没有检测到实际变更${NC}"
+        fi
+    else
+        echo -e "${YELLOW}ℹ️  文档无变更，无需同步${NC}"
     fi
     
     # 切换回原分支
     git checkout "$SOURCE_BRANCH"
+    echo -e "${GREEN}✅ 已切换回 $SOURCE_BRANCH 分支${NC}"
 }
 
 # 主函数
