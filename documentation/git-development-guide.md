@@ -176,7 +176,119 @@ upstream  https://github.com/whatever1111/poetry_metaverse.git (push)
 
 ## 📚 项目文档管理
 
-### 0. TODO清单使用指南
+### 0. 文档管理体系概述
+
+#### 体系架构
+陆家花园项目建立了完整的文档管理体系，确保项目历史可追溯、开发过程可重现：
+
+```
+documentation/
+├── changelog/                    # 更新日志目录
+│   ├── YYYY-MM-DD_更新内容/     # 按日期组织的更新记录
+│   │   ├── TODO.md              # 原始任务清单
+│   │   ├── 更新日志.md          # 技术实现文档
+│   │   └── README.md            # 目录说明（可选）
+│   └── README.md                # 目录结构说明
+├── templates/                    # 文档模板
+│   ├── TODO_TEMPLATE.md         # TODO清单模板
+│   ├── 更新日志_TEMPLATE.md     # 更新日志模板
+│   └── README.md                # 模板说明
+├── ai-collaboration-guide.md    # AI协作指南
+├── git-development-guide.md     # Git开发指南
+└── docs-management-guide.md     # 文档管理指南
+```
+
+#### 核心原则
+1. **完整性**：每个重要更新都有完整的TODO清单和更新日志
+2. **可追溯性**：通过目录结构建立清晰的历史脉络
+3. **标准化**：使用统一模板确保文档格式一致
+4. **协作性**：支持AI和人类开发者的无缝协作
+
+#### 工作流程
+1. **创建TODO**：使用模板创建任务清单
+2. **执行开发**：按阶段完成任务并更新TODO
+3. **创建更新目录**：`documentation/changelog/YYYY-MM-DD_更新内容/`
+4. **移动TODO**：将完成的TODO移动到更新目录
+5. **创建更新日志**：记录技术实现细节
+6. **提交到Git**：保持文档与代码同步
+
+### 1. 专用文档管理分支 (docs/shared)
+
+#### 分支作用
+`docs/shared` 是项目的专用文档管理分支，作为所有共享文档的权威数据源：
+
+**核心功能**：
+- **文档权威源**：包含所有共享文档的最新版本
+- **多分支同步**：为所有开发分支提供统一的文档基础
+- **自动化管理**：通过同步脚本实现文档的自动更新
+- **版本控制**：确保文档变更的可追溯性
+
+**包含内容**：
+```
+docs/shared分支包含：
+├── 当前进展.md                    # 项目整体进展文档
+├── readme_forAI.md               # AI协作说明文档
+├── documentation/                # 完整文档体系
+│   ├── changelog/               # 更新日志目录
+│   ├── templates/               # 文档模板
+│   ├── ai-collaboration-guide.md
+│   ├── git-development-guide.md
+│   └── docs-management-guide.md
+└── tools/                       # 文档管理工具
+    └── sync_docs.sh            # 文档同步脚本
+```
+
+#### 文档同步机制
+
+**同步脚本使用**：
+```bash
+# 从docs/shared分支拉取文档更新到当前分支
+./documentation/tools/sync_docs.sh pull
+
+# 推送当前分支的文档更新到docs/shared分支
+./documentation/tools/sync_docs.sh push
+```
+
+**同步流程**：
+1. **开发分支**：在功能分支上开发时，定期从 `docs/shared` 拉取文档更新
+2. **文档更新**：在开发过程中更新相关文档
+3. **推送更新**：将文档变更推送到 `docs/shared` 分支
+4. **其他分支**：其他分支可以从 `docs/shared` 拉取最新文档
+
+**陆家花园项目示例**：
+```bash
+# 在feature/zhou-spring-autumn分支上开发时
+# 1. 拉取最新文档
+./documentation/tools/sync_docs.sh pull
+
+# 2. 开发过程中更新文档
+# 编辑相关文档...
+
+# 3. 推送文档更新
+./documentation/tools/sync_docs.sh push
+```
+
+#### 多分支文档管理最佳实践
+
+**开发分支文档管理**：
+1. **开始开发前**：从 `docs/shared` 拉取最新文档
+2. **开发过程中**：及时更新相关文档
+3. **功能完成后**：推送文档更新到 `docs/shared`
+4. **定期同步**：定期从 `docs/shared` 拉取其他分支的文档更新
+
+**文档冲突处理**：
+```bash
+# 如果文档同步时出现冲突
+git stash                    # 暂存当前更改
+./documentation/tools/sync_docs.sh pull  # 拉取文档更新
+git stash pop               # 恢复暂存的更改
+# 手动解决冲突后提交
+```
+
+**作用**: 确保所有分支的文档保持一致性，避免文档版本混乱
+**预防故障**: 防止文档在不同分支间出现版本不一致的问题
+
+### 2. TODO清单使用指南
 
 #### 为什么要使用TODO清单？
 
@@ -309,7 +421,7 @@ upstream  https://github.com/whatever1111/poetry_metaverse.git (push)
 **作用**: 避免过度文档化，确保重要变更有完整记录
 **预防故障**: 防止小改动过度复杂化，大改动缺乏规划
 
-### 1. 更新日志目录结构规范
+### 3. 更新日志目录结构规范
 
 #### 目录组织原则
 每个重要更新都创建一个独立的子目录，包含该更新的完整信息：
@@ -348,7 +460,7 @@ touch "documentation/changelog/2025-01-XX_毛小豆宇宙项目功能完善/更�
 **作用**: 保持项目文档的逻辑关联性和历史追溯性
 **预防故障**: 避免文档分散，确保更新信息的完整性
 
-### 2. TODO清单与更新日志关联机制
+### 4. TODO清单与更新日志关联机制
 
 #### TODO清单模板
 **模板位置**: `documentation/templates/TODO_TEMPLATE.md`
@@ -406,7 +518,7 @@ cp documentation/templates/TODO_TEMPLATE.md TODO_新功能开发.md
 **作用**: 确保TODO清单和更新日志的逻辑关联
 **预防故障**: 避免任务遗漏，确保文档与代码的一致性
 
-### 3. 更新日志内容规范
+### 5. 更新日志内容规范
 
 #### 更新日志模板
 **模板位置**: `documentation/templates/更新日志_TEMPLATE.md`
@@ -499,7 +611,7 @@ cp documentation/templates/更新日志_TEMPLATE.md "documentation/changelog/YYY
 **作用**: 提供完整的变更记录，便于团队理解和维护
 **预防故障**: 避免更新信息不清晰，确保变更可追溯
 
-### 4. 文档管理最佳实践
+### 6. 文档管理最佳实践
 
 #### 项目模板使用指南
 本项目提供了标准化的文档模板，确保所有文档的一致性和专业性：
@@ -523,7 +635,7 @@ cp documentation/templates/更新日志_TEMPLATE.md "documentation/changelog/YYY
 **作用**: 确保项目文档的一致性和专业性
 **预防故障**: 避免文档格式混乱，提高团队协作效率
 
-### 5. AI协作
+### 7. AI协作
 本项目大量使用AI辅助开发，所有协作者（无论是人类还是AI）均需遵守在 [AI协作指南](./ai-collaboration-guide.md) 中定义的协议。
 
 #### 创建新更新流程
@@ -554,7 +666,38 @@ cp documentation/templates/更新日志_TEMPLATE.md "documentation/changelog/YYY
 
 ## 🌿 分支管理
 
-### 1. 查看分支
+### 1. 项目分支体系
+
+#### 分支架构概述
+陆家花园项目采用多分支开发模式，每个分支都有明确的职责：
+
+```
+项目分支体系：
+├── main                           # 主分支，包含稳定的项目代码
+├── docs/shared                    # 专用文档管理分支（权威文档源）
+├── feature/add-project-based-management  # 项目管理功能分支
+├── feature/maoxiaodou-universe    # 毛小豆宇宙项目分支
+└── feature/zhou-spring-autumn     # 周春秋项目分支
+```
+
+#### 分支职责分工
+
+**main分支**：
+- **作用**：项目的主干分支，包含稳定可用的代码
+- **更新方式**：通过Pull Request合并功能分支
+- **特点**：只包含经过测试和审查的代码
+
+**docs/shared分支**：
+- **作用**：专用文档管理分支，作为所有共享文档的权威数据源
+- **包含内容**：项目进展文档、开发指南、模板等共享文档
+- **同步机制**：通过 `sync_docs.sh` 脚本实现多分支文档同步
+- **特点**：不包含项目代码，只包含文档和工具
+
+**feature分支**：
+- **作用**：功能开发分支，用于开发特定功能或项目
+- **命名规范**：`feature/功能描述`
+- **生命周期**：开发完成后合并到main分支并删除
+- **特点**：可以包含代码和文档，但文档应与docs/shared保持同步
 
 #### 查看所有分支（本地+远程）
 ```bash
@@ -722,6 +865,20 @@ git switch -c feature/maoxiaodou-frontend-dev
 **作用**: 将你的工作与主干隔离，确保开发过程的安全和独立。
 **预防故障**: 避免直接在 `main` 分支上开发，这是Git工作流中最核心的禁忌之一。
 
+#### 第3步：同步文档（重要）
+在开始开发前，确保你的功能分支包含最新的共享文档：
+```bash
+# 从docs/shared分支拉取最新文档
+./documentation/tools/sync_docs.sh pull
+```
+**陆家花园项目示例**:
+```bash
+# 确保功能分支包含最新的开发指南和文档模板
+./documentation/tools/sync_docs.sh pull
+```
+**作用**: 确保开发过程中使用的文档是最新版本，避免文档版本不一致。
+**预防故障**: 防止使用过时的文档模板或指南，确保开发规范的一致性。
+
 ### 2. 开发中：提交与推送
 
 #### 第1步：编码与暂存
@@ -757,6 +914,20 @@ git push
 ```
 **作用**: 备份你的本地工作到云端，并为后续创建Pull Request做准备。
 **预防故障**: 防止因本地电脑故障导致的工作丢失。
+
+#### 第4步：更新文档（如需要）
+如果开发过程中涉及文档的更新，应及时推送到 `docs/shared` 分支：
+```bash
+# 推送文档更新到docs/shared分支
+./documentation/tools/sync_docs.sh push
+```
+**陆家花园项目示例**:
+```bash
+# 更新了开发指南或项目文档后
+./documentation/tools/sync_docs.sh push
+```
+**作用**: 确保其他分支能够及时获取到最新的文档更新。
+**预防故障**: 防止文档更新滞后，确保团队协作的文档一致性。
 
 ### 3. 完成任务：准备Pull Request
 
@@ -1130,6 +1301,8 @@ git commit -m "docs: 创建陆家花园项目Git开发指南文档"
 - 毛小豆宇宙分支基于项目管理分支，注意继承关系
 - 诗歌数据文件较大，注意提交效率
 - 多项目架构，注意分支间的依赖关系
-- **提交历史管理**：每个功能分支合并到主分支时，应该只包含一个（或少数几个）逻辑清晰的提交 
+- **提交历史管理**：每个功能分支合并到主分支时，应该只包含一个（或少数几个）逻辑清晰的提交
+- **文档同步管理**：定期从 `docs/shared` 分支同步文档，确保所有分支使用统一的文档版本
+- **文档更新流程**：涉及文档变更时，应及时推送到 `docs/shared` 分支，保持文档的权威性 
 
  
