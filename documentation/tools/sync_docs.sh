@@ -64,16 +64,16 @@ sync_from_docs() {
         fi
     fi
     
-    # 同步tools文件夹
-    if [ -d "tools" ]; then
-        echo -e "${YELLOW}🔧 同步tools文件夹${NC}"
-        git checkout origin/docs/shared -- tools/
+    # 同步documentation/tools文件夹
+    if [ -d "documentation/tools" ]; then
+        echo -e "${YELLOW}🔧 同步documentation/tools文件夹${NC}"
+        git checkout origin/docs/shared -- documentation/tools/
         
         # 检查是否有变更
-        if ! git diff --quiet tools/; then
-            echo -e "${GREEN}✅ tools文件夹已更新${NC}"
+        if ! git diff --quiet documentation/tools/; then
+            echo -e "${GREEN}✅ documentation/tools文件夹已更新${NC}"
         else
-            echo -e "${YELLOW}ℹ️  tools文件夹无变更${NC}"
+            echo -e "${YELLOW}ℹ️  documentation/tools文件夹无变更${NC}"
         fi
     fi
     
