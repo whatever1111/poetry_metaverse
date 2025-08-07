@@ -29,6 +29,7 @@ const MAPPINGS_PATH = path.join(DATA_DIR, 'mappings.json');
 const PROJECTS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'projects.json');
 const QUESTIONS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'questions.json');
 const MAPPINGS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'mappings.json');
+const POEM_ARCHETYPES_PATH = path.join(DATA_DRAFT_DIR, 'poem_archetypes.json');
 
 // -- 初始化函数 --
 async function initializeDraftDirectories() {
