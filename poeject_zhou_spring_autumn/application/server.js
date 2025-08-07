@@ -8,7 +8,9 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
 
-dotenv.config();
+// 加载环境变量，优先加载 .env.local
+dotenv.config({ path: '.env.local' });
+dotenv.config(); // 然后加载 .env 作为后备
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -633,6 +635,60 @@ adminRouter.get('/projects/:projectId/sub/:subProjectName', async (req, res) => 
         });
     } catch (error) {
         res.status(500).json({ message: '获取草稿子项目数据失败', error: error.message });
+    }
+});
+
+// 更新子项目信息
+adminRouter.put('/projects/:projectId/sub/:subProjectName', async (req, res) => {
+    const { projectId, subProjectName } = req.params;
+    const { name, description } = req.body;
+    
+    console.log('更新子项目信息请求:', { projectId, subProjectName, name, description });
+    
+    if (!name) {
+        return res.status(400).json({ message: '篇章名称不能为空' });
+    }
+    
+    try {
+        // 读取主项目数据
+        console.log('正在读取项目数据文件:', PROJECTS_DRAFT_PATH);
+        const projectsData = await fs.readFile(PROJECTS_DRAFT_PATH, 'utf-8');
+        let projects = JSON.parse(projectsData);
+        console.log('项目数据结构:', JSON.stringify(projects, null, 2));
+        
+        // 找到对应的主项目
+        const projectIndex = projects.projects.findIndex(p => p.id === projectId);
+        console.log('主项目索引:', projectIndex);
+        if (projectIndex === -1) {
+            return res.status(404).json({ message: '主项目不存在' });
+        }
+        
+        // 找到对应的子项目
+        const subProjectIndex = projects.projects[projectIndex].subProjects.findIndex(sp => sp.name === subProjectName);
+        console.log('子项目索引:', subProjectIndex);
+        if (subProjectIndex === -1) {
+            return res.status(404).json({ message: '子项目不存在' });
+        }
+        
+        // 更新子项目信息，保留原有的id字段
+        const originalSubProject = projects.projects[projectIndex].subProjects[subProjectIndex];
+        console.log('原始子项目:', originalSubProject);
+        projects.projects[projectIndex].subProjects[subProjectIndex] = { 
+            ...originalSubProject,
+            name, 
+            description 
+        };
+        console.log('更新后的子项目:', projects.projects[projectIndex].subProjects[subProjectIndex]);
+        
+        // 保存更新后的数据
+        console.log('正在保存更新后的数据...');
+        await fs.writeFile(PROJECTS_DRAFT_PATH, JSON.stringify(projects, null, 4));
+        console.log('数据保存成功');
+        
+        res.json({ name, description });
+    } catch (error) {
+        console.error('更新子项目信息失败:', error);
+        res.status(500).json({ message: '更新子项目信息失败', error: error.message });
     }
 });
 

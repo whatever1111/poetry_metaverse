@@ -147,7 +147,7 @@
             mainProjectList.innerHTML += `
                 <div class="project-card bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer animate-fadeInUp" style="animation-delay: ${0.1 * index}s;" data-project-id="${p.id}">
                     <h2 class="text-2xl font-bold mb-2 text-gray-800">${p.name}</h2>
-                    <p class="text-gray-600 mb-4">${p.description}</p>
+                    <div class="text-gray-600 mb-4 whitespace-pre-line">${p.description}</div>
                     <div class="flex justify-between items-center mt-4">
                         <p class="text-sm text-gray-500">导游: ${p.poet || '未指定'}</p>
                         <button class="enter-main-project-btn bg-gray-800 text-white font-bold py-2 px-6 rounded-full hover:bg-gray-700">进入</button>
@@ -163,14 +163,14 @@
         showScreen('sub');
         const p = state.currentMainProject;
         $('#main-project-title').textContent = p.name;
-        $('#main-project-description').textContent = p.description;
+        $('#main-project-description').innerHTML = p.description.replace(/\n/g, '<br>');
         const subProjectList = $('#sub-project-list');
         subProjectList.innerHTML = '';
         p.subProjects.forEach((sp, index) => {
             subProjectList.innerHTML += `
                 <div class="project-card bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer animate-fadeInUp" style="animation-delay: ${0.1 * index}s;" data-chapter-name="${sp.name}">
                     <h3 class="text-xl font-bold mb-2">${sp.name}</h3>
-                    <p class="text-gray-500">${sp.description}</p>
+                    <div class="text-gray-500 whitespace-pre-line">${sp.description}</div>
                 </div>
             `;
         });
