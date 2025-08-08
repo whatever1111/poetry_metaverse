@@ -1,8 +1,8 @@
-# 陆家花园主宇宙数据库设计 - v1
+# 陆家花园主宇宙数据库设计 - v2 (草案)
 
-## 实体关系图 (ERD)
+## 实体关系图 (ERD) - v2
 
-这是项目第一阶段设计的统一数据库模型。它旨在整合“毛小豆宇宙”和“周与春秋”两个子项目的数据。
+这是根据“主宇宙”关联模型修正后的数据库设计。它旨在建立一个统一的、高维度的概念层，让各子宇宙的内容映射其上，实现真正的跨宇宙融合。
 
 ```mermaid
 erDiagram
@@ -22,7 +22,7 @@ erDiagram
         int id PK
         string name
         string description
-        int universe_id FK
+        int universe_id FK "FK to a specific universe like 'Zhou & Spring Autumn'"
     }
 
     Poems {
@@ -34,35 +34,35 @@ erDiagram
         int author_id FK
     }
 
+    %% --- Universal Concepts (Belong to the Main Universe) ---
+    Universal_Themes {
+        int id PK
+        string name
+        text description
+    }
+
+    Universal_Scenes {
+        int id PK
+        string name
+        text description
+    }
+
+    Universal_Terms {
+        int id PK
+        string name
+        text definition
+    }
+    %% --- End Universal Concepts ---
+
     Characters {
         int id PK
         string name
         string role
         text description
-        int universe_id FK
+        int universe_id FK "FK to a specific universe like 'Maoxiaodou'"
     }
 
-    Themes {
-        int id PK
-        string name
-        text description
-        int universe_id FK
-    }
-
-    Scenes {
-        int id PK
-        string name
-        text description
-        int universe_id FK
-    }
-
-    Terms {
-        int id PK
-        string name
-        text definition
-        int universe_id FK
-    }
-
+    %% --- Zhou & Spring Autumn Specific Tables ---
     Questions {
         int id PK
         text question_text
@@ -83,7 +83,9 @@ erDiagram
         string answer_combo
         int poem_id FK
     }
+    %% --- End Zhou & Spring Autumn Specific Tables ---
 
+    %% --- Link Tables for Many-to-Many Relationships ---
     Poem_Character_Links {
         int poem_id FK
         int character_id FK
@@ -91,18 +93,19 @@ erDiagram
 
     Poem_Theme_Links {
         int poem_id FK
-        int theme_id FK
+        int theme_id FK "Links to Universal_Themes"
     }
 
     Poem_Scene_Links {
         int poem_id FK
-        int scene_id FK
+        int scene_id FK "Links to Universal_Scenes"
     }
 
     Poem_Term_Links {
         int poem_id FK
-        int term_id FK
+        int term_id FK "Links to Universal_Terms"
     }
+    %% --- End Link Tables ---
 
     Universes ||--o{ Collections : contains
     Authors ||--o{ Poems : "authors"
@@ -117,22 +120,21 @@ erDiagram
     Characters }o--o{ Poem_Character_Links : links
 
     Poems }o--o{ Poem_Theme_Links : links
-    Themes }o--o{ Poem_Theme_Links : links
+    Universal_Themes }o--o{ Poem_Theme_Links : links
 
     Poems }o--o{ Poem_Scene_Links : links
-    Scenes }o--o{ Poem_Scene_Links : links
+    Universal_Scenes }o--o{ Poem_Scene_Links : links
 
     Poems }o--o{ Poem_Term_Links : links
-    Terms }o--o{ Poem_Term_Links : links
+    Universal_Terms }o--o{ Poem_Term_Links : links
 ```
 
-## 设计解读
+## 设计解读 - v2
 
-### 设计核心
-1.  **核心实体表**: `Universes`, `Authors`, `Collections`, `Poems` 构成了内容的基本框架。`Characters`, `Themes`, `Scenes`, `Terms` 用于存储“毛小豆宇宙”的元数据。
-2.  **交互逻辑表**: `Questions`, `AnswerOptions`, `PoemMappings` 复刻了“周与春秋”的引导式交互流程。
-3.  **关系连接表**: 如 `Poem_Character_Links`，用于解决实体间“多对多”的复杂关系。
+### 核心变更
+1.  **概念中立化**: 移除了原 `Themes`, `Scenes`, `Terms` 表中的 `universe_id` 外键，并将它们重命名为 `Universal_Themes`, `Universal_Scenes`, `Universal_Terms`。这使它们成为了**独立于任何子宇宙的、可被全局共享的核心概念**。
+2.  **关联解耦**: 诗歌 (`Poems`) 与这些通用概念的关联，完全通过链接表（如 `Poem_Theme_Links`）实现。这意味着，任何宇宙中的任何一首诗，都可以链接到任何一个通用主题上，从而实现了真正的跨宇宙数据融合。
+3.  **保留特有实体**: 像 `Characters` 这样强绑定于某一宇宙的实体，仍然保留其 `universe_id` 外键，维持其特有属性。
 
 ### 总结
-该结构具备统一性、兼容性和可扩展性，能为两个子项目提供一个稳固且统一的数据基础。
-
+v2版本的Schema现在完全能够支撑我们设想的“陆家花园主宇宙”的关联模型。它结构清晰、高度可扩展，并为未来的跨宇宙功能奠定了坚实的数据基础。
