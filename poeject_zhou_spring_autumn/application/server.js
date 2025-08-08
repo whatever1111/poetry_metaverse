@@ -8,7 +8,9 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
 
-dotenv.config();
+// 加载环境变量，优先加载 .env.local
+dotenv.config({ path: '.env.local' });
+dotenv.config(); // 然后加载 .env 作为后备
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,6 +31,7 @@ const MAPPINGS_PATH = path.join(DATA_DIR, 'mappings.json');
 const PROJECTS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'projects.json');
 const QUESTIONS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'questions.json');
 const MAPPINGS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'mappings.json');
+const POEM_ARCHETYPES_PATH = path.join(DATA_DRAFT_DIR, 'poem_archetypes.json');
 
 // -- 初始化函数 --
 async function initializeDraftDirectories() {
@@ -154,6 +157,28 @@ app.get('/api/mappings', async (req, res) => {
         res.json(JSON.parse(mappingsData));
     } catch (error) {
         res.status(500).json({ error: 'Failed to read mappings' });
+    }
+});
+
+// [新增] 获取所有诗歌原型
+app.get('/api/poem-archetypes', async (req, res) => {
+    try {
+        const archetypesData = await fs.readFile(POEM_ARCHETYPES_PATH, 'utf-8');
+        res.json(JSON.parse(archetypesData));
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to read poem archetypes' });
+    }
+});
+
+// 保存映射关系
+app.put('/api/mappings', async (req, res) => {
+    try {
+        const mappingsData = req.body;
+        await fs.writeFile(MAPPINGS_PATH, JSON.stringify(mappingsData, null, 4));
+        res.json({ message: '映射关系保存成功' });
+    } catch (error) {
+        console.error('保存映射关系失败:', error);
+        res.status(500).json({ error: 'Failed to save mappings' });
     }
 });
 
@@ -557,10 +582,30 @@ adminRouter.get('/projects/:projectId/sub/:subProjectName', async (req, res) => 
     try {
         // 从草稿文件读取
         const questionsData = await fs.readFile(QUESTIONS_DRAFT_PATH, 'utf-8');
-        const questions = JSON.parse(questionsData)[subProjectName] || [];
+        const questionsJson = JSON.parse(questionsData);
+        
+        // 解析chapters结构，找到对应的章节
+        let questions = [];
+        if (questionsJson.chapters) {
+            const chapter = questionsJson.chapters.find(ch => ch.id === subProjectName);
+            if (chapter && chapter.questions) {
+                // 转换数据格式以匹配admin页面期望的结构
+                questions = chapter.questions.map(q => ({
+                    question: q.text,
+                    options: {
+                        A: q.options.find(opt => opt.id.endsWith('a'))?.text || '',
+                        B: q.options.find(opt => opt.id.endsWith('b'))?.text || ''
+                    }
+                }));
+            }
+        } else {
+            // 兼容旧的简化结构
+            questions = questionsJson[subProjectName] || [];
+        }
 
         const mappingsData = await fs.readFile(MAPPINGS_DRAFT_PATH, 'utf-8');
-        const resultMap = JSON.parse(mappingsData)[subProjectName] || {};
+        const mappingsJson = JSON.parse(mappingsData);
+        const resultMap = mappingsJson.units ? mappingsJson.units[subProjectName] || {} : {};
         
         // 从草稿目录读取诗歌
         const subProjectPoemsDir = path.join(POEMS_DRAFT_DIR, subProjectName);
@@ -593,13 +638,86 @@ adminRouter.get('/projects/:projectId/sub/:subProjectName', async (req, res) => 
     }
 });
 
+// 更新子项目信息
+adminRouter.put('/projects/:projectId/sub/:subProjectName', async (req, res) => {
+    const { projectId, subProjectName } = req.params;
+    const { name, description } = req.body;
+    
+    console.log('更新子项目信息请求:', { projectId, subProjectName, name, description });
+    
+    if (!name) {
+        return res.status(400).json({ message: '篇章名称不能为空' });
+    }
+    
+    try {
+        // 读取主项目数据
+        console.log('正在读取项目数据文件:', PROJECTS_DRAFT_PATH);
+        const projectsData = await fs.readFile(PROJECTS_DRAFT_PATH, 'utf-8');
+        let projects = JSON.parse(projectsData);
+        console.log('项目数据结构:', JSON.stringify(projects, null, 2));
+        
+        // 找到对应的主项目
+        const projectIndex = projects.projects.findIndex(p => p.id === projectId);
+        console.log('主项目索引:', projectIndex);
+        if (projectIndex === -1) {
+            return res.status(404).json({ message: '主项目不存在' });
+        }
+        
+        // 找到对应的子项目
+        const subProjectIndex = projects.projects[projectIndex].subProjects.findIndex(sp => sp.name === subProjectName);
+        console.log('子项目索引:', subProjectIndex);
+        if (subProjectIndex === -1) {
+            return res.status(404).json({ message: '子项目不存在' });
+        }
+        
+        // 更新子项目信息，保留原有的id字段
+        const originalSubProject = projects.projects[projectIndex].subProjects[subProjectIndex];
+        console.log('原始子项目:', originalSubProject);
+        projects.projects[projectIndex].subProjects[subProjectIndex] = { 
+            ...originalSubProject,
+            name, 
+            description 
+        };
+        console.log('更新后的子项目:', projects.projects[projectIndex].subProjects[subProjectIndex]);
+        
+        // 保存更新后的数据
+        console.log('正在保存更新后的数据...');
+        await fs.writeFile(PROJECTS_DRAFT_PATH, JSON.stringify(projects, null, 4));
+        console.log('数据保存成功');
+        
+        res.json({ name, description });
+    } catch (error) {
+        console.error('更新子项目信息失败:', error);
+        res.status(500).json({ message: '更新子项目信息失败', error: error.message });
+    }
+});
+
 adminRouter.put('/projects/:projectId/sub/:subProjectName/questions', async (req, res) => {
     const { subProjectName } = req.params;
     const { questions: newQuestions } = req.body;
     try {
         const questionsData = await fs.readFile(QUESTIONS_DRAFT_PATH, 'utf-8');
         let allQuestions = JSON.parse(questionsData);
-        allQuestions[subProjectName] = newQuestions;
+        
+        if (allQuestions.chapters) {
+            // 处理chapters结构
+            const chapterIndex = allQuestions.chapters.findIndex(ch => ch.id === subProjectName);
+            if (chapterIndex !== -1) {
+                // 将admin页面的简化格式转换回chapters格式
+                allQuestions.chapters[chapterIndex].questions = newQuestions.map((q, index) => ({
+                    id: `q${index + 1}`,
+                    text: q.question,
+                    options: [
+                        { id: `q${index + 1}a`, text: q.options.A },
+                        { id: `q${index + 1}b`, text: q.options.B }
+                    ]
+                }));
+            }
+        } else {
+            // 兼容旧的简化结构
+            allQuestions[subProjectName] = newQuestions;
+        }
+        
         await fs.writeFile(QUESTIONS_DRAFT_PATH, JSON.stringify(allQuestions, null, 4));
         res.status(204).send();
     } catch (error) {
@@ -613,7 +731,10 @@ adminRouter.put('/projects/:projectId/sub/:subProjectName/resultMap', async (req
     try {
         const mappingsData = await fs.readFile(MAPPINGS_DRAFT_PATH, 'utf-8');
         let allMappings = JSON.parse(mappingsData);
-        allMappings[subProjectName] = newResultMap;
+        if (!allMappings.units) {
+            allMappings.units = {};
+        }
+        allMappings.units[subProjectName] = newResultMap;
         await fs.writeFile(MAPPINGS_DRAFT_PATH, JSON.stringify(allMappings, null, 4));
         res.status(204).send();
     } catch (error) {
@@ -697,10 +818,32 @@ adminRouter.post('/publish-all', async (req, res) => {
         const liveMappings = { units: {} }; // [修复] 初始化为带 units 的结构
         const livePoemFolders = [];
 
+        // 处理chapters结构的questions数据
+        if (allQuestions.chapters) {
+            // 将chapters结构转换为前端期望的简化结构
+            for (const chapter of allQuestions.chapters) {
+                const chapterName = chapter.id;
+                if (chapter.questions) {
+                    liveQuestions[chapterName] = chapter.questions.map(q => ({
+                        question: q.text,
+                        options: {
+                            A: q.options.find(opt => opt.id.endsWith('a'))?.text || '',
+                            B: q.options.find(opt => opt.id.endsWith('b'))?.text || ''
+                        },
+                        meaning: {
+                            A: `选择A的含义`, // 这里可以后续从results中提取
+                            B: `选择B的含义`
+                        }
+                    }));
+                }
+            }
+        }
+
         for (const project of publishedProjects) {
             for (const subProject of project.subProjects) {
                 const subProjectName = subProject.name;
-                if (allQuestions[subProjectName]) {
+                // 如果是旧的简化结构，保持兼容
+                if (!allQuestions.chapters && allQuestions[subProjectName]) {
                     liveQuestions[subProjectName] = allQuestions[subProjectName];
                 }
                 if (allMappings[subProjectName]) {
