@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "3.0",
+    "description": "当代都市生活的文学镜像，通过毛小豆及其周围人物的故事，展现消费主义、权力运作和身份焦虑等当代社会议题，具备完整的理论框架支撑",
+    "created_at": "2025-07-30",
+    "last_updated": "2025-01-XX",
+    "data_sources": {
+      "primary": "《毛小豆故事演绎》西尔.txt",
+      "analysis": "《毛小豆故事演绎》叙事结构梳理.txt",
+      "structure": "《毛小豆宇宙》结构化知识库 v1.0.json"
+    },
+    "theoretical_framework": {
+      "theories": [
+        "齐泽克的'淫秽补充'理论",
+        "阮思艾的'丑陋情感'理论", 
+        "福柯的'微观权力'理论",
+        "'门禁社区'诗学"
+      ],
+      "framework_files": [
+        "theoretical_framework.json",
+        "mappings.json",
+        "reading_experience.json"
+      ]
+    },
+    "validation_rules": {
+      "characters": {
+        "required_fields": [
+          "id",
+          "name",
+          "role",
+          "description"
+        ],
+        "id_format": "lowercase_with_underscores",
+        "relationship_references": "must_exist"
+      },
+      "poems": {
+        "required_fields": [
+          "id",
+          "title",
+          "section",
+          "summary"
+        ],
+        "character_references": "must_exist_in_characters",
+        "theme_references": "must_exist_in_themes"
+      }
+    }
+  },
+  "statistics": {
+    "total_characters": 30,
+    "total_poems": 14,
+    "total_themes": 6,
+    "total_terminology": 125,
+    "theoretical_framework": {
+      "total_theories": 4,
+      "theory_manifestations": 12,
+      "reading_layers": 3,
+      "reading_paths": 3
+    },
+    "sections": {
+      "正篇": 7,
+      "前篇": 3,
+      "番外": 4
+    },
+    "character_categories": {
+      "core": 4,
+      "secondary": 3,
+      "tertiary": 23
+    }
+  },
+  "relationships": {
+    "character_relationships": 38,
+    "poem_character_references": 65,
+    "theme_character_references": 106,
+    "poem_terminology_references": 48,
+    "theory_data_mappings": {
+      "theory_character_mappings": 8,
+      "theory_poem_mappings": 12,
+      "theory_terminology_mappings": 6,
+      "cross_theory_references": 3
+    }
+  }
+}

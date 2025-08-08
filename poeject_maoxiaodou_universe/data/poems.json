@@ -1,0 +1,1389 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "2.0",
+    "description": "毛小豆宇宙诗歌数据库",
+    "created_at": "2025-07-30",
+    "last_updated": "2025-07-30"
+  },
+  "poems": [
+    {
+      "id": "maoxiaodou_story_2",
+      "title": "毛小豆故事演绎 Ⅱ",
+      "section": "正篇",
+      "summary": "毛小豆参与一场与客户姚总、同事老蒋的商务酒局，并在结束后回忆起与前女友的关系。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "yaozong",
+          "name": "姚总"
+        },
+        {
+          "id": "laojiang",
+          "name": "老蒋"
+        },
+        {
+          "id": "fifi",
+          "name": "菲菲"
+        },
+        {
+          "id": "xiao_tuzi_xiao_limin",
+          "name": "小兔子，小丽敏?"
+        }
+      ],
+      "locations": [
+        "maoxiaodou_story_2_restroom_prep",
+        "maoxiaodou_story_2_business_dinner",
+        "maoxiaodou_story_2_private_car"
+      ],
+      "themes": [
+        "microphysics_of_power",
+        "consumerism",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "maoxiaodou_story_2_event_1",
+          "description": "毛小豆在卫生间进行自我审视，并通过观察高档西装、领带等物质符号确认自己的'表演'状态。",
+          "significance": "通过物质符号进行的身份确认和焦虑展现，是'表演性人格'的关键时刻。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "maoxiaodou_story_2_event_2",
+          "description": "在酒局上，姚总通过评价'脚白才是真白'和展示路铂廷高跟鞋，对老蒋和毛小豆进行权力和品味的测试。",
+          "significance": "一场典型的权力微观运作，融合了性别凝视、消费主义和甲方权威，构成了酒桌上的'微观剧场'。",
+          "related_characters": [
+            {
+              "id": "yaozong",
+              "name": "姚总"
+            },
+            {
+              "id": "laojiang",
+              "name": "老蒋"
+            },
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "maoxiaodou_story_2_event_3",
+          "description": "毛小豆通过微信语音与前女友梅朵（Fifi）分手，并随后回忆起与另一个符号化女性'小兔子'的往事。",
+          "significance": "展现了现代技术对亲密关系的异化，以及记忆的非线性闪回，连接了现在与过去的情感创伤。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "fifi",
+              "name": "菲菲"
+            },
+            {
+              "id": "xiao_tuzi_xiao_limin",
+              "name": "小兔子，小丽敏?"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "脚白才是真白",
+          "speaker": "laojiang",
+          "context": "对女性的身体评价",
+          "significance": "男性凝视的典型表达"
+        },
+        {
+          "text": "这定律，我比毕啸天发现得早",
+          "speaker": "maoxiaodou",
+          "context": "自我反思",
+          "significance": "对生活规律的认知"
+        }
+      ],
+      "emotional_tone": "疏离、观察、微妙的紧张",
+      "conflict": {
+        "explicit": "完成商务宴请",
+        "implicit": "表演与真实的冲突；权力与欲望的冲突；现在与过去的冲突"
+      },
+      "terminology": [
+        "louboutin_shoes",
+        "wechat_voice",
+        "mirror",
+        "shanghai_new_place",
+        "hooters",
+        "b52",
+        "sanhao_bay"
+      ]
+    },
+    {
+      "id": "shark_and_rock",
+      "title": "鲨鱼与岩石",
+      "section": "正篇",
+      "summary": "毛小豆与华少等人参与一场德州扑克牌局，期间展现了'兄弟会'内外的不同行为法则。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "huashao",
+          "name": "华少"
+        },
+        {
+          "id": "husuo",
+          "name": "胡所"
+        },
+        {
+          "id": "dapao",
+          "name": "大炮"
+        },
+        {
+          "id": "aning",
+          "name": "阿宁"
+        },
+        {
+          "id": "chenyuanzhuo",
+          "name": "陈远卓"
+        },
+        {
+          "id": "poker_girl",
+          "name": "牌局上的女孩"
+        }
+      ],
+      "locations": [
+        "shark_and_rock_poker_room",
+        "shark_and_rock_stairwell"
+      ],
+      "themes": [
+        "microphysics_of_power",
+        "male_community",
+        "identity_anxiety",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "shark_and_rock_event_1",
+          "description": "毛小豆因脚穿廉价的'拼多多百亿补贴'阿迪球鞋，在牌局的关键决策中选择盖牌。",
+          "significance": "深刻揭示了消费符号如何内化为自我评价，并直接影响个体在社会竞争（牌局）中的行为决策。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "shark_and_rock_event_2",
+          "description": "华少对牌友小铭的'Slowroll'行为（一种羞辱性的延迟亮牌）表现出极大的愤怒。",
+          "significance": "捍卫了牌局内部的'体面'与'道义'，展现了'兄弟会'法则中对尊严和规则的重视。",
+          "related_characters": [
+            {
+              "id": "huashao",
+              "name": "华少"
+            }
+          ]
+        },
+        {
+          "event_id": "shark_and_rock_event_3",
+          "description": "在楼梯间的私密交流中，毛小豆向华少剖白：'但是我不会河牌偷你'。",
+          "significance": "这是'兄弟会'内部信任关系的基石宣言，确立了一种超越牌局输赢的、非功利性的特殊法则。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "但是我不会河牌偷你",
+          "speaker": "maoxiaodou",
+          "context": "对华少的承诺",
+          "significance": "兄弟会关系的基石"
+        },
+        {
+          "text": "你属于偏弱的听牌怪",
+          "speaker": "huashao",
+          "context": "对毛小豆牌技的评价",
+          "significance": "理性批评者的洞察"
+        }
+      ],
+      "emotional_tone": "竞争、信任、疏离",
+      "conflict": {
+        "explicit": "德州扑克牌局的输赢",
+        "implicit": "圈层内外的法则冲突；身份认同的冲突；'恨铁不成钢'的情感冲突"
+      },
+      "terminology": [
+        "3_bet",
+        "c_bet",
+        "check_raise",
+        "limp",
+        "pinduoduo",
+        "baiyi_butie",
+        "adidas",
+        "team_basketball_shoes",
+        "slowroll",
+        "stairwell",
+        "utg",
+        "weak_drawing_player",
+        "dealer",
+        "big_blind",
+        "small_blind",
+        "button",
+        "call",
+        "allin",
+        "hj",
+        "lj",
+        "co",
+        "backdoor_full_house",
+        "daxue_road"
+      ]
+    },
+    {
+      "id": "gold_medal_winner",
+      "title": "金牌得主",
+      "section": "正篇",
+      "summary": "以张秋的视角，描述了她在职场专业性与健身房身体'内卷'之间的挣扎与应对，并观察了毛小豆'长胖未长大'的状态。",
+      "characters": [
+        {
+          "id": "zhangqiu",
+          "name": "张秋"
+        },
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "jianning",
+          "name": "简宁"
+        },
+        {
+          "id": "fanlaoge",
+          "name": "范老哥"
+        },
+        {
+          "id": "tianqi",
+          "name": "天琦"
+        },
+        {
+          "id": "mingjie",
+          "name": "明姐"
+        }
+      ],
+      "locations": [
+        "gold_medal_winner_office",
+        "gold_medal_winner_gym",
+        "gold_medal_winner_skating_rink"
+      ],
+      "themes": [
+        "microphysics_of_power",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "gold_medal_winner_event_1",
+          "description": "张秋在工作中熟练处理RFP项目，并与同事天琦结成'摸鱼搭子'，策略性地应对职场压力。",
+          "significance": "展现了张秋作为顶级专业人士的职业能力，以及她在系统压力下寻求个人自主的能动性。",
+          "related_characters": [
+            {
+              "id": "zhangqiu",
+              "name": "张秋"
+            },
+            {
+              "id": "jianning",
+              "name": "简宁"
+            },
+            {
+              "id": "fanlaoge",
+              "name": "范老哥"
+            },
+            {
+              "id": "tianqi",
+              "name": "天琦"
+            }
+          ]
+        },
+        {
+          "event_id": "gold_medal_winner_event_2",
+          "description": "张秋在健身房进行严苛的身体训练，学习'比基尼动作'，并与师娘明姐交流关于身体改造的话题。",
+          "significance": "揭示了当代女性面临的'身体内卷'压力，身体被项目化和指标化，成为被规训和竞争的对象。",
+          "related_characters": [
+            {
+              "id": "zhangqiu",
+              "name": "张秋"
+            },
+            {
+              "id": "mingjie",
+              "name": "明姐"
+            }
+          ]
+        },
+        {
+          "event_id": "gold_medal_winner_event_3",
+          "description": "张秋在滑冰场观察到毛小豆'长胖未长大'的状态，并对他说了'动听的垃圾话'。",
+          "significance": "首次从一个成熟女性视角对毛小豆的成长停滞状态进行评价，构成了两人关系的核心张力。",
+          "related_characters": [
+            {
+              "id": "zhangqiu",
+              "name": "张秋"
+            },
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "这是典型的穷人思维",
+          "speaker": "zhangqiu",
+          "context": "对消费观念的评价",
+          "significance": "理性分析者的视角"
+        },
+        {
+          "text": "还好还好，你只是长胖，没有长大",
+          "speaker": "zhangqiu",
+          "context": "对毛小豆的评价",
+          "significance": "对成长停滞的观察"
+        }
+      ],
+      "emotional_tone": "压力、观察、理性",
+      "conflict": {
+        "explicit": "平衡工作、社交与个人生活",
+        "implicit": "系统压力 vs. 个人自主的冲突；女性内部的竞争与认同冲突；成长与停滞的冲突"
+      },
+      "terminology": [
+        "bikini_workout",
+        "byod",
+        "byol",
+        "certified_breasts",
+        "deliverables",
+        "rfp",
+        "teams",
+        "toe_loop",
+        "salchow",
+        "axel",
+        "outlook",
+        "rsvp",
+        "in_person_or_online",
+        "critical_year",
+        "work_from_home",
+        "round_table_meeting",
+        "contact_person",
+        "ciso"
+      ]
+    },
+    {
+      "id": "remake",
+      "title": "毛小豆故事演绎 | REMAKE",
+      "section": "正篇",
+      "summary": "毛小豆在工作日的下午独自泡澡，并回忆起KTV的残局和理发师的更替，感受到一种日常被重制和替换的疏离感。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "huashao",
+          "name": "华少"
+        },
+        {
+          "id": "dongxiansheng",
+          "name": "栋先生"
+        },
+        {
+          "id": "laochu",
+          "name": "老楚"
+        }
+      ],
+      "locations": [
+        "remake_bathroom",
+        "remake_ktv_memory",
+        "remake_barbershop"
+      ],
+      "themes": [
+        "ugly_feelings",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "remake_event_1",
+          "description": "毛小豆在工作日的下午独自泡澡，并发表了'真是充满压力'的反讽式独白。",
+          "significance": "揭示了物质舒适与精神空虚的巨大鸿沟，是'丑陋情感'的典型表现。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "remake_event_2",
+          "description": "回忆KTV残局，栋先生'很有精神'，与烂醉的老楚和疲惫的华少形成对比。",
+          "significance": "这是一个关于青春散场和友谊负担的隐喻，并强化了栋先生作为'出世'参照物的角色。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            },
+            {
+              "id": "dongxiansheng",
+              "name": "栋先生"
+            },
+            {
+              "id": "laochu",
+              "name": "老楚"
+            }
+          ]
+        },
+        {
+          "event_id": "remake_event_3",
+          "description": "熟悉的理发师索尼被陌生的维尼取代，触发了毛小豆对日常'不对劲'的感受。",
+          "significance": "全诗'REMAKE'主题最直接的体现，象征着熟悉感的丧失和对'本真性'失落的怀旧。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "不对劲",
+          "speaker": "maoxiaodou",
+          "context": "感受到的异常感",
+          "significance": "对日常的怀疑"
+        }
+      ],
+      "emotional_tone": "疏离、怀疑、重复",
+      "conflict": {
+        "explicit": "度过一个清闲的下午",
+        "implicit": "熟悉与陌生的冲突；表象与真实的冲突；日常与潜在恐惧的冲突"
+      },
+      "terminology": []
+    },
+    {
+      "id": "new_year",
+      "title": "新年快乐",
+      "section": "正篇",
+      "summary": "毛小豆在获得游戏成就后，与张秋参加她姐妹的跨年派对，并在内心为自己'越来越好'的生活寻求合法性。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "zhangqiu",
+          "name": "张秋"
+        },
+        {
+          "id": "mumu",
+          "name": "木木"
+        },
+        {
+          "id": "xiaoyueshan",
+          "name": "小月山"
+        },
+        {
+          "id": "qianjie",
+          "name": "倩姐"
+        },
+        {
+          "id": "xiaoluo",
+          "name": "小罗"
+        }
+      ],
+      "locations": [
+        "new_year_home",
+        "new_year_party"
+      ],
+      "themes": [
+        "identity_anxiety",
+        "male_community",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "new_year_event_1",
+          "description": "毛小豆在获得PS5白金奖杯后，将其与长达13年的Dota挫败经历对比，获得一种可被量化的成就感。",
+          "significance": "反映了当代青年在现实中寻求'确定性'和'掌控感'的心理，即从开放式竞技转向封闭式、可完成的挑战。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            }
+          ]
+        },
+        {
+          "event_id": "new_year_event_2",
+          "description": "毛小豆参加张秋的姐妹跨年派对，扮演着一个完美的'+1'角色，应对着外部世界的审视。",
+          "significance": "展现了毛小豆在社交场合的表演性，以及他对融入外部圈层的努力与焦虑。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "zhangqiu",
+              "name": "张秋"
+            },
+            {
+              "id": "mumu",
+              "name": "木木"
+            },
+            {
+              "id": "xiaoyueshan",
+              "name": "小月山"
+            },
+            {
+              "id": "qianjie",
+              "name": "倩姐"
+            },
+            {
+              "id": "xiaoluo",
+              "name": "小罗"
+            }
+          ]
+        },
+        {
+          "event_id": "new_year_event_3",
+          "description": "诗歌结尾，毛小豆在内心自问：'生活确实是越来越好了。不可以吗？'。",
+          "significance": "暴露了其犬儒姿态下的内在不确定性，他潜意识里认为这种幸福可能是虚假的、需要被辩护的。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "生活确实是越来越好了。不可以吗?",
+          "speaker": "maoxiaodou",
+          "context": "自我质问",
+          "significance": "价值观冲突的体现"
+        }
+      ],
+      "emotional_tone": "矛盾、自我怀疑、寻求认可",
+      "conflict": {
+        "explicit": "参加一场新年跨年派对",
+        "implicit": "虚拟成就与现实成就的冲突；自我肯定与外部认可的冲突；犬儒姿态与对幸福的渴望的冲突"
+      },
+      "terminology": []
+    },
+    {
+      "id": "temple",
+      "title": "拆庙",
+      "section": "正篇",
+      "summary": "毛小豆参加朋友的婚礼，并回忆起与栋先生在云南的'翻车'经历，揭示了创伤记忆对现在的影响。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "dongxiansheng",
+          "name": "栋先生"
+        },
+        {
+          "id": "zhangqiu",
+          "name": "张秋"
+        },
+        {
+          "id": "xiaowu",
+          "name": "小吴"
+        },
+        {
+          "id": "xiaoliao",
+          "name": "小廖"
+        },
+        {
+          "id": "huashao",
+          "name": "华少"
+        },
+        {
+          "id": "laochu",
+          "name": "老楚"
+        },
+        {
+          "id": "yuanyuan",
+          "name": "圆圆"
+        }
+      ],
+      "locations": [
+        "temple_wedding",
+        "temple_home_party",
+        "temple_yunnan_memory"
+      ],
+      "themes": [
+        "male_community",
+        "ugly_feelings",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "temple_event_1",
+          "description": "毛小豆在朋友的婚礼上，以播放戏谑的流行歌曲《求佛》和夸张的舞蹈，进行反仪式的表演。",
+          "significance": "这是一种用戏谑来防御和解构传统仪式的行为，凸显了'兄弟会'与主流价值观的疏离。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "temple_event_2",
+          "description": "毛小豆详细回忆了在云南与栋先生经历的'翻车'事件，以及栋先生之后的失忆和反复询问状态。",
+          "significance": "这是一个关键的创伤性记忆，为栋先生当下的'创伤后遗症'状态提供了病理学解释。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "dongxiansheng",
+              "name": "栋先生"
+            },
+            {
+              "id": "zhangqiu",
+              "name": "张秋"
+            }
+          ]
+        },
+        {
+          "event_id": "temple_event_3",
+          "description": "在家庭派对上，众人在观看《仙剑奇侠传》时陷入怀旧，张秋则以清醒的姿态将他们拉回现实。",
+          "significance": "观看《仙剑》是一种向共同的、纯粹的过去寻求慰藉的回归仪式，而张秋再次扮演了清醒旁观者的角色。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "dongxiansheng",
+              "name": "栋先生"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            },
+            {
+              "id": "zhangqiu",
+              "name": "张秋"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "我依然觉得，她是我见过，最温暖的人",
+          "speaker": "dongxiansheng",
+          "context": "对过去的回忆",
+          "significance": "创伤记忆的体现"
+        }
+      ],
+      "emotional_tone": "怀旧、创伤、复杂情感",
+      "conflict": {
+        "explicit": "参加朋友婚礼，举办家庭派对",
+        "implicit": "前进与停滞的冲突；责任与逃避的冲突；记忆与现实的冲突"
+      },
+      "terminology": []
+    },
+    {
+      "id": "fortune",
+      "title": "八方来财",
+      "section": "正篇",
+      "summary": "在平淡的办公室日常中，毛小豆的思绪不断被关于童年幻想、大学创伤和母亲患病的记忆所侵入。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "fifi",
+          "name": "菲菲"
+        },
+        {
+          "id": "huashao",
+          "name": "华少"
+        }
+      ],
+      "locations": [
+        "fortune_office",
+        "fortune_bbq_restroom"
+      ],
+      "themes": [
+        "ugly_feelings",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "fortune_event_1",
+          "description": "在平淡的办公室日常中，毛小豆的思绪被关于童年性启蒙（巩俐阿姨）和秩序迷恋（九九乘法表）的幻想所侵入。",
+          "significance": "揭示了主人公早年试图用理性的、可控的框架去理解和收编非理性的欲望冲动。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "fortune_event_2",
+          "description": "回忆大学时期为通过理论力学考试，与张秋在情侣酒店进行'交易'般的复习。",
+          "significance": "这是一个关于失败、'交易'和被窥视的创伤记忆，关联了权力寻租和关系的复杂性。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "zhangqiu",
+              "name": "张秋"
+            }
+          ]
+        },
+        {
+          "event_id": "fortune_event_3",
+          "description": "得知母亲患癌的消息后，毛小豆在烧烤店厕所经历了又哭又笑又吐的生理性崩溃。",
+          "significance": "这是'症状'的集中爆发，被压抑的巨大创伤通过失控的身体反应得以展现，是理解其情感压抑机制的关键节点。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "母亲患病的记忆",
+          "speaker": "narrator",
+          "context": "创伤回忆",
+          "significance": "家庭创伤的体现"
+        }
+      ],
+      "emotional_tone": "压抑、回忆、创伤",
+      "conflict": {
+        "explicit": "在办公室度过平淡的一天",
+        "implicit": "意识与无意识的冲突；洁净与污秽的冲突；坦诚与伪装的冲突"
+      },
+      "terminology": []
+    },
+    {
+      "id": "sodium",
+      "title": "钠",
+      "section": "前篇",
+      "summary": "在高中时代，一场因情感纠纷引发的冲突，被转化为一场关于食物的内部竞争，奠定了'兄弟会'的早期法则。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "huashao",
+          "name": "华少"
+        },
+        {
+          "id": "dongxiansheng",
+          "name": "栋先生"
+        },
+        {
+          "id": "yuanzhi",
+          "name": "远志"
+        },
+        {
+          "id": "baoge",
+          "name": "鲍哥"
+        },
+        {
+          "id": "laochu",
+          "name": "老楚"
+        }
+      ],
+      "locations": [
+        "sodium_school_corridor",
+        "sodium_outdoor_cafe"
+      ],
+      "themes": [
+        "male_community",
+        "microphysics_of_power",
+        "ugly_feelings",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "sodium_event_1",
+          "description": "因情感纠纷（抢女友），毛小豆将对华少的怨气，从'他抢了我喜欢的女孩'转移到'是他先不和我吃钠的'。",
+          "significance": "这是关键的矛盾转化，用一种内部的、关于食物分享的'罪名'，替换了一个外部的、关于情感背叛的罪名，从而将冲突控制在'兄弟会'的内部法则之下。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            },
+            {
+              "id": "yuanzhi",
+              "name": "远志"
+            }
+          ]
+        },
+        {
+          "event_id": "sodium_event_2",
+          "description": "钠派与盖帮展开吃饭比赛，将异性情感冲突成功转化为一场可控的、仪式化的同性竞争。",
+          "significance": "展现了'兄弟会'如何通过创造内部仪式来消化和管理来自外部世界（尤其是异性关系）的潜在威胁，从而维持共同体的稳定。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            },
+            {
+              "id": "dongxiansheng",
+              "name": "栋先生"
+            },
+            {
+              "id": "baoge",
+              "name": "鲍哥"
+            }
+          ]
+        },
+        {
+          "event_id": "sodium_event_3",
+          "description": "毛小豆在分配零食时，通过语言游戏为自己多拿了三包牛板筋。",
+          "significance": "展现了他作为早熟的'系统玩家'的特质，懂得如何利用规则和语言为自己谋利。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "laochu",
+              "name": "老楚"
+            },
+            {
+              "id": "dongxiansheng",
+              "name": "栋先生"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "钠派屡屡挑衅盖帮",
+          "speaker": "narrator",
+          "context": "校园竞争",
+          "significance": "男性共同体的竞争"
+        }
+      ],
+      "emotional_tone": "竞争、青春、纯真",
+      "conflict": {
+        "explicit": "'钠派'与'盖帮'的吃饭比赛",
+        "implicit": "男性共同体面对外部（女性）入侵时的内部张力与调和机制"
+      },
+      "terminology": []
+    },
+    {
+      "id": "wheat",
+      "title": "麦",
+      "section": "前篇",
+      "summary": "毛小豆通过各种投机取巧的手段创建和运营学生社团，展现了他作为'系统玩家'的早期面貌。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "dongxiansheng",
+          "name": "栋先生"
+        },
+        {
+          "id": "keren",
+          "name": "可人"
+        },
+        {
+          "id": "baoge",
+          "name": "鲍哥"
+        },
+        {
+          "id": "lizhong",
+          "name": "李种"
+        },
+        {
+          "id": "laochu",
+          "name": "老楚"
+        }
+      ],
+      "locations": [
+        "wheat_campus"
+      ],
+      "themes": [
+        "microphysics_of_power",
+        "identity_anxiety",
+        "ugly_feelings",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "wheat_event_1",
+          "description": "毛小豆用牛板筋、盖浇饭等食物作为社交货币，贿赂、交换人情，以达成创建社团的目的。",
+          "significance": "标志着他已开始理解并实践最基本的社会交换原则，食物从友谊象征转变为交易媒介。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "keren",
+              "name": "可人"
+            },
+            {
+              "id": "baoge",
+              "name": "鲍哥"
+            },
+            {
+              "id": "laochu",
+              "name": "老楚"
+            }
+          ]
+        },
+        {
+          "event_id": "wheat_event_2",
+          "description": "毛小豆偷来写着'以梦为马'的亚克力板作为社团招牌，并在社团活动中播放被禁止的电影。",
+          "significance": "构成了全诗最大的反讽——最理想主义的口号，是通过最投机主义的手段实现的，展现了他'利用规则'与'挑战规则'的行为逻辑。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "dongxiansheng",
+              "name": "栋先生"
+            }
+          ]
+        },
+        {
+          "event_id": "wheat_event_3",
+          "description": "因行为出格，毛小豆最终被班主任评价为'不是人'。",
+          "significance": "标志着他作为'系统玩家'在挑战规则时，与官方系统的规训发生了直接碰撞。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "布拉格之恋",
+          "speaker": "narrator",
+          "context": "社团活动",
+          "significance": "理想主义的体现"
+        }
+      ],
+      "emotional_tone": "投机、理想、现实",
+      "conflict": {
+        "explicit": "创建和运营一个学生社团",
+        "implicit": "个人意志与系统规训的冲突；理想主义口号与犬儒主义行为的冲突"
+      },
+      "terminology": []
+    },
+    {
+      "id": "museum",
+      "title": "馆",
+      "section": "前篇",
+      "summary": "在高三毕业前夕，面对未来的确定性和青春的逝去，毛小豆被压抑的伤感通过一次不由自主的生理性过敏反应而爆发。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "dongxiansheng",
+          "name": "栋先生"
+        },
+        {
+          "id": "yuanzhi",
+          "name": "远志"
+        },
+        {
+          "id": "lizhong",
+          "name": "李种"
+        },
+        {
+          "id": "laochu",
+          "name": "老楚"
+        }
+      ],
+      "locations": [
+        "museum_school",
+        "museum_playground"
+      ],
+      "themes": [
+        "ugly_feelings",
+        "time_and_stagnation"
+      ],
+      "key_events": [
+        {
+          "event_id": "museum_event_1",
+          "description": "毛小豆清晰地预知了自己的未来（能上什么大学），这种确定性反而带来了深刻的虚无感和无力感。",
+          "significance": "揭示了确定性与虚无感的悖论，过度清晰的未来剥夺了当下的意义和激情。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "museum_event_2",
+          "description": "面对毕业和离别，毛小豆在意识层面表现得'无所谓'，但被压抑的巨大悲伤最终通过一次生理性的过敏反应爆发出来。",
+          "significance": "这是全诗最核心的事件，揭示了其情感压抑机制的根源——真实情感被压抑，最终以扭曲的、生理性的'症状'表现出来。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "过敏反应",
+          "speaker": "narrator",
+          "context": "身体反应",
+          "significance": "情感的外化"
+        }
+      ],
+      "emotional_tone": "伤感、压抑、爆发",
+      "conflict": {
+        "explicit": "经历高三的最后时光",
+        "implicit": "确定性与虚无感的冲突；压抑的情感与失控的身体的冲突"
+      },
+      "terminology": []
+    },
+    {
+      "id": "canned_tuna",
+      "title": "高级罐头装金枪鱼",
+      "section": "番外",
+      "summary": "通过一系列混乱、非线性的历史与科技符号的蒙太奇，最终落脚于毛小豆和远志在青春期的一个瞬间，探讨宏大叙事与个人经验的错位。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "yuanzhi",
+          "name": "远志"
+        }
+      ],
+      "locations": [
+        "canned_tuna_historical_montage"
+      ],
+      "themes": [
+        "time_and_stagnation",
+        "identity_anxiety"
+      ],
+      "key_events": [
+        {
+          "event_id": "canned_tuna_event_1",
+          "description": "诗歌通过蒙太奇手法，将VCD、避孕药、比特币、特斯拉等宏大的科技、商业、文化史碎片并置在一起。",
+          "significance": "创造了一种晕眩、混乱、信息过载的阅读体验，模拟了当代人被无穷无尽的历史和新闻碎片所淹没的生存感受。",
+          "related_characters": []
+        },
+        {
+          "event_id": "canned_tuna_event_2",
+          "description": "在经历了所有宏大历史的喧嚣之后，诗歌的结尾突然将镜头拉回到一个极其私密的、前历史的时刻——毛小豆和远志的对话或决定。",
+          "significance": "暗示了真正构成一个人生命内核的，或许是那些完全无法被载入史册的、微不足道的个人瞬间。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "yuanzhi",
+              "name": "远志"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "宏大叙事与个人经验",
+          "speaker": "narrator",
+          "context": "主题探讨",
+          "significance": "核心主题的体现"
+        }
+      ],
+      "emotional_tone": "混乱、对比、思考",
+      "conflict": {
+        "explicit": "无",
+        "implicit": "宏大叙事与个人经验的冲突；创造与毁灭的冲突；'在场'与'缺席'的冲突"
+      },
+      "terminology": []
+    },
+    {
+      "id": "watch_out",
+      "title": "注意看",
+      "section": "番外",
+      "summary": "描绘了办公室职员阿伟（毛小豆的另一化身）在全景敞视的办公环境中，如何通过自我规训和微小的抵抗来应对无处不在的监控与压力。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        }
+      ],
+      "locations": [
+        "watch_out_office",
+        "watch_out_restroom"
+      ],
+      "themes": [
+        "microphysics_of_power",
+        "ugly_feelings"
+      ],
+      "key_events": [
+        {
+          "event_id": "watch_out_event_1",
+          "description": "主人公阿伟在全景敞视的办公环境中，时刻处于被监控（经理声音、同事动态）和自我监控（脚本触发、快捷键使用）的状态。",
+          "significance": "展现了当代办公室作为一个规训空间，权力通过环境布局和技术手段进行渗透，个体被迫进行自我规训。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "watch_out_event_2",
+          "description": "面对压力，阿伟通过'办公室友好'的身体拉伸动作进行微小的、被允许的抵抗。",
+          "significance": "揭示了在强大的系统规训下，个体的抵抗只能以一种微观的、符合规则的形式进行。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        },
+        {
+          "event_id": "watch_out_event_3",
+          "description": "夜晚，阿伟强行关掉所有设备，试图通过隔绝信息来逃避无处不在的监控和压力。",
+          "significance": "展现了一种消极的、最终无效的抵抗方式，凸显了在无所不在的监控下，个体精神难以逃脱的困境。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "告警信息",
+          "speaker": "narrator",
+          "context": "工作压力",
+          "significance": "监控的体现"
+        }
+      ],
+      "emotional_tone": "压抑、抵抗、疏离",
+      "conflict": {
+        "explicit": "处理工作日的告警信息",
+        "implicit": "监控与反监控的冲突；自我规训与内在意志的冲突"
+      },
+      "terminology": []
+    },
+    {
+      "id": "interest",
+      "title": "你的兴趣是什么",
+      "section": "番外",
+      "summary": "面对朋友对其新爱好（画画、写诗）的质疑，毛小豆放弃了寻求传统认可，转而通过宣告自己是'A片之王'来暴力地建构一种另类的'本真性'。",
+      "characters": [
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "dongxiansheng",
+          "name": "栋先生"
+        },
+        {
+          "id": "huashao",
+          "name": "华少"
+        }
+      ],
+      "locations": [
+        "interest_home",
+        "interest_friend_house"
+      ],
+      "themes": [
+        "identity_anxiety",
+        "microphysics_of_power"
+      ],
+      "key_events": [
+        {
+          "event_id": "interest_event_1",
+          "description": "毛小豆在艺术创作（画画、写诗）上的新尝试，遭到了朋友栋先生和华少的质疑与批评。",
+          "significance": "展现了在'兄弟会'内部，对传统'高雅'文化资本的评价并不统一，触发了主人公的身份焦虑。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            },
+            {
+              "id": "dongxiansheng",
+              "name": "栋先生"
+            },
+            {
+              "id": "huashao",
+              "name": "华少"
+            }
+          ]
+        },
+        {
+          "event_id": "interest_event_2",
+          "description": "毛小豆放弃了在'画'和'诗'的赛道上寻求认可，转而宣称自己是'真正的A片之王'。",
+          "significance": "这是一种以攻为守的防御策略，通过主动拥抱一个被鄙视的身份，来消解他人评价体系的合法性，是一种深刻的、虽然形式怪异的'自我赋权'。",
+          "related_characters": [
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "我才是真正的A片之王",
+          "speaker": "maoxiaodou",
+          "context": "自我宣告",
+          "significance": "另类本真性的建构"
+        }
+      ],
+      "emotional_tone": "反抗、自我肯定、另类",
+      "conflict": {
+        "explicit": "关于新爱好的争论",
+        "implicit": "'高雅'文化与'亚'文化的价值冲突；寻求外部认可与建立内部标准的冲突；'本真性'的焦虑"
+      },
+      "terminology": []
+    },
+    {
+      "id": "subtitles",
+      "title": "论字幕的必要性",
+      "section": "番外",
+      "summary": "以华少的视角，描述了他对'兄弟会'关系的看法，以及对毛小豆、张秋等人的评价，揭示了其彻底的犬儒主义和内部法则。",
+      "characters": [
+        {
+          "id": "huashao",
+          "name": "华少"
+        },
+        {
+          "id": "maoxiaodou",
+          "name": "毛小豆"
+        },
+        {
+          "id": "dongxiansheng",
+          "name": "栋先生"
+        }
+      ],
+      "locations": [
+        "subtitles_late_night_stall"
+      ],
+      "themes": [
+        "male_community",
+        "ugly_feelings"
+      ],
+      "key_events": [
+        {
+          "event_id": "subtitles_event_1",
+          "description": "华少在内心独白中，明确了他对女性的物化标准：'第一要瘦。其次白/然后要不太聪明'。",
+          "significance": "这比毛小豆视角下任何间接的凝视都更直接、更不加掩饰，揭示了'兄弟会'内部话语的残酷底色。",
+          "related_characters": [
+            {
+              "id": "huashao",
+              "name": "华少"
+            }
+          ]
+        },
+        {
+          "event_id": "subtitles_event_2",
+          "description": "华少将张秋评价为'负分'，因为她的手臂'比他大腿还粗'，并对毛小豆向张秋敞开心扉的行为表示鄙夷。",
+          "significance": "清晰地表明'兄弟会'的内聚力，是建立在对外部情感关系（特别是与强大、独立的女性的关系）的潜在敌意和排斥之上的。",
+          "related_characters": [
+            {
+              "id": "huashao",
+              "name": "华少"
+            },
+            {
+              "id": "zhangqiu",
+              "name": "张秋"
+            },
+            {
+              "id": "maoxiaodou",
+              "name": "毛小豆"
+            }
+          ]
+        }
+      ],
+      "quotes": [
+        {
+          "text": "第一要瘦。其次白。然后要不太聪明",
+          "speaker": "huashao",
+          "context": "对女性的评价",
+          "significance": "性别偏见的体现"
+        },
+        {
+          "text": "典急孝，乐蚌麻",
+          "speaker": "huashao",
+          "context": "网络用语",
+          "significance": "亚文化认同"
+        }
+      ],
+      "emotional_tone": "犬儒、批判、内部",
+      "conflict": {
+        "explicit": "一场朋友间的宵夜谈话",
+        "implicit": "'兄弟会'法则与外部关系（爱情）的冲突；不同程度犬儒主义的冲突"
+      },
+      "terminology": []
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+# 毛小豆宇宙目录现在纳入版本控制
+# 毛小豆宇宙/
+
+# Node.js 依赖包
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 环境变量文件（如果以后需要）
+poeject_zhou_spring_autumn/application/.env
+poeject_zhou_spring_autumn/application/.env.local
+poeject_zhou_spring_autumn/application/.env.development
+poeject_zhou_spring_autumn/application/.env.test
+poeject_zhou_spring_autumn/application/.env.production

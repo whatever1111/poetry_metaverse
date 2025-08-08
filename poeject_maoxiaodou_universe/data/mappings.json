@@ -1,0 +1,189 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "3.0",
+    "description": "毛小豆宇宙映射数据库，包含理论框架映射",
+    "created_at": "2025-07-30",
+    "last_updated": "2025-01-XX",
+    "controlled_redundancy": {
+      "referenced_files": [
+        "theoretical_framework.json",
+        "reading_experience.json",
+        "characters.json",
+        "poems.json",
+        "terminology.json",
+        "themes.json"
+      ],
+      "cross_references": {
+        "theory_framework": "theoretical_framework.json.theoretical_framework.theories",
+        "reading_layers": "reading_experience.json.reading_experience.reading_layers",
+        "character_data": "characters.json.characters",
+        "poem_data": "poems.json.poems",
+        "terminology_data": "terminology.json.terminology",
+        "theme_data": "themes.json.themes"
+      }
+    }
+  },
+  "sections": {
+    "正篇": {
+      "maoxiaodou_story_2": "毛小豆故事演绎 Ⅱ",
+      "shark_and_rock": "鲨鱼与岩石",
+      "gold_medal_winner": "金牌得主",
+      "remake": "毛小豆故事演绎 | REMAKE",
+      "new_year": "新年快乐",
+      "temple": "拆庙",
+      "fortune": "八方来财"
+    },
+    "前篇": {
+      "sodium": "钠",
+      "wheat": "麦",
+      "museum": "馆"
+    },
+    "番外": {
+      "canned_tuna": "高级罐头装金枪鱼",
+      "watch_out": "注意看",
+      "interest": "你的兴趣是什么",
+      "subtitles": "论字幕的必要性"
+    }
+  },
+  "character_mappings": {
+    "Core": {
+      "maoxiaodou": "毛小豆",
+      "huashao": "华少",
+      "dongxiansheng": "栋先生",
+      "zhangqiu": "张秋"
+    },
+    "Secondary": {
+      "yuanzhi": "远志",
+      "laojiang": "老蒋",
+      "laochu": "老楚"
+    },
+    "Tertiary": {
+      "yaozong": "姚总",
+      "fifi": "菲菲",
+      "aning": "阿宁",
+      "dapao": "大炮",
+      "husuo": "胡所",
+      "chenyuanzhuo": "陈远卓",
+      "jianning": "简宁",
+      "fanlaoge": "范老哥",
+      "tianqi": "天琦",
+      "mingjie": "明姐",
+      "baoge": "鲍哥",
+      "keren": "可人",
+      "lizhong": "李种",
+      "xiaowu": "小吴",
+      "xiaoliao": "小廖",
+      "yuanyuan": "圆圆",
+      "me_duo": "梅朵",
+      "xiao_tuzi_xiao_limin": "小兔子，小丽敏?",
+      "poker_girl": "牌局上的女孩",
+      "mumu": "木木",
+      "xiaoyueshan": "小月山",
+      "qianjie": "倩姐",
+      "xiaoluo": "小罗"
+    }
+  },
+  "theme_mappings": {
+    "male_community": "男性共同体",
+    "identity_anxiety": "身份焦虑",
+    "microphysics_of_power": "权力的微观运作",
+    "ugly_feelings": "丑陋情感",
+    "consumerism": "消费主义"
+  },
+  "theory_mappings": {
+    "obscene_supplement": {
+      "name": "齐泽克的'淫秽补充'理论",
+      "concept": "公共律法背后的潜规则系统",
+      "character_roles": {
+        "power_testers": ["yaozong", "laojiang"],
+        "rule_participants": ["maoxiaodou", "huashao"]
+      },
+      "poem_scenes": {
+        "business_banquet": {
+          "poem_ids": ["maoxiaodou_story_2"],
+          "scenes": ["宴会厅", "卫生间", "专车"]
+        },
+        "poker_game": {
+          "poem_ids": ["shark_and_rock"],
+          "scenes": ["牌局包间", "楼梯间"]
+        }
+      },
+      "terminology": {
+        "obscene_language": ["jiao_bai_cai_shi_zhen_bai", "slowroll"]
+      }
+    },
+    "ugly_emotions": {
+      "name": "阮思艾的'丑陋情感'理论",
+      "concept": "当代都市的弥散性负面情绪",
+      "character_roles": {
+        "cynic_practitioners": ["huashao"],
+        "emotion_suppressors": ["maoxiaodou"]
+      },
+      "poem_manifestations": {
+        "irritation": {
+          "poem_ids": ["remake"],
+          "indicators": ["物质舒适与精神焦虑的错位"]
+        },
+        "anxiety": {
+          "poem_ids": ["maoxiaodou_story_2"],
+          "indicators": ["表演面具下的内在真实"]
+        },
+        "numbness": {
+          "poem_ids": ["fortune"],
+          "indicators": ["真实情感被深度压抑"]
+        }
+      },
+      "theme_emotions": {
+        "identity_anxiety": ["identity_anxiety"],
+        "emotional_alienation": ["ugly_feelings"]
+      }
+    },
+    "microphysics_of_power": {
+      "name": "福柯的'微观权力'理论",
+      "concept": "日常生活中的规训机制",
+      "character_roles": {
+        "discipline_executors": ["zhangqiu"],
+        "disciplined_subjects": ["maoxiaodou"]
+      },
+      "poem_scenes": {
+        "panopticon": {
+          "poem_ids": ["fortune"],
+          "scenes": ["办公室"]
+        },
+        "body_discipline": {
+          "poem_ids": ["gold_medal_winner"],
+          "scenes": ["健身房"]
+        },
+        "knowledge_power": {
+          "poem_ids": ["gold_medal_winner"],
+          "scenes": ["办公室"]
+        }
+      },
+      "terminology": {
+        "power_language": ["rfp", "deliverables", "pptx"]
+      }
+    },
+    "gated_community_poetics": {
+      "name": "'门禁社区'诗学",
+      "concept": "分层阅读体验的设计",
+      "poem_layers": {
+        "open_narrative": {
+          "poem_ids": ["maoxiaodou_story_2", "new_year"],
+          "accessibility": "所有读者"
+        },
+        "cognitive_labor": {
+          "poem_ids": ["shark_and_rock", "temple"],
+          "accessibility": "有一定理论背景的读者"
+        },
+        "theoretical_depth": {
+          "poem_ids": ["fortune", "canned_tuna"],
+          "accessibility": "具备相关理论知识的读者"
+        }
+      },
+      "theme_paths": {
+        "multi_interpretation": ["microphysics_of_power", "identity_anxiety", "ugly_feelings"]
+      }
+    }
+  }
+}
