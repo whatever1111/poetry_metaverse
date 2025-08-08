@@ -24,21 +24,13 @@ Thumbs.db
 *.tmp
 *.temp
 
-<<<<<<< HEAD
-# 环境变量文件（如果以后需要）
-poeject_zhou_spring_autumn/application/.env
-=======
 # 环境变量文件
 # 允许本地开发版本，但排除生产敏感配置
->>>>>>> feature/zhou-spring-autumn
 poeject_zhou_spring_autumn/application/.env.local
 poeject_zhou_spring_autumn/application/.env.development
 poeject_zhou_spring_autumn/application/.env.test
 poeject_zhou_spring_autumn/application/.env.production
-<<<<<<< HEAD
-=======
 poeject_zhou_spring_autumn/application/.env.production.*
 
 # 本地开发环境文件 - 允许提交（不包含敏感信息）
 # poeject_zhou_spring_autumn/application/.env
->>>>>>> feature/zhou-spring-autumn

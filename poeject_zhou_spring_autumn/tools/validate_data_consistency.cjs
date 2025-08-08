@@ -2,10 +2,7 @@ const fs = require('fs/promises');
 const path = require('path');
 
 const DATA_DIR = path.join(__dirname, '..', 'data', 'content');
-<<<<<<< HEAD
-=======
 const DATA_DRAFT_DIR = path.join(__dirname, '..', 'data', 'content_draft');
->>>>>>> feature/zhou-spring-autumn
 const POEMS_DIR = path.join(__dirname, '..', 'data', 'poems');
 
 async function validateDataConsistency() {
@@ -13,35 +10,17 @@ async function validateDataConsistency() {
     
     try {
         // 读取数据文件
-<<<<<<< HEAD
-        const [questionsData, mappingsData, projectsData] = await Promise.all([
-            fs.readFile(path.join(DATA_DIR, 'questions.json'), 'utf8').then(JSON.parse),
-            fs.readFile(path.join(DATA_DIR, 'mappings.json'), 'utf8').then(JSON.parse),
-            fs.readFile(path.join(DATA_DIR, 'projects.json'), 'utf8').then(JSON.parse)
-=======
         const [questionsData, mappingsData, projectsData, poemArchetypesData] = await Promise.all([
             fs.readFile(path.join(DATA_DRAFT_DIR, 'questions.json'), 'utf8').then(JSON.parse),
             fs.readFile(path.join(DATA_DRAFT_DIR, 'mappings.json'), 'utf8').then(JSON.parse),
             fs.readFile(path.join(DATA_DRAFT_DIR, 'projects.json'), 'utf8').then(JSON.parse),
             fs.readFile(path.join(DATA_DRAFT_DIR, 'poem_archetypes.json'), 'utf8').then(JSON.parse)
->>>>>>> feature/zhou-spring-autumn
         ]);
 
         const issues = [];
 
         // 1. 检查问题与映射的一致性
         console.log('📋 检查问题与映射的一致性...');
-<<<<<<< HEAD
-        for (const [chapterName, questions] of Object.entries(questionsData)) {
-            if (!mappingsData.units[chapterName]) {
-                issues.push(`❌ 问题文件中的章节 "${chapterName}" 在映射文件中不存在`);
-            } else {
-                const expectedPoemCount = Math.pow(2, questions.length);
-                const actualPoemCount = Object.keys(mappingsData.units[chapterName]).length;
-                
-                if (expectedPoemCount !== actualPoemCount) {
-                    issues.push(`❌ 章节 "${chapterName}" 的问题数量(${questions.length})与诗歌数量(${actualPoemCount})不匹配，期望 ${expectedPoemCount} 首`);
-=======
         for (const chapter of questionsData.chapters) {
             const chapterName = chapter.id;
             if (!mappingsData.units[chapterName]) {
@@ -52,7 +31,6 @@ async function validateDataConsistency() {
                 
                 if (expectedPoemCount !== actualPoemCount) {
                     issues.push(`❌ 章节 "${chapterName}" 的问题数量(${chapter.questions.length})与诗歌数量(${actualPoemCount})不匹配，期望 ${expectedPoemCount} 首`);
->>>>>>> feature/zhou-spring-autumn
                 }
             }
         }
@@ -61,12 +39,8 @@ async function validateDataConsistency() {
         console.log('📋 检查项目与问题的关联...');
         for (const project of projectsData.projects) {
             for (const subProject of project.subProjects) {
-<<<<<<< HEAD
-                if (!questionsData[subProject.name]) {
-=======
                 const chapterExists = questionsData.chapters.some(chapter => chapter.id === subProject.name);
                 if (!chapterExists) {
->>>>>>> feature/zhou-spring-autumn
                     issues.push(`❌ 项目 "${project.name}" 的子项目 "${subProject.name}" 在问题文件中不存在`);
                 }
             }
@@ -97,24 +71,6 @@ async function validateDataConsistency() {
 
         // 4. 检查问题格式
         console.log('📋 检查问题格式...');
-<<<<<<< HEAD
-        for (const [chapterName, questions] of Object.entries(questionsData)) {
-            questions.forEach((question, index) => {
-                if (!question.id || !question.question || !question.options || !question.meaning) {
-                    issues.push(`❌ 章节 "${chapterName}" 第 ${index + 1} 个问题缺少必需字段`);
-                }
-                
-                if (!question.options.A || !question.options.B) {
-                    issues.push(`❌ 章节 "${chapterName}" 第 ${index + 1} 个问题缺少选项A或B`);
-                }
-                
-                if (!question.meaning.A || !question.meaning.B) {
-                    issues.push(`❌ 章节 "${chapterName}" 第 ${index + 1} 个问题缺少含义A或B`);
-                }
-            });
-        }
-
-=======
         for (const chapter of questionsData.chapters) {
             chapter.questions.forEach((question, index) => {
                 if (!question.id || !question.text || !question.options) {
@@ -176,7 +132,6 @@ async function validateDataConsistency() {
             }
         }
 
->>>>>>> feature/zhou-spring-autumn
         // 输出结果
         console.log('\n📊 检查结果:');
         if (issues.length === 0) {
@@ -188,16 +143,10 @@ async function validateDataConsistency() {
 
         // 生成统计信息
         const stats = {
-<<<<<<< HEAD
-            totalChapters: Object.keys(questionsData).length,
-            totalQuestions: Object.values(questionsData).reduce((sum, questions) => sum + questions.length, 0),
-            totalPoems: Object.values(mappingsData.units).reduce((sum, poems) => sum + Object.keys(poems).length, 0),
-=======
             totalChapters: questionsData.chapters.length,
             totalQuestions: questionsData.chapters.reduce((sum, chapter) => sum + chapter.questions.length, 0),
             totalPoems: Object.values(mappingsData.units).reduce((sum, poems) => sum + Object.keys(poems).length, 0),
             totalPoemArchetypes: poemArchetypesData.poems ? poemArchetypesData.poems.length : 0,
->>>>>>> feature/zhou-spring-autumn
             totalProjects: projectsData.projects.length,
             totalSubProjects: projectsData.projects.reduce((sum, project) => sum + project.subProjects.length, 0)
         };
@@ -206,31 +155,15 @@ async function validateDataConsistency() {
         console.log(`- 章节数量: ${stats.totalChapters}`);
         console.log(`- 问题总数: ${stats.totalQuestions}`);
         console.log(`- 诗歌总数: ${stats.totalPoems}`);
-<<<<<<< HEAD
-=======
         console.log(`- 诗歌原型数: ${stats.totalPoemArchetypes}`);
->>>>>>> feature/zhou-spring-autumn
         console.log(`- 主项目数: ${stats.totalProjects}`);
         console.log(`- 子项目数: ${stats.totalSubProjects}`);
 
     } catch (error) {
-<<<<<<< HEAD
-        console.error('❌ 数据一致性检查失败:', error.message);
-    }
-}
-
-// 如果直接运行此脚本
-if (require.main === module) {
-    validateDataConsistency();
-}
-
-module.exports = { validateDataConsistency }; 
-=======
         console.error('❌ 验证过程中发生错误:', error.message);
         process.exit(1);
     }
 }
 
 // 运行验证
-validateDataConsistency(); 
->>>>>>> feature/zhou-spring-autumn
+validateDataConsistency();
