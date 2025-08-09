@@ -7,7 +7,7 @@ echo ========================================
 echo.
 
 :: 切换到正确的目录
-cd /d "%~dp0application"
+cd /d "%~dp0..\application"
 
 :: 检查目录是否存在
 if not exist "package.json" (

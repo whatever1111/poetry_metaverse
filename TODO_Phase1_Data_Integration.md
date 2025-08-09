@@ -11,13 +11,13 @@
 ### **子阶段 0：架构重构与环境准备**
 > **目标**: 建立一个符合“关注点分离”原则和项目长远规划的目录结构，彻底解决因项目演进而导致的结构混乱问题。
 
-- [ ] **任务 0-1**: 在项目根目录创建 `lugarden_universal` 文件夹，作为未来统一的元宇宙网站公共组件存放地。
-- [ ] **任务 0-2**: 在新的 上述 文件夹内，创建 `application` 和 `public` 以及`launch`三个子文件夹。
-- [ ] **任务 0-3**: 将 `poeject_zhou_spring_autumn/application/` 内的所有文件和文件夹，迁移到 `lugarden_universal/application/` 目录。
-- [ ] **任务 0-4**: 将 `poeject_zhou_spring_autumn/public/` 内的所有文件和文件夹，迁移到 `lugarden_universal/public/` 目录。
-- [ ] **任务 0-5**: 更新`poeject_zhou_spring_autumn` 目录下的启动脚本（如 `start.bat`, `stop.bat`），使其正确指向 `lugarden_universal/application/` 目录，并移动到`lugarden_universal/launch/`目录
-- [ ] **任务 0-6**: 清理 `poeject_zhou_spring_autumn` 目录中遗留的、现已为空的 `application` 和 `public` 文件夹。
-- [ ] **任务 0-7**: 在 `lugarden_universal/application/` 目录下，安装和配置SQLite + Prisma环境。
+ - [x] **任务 0-1**: 在项目根目录创建 `lugarden_universal` 文件夹，作为未来统一的元宇宙网站公共组件存放地。
+ - [x] **任务 0-2**: 在新的 上述 文件夹内，创建 `application` 和 `public` 以及`launch`三个子文件夹。
+ - [x] **任务 0-3**: 将 `poeject_zhou_spring_autumn/application/` 内的所有文件和文件夹，迁移到 `lugarden_universal/application/` 目录。
+ - [x] **任务 0-4**: 将 `poeject_zhou_spring_autumn/public/` 内的所有文件和文件夹，迁移到 `lugarden_universal/public/` 目录。
+ - [x] **任务 0-5**: 更新`poeject_zhou_spring_autumn` 目录下的启动脚本（如 `start.bat`, `stop.bat`），使其正确指向 `lugarden_universal/application/` 目录，并移动到`lugarden_universal/launch/`目录
+ - [x] **任务 0-6**: 清理 `poeject_zhou_spring_autumn` 目录中遗留的、现已为空的 `application` 和 `public` 文件夹。
+ - [x] **任务 0-7**: 在 `lugarden_universal/application/` 目录下，安装和配置SQLite + Prisma环境。
 
 ### **子阶段 A：数据库设计与数据建模**
 - [x] **任务 A-1**：分析两个子项目的数据结构和关系
@@ -26,9 +26,9 @@
     - **周与春秋**: 是一个以交互为导向、高度抽象的功能驱动模型，核心是通过“问题-编码-映射”的线性流程，为用户提供引导式的、个性化的诗歌阅读体验。
     - **整合策略**: 必须设计一个能同时包容两种模式的统一数据库，既能存储“毛小豆宇宙”的网状实体数据，也要能支持“周与春秋”的线性互动逻辑。
 - [~] **任务 A-2**：设计统一的数据库表结构，体现"陆家花园主宇宙"概念
-  - **状态说明**: 现有设计（`schema_v1.md`）已完成，但其结构无法支撑“主宇宙”关联模型，需在任务A-5中进行审查和增强。
+  - **状态说明**: 现有设计（`schema.md`）已完成，但其结构无法支撑“主宇宙”关联模型，需在任务A-5中进行审查和增强。
 - [ ] **任务 A-3**：建立数据关联关系（诗歌-角色-场景-主题的关联）
-- [ ] **任务 A-5**: **审查并增强数据库 Schema**。根据任务 B-2 中确立的“主宇宙”关联模型，重新审查 `schema_v1.md` 中的设计。**核心是斩断核心概念（如`Themes`）与具体子宇宙的直接绑定**，使其成为真正中立的、可共享的“主宇宙”实体。
+- [ ] **任务 A-5**: **审查并增强数据库 Schema**。根据任务 B-2 中确立的“主宇宙”关联模型，重新审查 `schema.md` 中的设计。**核心是斩断核心概念（如`Themes`）与具体子宇宙的直接绑定**，使其成为真正中立的、可共享的“主宇宙”实体。
 
 ### **子阶段 B：数据迁移与整合**
 - [ ] **任务 B-1**：编写数据迁移脚本，将JSON数据导入数据库
