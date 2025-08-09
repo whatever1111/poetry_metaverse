@@ -25,25 +25,117 @@
     - **毛小豆宇宙**: 是一个高度结构化、关系密集的实体-关系网络，核心实体包括诗歌、角色、场景、主题和理论，通过ID引用建立复杂关联。其体验模式是**探索式、分析式**的。
     - **周与春秋**: 是一个以交互为导向、高度抽象的功能驱动模型，核心是通过“问题-编码-映射”的线性流程，为用户提供引导式的、个性化的诗歌阅读体验。
     - **整合策略**: 必须设计一个能同时包容两种模式的统一数据库，既能存储“毛小豆宇宙”的网状实体数据，也要能支持“周与春秋”的线性互动逻辑。
- - [~] **任务 A-2**：设计统一的数据库表结构，体现"陆家花园主宇宙"概念
-  - **状态说明**: 现有设计（`schema.md`）已完成，但其结构无法支撑“主宇宙”关联模型，需在任务A-5中进行审查和增强。
-- [ ] **任务 A-3**：建立数据关联关系（诗歌-角色-场景-主题的关联）
- - [ ] **任务 A-4**：安装与配置 SQLite + Prisma 环境（在完成 A-5 架构审查后执行）
-   - 步骤：
-     - [ ] 在 `lugarden_universal/application/` 安装依赖：`prisma`（dev）与 `@prisma/client`
-     - [ ] 运行 `prisma init --datasource-provider sqlite` 生成 `prisma/` 目录
-     - [ ] 将 `DATABASE_URL` 写入 `.env.local`，指向 `file:../data/lugarden.db`
-     - [ ] 创建 `lugarden_universal/data/` 目录用于 SQLite 文件
-     - [ ] 在 `package.json` 添加脚本：`db:generate`/`db:migrate`/`db:studio`/`db:reset`
-   - 退出条件：
-     - [ ] `npx prisma generate` 成功
-     - [ ] `.env.local` 中 `DATABASE_URL` 正确指向 `../data/lugarden.db`
-     - [ ] 存在 `prisma/schema.prisma` 和 `lugarden_universal/data/` 目录
-- [ ] **任务 A-5**: **审查并增强数据库 Schema**。根据任务 B-2 中确立的“主宇宙”关联模型，重新审查 `schema.md` 中的设计。**核心是斩断核心概念（如`Themes`）与具体子宇宙的直接绑定**，使其成为真正中立的、可共享的“主宇宙”实体。
+ - [x] **任务 A-2**：设计统一的数据库表结构，体现"陆家花园主宇宙"概念
+  - **✅ 完成状态**: 已在A-5阶段实质性完成。最终的`schema.md`设计完全实现了"陆家花园主宇宙"关联模型，包含主宇宙中立实体、桥表机制和16张子宇宙表的完整架构。
+  - **🔍 独立审计意见**: 设计质量优秀，从原有的"无法支撑主宇宙关联模型"状态升级为具备跨宇宙数据融合能力的完整架构，完全满足任务要求。
+- [x] **任务 A-3**：建立数据关联关系（诗歌-角色-场景-主题的关联）
+  - **✅ 完成状态**: 已通过A-5阶段的Schema设计实质性完成。所有必要的关联关系已在数据库表结构中建立。
+  - **🔍 独立审计判断依据**:
+    - **诗歌↔主题关联**: 通过`ZhouPoem.coreTheme`字段 + `Theme`表 + `UniverseTheme`桥表实现跨宇宙主题关联
+    - **诗歌↔角色关联**: 通过`MaoxiaodouPoem`和`MaoxiaodouCharacter`表，以及`MaoxiaodouScene`表建立诗歌-角色-场景三元关联
+    - **角色关系网络**: 通过`MaoxiaodouCharacterRelation`表（sourceCharacterId/targetCharacterId）建立角色间关系图谱
+    - **跨宇宙映射**: 通过`ZhouMapping.poemTitle`与诗歌标题的映射关系，建立问答系统与诗歌内容的关联
+    - **原始数据验证**: 核实了`themes.json`中的`related_characters`/`related_poems`字段、`characters.json`中的关系数据，确认Schema设计完整覆盖现有关联关系
+    - **审计结论**: 关联关系设计系统性、完整性良好，无需独立执行A-3步骤。
+- [x] **任务 A-4**: **审查并增强数据库 Schema**。根据任务 B-2 中确立的"主宇宙"关联模型，重新审查 `schema.md` 中的设计。**核心是斩断核心概念（如`Themes`）与具体子宇宙的直接绑定**，使其成为真正中立的、可共享的"主宇宙"实体。
+  - **✅ 完成状态**: 已完成架构审查和schema定稿
+    - ✅ 设计了主宇宙中立实体：Theme、Emotion
+    - ✅ 建立了桥表机制：UniverseTheme、UniverseEmotion  
+    - ✅ 完成了16张子宇宙表的详细设计
+    - ✅ 整合了ZhouPoem表（原型+文本）
+    - ✅ 定义了完整的Prisma Schema
+    - ✅ 更新了正式的 `schema.md` 文档
+    - ✅ 保存了审查历史到 `archive_a5_review/` 文件夹
+  - **🔍 独立审计意见 - A-4完成质量评估**:
+    - **📋 审计依据**:
+      - **架构设计完整性**: 检查了`schema.md`(577行)、`schema_draft.md`(578行)和审查历史文档，确认设计覆盖了两个子宇宙的全部数据结构
+      - **中立实体验证**: 验证了Theme、Emotion表的设计确实摆脱了子宇宙绑定，通过桥表实现灵活关联
+      - **数据对应性检查**: 核实了Schema与实际JSON数据的对应关系（毛小豆6个主题、周春秋48首诗歌、问答系统等）
+      - **Prisma代码质量**: 审查了完整的Prisma模型定义，包含外键约束、唯一键设置和关系定义
+    - **🎯 质量评级**: **优秀（A级）**
+      - **设计理念突破**: 成功实现了从"子宇宙内聚"向"主宇宙中立+桥接"的范式转移
+      - **技术实现完备**: 16张子宇宙表设计覆盖全面，关系设计合理，约束完整
+      - **可扩展性良好**: 桥表机制为未来新宇宙接入提供了标准化路径
+      - **文档质量高**: 提供了完整的设计文档、审查历史和实施指南
+    - **✅ 审计结论**: A-4任务完成质量优秀，完全达到既定要求，具备直接推进到A-5阶段的条件。
+- [ ] **任务 A-5**：安装与配置 SQLite + Prisma 环境（工具准备）
+  - **🎯 任务定位**: 工欲善其事必先利其器 - 纯粹的开发环境配置，不涉及具体业务开发
+  - **🔍 现状检查**: 为确保环境完整性，从零开始重新配置所有Prisma相关环境
+  
+  ### **第一部分：基础工具环境配置**
+  - **🔄 从零开始方针**: 为确保环境配置的完整性和可重现性，所有配置步骤重新执行
+  - 步骤：
+    - [ ] **A5.1.1** 在 `lugarden_universal/application/` 安装依赖：`prisma`（dev）与 `@prisma/client`
+    - [ ] **A5.1.2** 在 `package.json` 添加脚本：`db:generate`/`db:migrate`/`db:studio`/`db:reset`
+    - [ ] **A5.1.3** 创建 `lugarden_universal/data/` 目录用于 SQLite 文件
+    - [ ] **A5.1.4** 配置环境变量：确保 `.env.local` 中有 `DATABASE_URL="file:../data/lugarden.db"`（本地开发配置）
+    - [ ] **A5.1.5** 在`lugarden_universal/application/`目录运行 `prisma init --datasource-provider sqlite` 生成 `prisma/` 目录
+    - [ ] **A5.1.6** 将生成的`schema.prisma`重命名为`test-schema.prisma`并配置测试表（包含TestConnection表验证环境可用性）
+    - [ ] **A5.1.7** 配置临时的package.json脚本支持test-schema：
+      - 备份原始脚本配置
+      - 修改脚本：`"db:generate": "prisma generate --schema=prisma/test-schema.prisma"`等
+    - [ ] **A5.1.8** 运行 `npx prisma migrate dev --name setup-environment --schema=prisma/test-schema.prisma` 验证迁移流程
+    - [ ] **A5.1.9** 清理环境配置冲突：
+      - 检查.env和.env.local中的重复配置
+      - 保留.env.local中的本地配置，移除.env中的重复非必要项
+      - 确保.env.local中的DATABASE_URL优先生效
+  - 基础环境验证条件：
+    - [ ] `npx prisma generate --schema=prisma/test-schema.prisma` 成功
+    - [ ] `npx prisma migrate status --schema=prisma/test-schema.prisma` 显示环境配置迁移已应用
+    - [ ] 数据库文件 `lugarden_universal/data/lugarden.db` 存在且可连接
+    - [ ] `npx prisma studio --schema=prisma/test-schema.prisma` 能正常启动并显示测试表
+    - [ ] Prisma Client可以正常导入和使用
+
+  ### **第二部分：业务Schema准备（为B阶段铺路）**
+  - **📊 陆家花园业务表结构明细（21张表构成说明）**:
+    - **🌟 主宇宙核心架构 (5张)**
+      - Theme - 主题表 (中立实体)
+      - Emotion - 情感表 (中立实体)  
+      - Universe - 宇宙表 (子宇宙管理)
+      - UniverseTheme - 宇宙-主题桥接表
+      - UniverseEmotion - 宇宙-情感桥接表
+    - **📚 周与春秋宇宙 (5张)**
+      - ZhouProject - 项目表
+      - ZhouSubProject - 子项目表
+      - ZhouQA - 问答表
+      - ZhouMapping - 结果映射表
+      - ZhouPoem - 诗歌表
+    - **🎭 毛小豆宇宙 (11张)**
+      - MaoxiaodouPoem - 诗歌表
+      - MaoxiaodouCharacter - 角色表
+      - MaoxiaodouCharacterRelation - 角色关系表
+      - MaoxiaodouScene - 场景表
+      - MaoxiaodouTerminology - 术语表
+      - MaoxiaodouTheme - 主题表 (子宇宙级别)
+      - MaoxiaodouTimeline - 时间线表
+      - MaoxiaodouTheory - 理论框架表
+      - MaoxiaodouReadingLayer - 阅读层次表
+      - MaoxiaodouMapping - 映射关系表
+      - MaoxiaodouMetadata - 元数据表
+  - 业务Schema准备步骤：
+    - [ ] **A5.2.1** 将A-4完成的`schema.md`中的完整Prisma模型定义保存到 `prisma/lugarden-schema.prisma`
+    - [ ] **A5.2.2** 验证业务Schema语法正确性（`npx prisma validate --schema=prisma/lugarden-schema.prisma`）
+    - [ ] **A5.2.3** 执行配置切换：
+      - 删除`test-schema.prisma`
+      - 将`lugarden-schema.prisma`重命名为`schema.prisma`
+      - 恢复package.json脚本为标准配置（从A5.1.7备份中恢复）
+    - [ ] **A5.2.4** 重置数据库环境：
+      - 删除现有数据库文件：`rm lugarden_universal/data/lugarden.db`
+      - 基于新schema重新初始化：`npx prisma migrate dev --name init`
+    - [ ] **A5.2.5** 重新生成Prisma Client：运行`npx prisma generate`确保类型定义与新schema匹配
+  - 业务Schema验证条件：
+    - [ ] 存在完整的 `prisma/schema.prisma`（从lugarden-schema.prisma重命名而来，包含所有21张表定义）
+    - [ ] 业务Schema通过Prisma语法验证
+    - [ ] 测试用的`test-schema.prisma`已清理删除
+    - [ ] package.json脚本已恢复为标准配置（无需--schema参数）
+    - [ ] 数据库环境已重置，与新schema完全匹配（无旧表结构残留）
+    - [ ] Prisma Client已重新生成，类型定义与schema.prisma一致
+    - [ ] 完整环境验证：`npx prisma studio`能正常显示21张空表结构
+    - [ ] 准备就绪，可在B-1阶段直接基于正式schema.prisma进行数据库操作
 
 ### **子阶段 B：数据迁移与整合**
 - [ ] **任务 B-1**：编写数据迁移脚本，将JSON数据导入数据库
-- [ ] **任务 B-2**：基于“陆家花园主宇宙”的核心概念（如统一主题、情感原型等），建立各子项目（毛小豆、周与春秋）与主宇宙的数据映射关联。**（依赖任务A-5完成）**
+- [ ] **任务 B-2**：基于"陆家花园主宇宙"的核心概念（如统一主题、情感等），建立各子项目（毛小豆、周与春秋）与主宇宙的数据映射关联。**（依赖任务A-4完成）**
 - [ ] **任务 B-3**：实现数据完整性验证和一致性检查
 - [ ] **任务 B-4**：创建数据统计和分析功能
 
