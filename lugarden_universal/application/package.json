@@ -1,7 +1,6 @@
 {
-  "name": "poetry-metaverse",
-  "version": "2.0.0",
-  "description": "一个结合心理测试与诗歌生成的互动网页应用，并增加了后台管理功能。",
+  "name": "lugarden-universal",
+  "description": "旨在通过数字技术重新诠释和体验诗歌",
   "type": "module",
   "main": "server.js",
   "scripts": {
@@ -34,6 +33,7 @@
     "quiz",
     "lujia-garden"
   ],
-  "author": "陆家明 & 你的朋友",
-  "license": "MIT"
+  "author": "陆家明 & 朋友",
+  "license": "MIT",
+  "displayName": "陆家花园诗歌元宇宙"
 }
