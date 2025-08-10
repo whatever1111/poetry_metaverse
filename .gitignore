@@ -26,11 +26,12 @@ Thumbs.db
 
 # 环境变量文件
 # 允许本地开发版本，但排除生产敏感配置
-poeject_zhou_spring_autumn/application/.env.local
-poeject_zhou_spring_autumn/application/.env.development
-poeject_zhou_spring_autumn/application/.env.test
-poeject_zhou_spring_autumn/application/.env.production
-poeject_zhou_spring_autumn/application/.env.production.*
-
+lugarden_universal/application/.env.local
 # 本地开发环境文件 - 允许提交（不包含敏感信息）
-# poeject_zhou_spring_autumn/application/.env
+# lugarden_universal/application/.env
+
+# 数据库文件
+lugarden_universal/application/data/
+
+# Prisma生成文件
+lugarden_universal/application/prisma/

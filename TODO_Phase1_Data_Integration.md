@@ -62,29 +62,29 @@
   - **🎯 任务定位**: 工欲善其事必先利其器 - 纯粹的开发环境配置，不涉及具体业务开发
   - **🔍 现状检查**: 为确保环境完整性，从零开始重新配置所有Prisma相关环境
   
-  ### **第一部分：基础工具环境配置**
+  ### **第一部分：基础工具环境配置** ✅
   - **🔄 从零开始方针**: 为确保环境配置的完整性和可重现性，所有配置步骤重新执行
   - 步骤：
-    - [ ] **A5.1.1** 在 `lugarden_universal/application/` 安装依赖：`prisma`（dev）与 `@prisma/client`
-    - [ ] **A5.1.2** 在 `package.json` 添加脚本：`db:generate`/`db:migrate`/`db:studio`/`db:reset`
-    - [ ] **A5.1.3** 创建 `lugarden_universal/data/` 目录用于 SQLite 文件
-    - [ ] **A5.1.4** 配置环境变量：确保 `.env.local` 中有 `DATABASE_URL="file:../data/lugarden.db"`（本地开发配置）
-    - [ ] **A5.1.5** 在`lugarden_universal/application/`目录运行 `prisma init --datasource-provider sqlite` 生成 `prisma/` 目录
-    - [ ] **A5.1.6** 将生成的`schema.prisma`重命名为`test-schema.prisma`并配置测试表（包含TestConnection表验证环境可用性）
-    - [ ] **A5.1.7** 配置临时的package.json脚本支持test-schema：
+    - [x] **A5.1.1** 在 `lugarden_universal/application/` 安装依赖：`prisma`（dev）与 `@prisma/client`
+    - [x] **A5.1.2** 在 `package.json` 添加脚本：`db:generate`/`db:migrate`/`db:studio`/`db:reset`
+    - [x] **A5.1.3** 创建 `lugarden_universal/application/data/` 目录用于 SQLite 文件
+    - [x] **A5.1.4** 配置环境变量：确保 `.env.local` 中有 `DATABASE_URL="file:./data/lugarden.db"`（本地开发配置）
+    - [x] **A5.1.5** 在`lugarden_universal/application/`目录运行 `prisma init --datasource-provider sqlite` 生成 `prisma/` 目录
+    - [x] **A5.1.6** 将生成的`schema.prisma`重命名为`test-schema.prisma`并配置测试表（包含TestConnection表验证环境可用性）
+    - [x] **A5.1.7** 配置临时的package.json脚本支持test-schema：
       - 备份原始脚本配置
       - 修改脚本：`"db:generate": "prisma generate --schema=prisma/test-schema.prisma"`等
-    - [ ] **A5.1.8** 运行 `npx prisma migrate dev --name setup-environment --schema=prisma/test-schema.prisma` 验证迁移流程
-    - [ ] **A5.1.9** 清理环境配置冲突：
+    - [x] **A5.1.8** 运行 `npx prisma migrate dev --name setup-environment --schema=prisma/test-schema.prisma` 验证迁移流程
+    - [x] **A5.1.9** 清理环境配置冲突：
       - 检查.env和.env.local中的重复配置
       - 保留.env.local中的本地配置，移除.env中的重复非必要项
       - 确保.env.local中的DATABASE_URL优先生效
-  - 基础环境验证条件：
-    - [ ] `npx prisma generate --schema=prisma/test-schema.prisma` 成功
-    - [ ] `npx prisma migrate status --schema=prisma/test-schema.prisma` 显示环境配置迁移已应用
-    - [ ] 数据库文件 `lugarden_universal/data/lugarden.db` 存在且可连接
-    - [ ] `npx prisma studio --schema=prisma/test-schema.prisma` 能正常启动并显示测试表
-    - [ ] Prisma Client可以正常导入和使用
+  - 基础环境验证条件：✅
+    - [x] `npx prisma generate --schema=prisma/test-schema.prisma` 成功
+    - [x] `npx prisma migrate status --schema=prisma/test-schema.prisma` 显示环境配置迁移已应用
+    - [x] 数据库文件 `lugarden_universal/application/data/lugarden.db` 存在且可连接
+    - [x] `npx prisma studio --schema=prisma/test-schema.prisma` 能正常启动并显示测试表
+    - [x] Prisma Client可以正常导入和使用
 
   ### **第二部分：业务Schema准备（为B阶段铺路）**
   - **📊 陆家花园业务表结构明细（21张表构成说明）**:
