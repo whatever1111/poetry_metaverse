@@ -158,23 +158,23 @@
 
 > **✅ 解决方案**: 已更新 `.gitignore` 配置，现在只忽略生成的运行时文件，保留 `schema.prisma` 设计文件，便于多设备开发。
 
-- [ ] **任务 B-0.1**：验证并完成A-5环境配置
-  - [ ] 检查 `lugarden_universal/application/prisma/` 目录是否存在
-  - [ ] 如果不存在（由于gitignore原因），执行A-5的所有配置步骤：
-    - [ ] 安装Prisma依赖：`npm install prisma @prisma/client`
-    - [ ] 初始化Prisma：`npx prisma init --datasource-provider sqlite`
-    - [ ] 创建 `prisma/schema.prisma` 文件，包含完整的21张表定义（基于 `documentation/database/schema.md`）
-    - [ ] 执行数据库迁移：`npx prisma migrate dev --name init`
-    - [ ] 生成Prisma Client：`npx prisma generate`
-  - [ ] 验证环境配置：
-    - [ ] `npx prisma studio` 能正常启动并显示21张空表
-    - [ ] 数据库文件 `data/lugarden.db` 存在且可连接
-    - [ ] 所有npm脚本正常工作
-  - [ ] 确认gitignore配置合理性：
-    - [ ] 验证 `data/` 目录确实应该被忽略（包含本地数据库文件）
-    - [ ] 验证 `prisma/generated/` 和 `prisma/migrations/` 应该被忽略（生成的运行时文件）
-    - [ ] 确认 `schema.prisma` 文件应该被版本控制（设计文件）
-    - [ ] 提交更新后的 `.gitignore` 配置
+- [x] **任务 B-0.1**：验证并完成A-5环境配置
+  - [x] 检查 `lugarden_universal/application/prisma/` 目录是否存在
+  - [x] 如果不存在（由于gitignore原因），执行A-5的所有配置步骤：
+    - [x] 安装Prisma依赖：`npm install prisma @prisma/client`
+    - [x] 初始化Prisma：`npx prisma init --datasource-provider sqlite`
+    - [x] 创建 `prisma/schema.prisma` 文件，包含完整的21张表定义（基于 `documentation/database/schema.md`）
+    - [x] 执行数据库迁移：`npx prisma migrate dev --name init`
+    - [x] 生成Prisma Client：`npx prisma generate`
+  - [x] 验证环境配置：
+    - [x] `npx prisma studio` 能正常启动并显示21张空表
+    - [x] 数据库文件 `data/lugarden.db` 存在且可连接
+    - [x] 所有npm脚本正常工作
+  - [x] 确认gitignore配置合理性：
+    - [x] 验证 `data/` 目录确实应该被忽略（包含本地数据库文件）
+    - [x] 验证 `prisma/generated/` 和 `prisma/migrations/` 应该被忽略（生成的运行时文件）
+    - [x] 确认 `schema.prisma` 文件应该被版本控制（设计文件）
+    - [x] 提交更新后的 `.gitignore` 配置
 
 #### **B-1 数据迁移脚本开发与执行**
 - [ ] **任务 B-1.1**：分析现有JSON数据结构，制定迁移策略
