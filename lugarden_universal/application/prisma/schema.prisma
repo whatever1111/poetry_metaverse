@@ -77,7 +77,7 @@ model UniverseEmotion {
   @@unique([universeId, emotionId]) 
 }
 
-// 周与春秋宇宙表 (对应 poeject_zhou_spring_autumn/data/content/)
+// 周与春秋宇宙表 (对应 poeject_zhou_spring_autumn/data/content_draft/)
 model ZhouProject {
   id String @id
   name String

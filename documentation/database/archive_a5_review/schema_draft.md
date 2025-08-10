@@ -54,7 +54,7 @@
 
 ## 子宇宙内实体（详细对应表）
 
-### 周与春秋宇宙实体（来源：poeject_zhou_spring_autumn/data/content/）
+### 周与春秋宇宙实体（来源：poeject_zhou_spring_autumn/data/content_draft/）
 
 #### 1) ZhouPoem（诗歌综合表）
 **数据来源：** `poem_archetypes.json` + `poems/*.txt` 文件
@@ -369,7 +369,7 @@ model UniverseEmotion {
   @@unique([universeId, emotionId]) 
 }
 
-// 周与春秋宇宙表 (对应 poeject_zhou_spring_autumn/data/content/)
+// 周与春秋宇宙表 (对应 poeject_zhou_spring_autumn/data/content_draft/)
 model ZhouProject {
   id String @id @db.VarChar(64)
   name String

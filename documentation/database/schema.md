@@ -54,10 +54,10 @@
 
 ## 子宇宙内实体（详细对应表）
 
-### 周与春秋宇宙实体（来源：poeject_zhou_spring_autumn/data/content/）
+### 周与春秋宇宙实体（来源：poeject_zhou_spring_autumn/data/content_draft/）
 
 #### 1) ZhouPoem（诗歌综合表）
-**数据来源：** `poem_archetypes.json` + `poems/*.txt` 文件
+**数据来源：** `poem_archetypes.json` + `poems_draft/*.txt` 文件
 - id (PK): 诗歌唯一标识
 - title: 诗歌标题
 - chapter: 所属章节 ("观我生", "雨，木冰", "是折枝")
@@ -275,7 +275,7 @@
    - 构建 UniverseTheme 桥表关联
 
 ### 第二阶段：周与春秋宇宙数据导入
-3) **ZhouPoem** ← `poem_archetypes.json` + `poems/*.txt`（48首诗的综合数据）
+3) **ZhouPoem** ← `poem_archetypes.json` + `poems_draft/*.txt`（48首诗的综合数据）
 4) **ZhouProject** ← `projects.json`
 5) **ZhouSubProject** ← `projects.json` → subProjects
 6) **ZhouQA** ← `questions.json`（按章节分组）
@@ -369,7 +369,7 @@ model UniverseEmotion {
   @@unique([universeId, emotionId]) 
 }
 
-// 周与春秋宇宙表 (对应 poeject_zhou_spring_autumn/data/content/)
+// 周与春秋宇宙表 (对应 poeject_zhou_spring_autumn/data/content_draft/)
 model ZhouProject {
   id String @id @db.VarChar(64)
   name String
