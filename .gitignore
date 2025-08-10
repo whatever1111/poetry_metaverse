@@ -30,8 +30,12 @@ lugarden_universal/application/.env.local
 # 本地开发环境文件 - 允许提交（不包含敏感信息）
 # lugarden_universal/application/.env
 
-# 数据库文件
+# 数据库文件（运行时数据）
 lugarden_universal/application/data/
 
-# Prisma生成文件
-lugarden_universal/application/prisma/
+# Prisma生成文件（客户端代码和迁移历史）
+lugarden_universal/application/prisma/generated/
+lugarden_universal/application/prisma/migrations/
+
+# 但保留设计文件
+!lugarden_universal/application/prisma/schema.prisma
