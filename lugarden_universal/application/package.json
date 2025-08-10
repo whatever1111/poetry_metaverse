@@ -6,10 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "db:generate": "prisma generate --schema=prisma/test-schema.prisma",
-    "db:migrate": "prisma migrate dev --name init --schema=prisma/test-schema.prisma",
-    "db:studio": "prisma studio --schema=prisma/test-schema.prisma",
-    "db:reset": "prisma migrate reset --force --schema=prisma/test-schema.prisma"
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --name init",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset --force"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
