@@ -1,0 +1,139 @@
+{
+  "timestamp": "2025-08-11T08:02:21.347Z",
+  "summary": {
+    "totalChecks": 13,
+    "passedChecks": 13,
+    "failedChecks": 0,
+    "totalIssues": 0
+  },
+  "sections": {
+    "integrity": {
+      "tableCounts": {
+        "Universe": 2,
+        "Theme": 6,
+        "Emotion": 3,
+        "UniverseTheme": 11,
+        "UniverseEmotion": 6,
+        "CrossUniverseContentLink": 51,
+        "ZhouProject": 1,
+        "ZhouSubProject": 3,
+        "ZhouPoem": 48,
+        "ZhouQA": 12,
+        "ZhouMapping": 48,
+        "MaoxiaodouPoem": 14,
+        "MaoxiaodouCharacter": 30,
+        "MaoxiaodouCharacterRelation": 38,
+        "MaoxiaodouScene": 29,
+        "MaoxiaodouTerminology": 125,
+        "MaoxiaodouTheme": 6,
+        "MaoxiaodouTimeline": 3,
+        "MaoxiaodouTheory": 4,
+        "MaoxiaodouReadingLayer": 3,
+        "MaoxiaodouMapping": 49,
+        "MaoxiaodouMetadata": 1
+      },
+      "foreignKeyChecks": {
+        "UniverseTheme -> Universe": 0,
+        "UniverseTheme -> Theme": 0,
+        "UniverseEmotion -> Universe": 0,
+        "UniverseEmotion -> Emotion": 0,
+        "ZhouPoem -> Universe": 0,
+        "MaoxiaodouPoem -> Universe": 0
+      },
+      "uniqueConstraintChecks": {
+        "Theme.name": 0,
+        "Emotion.name": 0,
+        "Universe.code": 0
+      },
+      "dataQualityIssues": [],
+      "summary": {
+        "totalTables": 22,
+        "totalRecords": 493,
+        "issuesFound": 0
+      }
+    },
+    "relationships": {
+      "bridgeRelationships": {
+        "UniverseTheme 桥表关联": {
+          "count": 11,
+          "issues": []
+        },
+        "UniverseEmotion 桥表关联": {
+          "count": 6,
+          "issues": []
+        }
+      },
+      "crossUniverseRelationships": {
+        "CrossUniverseContentLink 跨宇宙关联": {
+          "count": 51,
+          "issues": []
+        }
+      },
+      "internalRelationships": {
+        "周春秋宇宙内部关联": {
+          "count": 63,
+          "issues": []
+        },
+        "毛小豆宇宙内部关联": {
+          "count": 67,
+          "issues": []
+        }
+      },
+      "issues": [],
+      "summary": {
+        "totalChecks": 5,
+        "passedChecks": 5,
+        "failedChecks": 0
+      }
+    },
+    "consistency": {
+      "dataTypeChecks": {
+        "Universe ID 格式一致性": {
+          "count": 2,
+          "issues": []
+        },
+        "Theme ID 格式一致性": {
+          "count": 6,
+          "issues": []
+        },
+        "Emotion ID 格式一致性": {
+          "count": 3,
+          "issues": []
+        }
+      },
+      "formatChecks": {
+        "诗歌标题格式一致性": {
+          "count": 62,
+          "issues": []
+        },
+        "JSON 字段格式一致性": {
+          "count": 30,
+          "issues": []
+        }
+      },
+      "crossUniverseConsistency": {
+        "主题名称跨宇宙一致性": {
+          "count": 6,
+          "issues": []
+        },
+        "桥表数据一致性": {
+          "count": 17,
+          "issues": []
+        },
+        "跨宇宙关联一致性": {
+          "count": 51,
+          "issues": []
+        }
+      },
+      "issues": [],
+      "summary": {
+        "totalChecks": 8,
+        "passedChecks": 8,
+        "failedChecks": 0
+      }
+    }
+  },
+  "recommendations": [
+    "所有验证通过，数据质量良好，可以继续后续开发"
+  ]
+}

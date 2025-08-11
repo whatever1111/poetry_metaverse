@@ -51,7 +51,11 @@ async function migratePoems() {
       title.replace(/\s*\|\s*/, ' | '), // 处理 "|" 符号
       title.replace(/\s+/g, ''), // 移除所有空格
       title.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, ''), // 只保留中文、英文、数字
-    ];
+      // 特殊处理：毛小豆故事演绎 | REMAKE -> 毛小豆故事演绎 Ⅰ REMAKE
+      title === '毛小豆故事演绎 | REMAKE' ? '毛小豆故事演绎 Ⅰ REMAKE' : null,
+      // 特殊处理：注意看 -> 注 意 看
+      title === '注意看' ? '注 意 看' : null,
+    ].filter(Boolean); // 过滤掉null值
     
     for (const match of possibleMatches) {
       if (basenameToPath.has(match)) {

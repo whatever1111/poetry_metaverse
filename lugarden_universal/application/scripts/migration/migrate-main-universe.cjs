@@ -23,14 +23,14 @@ async function migrateMainUniverse() {
     const universes = [
       {
         id: 'universe_maoxiaodou',
-        code: 'maoxiaodou',
+        code: 'universe_maoxiaodou',
         name: '毛小豆宇宙',
         type: 'maoxiaodou',
         description: '毛小豆宇宙数据域',
       },
       {
         id: 'universe_zhou_spring_autumn',
-        code: 'zhou_spring_autumn',
+        code: 'universe_zhou_spring_autumn',
         name: '周与春秋',
         type: 'zhou_spring_autumn',
         description: '周与春秋练习项目数据域',
@@ -48,7 +48,7 @@ async function migrateMainUniverse() {
     const themesJson = await readJsonFile(themesJsonPath);
     const themes = Array.isArray(themesJson?.themes) ? themesJson.themes : [];
     for (const theme of themes) {
-      const id = String(theme.id);
+      const id = `theme_${String(theme.id)}`;
       const name = String(theme.name);
       const description = theme.description ? String(theme.description) : null;
       await prisma.theme.upsert({
@@ -85,12 +85,12 @@ async function migrateMainUniverse() {
     
     // 主题关键词映射
     const THEME_KEYWORDS = {
-      'male_community': ['男性', '共同体', '兄弟', '朋友', '伙伴', '群体', '团结'],
-      'identity_anxiety': ['身份', '焦虑', '自我', '认同', '困惑', '迷茫', '定位'],
-      'microphysics_of_power': ['权力', '微观', '运作', '控制', '支配', '影响', '机制'],
-      'ugly_feelings': ['丑陋', '情感', '负面', '情绪', '痛苦', '愤怒', '悲伤'],
-      'consumerism': ['消费', '主义', '物质', '购买', '商品', '市场', '经济'],
-      'time_and_stagnation': ['时间', '停滞', '静止', '流逝', '永恒', '变化', '发展']
+      'theme_male_community': ['男性', '共同体', '兄弟', '朋友', '伙伴', '群体', '团结'],
+      'theme_identity_anxiety': ['身份', '焦虑', '自我', '认同', '困惑', '迷茫', '定位'],
+      'theme_microphysics_of_power': ['权力', '微观', '运作', '控制', '支配', '影响', '机制'],
+      'theme_ugly_feelings': ['丑陋', '情感', '负面', '情绪', '痛苦', '愤怒', '悲伤'],
+      'theme_consumerism': ['消费', '主义', '物质', '购买', '商品', '市场', '经济'],
+      'theme_time_and_stagnation': ['时间', '停滞', '静止', '流逝', '永恒', '变化', '发展']
     };
     
     // 关键词匹配函数
@@ -136,6 +136,11 @@ async function migrateMainUniverse() {
       }
     }
     
+    // 清理现有的桥表数据
+    await prisma.universeTheme.deleteMany({});
+    await prisma.universeEmotion.deleteMany({});
+    console.log('[migrate-main-universe] 清理现有桥表数据完成');
+    
     const themesAll = await prisma.theme.findMany({});
     let utCreates = 0;
     
@@ -149,10 +154,8 @@ async function migrateMainUniverse() {
       const utId = `ut_universe_maoxiaodou__${th.id}`;
       const confidence = calculateThemeConfidence(allPoemText);
       
-      await prisma.universeTheme.upsert({
-        where: { id: utId },
-        update: { universeId: 'universe_maoxiaodou', themeId: th.id, confidence, note: '基于诗歌内容关键词匹配计算' },
-        create: { id: utId, universeId: 'universe_maoxiaodou', themeId: th.id, confidence, note: '基于诗歌内容关键词匹配计算' },
+      await prisma.universeTheme.create({
+        data: { id: utId, universeId: 'universe_maoxiaodou', themeId: th.id, confidence, note: '基于诗歌内容关键词匹配计算' },
       });
       utCreates += 1;
     }
