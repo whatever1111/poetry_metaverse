@@ -30,29 +30,36 @@ model Emotion {
 model Universe { 
   id String @id
   code String @unique 
-  name String 
-  type String 
-  description String? 
-  themes UniverseTheme[] 
-  emotions UniverseEmotion[]
-  // 周与春秋关系
-  zhouPoems ZhouPoem[]
+  name String
+  type String
+  description String?
+  
+  // 桥表关系
+  universeThemes UniverseTheme[]
+  universeEmotions UniverseEmotion[]
+  
+  // 子宇宙表关系
   zhouProjects ZhouProject[]
   zhouSubProjects ZhouSubProject[]
   zhouQAs ZhouQA[]
   zhouMappings ZhouMapping[]
-  // 毛小豆关系
+  zhouPoems ZhouPoem[]
+  
   maoxiaodouPoems MaoxiaodouPoem[]
   maoxiaodouCharacters MaoxiaodouCharacter[]
   maoxiaodouCharacterRelations MaoxiaodouCharacterRelation[]
-  maoxiaodouScenes MaoxiaodouScene[]
-  maoxiaodouTerminology MaoxiaodouTerminology[]
+  maoxiaodouTerminologies MaoxiaodouTerminology[]
   maoxiaodouThemes MaoxiaodouTheme[]
+  maoxiaodouScenes MaoxiaodouScene[]
   maoxiaodouTimelines MaoxiaodouTimeline[]
   maoxiaodouTheories MaoxiaodouTheory[]
   maoxiaodouReadingLayers MaoxiaodouReadingLayer[]
   maoxiaodouMappings MaoxiaodouMapping[]
-  maoxiaodouMetadata MaoxiaodouMetadata[]
+  maoxiaodouMetadatas MaoxiaodouMetadata[]
+  
+  // 跨宇宙关联关系
+  crossUniverseSourceLinks CrossUniverseContentLink[] @relation("CrossUniverseSource")
+  crossUniverseTargetLinks CrossUniverseContentLink[] @relation("CrossUniverseTarget")
 }
 
 // 桥表
@@ -75,6 +82,25 @@ model UniverseEmotion {
   universe Universe @relation(fields: [universeId], references: [id]) 
   emotion Emotion @relation(fields: [emotionId], references: [id]) 
   @@unique([universeId, emotionId]) 
+}
+
+model CrossUniverseContentLink {
+  id String @id
+  sourceUniverseId String
+  sourceEntityType String
+  sourceEntityId String
+  targetUniverseId String
+  targetEntityType String
+  targetEntityId String
+  mappingType String
+  score Float?
+  note String?
+  createdAt DateTime @default(now())
+  
+  sourceUniverse Universe @relation("CrossUniverseSource", fields: [sourceUniverseId], references: [id])
+  targetUniverse Universe @relation("CrossUniverseTarget", fields: [targetUniverseId], references: [id])
+  
+  @@unique([sourceUniverseId, sourceEntityType, sourceEntityId, targetUniverseId, targetEntityType, targetEntityId])
 }
 
 // 周与春秋宇宙表 (对应 poeject_zhou_spring_autumn/data/content_draft/)

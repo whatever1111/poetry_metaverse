@@ -2,6 +2,12 @@
 
 本设计采用"主宇宙中立实体 + 子宇宙桥接"的架构模型，实现跨宇宙数据融合与解耦。
 
+**当前版本：22张表**
+- 主宇宙中立实体：3张表（Theme、Emotion、Universe）
+- 桥表：3张表（UniverseTheme、UniverseEmotion、CrossUniverseContentLink）
+- 周春秋宇宙：5张表（ZhouProject、ZhouSubProject、ZhouPoem、ZhouQA、ZhouMapping）
+- 毛小豆宇宙：11张表（MaoxiaodouPoem、MaoxiaodouCharacter、MaoxiaodouCharacterRelation、MaoxiaodouTerminology、MaoxiaodouTheme、MaoxiaodouScene、MaoxiaodouTimeline、MaoxiaodouTheory、MaoxiaodouReadingLayer、MaoxiaodouMapping、MaoxiaodouMetadata）
+
 ## 设计原则
 - 中立：核心概念（Themes/Archetypes/Emotions）不绑定任何具体子宇宙。
 - 解耦：子宇宙（毛小豆、周与春秋）通过桥表与中立实体建立关联。
