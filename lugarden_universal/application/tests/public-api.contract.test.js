@@ -3,12 +3,15 @@ import express from 'express';
 import fs from 'fs/promises';
 import path from 'path';
 import publicRouter from '../src/routes/public.js';
+import { fileURLToPath } from 'url';
 
 const app = express();
 app.use(express.json());
 app.use('/api', publicRouter);
 
-const APP_ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const APP_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(APP_ROOT, 'data', 'content');
 const DATA_DRAFT_DIR = path.join(APP_ROOT, 'data', 'content_draft');
 const POEMS_DIR = path.join(APP_ROOT, 'data', 'poems');

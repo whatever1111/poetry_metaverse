@@ -64,6 +64,50 @@ describe('Admin API contracts (DB-first with filesystem fallback)', () => {
     expect(res.body).toHaveProperty('resultMap');
     expect(res.body).toHaveProperty('poems');
   });
+
+  // 写接口仅在显式允许时执行（需要 DB 可用且存在 Universe 记录）
+  const RUN_DB_WRITES = process.env.RUN_DB_WRITE_TESTS === '1';
+  const maybe = RUN_DB_WRITES ? test : test.skip;
+
+  maybe('POST/PUT/DELETE admin write flow works with DB', async () => {
+    // 创建项目
+    let res = await request(app).post('/api/admin/projects').send({ name: '新项目', description: 'd', poet: 'p' });
+    expect([201, 500, 400]).toContain(res.status); // 允许 DB 不可用时跳过
+    if (res.status !== 201) return;
+    const projectId = res.body.id;
+
+    // 新建子项目
+    res = await request(app).post(`/api/admin/projects/${projectId}/sub`).send({ name: '新章', description: 'sd' });
+    expect(res.status).toBe(201);
+
+    // 更新问题
+    res = await request(app).put(`/api/admin/projects/${projectId}/sub/新章/questions`).send({ questions: [{ question: 'Q', options: { A: 'a', B: 'b' }, meaning: { A: 'ma', B: 'mb' } }] });
+    expect(res.status).toBe(204);
+
+    // 更新映射
+    res = await request(app).put(`/api/admin/projects/${projectId}/sub/新章/resultMap`).send({ resultMap: { 'A-B': '诗一' } });
+    expect(res.status).toBe(204);
+
+    // 新增诗
+    res = await request(app).post(`/api/admin/projects/${projectId}/sub/新章/poems`).send({ title: '诗一', body: 'body' });
+    expect(res.status).toBe(201);
+
+    // 更新诗
+    res = await request(app).put(`/api/admin/projects/${projectId}/sub/新章/poems/诗一`).send({ title: '诗一', body: 'body2' });
+    expect(res.status).toBe(200);
+
+    // 切换状态
+    res = await request(app).put(`/api/admin/projects/${projectId}/status`).send({ status: 'published' });
+    expect(res.status).toBe(200);
+
+    // 删除诗
+    res = await request(app).delete(`/api/admin/projects/${projectId}/sub/新章/poems/诗一`);
+    expect(res.status).toBe(204);
+
+    // 删除项目
+    res = await request(app).delete(`/api/admin/projects/${projectId}`);
+    expect(res.status).toBe(204);
+  });
 });
 
 

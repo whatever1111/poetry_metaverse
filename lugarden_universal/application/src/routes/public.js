@@ -44,10 +44,13 @@ router.get('/projects', async (req, res, next) => {
     );
     return res.json(mapped);
   } catch (dbErr) {
+    // 若 Prisma 客户端不可用或查询失败，回退至文件
     try {
       const projectsData = await fs.readFile(PROJECTS_PATH, 'utf-8');
       const projectsJson = JSON.parse(projectsData);
-      return res.json(projectsJson.projects || []);
+      const all = projectsJson.projects || [];
+      const publishedOnly = all.filter((p) => (p.status || '').toLowerCase() === 'published');
+      return res.json(publishedOnly);
     } catch (fsErr) {
       return next(fileFallbackError('无法加载项目结构'));
     }

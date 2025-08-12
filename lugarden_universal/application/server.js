@@ -722,99 +722,12 @@ adminRouter.delete('/projects/:projectId/sub/:subProjectName/poems/:poemId', asy
 });
 
 // --- 发布功能 ---
-adminRouter.post('/publish-all', async (req, res) => {
-    console.log('接收到精细化发布请求...');
-    try {
-        // 1. 读取草稿区的项目、问题、映射数据
-        const projectsDraftData = await fs.readFile(PROJECTS_DRAFT_PATH, 'utf-8');
-        const allProjectsJson = JSON.parse(projectsDraftData);
-
-        const questionsDraftData = await fs.readFile(QUESTIONS_DRAFT_PATH, 'utf-8');
-        const allQuestions = JSON.parse(questionsDraftData);
-
-        const mappingsDraftData = await fs.readFile(MAPPINGS_DRAFT_PATH, 'utf-8');
-        const allMappingsJson = JSON.parse(mappingsDraftData);
-        const allMappings = allMappingsJson.units || {}; // [修复]
-
-        // 2. 筛选出所有“已上架”的项目
-        const publishedProjects = allProjectsJson.projects.filter(p => p.status === 'published');
-        console.log(`找到 ${publishedProjects.length} 个已上架项目待发布。`);
-
-        // 3. 构建新的线上数据
-        const liveProjectsJson = { projects: publishedProjects };
-        const liveQuestions = {};
-        const liveMappings = { units: {} }; // [修复] 初始化为带 units 的结构
-        const livePoemFolders = [];
-
-        // 处理chapters结构的questions数据
-        if (allQuestions.chapters) {
-            // 将chapters结构转换为前端期望的简化结构
-            for (const chapter of allQuestions.chapters) {
-                const chapterName = chapter.id;
-                if (chapter.questions) {
-                    liveQuestions[chapterName] = chapter.questions.map(q => ({
-                        question: q.text,
-                        options: {
-                            A: q.options.find(opt => opt.id.endsWith('a'))?.text || '',
-                            B: q.options.find(opt => opt.id.endsWith('b'))?.text || ''
-                        },
-                        meaning: {
-                            A: `选择A的含义`, // 这里可以后续从results中提取
-                            B: `选择B的含义`
-                        }
-                    }));
-                }
-            }
-        }
-
-        for (const project of publishedProjects) {
-            for (const subProject of project.subProjects) {
-                const subProjectName = subProject.name;
-                // 如果是旧的简化结构，保持兼容
-                if (!allQuestions.chapters && allQuestions[subProjectName]) {
-                    liveQuestions[subProjectName] = allQuestions[subProjectName];
-                }
-                if (allMappings[subProjectName]) {
-                    liveMappings.units[subProjectName] = allMappings[subProjectName]; // [修复]
-                }
-                livePoemFolders.push(subProjectName);
-            }
-        }
-
-        // 4. 清理旧的线上目录
-        console.log('正在清理线上目录: data, poems');
-        await fs.rm(DATA_DIR, { recursive: true, force: true });
-        await fs.mkdir(DATA_DIR, { recursive: true });
-        await fs.rm(POEMS_DIR, { recursive: true, force: true });
-        await fs.mkdir(POEMS_DIR, { recursive: true });
-        console.log('线上目录已清理。');
-
-        // 5. 写入新的线上数据
-        console.log('正在写入新的线上数据...');
-        await fs.writeFile(PROJECTS_PATH, JSON.stringify(liveProjectsJson, null, 4));
-        await fs.writeFile(QUESTIONS_PATH, JSON.stringify(liveQuestions, null, 4));
-        await fs.writeFile(MAPPINGS_PATH, JSON.stringify(liveMappings, null, 4));
-
-        for (const folderName of livePoemFolders) {
-            const draftPath = path.join(POEMS_DRAFT_DIR, folderName);
-            const livePath = path.join(POEMS_DIR, folderName);
-            try {
-                await fs.cp(draftPath, livePath, { recursive: true });
-            } catch (cpError) {
-                // 如果草稿目录中没有对应的诗歌文件夹，这是一个正常情况，忽略即可
-                if (cpError.code !== 'ENOENT') {
-                    throw cpError;
-                }
-            }
-        }
-        console.log('新的线上数据写入完成。');
-
-        console.log('精细化发布流程成功完成！');
-        res.status(200).json({ message: '所有已上架项目已成功发布到线上！' });
-    } catch (error) {
-        console.error('发布过程中发生严重错误:', error);
-        res.status(500).json({ message: '发布失败，服务器发生内部错误。请检查服务器日志。', error: error.message });
-    }
+// C-5 变更：发布机制切换为 status 控制，该接口过渡为 no-op
+adminRouter.post('/publish-all', async (_req, res) => {
+    return res.status(200).json({
+        message: '发布机制已切换为按项目 status 控制（draft/published）。/api/admin/publish-all 已弃用且不再写入文件。',
+        next: '请通过 /api/admin/projects/:projectId/status 切换状态，前台 /api/projects 自动反映 published 项目'
+    });
 });
 
 

@@ -129,6 +129,13 @@
 { "error": { "code": "NOT_FOUND", "message": "子项目不存在" } }
 ```
 
+### POST /api/admin/publish-all（已弃用）
+- 说明：自 C-5 起发布由 `status=draft|published` 控制，本接口为 no-op，仅返回提示。
+- 200 示例：
+```json
+{ "message": "发布机制已切换为按项目 status 控制（draft/published）。/api/admin/publish-all 已弃用且不再写入文件。", "next": "请通过 /api/admin/projects/:projectId/status 切换状态，前台 /api/projects 自动反映 published 项目" }
+```
+
 > 注：以上示例以现有文件读写实现输出为对照，后续迁移到 DB 时必须保持完全一致的键名与层级。
 
 
