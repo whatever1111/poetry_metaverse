@@ -4,13 +4,13 @@
 
 ## 模板列表
 
-### 1. TODO_TEMPLATE.md
-**用途**: 创建新的TODO清单
-**使用场景**: 开始新功能开发时
-**位置**: `documentation/templates/TODO_TEMPLATE.md`
+### 1. TODO_TEMPLATE_ENHANCED.md（默认）
+**用途**: 创建新的TODO清单（增强版，含契约冻结/字段映射/灰度与健康检查等字段）
+**使用场景**: 开始新功能开发时（推荐默认使用）
+**位置**: `documentation/templates/TODO_TEMPLATE_ENHANCED.md`
 
 **使用方法**:
-1. 复制 `TODO_TEMPLATE.md` 到项目根目录
+1. 复制 `TODO_TEMPLATE_ENHANCED.md` 到项目根目录
 2. 重命名为 `TODO_[项目名称]_[功能描述].md`
 3. 填写具体的任务和目标
 4. 完成后移动到对应的changelog目录
@@ -31,7 +31,7 @@
 ### 开始新功能开发
 ```bash
 # 1. 复制TODO模板
-cp documentation/templates/TODO_TEMPLATE.md TODO_新功能开发.md
+cp documentation/templates/TODO_TEMPLATE_ENHANCED.md TODO_新功能开发.md
 
 # 2. 编辑TODO清单
 # 填写目标、任务列表、更新日志关联等信息

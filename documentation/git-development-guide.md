@@ -190,7 +190,8 @@ documentation/
 │   │   └── README.md            # 目录说明（可选）
 │   └── README.md                # 目录结构说明
 ├── templates/                    # 文档模板
-│   ├── TODO_TEMPLATE.md         # TODO清单模板
+│   ├── TODO_TEMPLATE_ENHANCED.md  # TODO清单模板（增强版，默认）
+│   ├── TODO_TEMPLATE.md           # TODO清单模板（兼容保留）
 │   ├── 更新日志_TEMPLATE.md     # 更新日志模板
 │   └── README.md                # 模板说明
 ├── ai-collaboration-guide.md    # AI协作指南
@@ -463,12 +464,12 @@ touch "documentation/changelog/2025-01-XX_毛小豆宇宙项目功能完善/更�
 ### 4. TODO清单与更新日志关联机制
 
 #### TODO清单模板
-**模板位置**: `documentation/templates/TODO_TEMPLATE.md`
+**模板位置（默认）**: `documentation/templates/TODO_TEMPLATE_ENHANCED.md`
 
 **使用方法**:
 ```bash
-# 复制模板到项目根目录
-cp documentation/templates/TODO_TEMPLATE.md TODO_新功能开发.md
+# 复制模板到项目根目录（默认使用增强版模板）
+cp documentation/templates/TODO_TEMPLATE_ENHANCED.md TODO_新功能开发.md
 
 # 编辑TODO清单
 # 填写目标、任务列表、更新日志关联等信息
@@ -476,31 +477,35 @@ cp documentation/templates/TODO_TEMPLATE.md TODO_新功能开发.md
 
 **重要说明**：TODO清单应存放在项目根目录中，便于开发过程中的实时更新和团队协作。只有在任务完成后，才将TODO清单移动到对应的changelog目录中，形成历史记录。
 
-**模板内容**:
+**模板内容（简化示例，完整字段以增强版模板为准）**:
 ```markdown
-# [项目名称] [功能描述] TODO
+# [项目名称] [功能描述] TODO（增强版）
 
 ## 目标
 [明确描述本次开发的目标和意义]
+
+## 范围与约束
+（按需填写，详见增强版模板）
 
 ## 任务列表
 ### 第一阶段：[阶段名称]
 - [ ] 任务1：[具体任务描述]
 - [ ] 任务2：[具体任务描述]
 
+## 测试与验收
+- 公开/管理接口契约测试、DB写测试门控、E2E清单（按需）
+
 ## 更新日志关联
 - **预计更新类型**: [功能更新/架构重构/问题修复/项目治理]
 - **更新目录**: `documentation/changelog/YYYY-MM-DD_[更新内容]/`
 - **更新日志文件**: `更新日志.md`
-- **测试验证点**: 
+- **测试验证点**:
   - [ ] 验证点1
   - [ ] 验证点2
 
 ## 完成后的操作
-- [ ] 创建更新目录：`documentation/changelog/YYYY-MM-DD_[更新内容]/`
-- [ ] 将本TODO文件移动到更新目录并重命名为 `TODO.md`
-- [ ] 创建对应的更新日志文档：`更新日志.md`
-- [ ] 更新 `public/更新日志.md` 文件
+- [ ] 创建更新目录并移动为 `TODO.md`
+- [ ] 创建 `更新日志.md`
 - [ ] 提交所有更改到Git
 ```
 
@@ -616,7 +621,8 @@ cp documentation/templates/更新日志_TEMPLATE.md "documentation/changelog/YYY
 #### 项目模板使用指南
 本项目提供了标准化的文档模板，确保所有文档的一致性和专业性：
 
-**TODO清单模板**：`documentation/templates/TODO_TEMPLATE.md`
+**TODO清单模板（默认）**：`documentation/templates/TODO_TEMPLATE_ENHANCED.md`
+（兼容保留）`documentation/templates/TODO_TEMPLATE.md`
 - 用于创建新的开发任务清单
 - 包含AI协作指南引用和完整的任务结构
 - 确保所有TODO文件遵循统一格式
@@ -627,7 +633,7 @@ cp documentation/templates/更新日志_TEMPLATE.md "documentation/changelog/YYY
 - 确保更新日志的完整性和可追溯性
 
 **使用建议**：
-1. 创建新TODO时，复制 `TODO_TEMPLATE.md` 并重命名
+1. 创建新TODO时，复制 `TODO_TEMPLATE_ENHANCED.md` 并重命名
 2. 记录更新时，复制 `更新日志_TEMPLATE.md` 并填写具体内容
 3. 保持模板的简洁性，避免过度定制
 4. 定期审查模板，确保其与项目发展同步
