@@ -1,7 +1,4 @@
 import { Router } from 'express';
-import fs from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { getPrismaClient } from '../persistence/prismaClient.js';
 import { mapZhouProjectsToPublicProjects } from '../services/mappers.js';
 import { invalidate } from '../utils/cache.js';
@@ -14,40 +11,24 @@ router.use((req, res, next) => {
   return res.status(401).json({ error: { code: 'UNAUTHORIZED', message: '需要认证' } });
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const ROOT = path.join(__dirname, '..', '..');
-const DATA_DRAFT_DIR = path.join(ROOT, 'data', 'content_draft');
-const POEMS_DRAFT_DIR = path.join(ROOT, 'data', 'poems_draft');
-const PROJECTS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'projects.json');
-const QUESTIONS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'questions.json');
-const MAPPINGS_DRAFT_PATH = path.join(DATA_DRAFT_DIR, 'mappings.json');
+// 移除所有文件回退相关常量与逻辑
 
-function fallbackError(message) {
-  const err = new Error(message);
-  err.statusCode = 500;
-  err.code = 'INTERNAL_SERVER_ERROR';
-  return err;
-}
-
-// GET /api/admin/projects （DB 优先，失败回退到草稿文件）
+// GET /api/admin/projects （DB）
 router.get('/projects', async (req, res, next) => {
   try {
     const prisma = getPrismaClient();
     const projects = await prisma.zhouProject.findMany({
-      include: { subProjects: { select: { name: true, description: true } } },
+      orderBy: { name: 'asc' },
+      include: {
+        subProjects: {
+          select: { name: true, description: true },
+          orderBy: { name: 'asc' },
+        },
+      },
     });
     const mapped = mapZhouProjectsToPublicProjects(projects);
     return res.json(mapped);
-  } catch (dbErr) {
-    try {
-      const projectsData = await fs.readFile(PROJECTS_DRAFT_PATH, 'utf-8');
-      const projectsJson = JSON.parse(projectsData);
-      return res.json(projectsJson.projects || []);
-    } catch (fsErr) {
-      return next(fallbackError('读取草稿项目失败'));
-    }
-  }
+  } catch (err) { return next(err); }
 });
 
 // GET /api/admin/projects/:projectId/sub/:subProjectName （DB 优先，失败回退到草稿文件）
@@ -55,8 +36,8 @@ router.get('/projects/:projectId/sub/:subProjectName', async (req, res, next) =>
   const { subProjectName } = req.params;
   try {
     const prisma = getPrismaClient();
-    const qas = await prisma.zhouQA.findMany({ where: { chapter: subProjectName } });
-    const questions = qas.map((q, index) => ({
+    const qas = await prisma.zhouQA.findMany({ where: { chapter: subProjectName }, orderBy: { index: 'asc' } });
+    const questions = qas.map((q) => ({
       question: q.question,
       options: { A: q.optionA ?? '', B: q.optionB ?? '' },
       meaning: { A: q.meaningA ?? '', B: q.meaningB ?? '' },
@@ -66,52 +47,11 @@ router.get('/projects/:projectId/sub/:subProjectName', async (req, res, next) =>
     const resultMap = {};
     for (const m of mappings) resultMap[m.combination] = m.poemTitle;
 
-    const poems = await prisma.zhouPoem.findMany({ where: { chapter: subProjectName } });
+    const poems = await prisma.zhouPoem.findMany({ where: { chapter: subProjectName }, orderBy: { title: 'asc' } });
     const poemsArr = poems.map((p) => ({ id: p.title, title: p.title, body: p.body ?? '' }));
 
     return res.json({ name: subProjectName, questions, resultMap, poems: poemsArr });
-  } catch (dbErr) {
-    try {
-      const questionsData = await fs.readFile(QUESTIONS_DRAFT_PATH, 'utf-8');
-      const questionsJson = JSON.parse(questionsData);
-      let questions = [];
-      if (questionsJson.chapters) {
-        const chapter = questionsJson.chapters.find((ch) => ch.id === subProjectName);
-        if (chapter && chapter.questions) {
-          questions = chapter.questions.map((q) => ({
-            question: q.text,
-            options: { A: q.options.find((opt) => opt.id.endsWith('a'))?.text || '', B: q.options.find((opt) => opt.id.endsWith('b'))?.text || '' },
-          }));
-        }
-      } else {
-        questions = questionsJson[subProjectName] || [];
-      }
-
-      const mappingsData = await fs.readFile(MAPPINGS_DRAFT_PATH, 'utf-8');
-      const mappingsJson = JSON.parse(mappingsData);
-      const resultMap = mappingsJson.units ? mappingsJson.units[subProjectName] || {} : (mappingsJson[subProjectName] || {});
-
-      const subDir = path.join(POEMS_DRAFT_DIR, subProjectName);
-      const poemsArr = [];
-      try {
-        const files = await fs.readdir(subDir);
-        for (const file of files) {
-          if (file.endsWith('.txt')) {
-            const full = path.join(subDir, file);
-            const content = await fs.readFile(full, 'utf-8');
-            const base = path.basename(file, '.txt');
-            poemsArr.push({ id: base, title: base, body: content });
-          }
-        }
-      } catch (dirErr) {
-        // ignore missing dir
-      }
-
-      return res.json({ name: subProjectName, questions, resultMap, poems: poemsArr });
-    } catch (fsErr) {
-      return next(fallbackError('获取草稿子项目数据失败'));
-    }
-  }
+  } catch (err) { return next(err); }
 });
 
 export default router;
@@ -128,6 +68,20 @@ async function getZhouUniverseId(prisma) {
   err.statusCode = 500;
   err.code = 'INTERNAL_SERVER_ERROR';
   throw err;
+}
+
+async function getAdminProjectShape(prisma, projectId) {
+  const project = await prisma.zhouProject.findUnique({
+    where: { id: projectId },
+    include: {
+      subProjects: {
+        select: { name: true, description: true },
+        orderBy: { name: 'asc' },
+      },
+    },
+  });
+  const [mapped] = mapZhouProjectsToPublicProjects([project]);
+  return mapped;
 }
 
 // 创建项目
@@ -155,8 +109,9 @@ router.put('/projects/:projectId', async (req, res, next) => {
     const { projectId } = req.params;
     const { name, description, poet } = req.body;
     if (!name) { const e = new Error('项目名称不能为空'); e.statusCode=400; e.code='BAD_REQUEST'; throw e; }
-    const updated = await prisma.zhouProject.update({ where: { id: projectId }, data: { name, description: description ?? '', poet: poet ?? '' } });
-    res.json({ id: updated.id, name: updated.name, description: updated.description, poet: updated.poet, status: updated.status });
+    await prisma.zhouProject.update({ where: { id: projectId }, data: { name, description: description ?? '', poet: poet ?? '' } });
+    const shaped = await getAdminProjectShape(prisma, projectId);
+    res.json(shaped);
   } catch (err) { next(err); }
 });
 
@@ -169,13 +124,13 @@ router.put('/projects/:projectId/status', async (req, res, next) => {
     const e = new Error('无效的状态值'); e.statusCode=400; e.code='BAD_REQUEST'; return next(e);
   }
   try {
-    const result = await prisma.$transaction(async (tx) => {
-      const updated = await tx.zhouProject.update({ where: { id: projectId }, data: { status } });
-      return updated;
+    await prisma.$transaction(async (tx) => {
+      await tx.zhouProject.update({ where: { id: projectId }, data: { status } });
     });
     // 失效相关缓存键（公开 projects、admin projects、questions/mappings/poems）
     invalidate(['/api/projects', '/api/admin/projects', '/api/questions', '/api/mappings', '/api/poems-all']);
-    return res.json({ id: result.id, name: result.name, status: result.status });
+    const shaped = await getAdminProjectShape(prisma, projectId);
+    return res.json(shaped);
   } catch (err) { return next(err); }
 });
 
@@ -271,6 +226,19 @@ router.put('/projects/:projectId/sub/:subProjectName/resultMap', async (req, res
     invalidate(['/api/admin/projects', '/api/mappings']);
     res.status(204).send();
   } catch (err) { next(err); }
+});
+
+// 兼容性：发布所有（DB 模式为 no-op，用于避免前端按钮 404）
+router.post('/publish-all', async (_req, res) => {
+  return res.status(200).json({
+    message: '发布机制已切换为按项目 status 控制（draft/published）。/api/admin/publish-all 为兼容接口，不执行任何写入。',
+    next: '请通过 /api/admin/projects/:projectId/status 切换状态，前台 /api/projects 自动反映 published 项目',
+  });
+});
+
+// 兼容性：单项目更新（DB 模式为 no-op）
+router.post('/projects/:projectId/update', async (_req, res) => {
+  return res.status(200).json({ message: 'DB 实时模式下无需单独“更新到线上”。若需展示到前台，请将项目状态切换为 published。' });
 });
 
 // 新增诗歌

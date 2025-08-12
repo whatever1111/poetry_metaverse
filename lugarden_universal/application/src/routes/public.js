@@ -26,6 +26,10 @@ const QUESTIONS_PATH = path.join(DATA_DIR, 'questions.json');
 const MAPPINGS_PATH = path.join(DATA_DIR, 'mappings.json');
 const POEM_ARCHETYPES_PATH = path.join(DATA_DRAFT_DIR, 'poem_archetypes.json');
 
+// 统一文件回退策略：默认关闭（与 server.js 保持一致）。
+// 如需启用文件回退（紧急应急），设置环境变量 FALLBACK_TO_FS=1
+const FALLBACK_TO_FS = (process.env.FALLBACK_TO_FS ?? '0') !== '0';
+
 function fileFallbackError(message) {
   const err = new Error(message);
   err.statusCode = 500;
@@ -50,6 +54,7 @@ router.get('/projects', async (req, res, next) => {
     setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
+    if (!FALLBACK_TO_FS) return next(fileFallbackError('无法加载项目结构'));
     // 若 Prisma 客户端不可用或查询失败，回退至文件
     try {
       const projectsData = await fs.readFile(PROJECTS_PATH, 'utf-8');
@@ -77,6 +82,7 @@ router.get('/questions', async (req, res, next) => {
     setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
+    if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read questions'));
     try {
       const questionsData = await fs.readFile(QUESTIONS_PATH, 'utf-8');
       const json = JSON.parse(questionsData);
@@ -101,6 +107,7 @@ router.get('/mappings', async (req, res, next) => {
     setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
+    if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read mappings'));
     try {
       const mappingsData = await fs.readFile(MAPPINGS_PATH, 'utf-8');
       const json = JSON.parse(mappingsData);
@@ -125,6 +132,7 @@ router.get('/poems-all', async (req, res, next) => {
     setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
+    if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read poems'));
     try {
       const poemsObj = {};
       const items = await fs.readdir(POEMS_DIR, { withFileTypes: true });
@@ -165,6 +173,7 @@ router.get('/poem-archetypes', async (req, res, next) => {
     setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
+    if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read poem archetypes'));
     try {
       const archetypesData = await fs.readFile(POEM_ARCHETYPES_PATH, 'utf-8');
       const json = JSON.parse(archetypesData);
