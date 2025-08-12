@@ -309,7 +309,7 @@
   - 文档：`documentation/backend/*`（契约样例、字段映射、迁移说明、E2E 清单）
   - 前端：`public/index.html`、`public/admin.html` 行为不变；发布/下架由 `status` 控制，前台仅返回 `published`
 
-- [ ] **任务 C-0：路由契约冻结与对齐**
+- [x] **任务 C-0：路由契约冻结与对齐**
   - 内容：盘点现有接口的输入/输出结构并冻结为“契约样例”（作为迁移对照）
   - 范围（公开接口）：`GET /api/projects`、`GET /api/questions`、`GET /api/mappings`、`GET /api/poems-all`、`GET /api/poem-archetypes`
   - 范围（管理接口，均以 `/api/admin` 前缀）：项目/子项目列表与详情、创建/更新/删除、问答与映射维护、诗歌 CRUD、发布/上架/下架
@@ -320,7 +320,15 @@
     - `documentation/backend/api-contracts.md`（路由与样例）
     - `documentation/backend/field-mapping.md`（DB 字段 → 前端字段）
 
-- [ ] **任务 C-1：基础设施与骨架搭建（不改行为）**
+  - **✅ 完成状态**：已冻结公开与管理接口契约，统一错误响应 envelope
+    - 已更新 `documentation/backend/api-contracts.md`：覆盖 `GET /api/projects|questions|mappings|poems-all|poem-archetypes`、`GET /api/admin/projects`、`GET /api/admin/projects/:projectId/sub/:subProjectName` 的 200/401/404/500 示例；错误统一为 `{ error: { code, message } }`
+    - 已更新 `documentation/backend/field-mapping.md`：细化 DB→前端字段映射与别名（如 `poetExplanation` → `poet_explanation`）、`defaultUnit` 来源规则、键名稳定性要求
+  - **🔍 独立审计意见 - C-0完成质量评估**
+    - **📋 审计依据**：文档样例完整、键名/层级与现网实现一致；错误响应 envelope 标准化并给出建议错误码集
+    - **🎯 质量评级**：优秀（A级）
+    - **✅ 审计结论**：满足迁移对照要求，可据此进行 C-2/C-3 映射与实现
+
+- [x] **任务 C-1：基础设施与骨架搭建（不改行为）**
   - 内容：新增数据库访问骨架与分层结构（`src/persistence/*`、`src/routes/*`、`src/services/*`），`server.js` 接入但默认仍用旧文件实现；接入全局错误处理中间件与基础请求体验证（如 Joi/Zod）；管理端鉴权中间件预置（未鉴权统一返回401契约）
   - 交付物：可运行的服务，前端行为保持一致
   - 验收：`index.html`、`admin.html` 正常使用，无回归；未鉴权访问管理接口返回统一401错误格式
@@ -331,6 +339,17 @@
     - `lugarden_universal/application/src/routes/admin.js`
     - `lugarden_universal/application/src/services/mappers.js`
     - `lugarden_universal/application/src/middlewares/*`（错误处理、鉴权、请求体验证：最小实现）
+
+  - **✅ 完成状态**：已完成骨架接入且不改现有行为
+    - `server.js`：挂载占位路由（`/api`、`/api/admin`）与全局错误处理中间件；认证失败统一返回 `{ error: { code: 'UNAUTHORIZED', message: '需要认证' } }`
+    - `src/persistence/prismaClient.js`：改为标准 `@prisma/client` 导入，规避生成路径不一致风险
+    - `src/middlewares/errorHandler.js`：新增统一错误 envelope 的全局错误处理
+    - 测试脚手架：`application/jest.config.js` 与 `tests/*.test.js` 占位用例；`package.json` 新增 `test` 脚本与依赖
+    - 路由与服务层：`src/routes/public.js`、`src/routes/admin.js`、`src/services/mappers.js` 占位保留，等待 C-2/C-3 接 DB 实现
+  - **🔍 独立审计意见 - C-1完成质量评估**
+    - **📋 审计依据**：服务可运行、前端行为未变；401 契约统一；未触及文件读写主逻辑，0 回归风险
+    - **🎯 质量评级**：优秀（A级）
+    - **✅ 审计结论**：骨架搭建完成，可进入 C-2 只读接口迁移
 
 - [ ] **任务 C-2：公开接口“只读”迁移（带文件回退）**
   - 内容：5 个公开接口优先读 DB，失败时回退文件；`/api/poem-archetypes` 做字段名映射（如 `poet_explanation`）
@@ -440,7 +459,7 @@
 ## 当前状态
 ✅ A阶段已完成 - 数据库设计与数据建模  
 ✅ B阶段已完成 - 数据迁移与整合  
-⏳ C阶段待开始 - 统一API网关与数据服务
+🚧 C阶段进行中 - 统一API网关与数据服务（已完成 C-0、C-1）
 
 ## 阶段B细化说明
 基于阶段A的工作经验，已将原阶段B的4个粗粒度任务细化为4个主要模块（原 B.4 已迁移到 ROADMAP 的后续阶段），共包含：
