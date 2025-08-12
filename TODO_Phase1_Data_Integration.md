@@ -294,13 +294,111 @@
   - 相关详细任务已同步写入 `ROADMAP.md` 对应章节。-->
 
 
-### **子阶段 C：统一API网关与数据服务**
-- [ ] **任务 C-1**：重构现有API，使用数据库替代JSON文件
-- [ ] **任务 C-2**：编写API自动化测试（使用Jest/Supertest），确保重构前后接口行为一致
-- [ ] **任务 C-3**：创建统一的API网关，支持跨项目数据访问
-- [ ] **任务 C-4**：实现数据查询和关联查询功能
-- [ ] **任务 C-5**：添加数据缓存和性能优化机制
-- [ ] **任务 C-6**: **端到端功能验证**。在完成API重构后，以用户的身份，手动操作整个前端应用（包括 `index.html` 的完整问答流程和 `admin.html` 的所有管理功能），确保所有页面、按钮、数据交互和显示效果与重构前完全一致。
+### **子阶段 C：统一API网关与数据服务（细化）**
+
+ > 目标：在不改变前端行为的前提下，逐步将所有读写从文件系统迁移到数据库，并提供统一网关与基础性能保障。
+
+  完成后关键职责一览（精简）：
+  - `application/server.js`：唯一入口；挂载 `src/routes/public.js`/`admin.js`，配置中间件/会话/静态资源
+  - `src/routes/public.js`：前台只读接口控制器（DB 优先，过渡期支持回退）；`/api/projects|questions|mappings|poems-all|poem-archetypes`
+  - `src/routes/admin.js`：后台读写控制器（全落库、无文件写）；项目/子项目/问答/映射/诗歌 CRUD，发布改为 `status`
+  - `src/services/mappers.js`：Prisma 实体 → 前端既有契约结构（保证前端零改动）
+  - `src/persistence/prismaClient.js`：Prisma Client 单例入口（统一连接与错误）
+  - `src/utils/cache.js`：只读接口基础缓存（TTL）与 `?refresh=true`
+  - 测试：`application/tests/*.test.js`（Jest/Supertest 契约与回归）
+  - 文档：`documentation/backend/*`（契约样例、字段映射、迁移说明、E2E 清单）
+  - 前端：`public/index.html`、`public/admin.html` 行为不变；发布/下架由 `status` 控制，前台仅返回 `published`
+
+- [ ] **任务 C-0：路由契约冻结与对齐**
+  - 内容：盘点现有接口的输入/输出结构并冻结为“契约样例”（作为迁移对照）
+  - 范围（公开接口）：`GET /api/projects`、`GET /api/questions`、`GET /api/mappings`、`GET /api/poems-all`、`GET /api/poem-archetypes`
+  - 范围（管理接口，均以 `/api/admin` 前缀）：项目/子项目列表与详情、创建/更新/删除、问答与映射维护、诗歌 CRUD、发布/上架/下架
+  - 交付物：路由-响应样例文档；字段映射表（DB→前端字段）
+  - 验收：样例覆盖以上接口；团队认可后冻结
+  - 预期改动文件（预判）：
+    - `documentation/backend/api-contracts.md`（路由与样例）
+    - `documentation/backend/field-mapping.md`（DB 字段 → 前端字段）
+
+- [ ] **任务 C-1：基础设施与骨架搭建（不改行为）**
+  - 内容：新增数据库访问骨架与分层结构（`src/persistence/*`、`src/routes/*`、`src/services/*`），`server.js` 接入但默认仍用旧文件实现
+  - 交付物：可运行的服务，前端行为保持一致
+  - 验收：`index.html`、`admin.html` 正常使用，无回归
+  - 预期改动文件（预判）：
+    - `lugarden_universal/application/server.js`（挂载路由骨架，不改变现有行为）
+    - `lugarden_universal/application/src/persistence/prismaClient.js`
+    - `lugarden_universal/application/src/routes/public.js`
+    - `lugarden_universal/application/src/routes/admin.js`
+    - `lugarden_universal/application/src/services/mappers.js`
+
+- [ ] **任务 C-2：公开接口“只读”迁移（带文件回退）**
+  - 内容：5 个公开接口优先读 DB，失败时回退文件；`/api/poem-archetypes` 做字段名映射（如 `poet_explanation`）
+  - 交付物：Supertest 契约一致性测试覆盖 5 个接口
+  - 验收：测试全部通过；`public/index.html` 正常
+  - 预期改动文件（预判）：
+    - `lugarden_universal/application/src/routes/public.js`（实现 DB 读取+文件回退）
+    - `lugarden_universal/application/src/services/mappers.js`（DB → 前端结构转换）
+    - `lugarden_universal/application/server.js`（仅路由挂载/中间件）
+
+- [ ] **任务 C-3：管理端“读”迁移（列表/详情）**
+  - 内容：`GET /api/admin/projects`、`GET /api/admin/projects/:projectId/sub/:subProjectName` 改为 DB 聚合输出
+  - 交付物：针对两接口的 Supertest；`admin.html` 列表与详情正常渲染
+  - 验收：测试通过；UI 正确显示
+  - 预期改动文件（预判）：
+    - `lugarden_universal/application/src/routes/admin.js`（读接口改用 DB）
+    - `lugarden_universal/application/src/services/mappers.js`
+
+- [ ] **任务 C-4：管理端“写”迁移（项目/子项目/问答/映射/诗歌）**
+  - 内容：POST/PUT/DELETE 全量落库，移除对 `data/`、`poems/` 的写操作；诗歌正文存 DB
+  - 交付物：每个写接口最小 E2E 用例（创建→读取→修改→删除→读取为空）
+  - 验收：`admin.html` 全流程可用；DB 约束（唯一/外键）无异常
+  - 预期改动文件（预判）：
+    - `lugarden_universal/application/src/routes/admin.js`（写接口落库，移除 fs 写入）
+    - `lugarden_universal/application/server.js`（如需微调中间件/体积限制）
+
+- [ ] **任务 C-5：发布机制切换与清理**
+  - 内容：将“发布/下架”语义化为 `status=draft/published`；前台 `/api/projects` 仅返回 `published`；`/api/admin/publish-all` 过渡为 no-op 并提示已切换模型
+  - 交付物：文档更新与服务提示
+  - 验收：上下架在前台实时生效；不再改动文件目录
+  - 预期改动文件（预判）：
+    - `lugarden_universal/application/src/routes/public.js`（`/api/projects` 仅返回 published）
+    - `lugarden_universal/application/src/routes/admin.js`（`/api/admin/publish-all` 置为 no-op）
+    - `documentation/backend/migration-notes.md`（发布机制变更说明）
+
+- [ ] **任务 C-6：性能与缓存（基础）**
+  - 内容：为常用只读接口加入内存缓存（如 60s）与 `?refresh=true` 强制刷新
+  - 交付物：缓存层与命中率日志
+  - 验收：首次慢后续快；可强制刷新
+  - 预期改动文件（预判）：
+    - `lugarden_universal/application/src/utils/cache.js`（简单内存缓存）
+    - `lugarden_universal/application/src/routes/public.js`（集成缓存与 refresh 参数）
+
+- [ ] **任务 C-7：自动化测试与回归**
+  - 内容：配置 Jest/Supertest；覆盖公开与管理关键路径；脚本入 `package.json`
+  - 交付物：`npm test` 绿色；可选最小 CI 脚本
+  - 验收：通过率 100%
+  - 预期改动文件（预判）：
+    - `lugarden_universal/application/package.json`（新增 `test` 脚本与 devDependencies）
+    - `lugarden_universal/application/jest.config.js`
+    - `lugarden_universal/application/tests/public-api.contract.test.js`
+    - `lugarden_universal/application/tests/admin-api.contract.test.js`
+
+- [ ] **任务 C-8：文档与收尾**
+  - 内容：补齐“契约样例”“迁移说明”“统一 API 网关变更说明”；在 `documentation/changelog/YYYY-MM-DD_统一API网关与数据服务/` 产出
+  - 交付物：`更新日志.md`、接口契约文档、迁移说明
+  - 验收：文档完整，提交历史清晰
+  - 预期改动文件（预判）：
+    - `documentation/changelog/YYYY-MM-DD_统一API网关与数据服务/TODO.md`
+    - `documentation/changelog/YYYY-MM-DD_统一API网关与数据服务/更新日志.md`
+    - `documentation/backend/*`（契约样例/映射/迁移说明）
+
+- [ ] **任务 C-9：端到端功能验证（出厂验收）**
+  - 内容：在全部迁移完成后，对 `public/index.html` 与 `public/admin.html` 进行完整用户路径验证（问答→解诗/读诗、后台创建/编辑/上架/下架/更新、映射与问答维护、诗歌 CRUD）。可选添加 Playwright/Cypress 脚本化用例。
+  - 交付物：验收清单与结果记录（必要时附截图/录屏）；可选 E2E 脚本与运行说明
+  - 验收：两页核心路径无回归，与迁移前行为一致；异常为 0
+  - 预期改动文件（预判）：
+    - `lugarden_universal/public/index.html`（仅在发现契约偏差时微调，占位）
+    - `lugarden_universal/public/admin.html`（仅在发现契约偏差时微调，占位）
+    - `documentation/backend/e2e-checklist.md`（验收记录/可选脚本说明）
 
 ## 更新日志关联
 - **预计更新类型**: 架构重构 / 功能更新
