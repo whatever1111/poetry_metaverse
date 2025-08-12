@@ -313,6 +313,7 @@
   - 内容：盘点现有接口的输入/输出结构并冻结为“契约样例”（作为迁移对照）
   - 范围（公开接口）：`GET /api/projects`、`GET /api/questions`、`GET /api/mappings`、`GET /api/poems-all`、`GET /api/poem-archetypes`
   - 范围（管理接口，均以 `/api/admin` 前缀）：项目/子项目列表与详情、创建/更新/删除、问答与映射维护、诗歌 CRUD、发布/上架/下架
+  - 补充冻结项（最小补充）：统一错误响应契约（400/401/403/404/409/500）与示例、未鉴权/无权限响应示例；请求体验证边界（必填字段与类型）
   - 交付物：路由-响应样例文档；字段映射表（DB→前端字段）
   - 验收：样例覆盖以上接口；团队认可后冻结
   - 预期改动文件（预判）：
@@ -320,15 +321,16 @@
     - `documentation/backend/field-mapping.md`（DB 字段 → 前端字段）
 
 - [ ] **任务 C-1：基础设施与骨架搭建（不改行为）**
-  - 内容：新增数据库访问骨架与分层结构（`src/persistence/*`、`src/routes/*`、`src/services/*`），`server.js` 接入但默认仍用旧文件实现
+  - 内容：新增数据库访问骨架与分层结构（`src/persistence/*`、`src/routes/*`、`src/services/*`），`server.js` 接入但默认仍用旧文件实现；接入全局错误处理中间件与基础请求体验证（如 Joi/Zod）；管理端鉴权中间件预置（未鉴权统一返回401契约）
   - 交付物：可运行的服务，前端行为保持一致
-  - 验收：`index.html`、`admin.html` 正常使用，无回归
+  - 验收：`index.html`、`admin.html` 正常使用，无回归；未鉴权访问管理接口返回统一401错误格式
   - 预期改动文件（预判）：
     - `lugarden_universal/application/server.js`（挂载路由骨架，不改变现有行为）
     - `lugarden_universal/application/src/persistence/prismaClient.js`
     - `lugarden_universal/application/src/routes/public.js`
     - `lugarden_universal/application/src/routes/admin.js`
     - `lugarden_universal/application/src/services/mappers.js`
+    - `lugarden_universal/application/src/middlewares/*`（错误处理、鉴权、请求体验证：最小实现）
 
 - [ ] **任务 C-2：公开接口“只读”迁移（带文件回退）**
   - 内容：5 个公开接口优先读 DB，失败时回退文件；`/api/poem-archetypes` 做字段名映射（如 `poet_explanation`）
@@ -340,7 +342,7 @@
     - `lugarden_universal/application/server.js`（仅路由挂载/中间件）
 
 - [ ] **任务 C-3：管理端“读”迁移（列表/详情）**
-  - 内容：`GET /api/admin/projects`、`GET /api/admin/projects/:projectId/sub/:subProjectName` 改为 DB 聚合输出
+  - 内容：`GET /api/admin/projects`、`GET /api/admin/projects/:projectId/sub/:subProjectName` 改为 DB 聚合输出（需通过鉴权中间件）
   - 交付物：针对两接口的 Supertest；`admin.html` 列表与详情正常渲染
   - 验收：测试通过；UI 正确显示
   - 预期改动文件（预判）：
@@ -348,8 +350,8 @@
     - `lugarden_universal/application/src/services/mappers.js`
 
 - [ ] **任务 C-4：管理端“写”迁移（项目/子项目/问答/映射/诗歌）**
-  - 内容：POST/PUT/DELETE 全量落库，移除对 `data/`、`poems/` 的写操作；诗歌正文存 DB
-  - 交付物：每个写接口最小 E2E 用例（创建→读取→修改→删除→读取为空）
+  - 内容：POST/PUT/DELETE 全量落库，移除对 `data/`、`poems/` 的写操作；诗歌正文存 DB；所有写操作使用 Prisma 事务（transaction）保证一致性；通过鉴权中间件；写成功后触发相关缓存键失效
+  - 交付物：每个写接口最小 E2E 用例（创建→读取→修改→删除→读取为空）；事务生效与缓存失效验证
   - 验收：`admin.html` 全流程可用；DB 约束（唯一/外键）无异常
   - 预期改动文件（预判）：
     - `lugarden_universal/application/src/routes/admin.js`（写接口落库，移除 fs 写入）
@@ -365,8 +367,8 @@
     - `documentation/backend/migration-notes.md`（发布机制变更说明）
 
 - [ ] **任务 C-6：性能与缓存（基础）**
-  - 内容：为常用只读接口加入内存缓存（如 60s）与 `?refresh=true` 强制刷新
-  - 交付物：缓存层与命中率日志
+  - 内容：为常用只读接口加入内存缓存（如 60s）与 `?refresh=true` 强制刷新；明确写后缓存失效策略（与 C-4 对齐，提供 `invalidate(keys|pattern)` 最小能力）
+  - 交付物：缓存层与命中率日志；失效策略说明与用例
   - 验收：首次慢后续快；可强制刷新
   - 预期改动文件（预判）：
     - `lugarden_universal/application/src/utils/cache.js`（简单内存缓存）
@@ -399,6 +401,17 @@
     - `lugarden_universal/public/index.html`（仅在发现契约偏差时微调，占位）
     - `lugarden_universal/public/admin.html`（仅在发现契约偏差时微调，占位）
     - `documentation/backend/e2e-checklist.md`（验收记录/可选脚本说明）
+
+#### 下一步优化（可延后，完成C阶段后择机纳入）
+
+- # Analytics 基础 API 条目化与落地（`/api/analytics/poems|characters/network|themes/distribution|timeline|report?refresh=`），含契约样例与最小实现
+- # 细粒度缓存键设计与命中率日志结构优化（保持兼容的同时逐步引入）
+- # Feature flag/灰度开关（按路由开关DB优先与回退，便于快速回滚）
+- # 慢查询与请求耗时日志、可观测性指标（阈值与结构化日志）
+- # 写接口幂等键支持（可选，低频接口后续增强）
+- # 可选分页策略与文档（保持无参=全量旧行为的同时，补充分页占位）
+- # 测试数据库隔离（临时 SQLite `:memory:` 或临时文件）与 `db:reset` 钩子
+- # 日志/告警与错误栈采集完善（便于问题定位与性能调优）
 
 ## 更新日志关联
 - **预计更新类型**: 架构重构 / 功能更新
