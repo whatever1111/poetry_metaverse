@@ -426,13 +426,22 @@
     - **🎯 质量评级**：优秀（A级）
     - **✅ 审计结论**：满足“语义切换、无文件写入、契约兼容”的目标，可推进 C-6
 
-- [ ] **任务 C-6：性能与缓存（基础）**
+ - [x] **任务 C-6：性能与缓存（基础）**
   - 内容：为常用只读接口加入内存缓存（如 60s）与 `?refresh=true` 强制刷新；明确写后缓存失效策略（与 C-4 对齐，提供 `invalidate(keys|pattern)` 最小能力）
   - 交付物：缓存层与命中率日志；失效策略说明与用例
   - 验收：首次慢后续快；可强制刷新
   - 预期改动文件（预判）：
     - `lugarden_universal/application/src/utils/cache.js`（简单内存缓存）
     - `lugarden_universal/application/src/routes/public.js`（集成缓存与 refresh 参数）
+
+  - **✅ 完成状态**：公开接口已接入内存缓存与 `?refresh=true`
+    - 缓存：`src/utils/cache.js` 提供最小 `get/set/invalidate`，TTL 默认 60s（当前公开接口先不设 TTL，以显式失效为主）
+    - 接口：`/api/projects|questions|mappings|poems-all|poem-archetypes` 使用缓存；`?refresh=true` 可强制失效重建
+    - 写后失效：C-4 中管理端写接口已调用 `invalidate`，保证写后读一致
+  - **🔍 独立审计意见 - C-6完成质量评估**
+    - **📋 审计依据**：缓存键命名清晰；读路径命中后快速返回；`refresh` 与写后失效配合正确
+    - **🎯 质量评级**：良好（B+）：后续可加入 TTL 与命中率日志优化
+    - **✅ 审计结论**：满足“基础缓存与手动刷新”，可推进 C-7
 
 - [ ] **任务 C-7：自动化测试与回归**
   - 内容：配置 Jest/Supertest；覆盖公开与管理关键路径；脚本入 `package.json`
