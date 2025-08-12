@@ -10,6 +10,7 @@ import {
   mapZhouPoemsToPublicPoems,
   mapPoemArchetypesForFrontend,
 } from '../services/mappers.js';
+import { getCache, setCache, invalidate } from '../utils/cache.js';
 
 const router = Router();
 
@@ -34,6 +35,10 @@ function fileFallbackError(message) {
 
 // GET /api/projects
 router.get('/projects', async (req, res, next) => {
+  const cacheKey = '/api/projects';
+  if (req.query.refresh === 'true') invalidate([cacheKey]);
+  const cached = getCache(cacheKey);
+  if (cached !== undefined) return res.json(cached);
   try {
     const prisma = getPrismaClient();
     const zhouProjects = await prisma.zhouProject.findMany({
@@ -42,6 +47,7 @@ router.get('/projects', async (req, res, next) => {
     const mapped = mapZhouProjectsToPublicProjects(zhouProjects).filter(
       (p) => (p.status || '').toLowerCase() === 'published'
     );
+    setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
     // 若 Prisma 客户端不可用或查询失败，回退至文件
@@ -50,6 +56,7 @@ router.get('/projects', async (req, res, next) => {
       const projectsJson = JSON.parse(projectsData);
       const all = projectsJson.projects || [];
       const publishedOnly = all.filter((p) => (p.status || '').toLowerCase() === 'published');
+      setCache(cacheKey, publishedOnly);
       return res.json(publishedOnly);
     } catch (fsErr) {
       return next(fileFallbackError('无法加载项目结构'));
@@ -59,15 +66,22 @@ router.get('/projects', async (req, res, next) => {
 
 // GET /api/questions
 router.get('/questions', async (req, res, next) => {
+  const cacheKey = '/api/questions';
+  if (req.query.refresh === 'true') invalidate([cacheKey]);
+  const cached = getCache(cacheKey);
+  if (cached !== undefined) return res.json(cached);
   try {
     const prisma = getPrismaClient();
     const qas = await prisma.zhouQA.findMany();
     const mapped = mapZhouQAToPublicQuestions(qas);
+    setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
     try {
       const questionsData = await fs.readFile(QUESTIONS_PATH, 'utf-8');
-      return res.json(JSON.parse(questionsData));
+      const json = JSON.parse(questionsData);
+      setCache(cacheKey, json);
+      return res.json(json);
     } catch (fsErr) {
       return next(fileFallbackError('Failed to read questions'));
     }
@@ -76,15 +90,22 @@ router.get('/questions', async (req, res, next) => {
 
 // GET /api/mappings
 router.get('/mappings', async (req, res, next) => {
+  const cacheKey = '/api/mappings';
+  if (req.query.refresh === 'true') invalidate([cacheKey]);
+  const cached = getCache(cacheKey);
+  if (cached !== undefined) return res.json(cached);
   try {
     const prisma = getPrismaClient();
     const mappings = await prisma.zhouMapping.findMany();
     const mapped = mapZhouMappingToPublicMappings(mappings);
+    setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
     try {
       const mappingsData = await fs.readFile(MAPPINGS_PATH, 'utf-8');
-      return res.json(JSON.parse(mappingsData));
+      const json = JSON.parse(mappingsData);
+      setCache(cacheKey, json);
+      return res.json(json);
     } catch (fsErr) {
       return next(fileFallbackError('Failed to read mappings'));
     }
@@ -93,10 +114,15 @@ router.get('/mappings', async (req, res, next) => {
 
 // GET /api/poems-all
 router.get('/poems-all', async (req, res, next) => {
+  const cacheKey = '/api/poems-all';
+  if (req.query.refresh === 'true') invalidate([cacheKey]);
+  const cached = getCache(cacheKey);
+  if (cached !== undefined) return res.json(cached);
   try {
     const prisma = getPrismaClient();
     const poems = await prisma.zhouPoem.findMany();
     const mapped = mapZhouPoemsToPublicPoems(poems);
+    setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
     try {
@@ -116,6 +142,7 @@ router.get('/poems-all', async (req, res, next) => {
           }
         }
       }
+      setCache(cacheKey, poemsObj);
       return res.json(poemsObj);
     } catch (fsErr) {
       return next(fileFallbackError('Failed to read poems'));
@@ -125,17 +152,24 @@ router.get('/poems-all', async (req, res, next) => {
 
 // GET /api/poem-archetypes
 router.get('/poem-archetypes', async (req, res, next) => {
+  const cacheKey = '/api/poem-archetypes';
+  if (req.query.refresh === 'true') invalidate([cacheKey]);
+  const cached = getCache(cacheKey);
+  if (cached !== undefined) return res.json(cached);
   try {
     const prisma = getPrismaClient();
     const poems = await prisma.zhouPoem.findMany({
       select: { title: true, poetExplanation: true },
     });
     const mapped = mapPoemArchetypesForFrontend(poems);
+    setCache(cacheKey, mapped);
     return res.json(mapped);
   } catch (dbErr) {
     try {
       const archetypesData = await fs.readFile(POEM_ARCHETYPES_PATH, 'utf-8');
-      return res.json(JSON.parse(archetypesData));
+      const json = JSON.parse(archetypesData);
+      setCache(cacheKey, json);
+      return res.json(json);
     } catch (fsErr) {
       return next(fileFallbackError('Failed to read poem archetypes'));
     }
