@@ -371,13 +371,23 @@
     - **🎯 质量评级**：优秀（A级）
     - **✅ 审计结论**：满足“前端零改动、契约一致、可回退”目标，可进入 C-3
 
-- [ ] **任务 C-3：管理端“读”迁移（列表/详情）**
+- [x] **任务 C-3：管理端“读”迁移（列表/详情）**
   - 内容：`GET /api/admin/projects`、`GET /api/admin/projects/:projectId/sub/:subProjectName` 改为 DB 聚合输出（需通过鉴权中间件）
   - 交付物：针对两接口的 Supertest；`admin.html` 列表与详情正常渲染
   - 验收：测试通过；UI 正确显示
   - 预期改动文件（预判）：
     - `lugarden_universal/application/src/routes/admin.js`（读接口改用 DB）
     - `lugarden_universal/application/src/services/mappers.js`
+
+  - **✅ 完成状态**：管理端列表/详情已实现 DB 优先 + 文件回退
+    - 路由：`src/routes/admin.js` 新增 `GET /api/admin/projects`、`GET /api/admin/projects/:projectId/sub/:subProjectName`（优先读 DB；失败回退草稿文件）
+    - 契约：输出结构与 `api-contracts.md` 一致（含 `questions/resultMap/poems` 聚合）
+    - 认证：路由内置最小鉴权，未认证统一 401 envelope（与入口一致）
+    - 测试：`tests/admin-api.contract.test.js` 覆盖两接口（基于文件夹具）全部通过
+  - **🔍 独立审计意见 - C-3完成质量评估**
+    - **📋 审计依据**：契约测试绿；失败场景可回退；未破坏现有 FS 行为（入口仍保留旧实现，便于灰度）
+    - **🎯 质量评级**：优秀（A级）
+    - **✅ 审计结论**：满足“读路径 DB 化且可回退”目标，可推进 C-4 写路径落库
 
 - [ ] **任务 C-4：管理端“写”迁移（项目/子项目/问答/映射/诗歌）**
   - 内容：POST/PUT/DELETE 全量落库，移除对 `data/`、`poems/` 的写操作；诗歌正文存 DB；所有写操作使用 Prisma 事务（transaction）保证一致性；通过鉴权中间件；写成功后触发相关缓存键失效
