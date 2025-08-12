@@ -4,6 +4,9 @@ import path from 'path';
 import fs from 'fs/promises';
 import fetch from 'node-fetch';
 import session from 'express-session';
+import publicRouter from './src/routes/public.js';
+import adminPlaceholderRouter from './src/routes/admin.js';
+import { errorHandler } from './src/middlewares/errorHandler.js';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
@@ -86,7 +89,7 @@ const requireAuth = (req, res, next) => {
     } else {
         // 对于API请求，返回401 JSON
         if (req.path.startsWith('/api/admin')) {
-             return res.status(401).json({ error: '需要认证' });
+             return res.status(401).json({ error: { code: 'UNAUTHORIZED', message: '需要认证' } });
         }
         // 对于页面请求，可以重定向到登录页
         res.redirect('/login.html');
@@ -892,6 +895,11 @@ adminRouter.post('/publish-all', async (req, res) => {
 
 app.use('/api/admin', adminRouter);
 
+// ============ 路由骨架占位（不改变现有行为） ============
+// 占位路由将逐步在 C-2/C-3 中接入 DB 实现，目前不处理任何请求
+app.use('/api', publicRouter);
+app.use('/api/admin', adminPlaceholderRouter);
+
 
 // ============ 辅助函数 ============
 const getAllPoemFiles = async (dirPath, arrayOfFiles = []) => {
@@ -919,3 +927,6 @@ app.listen(PORT, async () => {
     console.log(`🚀 “陆家花园”已在 http://localhost:${PORT} 盛开`);
     console.log(`🔑 后台管理入口: http://localhost:${PORT}/admin`);
 });
+
+// 全局错误处理（统一 envelope）
+app.use(errorHandler);
