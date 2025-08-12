@@ -34,8 +34,8 @@ function fileFallbackError(message) {
 
 // GET /api/projects
 router.get('/projects', async (req, res, next) => {
-  const prisma = getPrismaClient();
   try {
+    const prisma = getPrismaClient();
     const zhouProjects = await prisma.zhouProject.findMany({
       include: { subProjects: { select: { name: true, description: true } } },
     });
@@ -56,8 +56,8 @@ router.get('/projects', async (req, res, next) => {
 
 // GET /api/questions
 router.get('/questions', async (req, res, next) => {
-  const prisma = getPrismaClient();
   try {
+    const prisma = getPrismaClient();
     const qas = await prisma.zhouQA.findMany();
     const mapped = mapZhouQAToPublicQuestions(qas);
     return res.json(mapped);
@@ -73,8 +73,8 @@ router.get('/questions', async (req, res, next) => {
 
 // GET /api/mappings
 router.get('/mappings', async (req, res, next) => {
-  const prisma = getPrismaClient();
   try {
+    const prisma = getPrismaClient();
     const mappings = await prisma.zhouMapping.findMany();
     const mapped = mapZhouMappingToPublicMappings(mappings);
     return res.json(mapped);
@@ -90,8 +90,8 @@ router.get('/mappings', async (req, res, next) => {
 
 // GET /api/poems-all
 router.get('/poems-all', async (req, res, next) => {
-  const prisma = getPrismaClient();
   try {
+    const prisma = getPrismaClient();
     const poems = await prisma.zhouPoem.findMany();
     const mapped = mapZhouPoemsToPublicPoems(poems);
     return res.json(mapped);
@@ -122,8 +122,8 @@ router.get('/poems-all', async (req, res, next) => {
 
 // GET /api/poem-archetypes
 router.get('/poem-archetypes', async (req, res, next) => {
-  const prisma = getPrismaClient();
   try {
+    const prisma = getPrismaClient();
     const poems = await prisma.zhouPoem.findMany({
       select: { title: true, poetExplanation: true },
     });
