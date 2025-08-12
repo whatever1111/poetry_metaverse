@@ -1,18 +1,22 @@
 // Prisma Client singleton (ESM)
-// 标准导入方式，避免自定义生成路径不一致的风险
-
-import { PrismaClient } from '@prisma/client';
+// 惰性动态加载，避免在未生成客户端时的模块导入报错，便于文件回退逻辑生效
 
 let prismaInstance = null;
 
 export function getPrismaClient() {
   if (prismaInstance) return prismaInstance;
   try {
+    // 使用惰性 require 以避免静态导入时抛错
+    // eslint-disable-next-line no-eval
+    const req = eval('require');
+    const { PrismaClient } = req('@prisma/client');
     prismaInstance = new PrismaClient();
     return prismaInstance;
   } catch (err) {
-    // 在未生成 Prisma Client 时给出明确提示
-    throw new Error('Prisma Client 未生成或初始化失败。请先运行: npx prisma generate');
+    const e = new Error('PRISMA_CLIENT_NOT_READY');
+    e.code = 'PRISMA_CLIENT_NOT_READY';
+    e.cause = err;
+    throw e;
   }
 }
 
