@@ -261,20 +261,129 @@ class AdminCore {
         if (moduleSection) moduleSection.classList.remove('hidden');
     }
 
-    async deleteUniverse(universeId) {
-        if (!confirm('确认删除该宇宙？此操作不可恢复。')) {
-            return;
-        }
-        
-        try {
-            await this.apiRequest(`/api/admin/universes/${universeId}`, 'DELETE');
-            await this.loadUniverses();
-            this.showSuccess('宇宙删除成功');
-        } catch (error) {
-            console.error('删除宇宙失败:', error);
-            this.showError(`删除失败: ${error.message}`);
-        }
-    }
+         async deleteUniverse(universeId) {
+         // 获取要删除的宇宙信息
+         const universe = this.state.universes.find(u => u.id === universeId);
+         if (!universe) {
+             this.showError('找不到要删除的宇宙');
+             return;
+         }
+         
+         // 弹出超级管理员密码确认对话框
+         const superAdminPassword = await this.showSuperAdminPasswordDialog(universe.name);
+         if (!superAdminPassword) {
+             return; // 用户取消
+         }
+         
+         try {
+             await this.apiRequest(`/api/admin/universes/${universeId}`, 'DELETE', { 
+                 superAdminPassword 
+             });
+             await this.loadUniverses();
+             this.showSuccess('宇宙删除成功');
+         } catch (error) {
+             console.error('删除宇宙失败:', error);
+             if (error.message.includes('SUPER_ADMIN_PASSWORD_INCORRECT')) {
+                 this.showError('超级管理员密码错误');
+             } else {
+                 this.showError(`删除失败: ${error.message}`);
+             }
+         }
+     }
+     
+     // 显示超级管理员密码输入对话框
+     showSuperAdminPasswordDialog(universeName) {
+         return new Promise((resolve) => {
+             const modal = document.getElementById('modal');
+             const modalTitle = document.getElementById('modal-title');
+             const modalBody = document.getElementById('modal-body');
+             const modalSaveBtn = document.getElementById('modal-save-button');
+             const modalCancelBtn = document.getElementById('modal-cancel-button');
+             
+             if (!modal || !modalTitle || !modalBody || !modalSaveBtn || !modalCancelBtn) {
+                 console.error('模态框元素不存在');
+                 resolve(null);
+                 return;
+             }
+             
+             modalTitle.textContent = '超级管理员验证';
+             
+             modalBody.innerHTML = `
+                 <div class="space-y-4">
+                     <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                         <div class="flex">
+                             <div class="flex-shrink-0">
+                                 <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                 </svg>
+                             </div>
+                             <div class="ml-3">
+                                 <h3 class="text-sm font-medium text-red-800">危险操作警告</h3>
+                                 <div class="mt-2 text-sm text-red-700">
+                                     <p>您即将删除宇宙：<strong>${universeName}</strong></p>
+                                     <p class="mt-1">此操作将永久删除该宇宙及其所有关联数据，无法恢复！</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <div>
+                         <label class="block text-sm font-medium text-gray-700 mb-1">超级管理员密码 *</label>
+                         <input type="password" id="super-admin-password" class="form-input" required 
+                                placeholder="请输入超级管理员密码">
+                         <p class="text-xs text-gray-500 mt-1">请输入超级管理员密码以确认删除操作</p>
+                     </div>
+                 </div>
+             `;
+             
+             // 绑定取消按钮事件
+             modalCancelBtn.onclick = () => {
+                 modal.classList.add('hidden');
+                 // 恢复按钮状态
+                 modalSaveBtn.textContent = '保存';
+                 modalSaveBtn.className = 'btn btn-primary';
+                 resolve(null);
+             };
+             
+             // 绑定点击背景关闭模态框
+             modal.onclick = (e) => {
+                 if (e.target === modal) {
+                     modal.classList.add('hidden');
+                     // 恢复按钮状态
+                     modalSaveBtn.textContent = '保存';
+                     modalSaveBtn.className = 'btn btn-primary';
+                     resolve(null);
+                 }
+             };
+             
+             // 绑定保存事件
+             modalSaveBtn.textContent = '确认删除';
+             modalSaveBtn.className = 'btn btn-danger';
+             
+             modalSaveBtn.onclick = () => {
+                 const password = document.getElementById('super-admin-password').value.trim();
+                 if (!password) {
+                     this.showError('请输入超级管理员密码');
+                     return;
+                 }
+                 
+                 modal.classList.add('hidden');
+                 // 恢复按钮状态
+                 modalSaveBtn.textContent = '保存';
+                 modalSaveBtn.className = 'btn btn-primary';
+                 resolve(password);
+             };
+             
+             modal.classList.remove('hidden');
+             
+             // 聚焦到密码输入框
+             setTimeout(() => {
+                 const passwordInput = document.getElementById('super-admin-password');
+                 if (passwordInput) {
+                     passwordInput.focus();
+                 }
+             }, 100);
+         });
+     }
 
     openUniverseModal(universe = null) {
         const modal = document.getElementById('modal');
@@ -286,6 +395,10 @@ class AdminCore {
             console.error('模态框元素不存在');
             return;
         }
+        
+        // 重置按钮状态，确保从其他模态框状态恢复
+        modalSaveBtn.textContent = '保存';
+        modalSaveBtn.className = 'btn btn-primary';
         
         modalTitle.textContent = universe ? '编辑宇宙' : '创建新宇宙';
         
@@ -412,33 +525,33 @@ class AdminCore {
         modal.classList.remove('hidden');
     }
 
-    // 通用API请求方法
-    async apiRequest(endpoint, method = 'GET', data = null) {
-        const options = {
-            method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include'
-        };
-        
-        if (data && (method === 'POST' || method === 'PUT')) {
-            options.body = JSON.stringify(data);
-        }
-        
-        const response = await fetch(endpoint, options);
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`API请求失败: ${response.status} ${response.statusText} - ${errorText}`);
-        }
-        
-        if (response.status === 204) {
-            return null; // DELETE操作通常返回204
-        }
-        
-        return await response.json();
-    }
+         // 通用API请求方法
+     async apiRequest(endpoint, method = 'GET', data = null) {
+         const options = {
+             method,
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+             credentials: 'include'
+         };
+         
+         if (data && (method === 'POST' || method === 'PUT' || method === 'DELETE')) {
+             options.body = JSON.stringify(data);
+         }
+         
+         const response = await fetch(endpoint, options);
+         
+         if (!response.ok) {
+             const errorText = await response.text();
+             throw new Error(`API请求失败: ${response.status} ${response.statusText} - ${errorText}`);
+         }
+         
+         if (response.status === 204) {
+             return null; // DELETE操作通常返回204
+         }
+         
+         return await response.json();
+     }
 
     // 通用UI反馈方法
     showSuccess(message) {

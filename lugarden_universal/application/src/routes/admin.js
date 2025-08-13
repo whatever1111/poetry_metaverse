@@ -100,11 +100,54 @@ router.delete('/universes/:id', async (req, res, next) => {
   try {
     const prisma = getPrismaClient();
     const { id } = req.params;
-    // 未来可加：级联清理（谨慎）。当前仅支持当无依赖时删除。
+    const { superAdminPassword } = req.body || {};
+    
+    // 验证超级管理员密码
+    if (!superAdminPassword) {
+      const e = new Error('需要超级管理员密码'); e.statusCode = 400; e.code = 'SUPER_ADMIN_PASSWORD_REQUIRED'; throw e;
+    }
+    
+    // 超级管理员密码验证（这里使用环境变量或配置文件中的密码）
+    const expectedPassword = process.env.SUPER_ADMIN_PASSWORD || 'lu_garden_super_admin_2024';
+    if (superAdminPassword !== expectedPassword) {
+      const e = new Error('超级管理员密码错误'); e.statusCode = 403; e.code = 'SUPER_ADMIN_PASSWORD_INCORRECT'; throw e;
+    }
+    
+    // 获取宇宙信息用于日志
+    const universe = await prisma.universe.findUnique({ where: { id } });
+    if (!universe) {
+      const e = new Error('Universe 不存在'); e.statusCode = 404; e.code = 'NOT_FOUND'; throw e;
+    }
+    
+    // 检查是否有关联数据
+    const relatedDataCounts = await Promise.all([
+      prisma.zhouProject.count({ where: { universeId: id } }),
+      prisma.maoxiaodouPoem.count({ where: { universeId: id } }),
+      prisma.crossUniverseContentLink.count({ 
+        where: { 
+          OR: [
+            { sourceUniverseId: id },
+            { targetUniverseId: id }
+          ]
+        } 
+      })
+    ]);
+    
+    const [zhouProjects, maoxiaodouPoems, crossLinks] = relatedDataCounts;
+    const totalRelatedData = zhouProjects + maoxiaodouPoems + crossLinks;
+    
+    if (totalRelatedData > 0) {
+      console.warn(`删除宇宙 ${universe.name} (${id}) 将同时删除 ${totalRelatedData} 条关联数据`);
+    }
+    
+    // 执行删除（Prisma 会自动处理外键约束）
     await prisma.universe.delete({ where: { id } });
+    
+    console.log(`宇宙 ${universe.name} (${id}) 已删除，同时删除了 ${totalRelatedData} 条关联数据`);
     return res.status(204).send();
   } catch (err) {
     if (err?.code === 'P2025') { err.statusCode = 404; err.code = 'NOT_FOUND'; err.message = 'Universe 不存在'; }
+    if (err?.code === 'P2003') { err.statusCode = 400; err.code = 'FOREIGN_KEY_CONSTRAINT'; err.message = '无法删除：存在关联数据，请先清理关联数据'; }
     return next(err);
   }
 });
