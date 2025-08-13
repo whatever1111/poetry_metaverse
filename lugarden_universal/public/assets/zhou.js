@@ -45,7 +45,7 @@ class ZhouUniverse {
 
     async loadUniverseContent() {
         // 使用新的层级化API
-        const response = await fetch('/api/universes/zhou/content');
+        const response = await fetch('/api/universes/universe_zhou_spring_autumn/content');
         if (!response.ok) {
             throw new Error(`API请求失败: ${response.status}`);
         }

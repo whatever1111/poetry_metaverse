@@ -284,6 +284,54 @@
     - **实际改动**: 成功部署新版前台，`index.v2.html` 内容已复制到 `index.html`
   - **完成状态**: ✅ 已完成
 
+  - [ ] **任务B.4：修复和改进优化**
+    - **核心思想**: 修复阶段B实施过程中发现的问题，确保数据完整性和功能正确性。
+    - [x] **步骤 B.4.1:** 删除错误创建的宇宙记录，修正数据一致性问题。
+      - **问题分析**: 在阶段B过程中错误创建了`zhou-universe`宇宙记录，其universeId不符合规范定义
+      - **解决方案**: 删除该错误记录，保持原有`universe_zhou_spring_autumn`宇宙的draft状态
+      - **预期改动（预判）**:
+        - 数据库操作：删除`zhou-universe`记录
+        - 确保`universe_zhou_spring_autumn`保持draft状态
+      - **实际改动**:
+        - 通过Prisma Studio手动删除`zhou-universe`宇宙记录
+        - 验证删除成功，数据库中仅保留`universe_maoxiaodou`和`universe_zhou_spring_autumn`两个记录
+        - 确认`universe_zhou_spring_autumn`保持draft状态
+    - [x] **步骤 B.4.2:** 修复zhou.html返回宇宙门户链接问题。
+      - **问题分析**: zhou.html中的返回链接指向`/index.v2.html`，但实际主页是`/index.html`
+      - **解决方案**: 更新zhou.html中的返回链接，指向正确的主页路径
+      - **预期改动（预判）**:
+        - `lugarden_universal/public/zhou.html` (修改返回链接从`/index.v2.html`改为`/index.html`)
+      - **实际改动**:
+        - 成功修改`lugarden_universal/public/zhou.html`中的返回链接
+        - 将`/index.v2.html`改为`/index.html`，确保链接指向正确的主页
+    - [x] **步骤 B.4.3:** 修复宇宙门户加载状态显示问题。
+      - **问题分析**: 当API返回任何结果时，前端一直显示"正在加载宇宙列表..."的加载动画，没有正确处理加载状态
+      - **解决方案**: 在渲染宇宙卡片时，无论API返回什么结果，都要完全移除加载状态元素
+      - **预期改动（预判）**:
+        - `lugarden_universal/public/assets/main.js` (修改renderUniverseCards和showError方法，添加加载状态移除逻辑)
+      - **实际改动**:
+        - 在`renderUniverseCards`方法中使用`remove()`完全移除加载状态元素
+        - 在`showError`方法中也使用`remove()`完全移除加载状态元素
+        - 确保在任何情况下都能正确处理加载状态，避免DOM元素残留
+         - [x] **步骤 B.4.4:** 修复宇宙状态与项目状态不一致问题。
+       - **问题分析**: 宇宙仪表盘显示宇宙状态（draft），管理页面显示项目状态（draft），但操作按钮只修改项目状态，不修改宇宙状态，导致状态不一致
+       - **解决方案**: 在项目状态变更时同步更新宇宙状态，确保数据一致性
+       - **预期改动（预判）**:
+         - `lugarden_universal/public/assets/universe-modules/zhou_spring_autumn.js` (修改toggleProjectStatus和publishAllUpdates方法，添加宇宙状态同步逻辑)
+       - **实际改动**:
+         - 在`toggleProjectStatus`方法中添加宇宙状态同步更新
+         - 在`publishAllUpdates`方法中添加宇宙状态同步更新
+         - 确保项目状态和宇宙状态保持一致
+     - [x] **步骤 B.4.5:** 修复zhou.html页面API调用路径错误问题。
+       - **问题分析**: zhou.js中调用的API路径是`/api/universes/zhou/content`，但实际的宇宙代码是`universe_zhou_spring_autumn`，导致404错误
+       - **解决方案**: 修正API调用路径，使用正确的宇宙代码
+       - **预期改动（预判）**:
+         - `lugarden_universal/public/assets/zhou.js` (修改loadUniverseContent方法中的API路径)
+       - **实际改动**:
+         - 将API调用路径从`/api/universes/zhou/content`改为`/api/universes/universe_zhou_spring_autumn/content`
+         - 确保前端能正确调用后端API获取宇宙内容
+     - **完成状态**: ✅ 已完成
+
 ### 子阶段 C：新架构集成与验证
 
 - [ ] **任务C.1：端到端流程验证与系统稳定性测试**

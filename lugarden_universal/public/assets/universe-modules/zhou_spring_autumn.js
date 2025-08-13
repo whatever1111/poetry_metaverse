@@ -245,9 +245,16 @@ export default class ZhouSpringAutumnModule {
 
     async toggleProjectStatus(projectId, newStatus) {
         try {
+            // 更新项目状态
             await this.adminCore.apiRequest(`/api/admin/projects/${projectId}/status`, 'PUT', { status: newStatus });
+            
+            // 同步更新宇宙状态
+            // 如果项目被发布，宇宙也应该被发布
+            // 如果项目被设为草稿，宇宙也应该设为草稿
+            await this.adminCore.apiRequest(`/api/admin/universes/${this.universeId}`, 'PUT', { status: newStatus });
+            
             await this.loadMainProjects();
-            this.adminCore.showSuccess('项目状态更新成功');
+            this.adminCore.showSuccess('项目状态和宇宙状态同步更新成功');
         } catch (error) {
             console.error('更新项目状态失败:', error);
             this.adminCore.showError(`更新失败: ${error.message}`);
@@ -276,7 +283,7 @@ export default class ZhouSpringAutumnModule {
             }
 
             // 确认操作
-            if (!confirm(`确定要发布 ${draftProjects.length} 个草稿项目吗？`)) {
+            if (!confirm(`确定要发布 ${draftProjects.length} 个草稿项目吗？\n\n注意：这将同时发布宇宙状态。`)) {
                 return;
             }
 
@@ -285,8 +292,11 @@ export default class ZhouSpringAutumnModule {
                 await this.adminCore.apiRequest(`/api/admin/projects/${project.id}/status`, 'PUT', { status: 'published' });
             }
 
+            // 同步更新宇宙状态为已发布
+            await this.adminCore.apiRequest(`/api/admin/universes/${this.universeId}`, 'PUT', { status: 'published' });
+
             await this.loadMainProjects();
-            this.adminCore.showSuccess(`成功发布 ${draftProjects.length} 个项目`);
+            this.adminCore.showSuccess(`成功发布 ${draftProjects.length} 个项目，宇宙状态已同步更新`);
         } catch (error) {
             console.error('发布所有更新失败:', error);
             this.adminCore.showError(`发布失败: ${error.message}`);

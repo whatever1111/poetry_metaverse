@@ -27,9 +27,16 @@ class UniversePortal {
 
     renderUniverseCards() {
         const container = document.getElementById('universe-list');
+        const loadingElement = document.getElementById('loading-universes');
+        
         if (!container) {
             console.error('未找到宇宙列表容器');
             return;
+        }
+
+        // 移除加载状态元素（无论是否有数据）
+        if (loadingElement) {
+            loadingElement.remove();
         }
 
         if (this.universes.length === 0) {
@@ -151,6 +158,13 @@ class UniversePortal {
 
     showError(message) {
         const container = document.getElementById('universe-list');
+        const loadingElement = document.getElementById('loading-universes');
+        
+        // 移除加载状态元素
+        if (loadingElement) {
+            loadingElement.remove();
+        }
+        
         if (container) {
             container.innerHTML = `
                 <div class="text-center text-red-500 py-12">
