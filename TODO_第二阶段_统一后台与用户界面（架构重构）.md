@@ -40,7 +40,7 @@
 
 - [ ] **任务A.S (策略调整): 创建安全的重构“沙盒”**
   - **核心思想**: 为了在不破坏现有功能的前提下进行重构，我们不直接修改 `admin.html`，而是为其创建一个副本作为新的工作区。旧版 `admin.html` 将作为功能参考。
-  - [ ] **步骤 A.S.1**: 复制 `lugarden_universal/public/admin.html` 为 `lugarden_universal/public/admin.v2.html`。
+  - [ ] **步骤 A.S.1**: 复制 `lugarden_universal/public/admin.html` 为 `lugarden_universal/public/admin.v2.html`。使用复制命令，而不是读取-创建-写入操作，以节省token
     - **预期改动（预判）**: `lugarden_universal/public/admin.v2.html` (新建)
   - **完成状态**: 待定
 
@@ -72,7 +72,7 @@
       - `lugarden_universal/public/admin.v2.html` (为按钮添加事件监听器)
   - [ ] **步骤 A.1.9:** 为所有新 API 端点编写合同测试，严格验证其是否符合 `api-contracts.md` 中的定义。
     - **预期改动（预判）**:
-      - `lugarden_universal/application/tests/admin-api.contract.test.js` (新增 describe 块，测试 Universe CRUD)
+      - `lugarden_universal/application/tests/admin-api.contract.test.js` (新建, 彻底重写以保证环境独立)
   - **完成状态**: 🔄 进行中
 
 - [ ] **任务A.2：重构后台为“分模块、动态加载”架构 (在 `admin.v2.html` 上)**
@@ -116,7 +116,7 @@
       - `lugarden_universal/application/src/routes/public.js` (删除旧路由)
   - [ ] **步骤 B.1.4:** 重写 `public-api.contract.test.js` 以测试新的层级化 API。
     - **预期改动（预判）**:
-      - `lugarden_universal/application/tests/public-api.contract.test.js` (完全重写测试文件，对齐新接口)
+      - `lugarden_universal/application/tests/public-api.contract.test.js` (新建, 彻底重写以保证环境独立)
   - **完成状态**: 🔄 进行中
 
 - [ ] **任务B.2：重构用户界面为“宇宙门户”**

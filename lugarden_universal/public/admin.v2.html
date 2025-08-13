@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>陆家花园 | 中央控制室</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Serif SC', serif; }
+        .form-input { border: 1px solid #d1d5db; padding: 0.5rem 0.75rem; border-radius: 0.375rem; width: 100%; }
+        .form-textarea { border: 1px solid #d1d5db; padding: 0.5rem 0.75rem; border-radius: 0.375rem; width: 100%; min-height: 100px; }
+        .btn { padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-secondary { background-color: #4b5563; color: white; }
+        .btn-secondary:hover { background-color: #374151; }
+        .btn-success { background-color: #16a34a; color: white; }
+        .btn-success:hover { background-color: #15803d; }
+        .btn-danger { background-color: #dc2626; color: white; }
+        .btn-danger:hover { background-color: #b91c1c; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="main-content" class="container mx-auto p-4 md:p-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-4xl font-bold">陆家花园 控制室</h1>
+            <div>
+                <button id="publish-all-btn" class="btn btn-danger mr-4">发布所有更新</button>
+                <button id="logout-button" class="btn btn-secondary">退出</button>
+            </div>
+        </div>
+
+        <!-- 主项目列表 -->
+        <div id="main-projects-list-section">
+            <h2 class="text-2xl font-bold mb-4">主项目列表</h2>
+            <div id="main-project-list" class="space-y-4"></div>
+            <div class="mt-8 p-6 bg-white rounded-lg shadow">
+                <h3 class="text-xl font-bold mb-4">创建新主项目</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <input type="text" id="new-main-project-name" placeholder="新项目名称" class="form-input md:col-span-1">
+                    <input type="text" id="new-main-project-desc" placeholder="新项目描述" class="form-input md:col-span-1">
+                    <input type="text" id="new-main-project-poet" placeholder="导游/作者" class="form-input md:col-span-1">
+                    <button id="create-main-project-btn" class="btn btn-primary w-full md:col-span-1">创建</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 子项目管理界面 -->
+        <div id="sub-project-management-section" class="hidden mt-8">
+             <button id="back-to-main-projects-button" class="btn btn-secondary mb-6">&larr; 返回主项目列表</button>
+            <h2 id="current-main-project-name" class="text-3xl font-bold"></h2>
+            <p id="current-main-project-desc" class="text-gray-600 mb-6"></p>
+            
+            <div id="sub-project-list" class="space-y-6"></div>
+            <div class="mt-8 p-6 bg-gray-50 rounded-lg border">
+                <h3 class="text-xl font-bold mb-4">创建新子项目 (篇章)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input type="text" id="new-sub-project-name" placeholder="新篇章名称" class="form-input md:col-span-1">
+                    <input type="text" id="new-sub-project-desc" placeholder="篇章描述" class="form-input md:col-span-1">
+                    <button id="create-sub-project-btn" class="btn btn-primary w-full md:col-span-1">创建篇章</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <h3 id="modal-title" class="text-2xl font-bold mb-6"></h3>
+            <div id="modal-body"></div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="modal-cancel-button" class="btn btn-secondary">取消</button>
+                <button id="modal-save-button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    let state = {
+        mainProjects: [],
+        currentMainProjectId: null,
+        currentSubProject: null, 
+        get currentMainProject() {
+            return this.mainProjects.find(p => p.id === this.currentMainProjectId);
+        },
+    };
+
+    const logoutButton = document.getElementById('logout-button');
+    const mainProjectsListSection = document.getElementById('main-projects-list-section');
+    const mainProjectList = document.getElementById('main-project-list');
+    const subProjectManagementSection = document.getElementById('sub-project-management-section');
+    const backToMainProjectsButton = document.getElementById('back-to-main-projects-button');
+    const currentMainProjectName = document.getElementById('current-main-project-name');
+    const currentMainProjectDesc = document.getElementById('current-main-project-desc');
+    const subProjectList = document.getElementById('sub-project-list');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalCancelButton = document.getElementById('modal-cancel-button');
+    const modalSaveButton = document.getElementById('modal-save-button');
+    const publishAllButton = document.getElementById('publish-all-btn');
+
+    async function apiRequest(endpoint, method = 'GET', body = null) {
+        const headers = { 'Content-Type': 'application/json' };
+        const config = { 
+            method, 
+            headers, 
+            credentials: 'include',
+            ...(body && { body: JSON.stringify(body) }) 
+        };
+        const response = await fetch(endpoint, config);
+        if (!response.ok) {
+            if (response.status === 401) {
+                alert('您的登录会话已过期，请重新登录。');
+                window.location.href = '/login.html';
+            }
+            const errorData = await response.json().catch(() => ({ message: '未知服务器错误' }));
+            throw new Error(errorData.message);
+        }
+        return response.status === 204 ? null : response.json();
+    }
+
+    async function publishAllChanges() {
+        if (!confirm('【高危操作】\n\n您确定要执行“全量发布”吗？\n\n此操作将使线上内容严格同步为后台所有“已上架”项目的当前状态，不可逆转。')) {
+            return;
+        }
+        try {
+            publishAllButton.disabled = true;
+            publishAllButton.textContent = '发布中...';
+            const result = await apiRequest('/api/admin/publish-all', 'POST');
+            alert(result.message || '发布成功！');
+        } catch (error) {
+            alert(`发布失败: ${error.message}`);
+        } finally {
+            publishAllButton.disabled = false;
+            publishAllButton.textContent = '发布所有更新';
+        }
+    }
+
+    async function updateSingleProject(projectId) {
+        if (!confirm('确定要将这个项目的最新修改“更新”到线上吗？此操作只影响这一个项目。')) {
+            return;
+        }
+        try {
+            const result = await apiRequest(`/api/admin/projects/${projectId}/update`, 'POST');
+            alert(result.message || '项目更新成功！');
+        } catch (error) {
+            alert(`更新失败: ${error.message}`);
+        }
+    }
+
+    async function toggleProjectStatus(projectId, newStatus) {
+        const actionText = newStatus === 'published' ? '上架' : '下架';
+        if (!confirm(`确定要“${actionText}”这个项目吗？`)) {
+            return;
+        }
+        try {
+            const updatedProject = await apiRequest(`/api/admin/projects/${projectId}/status`, 'PUT', { status: newStatus });
+            const index = state.mainProjects.findIndex(p => p.id === projectId);
+            state.mainProjects[index] = updatedProject;
+            renderMainProjects();
+        } catch (error) {
+            alert(`切换状态失败: ${error.message}`);
+        }
+    }
+
+    async function logout() {
+        try {
+            await fetch('/api/logout', { 
+                method: 'POST',
+                credentials: 'include'
+            });
+            window.location.href = '/login.html';
+        } catch (error) {
+            alert('登出失败，请稍后再试。');
+        }
+    }
+
+    function renderMainProjects() {
+        mainProjectList.innerHTML = '';
+        state.mainProjects.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'bg-white p-4 rounded-lg shadow flex justify-between items-center';
+
+            const statusBadge = p.status === 'published' 
+                ? `<span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">已上架</span>`
+                : `<span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">草稿</span>`;
+            
+            let statusButtons = '';
+            if (p.status === 'published') {
+                statusButtons = `
+                    <button data-id="${p.id}" class="update-project-btn btn btn-success mr-2">更新</button>
+                    <button data-id="${p.id}" data-status="draft" class="toggle-status-btn btn btn-secondary mr-2">下架</button>
+                `;
+            } else {
+                statusButtons = `<button data-id="${p.id}" data-status="published" class="toggle-status-btn btn btn-success mr-2">上架</button>`;
+            }
+
+            div.innerHTML = `
+                <div>
+                    <h3 class="text-xl font-bold flex items-center">${p.name} ${statusBadge}</h3>
+                    <div class="text-sm text-gray-500 whitespace-pre-line">${p.description || '暂无描述'}</div>
+                    <p class="text-xs text-gray-400 mt-1">导游: ${p.poet || '未指定'}</p>
+                </div>
+                <div>
+                     ${statusButtons}
+                     <button data-id="${p.id}" class="edit-main-project-btn btn btn-secondary mr-2">编辑信息</button>
+                     <button data-id="${p.id}" class="enter-main-project-btn btn btn-primary mr-2">管理子项目</button>
+                     <button data-id="${p.id}" class="delete-main-project-btn btn btn-danger">删除项目</button>
+                </div>
+            `;
+            mainProjectList.appendChild(div);
+        });
+    }
+
+    function renderSubProjects() {
+        const project = state.currentMainProject;
+        if (!project) return;
+        currentMainProjectName.textContent = project.name;
+        currentMainProjectDesc.textContent = project.description;
+        subProjectList.innerHTML = '';
+        project.subProjects.forEach(sp => {
+            const div = document.createElement('div');
+            div.className = 'bg-white p-6 rounded-lg shadow';
+            div.innerHTML = `
+                <h4 class="text-xl font-bold mb-2">${sp.name}</h4>
+                <div class="text-gray-600 mb-4 whitespace-pre-line">${sp.description}</div>
+                <div class="flex gap-2">
+                    <button data-sub-name="${sp.name}" class="edit-sub-project-btn btn btn-secondary">编辑信息</button>
+                    <button data-sub-name="${sp.name}" class="manage-poems-btn btn btn-secondary">诗歌管理</button>
+                    <button data-sub-name="${sp.name}" class="manage-questions-btn btn btn-secondary">问题管理</button>
+                    <button data-sub-name="${sp.name}" class="manage-map-btn btn btn-secondary">结果映射</button>
+                </div>
+            `;
+            subProjectList.appendChild(div);
+        });
+    }
+
+    async function openContentModal(subProjectName, modalType) {
+        try {
+            const fullSubProject = await apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub/${subProjectName}`);
+            state.currentSubProject = fullSubProject;
+            switch(modalType) {
+                case 'poems': renderPoemsModal(); break;
+                case 'questions': renderQuestionsModal(); break;
+                case 'map': renderMapModal(); break;
+            }
+        } catch (error) {
+            alert(`加载内容失败: ${error.message}`);
+        }
+    }
+
+    function renderPoemsModal() {
+        const subProject = state.currentSubProject;
+        modalTitle.textContent = `管理诗歌 - ${subProject.name}`;
+        let poemsHtml = '<div class="space-y-2">';
+        (subProject.poems || []).forEach(p => {
+            poemsHtml += `
+                <div class="bg-gray-50 p-3 rounded flex justify-between items-center">
+                    <span>${p.title}</span>
+                    <div>
+                        <button data-poem-id="${p.id}" class="edit-poem-btn btn btn-sm btn-primary mr-2">编辑</button>
+                        <button data-poem-id="${p.id}" class="delete-poem-btn btn btn-sm btn-danger">删除</button>
+                    </div>
+                </div>
+            `;
+        });
+        poemsHtml += '</div><button id="add-poem-btn" class="btn btn-success mt-4">添加新诗歌</button>';
+        modalBody.innerHTML = poemsHtml;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.add('hidden');
+    }
+    
+    function renderQuestionsModal() {
+        const subProject = state.currentSubProject;
+        modalTitle.textContent = `管理问题 - ${subProject.name}`;
+        let questionsHtml = '<div id="questions-form-container" class="space-y-4">';
+        (subProject.questions || []).forEach((q, index) => {
+            questionsHtml += `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h5 class="font-bold mb-2">问题 ${index + 1}</h5>
+                    <textarea data-index="${index}" data-field="question" class="form-textarea mb-2" placeholder="问题文本">${q.question}</textarea>
+                    <input type="text" data-index="${index}" data-field="options.A" class="form-input mb-2" placeholder="选项A文本" value="${q.options.A}">
+                    <input type="text" data-index="${index}" data-field="options.B" class="form-input" placeholder="选项B文本" value="${q.options.B}">
+                </div>
+            `;
+        });
+        questionsHtml += '</div>';
+        modalBody.innerHTML = questionsHtml;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.remove('hidden');
+        modalSaveButton.onclick = saveQuestions;
+    }
+    
+    function renderMapModal() {
+        const subProject = state.currentSubProject;
+        modalTitle.textContent = `管理结果映射 - ${subProject.name}`;
+        let mapHtml = '<div id="map-form-container" class="space-y-2">';
+        const combinations = Object.keys(subProject.resultMap || {}).sort();
+        combinations.forEach(combo => {
+            const selectedPoemTitle = subProject.resultMap[combo];
+            let optionsHtml = '<option value="">-- 请选择 --</option>';
+            let selectedPoemId = '';
+            
+            // 找到匹配的诗歌ID
+            (subProject.poems || []).forEach(p => {
+                if (p.title === selectedPoemTitle) {
+                    selectedPoemId = p.id;
+                }
+                optionsHtml += `<option value="${p.id}" ${p.id === selectedPoemId ? 'selected' : ''}>${p.title}</option>`;
+            });
+            
+            mapHtml += `
+                <div class="flex items-center gap-4">
+                    <label class="font-mono font-bold w-1/4">${combo}</label>
+                    <select data-combo="${combo}" class="form-input w-3/4">${optionsHtml}</select>
+                </div>
+            `;
+        });
+        mapHtml += '</div>';
+        modalBody.innerHTML = mapHtml;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.remove('hidden');
+        modalSaveButton.onclick = saveMap;
+    }
+
+    function openPoemEditModal(poem = null) {
+        const isEditing = poem !== null;
+        const editModal = document.createElement('div');
+        editModal.id = 'poem-edit-modal';
+        editModal.className = 'fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[60]';
+        editModal.innerHTML = `
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+                <h3 class="text-2xl font-bold mb-6">${isEditing ? '编辑诗歌' : '添加新诗歌'}</h3>
+                <input type="text" id="edit-poem-title" class="form-input mb-4" placeholder="诗歌标题" value="${isEditing ? poem.title : ''}">
+                <textarea id="edit-poem-body" class="form-textarea" style="min-height: 250px;" placeholder="诗歌正文...">${isEditing ? poem.body : ''}</textarea>
+                <div class="mt-6 flex justify-end gap-4">
+                    <button id="cancel-edit-poem" class="btn btn-secondary">取消</button>
+                    <button id="save-edit-poem" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(editModal);
+
+        document.getElementById('cancel-edit-poem').onclick = () => editModal.remove();
+        editModal.onclick = (e) => { if(e.target === editModal) editModal.remove(); };
+        
+        document.getElementById('save-edit-poem').onclick = async () => {
+            const title = document.getElementById('edit-poem-title').value.trim();
+            const body = document.getElementById('edit-poem-body').value.trim();
+            if (!title || !body) return alert('标题和正文不能为空');
+
+            try {
+                const endpoint = isEditing 
+                    ? `/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/poems/${poem.id}`
+                    : `/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/poems`;
+                const method = isEditing ? 'PUT' : 'POST';
+                await apiRequest(endpoint, method, { title, body });
+                await openContentModal(state.currentSubProject.name, 'poems');
+                editModal.remove();
+            } catch (error) {
+                alert(`保存诗歌失败: ${error.message}`);
+            }
+        };
+    }
+    
+    function openMainProjectInfoModal(mainProjectId) {
+        const project = state.mainProjects.find(p => p.id === mainProjectId);
+        if (!project) return;
+        modalTitle.textContent = '编辑主项目信息';
+        modalBody.innerHTML = `
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-bold mb-1">项目名称</label>
+                    <input type="text" id="modal-main-project-name" class="form-input" value="${project.name}">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">项目描述</label>
+                    <textarea id="modal-main-project-desc" class="form-textarea">${project.description || ''}</textarea>
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">导游</label>
+                    <input type="text" id="modal-main-project-poet" class="form-input" value="${project.poet || ''}">
+                </div>
+            </div>
+        `;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.remove('hidden');
+        modalSaveButton.onclick = async () => {
+            const name = document.getElementById('modal-main-project-name').value.trim();
+            const description = document.getElementById('modal-main-project-desc').value;
+            const poet = document.getElementById('modal-main-project-poet').value.trim();
+            if (!name) return alert('项目名称不能为空');
+
+            try {
+                const updatedProject = await apiRequest(`/api/admin/projects/${mainProjectId}`, 'PUT', { name, description, poet });
+                const index = state.mainProjects.findIndex(p => p.id === mainProjectId);
+                state.mainProjects[index] = updatedProject;
+                renderMainProjects();
+                modal.classList.add('hidden');
+            } catch (error) {
+                alert(`保存失败: ${error.message}`);
+            }
+        };
+    }
+
+    function openSubProjectInfoModal(subProjectName) {
+        const subProject = state.currentMainProject.subProjects.find(sp => sp.name === subProjectName);
+        if (!subProject) return;
+        modalTitle.textContent = '编辑篇章信息';
+        modalBody.innerHTML = `
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-bold mb-1">篇章名称</label>
+                    <input type="text" id="modal-sub-project-name" class="form-input" value="${subProject.name}">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1">篇章描述</label>
+                    <textarea id="modal-sub-project-desc" class="form-textarea">${subProject.description || ''}</textarea>
+                </div>
+            </div>
+        `;
+        modal.classList.remove('hidden');
+        modalSaveButton.classList.remove('hidden');
+        modalSaveButton.onclick = async () => {
+            const name = document.getElementById('modal-sub-project-name').value.trim();
+            const description = document.getElementById('modal-sub-project-desc').value;
+            if (!name) return alert('篇章名称不能为空');
+
+            try {
+                // 调用后端API更新子项目信息
+                const updatedSubProject = await apiRequest(
+                    `/api/admin/projects/${state.currentMainProjectId}/sub/${subProjectName}`, 
+                    'PUT', 
+                    { name, description }
+                );
+                
+                // 更新本地状态
+                const subProjectIndex = state.currentMainProject.subProjects.findIndex(sp => sp.name === subProjectName);
+                state.currentMainProject.subProjects[subProjectIndex] = updatedSubProject;
+                
+                // 重新渲染子项目列表
+                renderSubProjects();
+                modal.classList.add('hidden');
+            } catch (error) {
+                alert(`保存失败: ${error.message}`);
+            }
+        };
+    }
+
+    async function loadMainProjects() {
+        state.mainProjects = await apiRequest('/api/admin/projects');
+        renderMainProjects();
+    }
+
+    function enterMainProject(mainProjectId) {
+        state.currentMainProjectId = mainProjectId;
+        mainProjectsListSection.classList.add('hidden');
+        subProjectManagementSection.classList.remove('hidden');
+        renderSubProjects();
+    }
+
+    async function createMainProject() {
+        const nameInput = document.getElementById('new-main-project-name');
+        const descInput = document.getElementById('new-main-project-desc');
+        const poetInput = document.getElementById('new-main-project-poet');
+        const name = nameInput.value.trim();
+        const description = descInput.value.trim();
+        const poet = poetInput.value.trim();
+        if (!name) return alert('新项目名称不能为空！');
+        try {
+            await apiRequest('/api/admin/projects', 'POST', { name, description, poet });
+            nameInput.value = '';
+            descInput.value = '';
+            poetInput.value = '';
+            await loadMainProjects();
+        } catch (error) {
+            alert(`创建项目失败: ${error.message}`);
+        }
+    }
+
+    async function createSubProject() {
+        const nameInput = document.getElementById('new-sub-project-name');
+        const descInput = document.getElementById('new-sub-project-desc');
+        const name = nameInput.value.trim();
+        const description = descInput.value.trim();
+        if (!name) return alert('新篇章名称不能为空！');
+        try {
+            const newSubProject = await apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub`, 'POST', { name, description });
+            state.currentMainProject.subProjects.push(newSubProject);
+            renderSubProjects();
+            nameInput.value = '';
+            descInput.value = '';
+        } catch (error) {
+            alert(`创建篇章失败: ${error.message}`);
+        }
+    }
+
+    async function saveQuestions() {
+        const newQuestions = JSON.parse(JSON.stringify(state.currentSubProject.questions));
+        let isValid = true;
+        document.querySelectorAll('#questions-form-container [data-index]').forEach(input => {
+            const index = input.dataset.index;
+            const field = input.dataset.field;
+            const value = input.value.trim();
+            if (!value) isValid = false;
+            const [key1, key2] = field.split('.');
+            if (key2) newQuestions[index][key1][key2] = value;
+            else newQuestions[index][field] = value;
+        });
+        if (!isValid) return alert('所有字段均不能为空！');
+        try {
+            await apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/questions`, 'PUT', { questions: newQuestions });
+            state.currentSubProject.questions = newQuestions;
+            alert('问题已保存！');
+            modal.classList.add('hidden');
+        } catch (error) {
+            alert(`保存问题失败: ${error.message}`);
+        }
+    }
+    
+    async function saveMap() {
+        const newMap = { ...state.currentSubProject.resultMap };
+        document.querySelectorAll('#map-form-container select[data-combo]').forEach(select => {
+            const selectedPoemId = select.value;
+            if (selectedPoemId) {
+                // 找到对应的诗歌标题
+                const selectedPoem = state.currentSubProject.poems.find(p => p.id === selectedPoemId);
+                if (selectedPoem) {
+                    // 直接保存诗歌标题到映射关系
+                    newMap[select.dataset.combo] = selectedPoem.title;
+                }
+            } else {
+                // 如果没有选择，删除这个映射
+                delete newMap[select.dataset.combo];
+            }
+        });
+        try {
+            await apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/resultMap`, 'PUT', { resultMap: newMap });
+            state.currentSubProject.resultMap = newMap;
+            alert('映射关系已保存！');
+            modal.classList.add('hidden');
+        } catch (error) {
+            alert(`保存映射失败: ${error.message}`);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadMainProjects().catch(error => {
+            console.error("加载初始数据失败:", error);
+        });
+        document.getElementById('create-main-project-btn').addEventListener('click', createMainProject);
+        publishAllButton.addEventListener('click', publishAllChanges);
+    });
+    logoutButton.addEventListener('click', logout);
+    backToMainProjectsButton.addEventListener('click', () => {
+        subProjectManagementSection.classList.add('hidden');
+        mainProjectsListSection.classList.remove('hidden');
+        state.currentMainProjectId = null;
+    });
+    mainProjectList.addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if (!button) return;
+        const projectId = button.dataset.id;
+        if (button.matches('.enter-main-project-btn')) {
+            enterMainProject(projectId);
+        }
+        if (button.matches('.edit-main-project-btn')) {
+            openMainProjectInfoModal(projectId);
+        }
+        if (button.matches('.toggle-status-btn')) {
+            const newStatus = button.dataset.status;
+            toggleProjectStatus(projectId, newStatus);
+        }
+        if (button.matches('.update-project-btn')) {
+            updateSingleProject(projectId);
+        }
+        if (button.matches('.delete-main-project-btn')) {
+            if (confirm('确定要永久删除这个项目及其所有内容吗？此操作不可逆。')) {
+                apiRequest(`/api/admin/projects/${projectId}`, 'DELETE')
+                    .then(() => {
+                        alert('项目已成功删除。');
+                        loadMainProjects();
+                    })
+                    .catch(err => alert(`删除失败: ${err.message}`));
+            }
+        }
+    });
+    subProjectManagementSection.addEventListener('click', (e) => {
+        if (e.target.id === 'create-sub-project-btn') {
+            createSubProject();
+        }
+    });
+    subProjectList.addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if (!button) return;
+        const subProjectName = button.dataset.subName;
+        if (button.matches('.edit-sub-project-btn')) openSubProjectInfoModal(subProjectName);
+        if (button.matches('.manage-poems-btn')) openContentModal(subProjectName, 'poems');
+        if (button.matches('.manage-questions-btn')) openContentModal(subProjectName, 'questions');
+        if (button.matches('.manage-map-btn')) openContentModal(subProjectName, 'map');
+    });
+    modalCancelButton.addEventListener('click', () => modal.classList.add('hidden'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+    modalBody.addEventListener('click', (e) => {
+        if (e.target.matches('#add-poem-btn')) openPoemEditModal();
+        if (e.target.matches('.edit-poem-btn')) {
+            const poem = state.currentSubProject.poems.find(p => p.id === e.target.dataset.poemId);
+            openPoemEditModal(poem);
+        }
+        if (e.target.matches('.delete-poem-btn')) {
+            const poemId = e.target.dataset.poemId;
+            if (confirm('确定要删除这首诗吗？')) {
+                apiRequest(`/api/admin/projects/${state.currentMainProjectId}/sub/${state.currentSubProject.name}/poems/${poemId}`, 'DELETE')
+                    .then(() => {
+                        openContentModal(state.currentSubProject.name, 'poems');
+                    })
+                    .catch(err => alert(`删除失败: ${err.message}`));
+            }
+        }
+    });
+    </script>
+</body>
+</html>
