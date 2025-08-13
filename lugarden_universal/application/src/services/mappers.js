@@ -83,4 +83,28 @@ export function getPublishedChapterSetFromProjects(projects) {
   return set;
 }
 
+// 宇宙内容聚合映射函数
+export function mapUniverseContent(universe, projects, qas, mappings, poems, poemArchetypes) {
+  // 输入：宇宙信息和相关数据
+  // 输出：统一的宇宙内容结构
+  return {
+    universe: {
+      id: universe.id,
+      code: universe.code,
+      name: universe.name,
+      type: universe.type,
+      description: universe.description,
+      createdAt: universe.createdAt,
+      updatedAt: universe.updatedAt
+    },
+    content: {
+      projects: projects || [],
+      questions: qas || {},
+      mappings: mappings || { defaultUnit: '', units: {} },
+      poems: poems || {},
+      poemArchetypes: poemArchetypes || { poems: [] }
+    }
+  };
+}
+
 

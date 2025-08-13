@@ -9,6 +9,7 @@ import {
   mapZhouMappingToPublicMappings,
   mapZhouPoemsToPublicPoems,
   mapPoemArchetypesForFrontend,
+  mapUniverseContent,
 } from '../services/mappers.js';
 import { getCache, setCache, invalidate } from '../utils/cache.js';
 
@@ -37,8 +38,123 @@ function fileFallbackError(message) {
   return err;
 }
 
-// GET /api/projects
+// GET /api/universes - 返回所有已发布的宇宙列表
+router.get('/universes', async (req, res, next) => {
+  const cacheKey = '/api/universes';
+  if (req.query.refresh === 'true') invalidate([cacheKey]);
+  const cached = getCache(cacheKey);
+  if (cached !== undefined) return res.json(cached);
+  
+  try {
+    const prisma = getPrismaClient();
+    const universes = await prisma.universe.findMany({
+      where: {
+        status: 'published'
+      },
+      select: {
+        id: true,
+        code: true,
+        name: true,
+        type: true,
+        description: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true
+      },
+      orderBy: {
+        createdAt: 'asc'
+      }
+    });
+    
+    setCache(cacheKey, universes);
+    return res.json(universes);
+  } catch (dbErr) {
+    return next(fileFallbackError('无法加载宇宙列表'));
+  }
+});
+
+// GET /api/universes/:universeCode/content - 获取特定宇宙的内容聚合
+router.get('/universes/:universeCode/content', async (req, res, next) => {
+  const { universeCode } = req.params;
+  const cacheKey = `/api/universes/${universeCode}/content`;
+  if (req.query.refresh === 'true') invalidate([cacheKey]);
+  const cached = getCache(cacheKey);
+  if (cached !== undefined) return res.json(cached);
+  
+  try {
+    const prisma = getPrismaClient();
+    
+    // 获取宇宙信息
+    const universe = await prisma.universe.findFirst({
+      where: {
+        code: universeCode,
+        status: 'published'
+      }
+    });
+    
+    if (!universe) {
+      return res.status(404).json({ error: '宇宙不存在或未发布' });
+    }
+    
+    // 根据宇宙类型聚合内容
+    if (universe.type === 'zhou_spring_autumn') {
+      // 获取周与春秋宇宙的内容
+      const [projects, qas, mappings, poems, poemArchetypes] = await Promise.all([
+        prisma.zhouProject.findMany({
+          where: { universeId: universe.id },
+          include: { subProjects: { select: { name: true, description: true } } }
+        }),
+        prisma.zhouQA.findMany({
+          where: { universeId: universe.id }
+        }),
+        prisma.zhouMapping.findMany({
+          where: { universeId: universe.id }
+        }),
+        prisma.zhouPoem.findMany({
+          where: { universeId: universe.id }
+        }),
+        prisma.zhouPoem.findMany({
+          where: { universeId: universe.id },
+          select: { title: true, poetExplanation: true }
+        })
+      ]);
+      
+      // 映射数据
+      const mappedProjects = mapZhouProjectsToPublicProjects(projects).filter(
+        (p) => (p.status || '').toLowerCase() === 'published'
+      );
+      const mappedQAs = mapZhouQAToPublicQuestions(qas);
+      const mappedMappings = mapZhouMappingToPublicMappings(mappings);
+      const mappedPoems = mapZhouPoemsToPublicPoems(poems);
+      const mappedArchetypes = mapPoemArchetypesForFrontend(poemArchetypes);
+      
+      const result = mapUniverseContent(
+        universe,
+        mappedProjects,
+        mappedQAs,
+        mappedMappings,
+        mappedPoems,
+        mappedArchetypes
+      );
+      
+      setCache(cacheKey, result);
+      return res.json(result);
+    } else {
+      // 其他宇宙类型的占位符
+      const result = mapUniverseContent(universe, [], {}, { defaultUnit: '', units: {} }, {}, { poems: [] });
+      setCache(cacheKey, result);
+      return res.json(result);
+    }
+  } catch (dbErr) {
+    return next(fileFallbackError(`无法加载宇宙 ${universeCode} 的内容`));
+  }
+});
+
+// GET /api/projects - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
 router.get('/projects', async (req, res, next) => {
+  // 返回废弃提示，但保持向后兼容
+  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+  
   const cacheKey = '/api/projects';
   if (req.query.refresh === 'true') invalidate([cacheKey]);
   const cached = getCache(cacheKey);
@@ -69,8 +185,11 @@ router.get('/projects', async (req, res, next) => {
   }
 });
 
-// GET /api/questions
+// GET /api/questions - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
 router.get('/questions', async (req, res, next) => {
+  // 返回废弃提示，但保持向后兼容
+  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+  
   const cacheKey = '/api/questions';
   if (req.query.refresh === 'true') invalidate([cacheKey]);
   const cached = getCache(cacheKey);
@@ -94,8 +213,11 @@ router.get('/questions', async (req, res, next) => {
   }
 });
 
-// GET /api/mappings
+// GET /api/mappings - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
 router.get('/mappings', async (req, res, next) => {
+  // 返回废弃提示，但保持向后兼容
+  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+  
   const cacheKey = '/api/mappings';
   if (req.query.refresh === 'true') invalidate([cacheKey]);
   const cached = getCache(cacheKey);
@@ -119,8 +241,11 @@ router.get('/mappings', async (req, res, next) => {
   }
 });
 
-// GET /api/poems-all
+// GET /api/poems-all - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
 router.get('/poems-all', async (req, res, next) => {
+  // 返回废弃提示，但保持向后兼容
+  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+  
   const cacheKey = '/api/poems-all';
   if (req.query.refresh === 'true') invalidate([cacheKey]);
   const cached = getCache(cacheKey);
@@ -158,8 +283,11 @@ router.get('/poems-all', async (req, res, next) => {
   }
 });
 
-// GET /api/poem-archetypes
+// GET /api/poem-archetypes - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
 router.get('/poem-archetypes', async (req, res, next) => {
+  // 返回废弃提示，但保持向后兼容
+  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+  
   const cacheKey = '/api/poem-archetypes';
   if (req.query.refresh === 'true') invalidate([cacheKey]);
   const cached = getCache(cacheKey);
