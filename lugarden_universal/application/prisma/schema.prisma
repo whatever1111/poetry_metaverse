@@ -33,6 +33,9 @@ model Universe {
   name String
   type String
   description String?
+  status String @default("draft")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
   
   // 桥表关系
   universeThemes UniverseTheme[]

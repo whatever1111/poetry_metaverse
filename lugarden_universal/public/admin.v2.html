@@ -32,6 +32,15 @@
             </div>
         </div>
 
+		<!-- 宇宙仪表盘 -->
+		<div id="universe-dashboard-section" class="mb-8">
+			<h2 class="text-2xl font-bold mb-4">宇宙仪表盘</h2>
+			<div class="mb-4">
+				<button id="create-universe-btn" class="btn btn-primary">创建新宇宙</button>
+			</div>
+			<div id="universe-list" class="space-y-3"></div>
+		</div>
+
         <!-- 主项目列表 -->
         <div id="main-projects-list-section">
             <h2 class="text-2xl font-bold mb-4">主项目列表</h2>
@@ -78,8 +87,9 @@
     </div>
 
     <script>
-    let state = {
-        mainProjects: [],
+	let state = {
+		mainProjects: [],
+		universes: [],
         currentMainProjectId: null,
         currentSubProject: null, 
         get currentMainProject() {
@@ -100,7 +110,101 @@
     const modalBody = document.getElementById('modal-body');
     const modalCancelButton = document.getElementById('modal-cancel-button');
     const modalSaveButton = document.getElementById('modal-save-button');
-    const publishAllButton = document.getElementById('publish-all-btn');
+	const publishAllButton = document.getElementById('publish-all-btn');
+	const universeList = document.getElementById('universe-list');
+	const createUniverseButton = document.getElementById('create-universe-btn');
+
+	// ========== Universe 仪表盘（Phase 2） ==========
+	function renderUniverses() {
+		universeList.innerHTML = '';
+		state.universes.forEach(u => {
+			const div = document.createElement('div');
+			div.className = 'bg-white p-4 rounded-lg shadow flex justify-between items-center';
+			const statusBadge = (u.status || 'draft') === 'published'
+				? `<span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">已上架</span>`
+				: `<span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">草稿</span>`;
+			div.innerHTML = `
+				<div>
+					<h3 class="text-xl font-bold flex items-center">${u.name} ${statusBadge}</h3>
+					<div class="text-sm text-gray-500">代码: <span class="font-mono">${u.code}</span> | 类型: ${u.type}</div>
+					<div class="text-sm text-gray-500 whitespace-pre-line">${u.description || '暂无描述'}</div>
+				</div>
+				<div class="flex items-center gap-2">
+					<button data-id="${u.id}" class="universe-edit-btn btn btn-secondary">编辑</button>
+					<button data-id="${u.id}" class="universe-delete-btn btn btn-danger">删除</button>
+				</div>
+			`;
+			universeList.appendChild(div);
+		});
+	}
+
+	async function loadUniverses() {
+		state.universes = await apiRequest('/api/admin/universes');
+		renderUniverses();
+	}
+
+	function openUniverseModal(universe = null) {
+		const isEditing = !!universe;
+		modalTitle.textContent = isEditing ? '编辑宇宙' : '创建新宇宙';
+		const nameVal = universe?.name || '';
+		const codeVal = universe?.code || '';
+		const typeVal = universe?.type || '';
+		const descVal = universe?.description || '';
+		const statusVal = universe?.status || 'draft';
+		modalBody.innerHTML = `
+			<div class="space-y-4">
+				<div>
+					<label class="block font-bold mb-1">名称</label>
+					<input type="text" id="universe-name" class="form-input" value="${nameVal}">
+				</div>
+				<div>
+					<label class="block font-bold mb-1">代码</label>
+					<input type="text" id="universe-code" class="form-input" value="${codeVal}" ${isEditing ? 'disabled' : ''}>
+				</div>
+				<div>
+					<label class="block font-bold mb-1">类型</label>
+					<select id="universe-type" class="form-input">
+						<option value="">-- 请选择 --</option>
+						<option value="POEM_PROJECT" ${typeVal==='POEM_PROJECT'?'selected':''}>POEM_PROJECT</option>
+						<option value="STORY_CHARACTER" ${typeVal==='STORY_CHARACTER'?'selected':''}>STORY_CHARACTER</option>
+					</select>
+				</div>
+				<div>
+					<label class="block font-bold mb-1">描述</label>
+					<textarea id="universe-desc" class="form-textarea">${descVal}</textarea>
+				</div>
+				${isEditing ? `
+				<div>
+					<label class="block font-bold mb-1">状态</label>
+					<select id="universe-status" class="form-input">
+						<option value="draft" ${statusVal==='draft'?'selected':''}>draft</option>
+						<option value="published" ${statusVal==='published'?'selected':''}>published</option>
+					</select>
+				</div>` : ''}
+			</div>
+		`;
+		modal.classList.remove('hidden');
+		modalSaveButton.classList.remove('hidden');
+		modalSaveButton.onclick = async () => {
+			const name = document.getElementById('universe-name').value.trim();
+			const code = document.getElementById('universe-code')?.value.trim();
+			const type = document.getElementById('universe-type').value.trim();
+			const description = document.getElementById('universe-desc').value;
+			if (!name || (!isEditing && !code) || !type) return alert('名称/代码/类型均不能为空');
+			try {
+				if (isEditing) {
+					const status = document.getElementById('universe-status').value;
+					await apiRequest(`/api/admin/universes/${universe.id}`, 'PUT', { name, type, description, status });
+				} else {
+					await apiRequest('/api/admin/universes', 'POST', { name, code, type, description });
+				}
+				await loadUniverses();
+				modal.classList.add('hidden');
+			} catch (error) {
+				alert(`保存失败: ${error.message}`);
+			}
+		};
+	}
 
     async function apiRequest(endpoint, method = 'GET', body = null) {
         const headers = { 'Content-Type': 'application/json' };
@@ -547,13 +651,36 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        loadMainProjects().catch(error => {
-            console.error("加载初始数据失败:", error);
-        });
-        document.getElementById('create-main-project-btn').addEventListener('click', createMainProject);
-        publishAllButton.addEventListener('click', publishAllChanges);
-    });
+	document.addEventListener('DOMContentLoaded', () => {
+		Promise.all([
+			loadUniverses(),
+			loadMainProjects(),
+		]).catch(error => {
+			console.error("加载初始数据失败:", error);
+		});
+		document.getElementById('create-main-project-btn').addEventListener('click', createMainProject);
+		publishAllButton.addEventListener('click', publishAllChanges);
+		createUniverseButton.addEventListener('click', () => openUniverseModal());
+	});
+	
+	universeList.addEventListener('click', async (e) => {
+		const btn = e.target.closest('button');
+		if (!btn) return;
+		const id = btn.dataset.id;
+		if (btn.matches('.universe-edit-btn')) {
+			const u = state.universes.find(x => x.id === id);
+			if (u) openUniverseModal(u);
+		}
+		if (btn.matches('.universe-delete-btn')) {
+			if (!confirm('确认删除该宇宙？此操作不可恢复。')) return;
+			try {
+				await apiRequest(`/api/admin/universes/${id}`, 'DELETE');
+				await loadUniverses();
+			} catch (error) {
+				alert(`删除失败: ${error.message}`);
+			}
+		}
+	});
     logoutButton.addEventListener('click', logout);
     backToMainProjectsButton.addEventListener('click', () => {
         subProjectManagementSection.classList.add('hidden');

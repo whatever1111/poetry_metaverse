@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import crypto from 'node:crypto';
 import { getPrismaClient } from '../persistence/prismaClient.js';
 import { mapZhouProjectsToPublicProjects } from '../services/mappers.js';
 import { invalidate } from '../utils/cache.js';
@@ -10,6 +11,104 @@ router.use((req, res, next) => {
   if (req.session && req.session.isAuthenticated) return next();
   return res.status(401).json({ error: { code: 'UNAUTHORIZED', message: '需要认证' } });
 });
+// ============ Universe 管理（Phase 2 - New） ============
+
+// GET /api/admin/universes
+router.get('/universes', async (_req, res, next) => {
+  try {
+    const prisma = getPrismaClient();
+    const universes = await prisma.universe.findMany({ orderBy: { createdAt: 'asc' } });
+    return res.json(universes.map(u => ({
+      id: u.id,
+      name: u.name,
+      code: u.code,
+      type: u.type,
+      description: u.description ?? '',
+      status: u.status ?? 'draft',
+      createdAt: u.createdAt,
+      updatedAt: u.updatedAt,
+    })));
+  } catch (err) { return next(err); }
+});
+
+// POST /api/admin/universes
+router.post('/universes', async (req, res, next) => {
+  try {
+    const prisma = getPrismaClient();
+    const { name, code, type, description } = req.body || {};
+    if (!name || !code || !type) {
+      const e = new Error('name, code, type 为必填字段'); e.statusCode = 400; e.code = 'BAD_REQUEST'; throw e;
+    }
+    const created = await prisma.universe.create({
+      data: { id: crypto.randomUUID(), name, code, type, description: description ?? '' },
+    });
+    return res.status(201).json({
+      id: created.id,
+      name: created.name,
+      code: created.code,
+      type: created.type,
+      description: created.description ?? '',
+      status: created.status ?? 'draft',
+      createdAt: created.createdAt,
+      updatedAt: created.updatedAt,
+    });
+  } catch (err) {
+    // Prisma 唯一键冲突
+    if (err?.code === 'P2002') {
+      err.statusCode = 400; err.code = 'BAD_REQUEST'; err.message = 'code 已存在';
+    }
+    return next(err);
+  }
+});
+
+// PUT /api/admin/universes/:id
+router.put('/universes/:id', async (req, res, next) => {
+  try {
+    const prisma = getPrismaClient();
+    const { id } = req.params;
+    const { name, code, type, description, status } = req.body || {};
+    const data = {};
+    if (name !== undefined) data.name = name;
+    if (code !== undefined) data.code = code;
+    if (type !== undefined) data.type = type;
+    if (description !== undefined) data.description = description ?? '';
+    if (status !== undefined) {
+      const allowed = ['draft', 'published'];
+      if (!allowed.includes(String(status))) { const e = new Error('无效的 status'); e.statusCode=400; e.code='BAD_REQUEST'; throw e; }
+      data.status = status;
+    }
+    const updated = await prisma.universe.update({ where: { id }, data });
+    return res.json({
+      id: updated.id,
+      name: updated.name,
+      code: updated.code,
+      type: updated.type,
+      description: updated.description ?? '',
+      status: updated.status ?? 'draft',
+      createdAt: updated.createdAt,
+      updatedAt: updated.updatedAt,
+    });
+  } catch (err) {
+    if (err?.code === 'P2025') { err.statusCode = 404; err.code = 'NOT_FOUND'; err.message = 'Universe 不存在'; }
+    if (err?.code === 'P2002') { err.statusCode = 400; err.code = 'BAD_REQUEST'; err.message = 'code 已存在'; }
+    return next(err);
+  }
+});
+
+// DELETE /api/admin/universes/:id
+router.delete('/universes/:id', async (req, res, next) => {
+  try {
+    const prisma = getPrismaClient();
+    const { id } = req.params;
+    // 未来可加：级联清理（谨慎）。当前仅支持当无依赖时删除。
+    await prisma.universe.delete({ where: { id } });
+    return res.status(204).send();
+  } catch (err) {
+    if (err?.code === 'P2025') { err.statusCode = 404; err.code = 'NOT_FOUND'; err.message = 'Universe 不存在'; }
+    return next(err);
+  }
+});
+
 
 // 移除所有文件回退相关常量与逻辑
 
