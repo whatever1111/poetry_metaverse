@@ -293,23 +293,37 @@ class AdminCore {
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">宇宙名称 *</label>
-                    <input type="text" id="universe-name" class="form-input" value="${universe?.name || ''}" required>
+                    <input type="text" id="universe-name" class="form-input" value="${universe?.name || ''}" required 
+                           placeholder="例如：新绝句宇宙">
+                    <p class="text-xs text-gray-500 mt-1">为您的宇宙起一个有意义的名字</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">宇宙代码 *</label>
-                    <input type="text" id="universe-code" class="form-input" value="${universe?.code || ''}" required>
+                                         <input type="text" id="universe-code" class="form-input" value="${universe?.code || ''}" required 
+                            placeholder="例如：universe_new_jueju" pattern="^universe_[a-z][a-z0-9_]*$">
+                     <p class="text-xs text-gray-500 mt-1">
+                         <strong>格式要求：</strong>必须以"universe_"开头，后跟小写字母、数字或下划线<br>
+                         <strong>示例：</strong>universe_poetry, universe_story, universe_research
+                     </p>
+                    <div id="code-validation" class="text-xs mt-1 hidden"></div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">宇宙类型 *</label>
                     <select id="universe-type" class="form-input" required>
                         <option value="">请选择类型</option>
-                        <option value="zhou_spring_autumn" ${universe?.type === 'zhou_spring_autumn' ? 'selected' : ''}>周与春秋</option>
-                        <option value="maoxiaodou" ${universe?.type === 'maoxiaodou' ? 'selected' : ''}>毛小豆</option>
+                        <option value="zhou_spring_autumn" ${universe?.type === 'zhou_spring_autumn' ? 'selected' : ''}>周与春秋 - 诗歌问答体验</option>
+                        <option value="maoxiaodou" ${universe?.type === 'maoxiaodou' ? 'selected' : ''}>毛小豆 - 数字化诗歌宇宙</option>
                     </select>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <strong>周与春秋：</strong>结合心理测试与诗歌生成，通过问答体验提供个性化诗歌推荐<br>
+                        <strong>毛小豆：</strong>通过结构化数据重现诗歌中的角色关系、场景情境和理论体系
+                    </p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">描述</label>
-                    <textarea id="universe-description" class="form-textarea">${universe?.description || ''}</textarea>
+                    <textarea id="universe-description" class="form-textarea" 
+                              placeholder="简要描述这个宇宙的用途和特点...">${universe?.description || ''}</textarea>
+                    <p class="text-xs text-gray-500 mt-1">可选，用于说明宇宙的用途和特点</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
@@ -317,12 +331,34 @@ class AdminCore {
                         <option value="draft" ${universe?.status === 'draft' ? 'selected' : ''}>草稿</option>
                         <option value="published" ${universe?.status === 'published' ? 'selected' : ''}>已发布</option>
                     </select>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <strong>草稿：</strong>仅管理员可见，用于开发和测试<br>
+                        <strong>已发布：</strong>用户可以在前台访问
+                    </p>
                 </div>
             </div>
         `;
         
-        // 绑定保存事件
-        const originalSaveHandler = modalSaveBtn.onclick;
+                 // 添加实时输入验证
+         this.setupUniverseFormValidation();
+         
+         // 绑定取消按钮事件
+         const modalCancelBtn = document.getElementById('modal-cancel-button');
+         if (modalCancelBtn) {
+             modalCancelBtn.onclick = () => {
+                 modal.classList.add('hidden');
+             };
+         }
+         
+         // 绑定点击背景关闭模态框
+         modal.onclick = (e) => {
+             if (e.target === modal) {
+                 modal.classList.add('hidden');
+             }
+         };
+         
+         // 绑定保存事件
+         const originalSaveHandler = modalSaveBtn.onclick;
         modalSaveBtn.onclick = async () => {
             try {
                 const formData = {
@@ -333,8 +369,10 @@ class AdminCore {
                     status: document.getElementById('universe-status').value
                 };
                 
-                if (!formData.name || !formData.code || !formData.type) {
-                    this.showError('请填写必填字段');
+                // 详细验证
+                const validationResult = this.validateUniverseForm(formData);
+                if (!validationResult.isValid) {
+                    this.showError(validationResult.message);
                     return;
                 }
                 
@@ -353,7 +391,18 @@ class AdminCore {
                 
             } catch (error) {
                 console.error('保存宇宙失败:', error);
-                this.showError(`保存失败: ${error.message}`);
+                // 优化错误提示
+                let errorMessage = '保存失败';
+                if (error.message.includes('code 已存在')) {
+                    errorMessage = '宇宙代码已存在，请使用其他代码';
+                } else if (error.message.includes('name, code, type 为必填字段')) {
+                    errorMessage = '请填写所有必填字段';
+                } else if (error.message.includes('400')) {
+                    errorMessage = '输入数据格式不正确，请检查后重试';
+                } else {
+                    errorMessage = error.message;
+                }
+                this.showError(errorMessage);
             } finally {
                 // 恢复原始事件处理器
                 modalSaveBtn.onclick = originalSaveHandler;
@@ -418,6 +467,106 @@ class AdminCore {
                 notification.parentNode.removeChild(notification);
             }
         }, 3000);
+    }
+
+    // 设置宇宙表单验证
+    setupUniverseFormValidation() {
+        const codeInput = document.getElementById('universe-code');
+        const validationDiv = document.getElementById('code-validation');
+        
+        if (codeInput && validationDiv) {
+            codeInput.addEventListener('input', () => {
+                this.validateUniverseCode(codeInput.value, validationDiv);
+            });
+            
+            codeInput.addEventListener('blur', () => {
+                this.validateUniverseCode(codeInput.value, validationDiv);
+            });
+        }
+    }
+
+         // 验证宇宙代码格式
+     validateUniverseCode(code, validationDiv) {
+         if (!validationDiv) return;
+         
+         const codePattern = /^universe_[a-z][a-z0-9_]*$/;
+         const minLength = 10; // universe_ + 至少3个字符
+         const maxLength = 50;
+        
+        validationDiv.classList.remove('hidden');
+        
+        if (!code) {
+            validationDiv.innerHTML = '<span class="text-gray-500">请输入宇宙代码</span>';
+            validationDiv.className = 'text-xs mt-1 text-gray-500';
+            return;
+        }
+        
+                 if (code.length < minLength) {
+             validationDiv.innerHTML = `<span class="text-red-500">代码长度至少 ${minLength} 个字符（包含"universe_"前缀）</span>`;
+             validationDiv.className = 'text-xs mt-1 text-red-500';
+             return;
+         }
+        
+        if (code.length > maxLength) {
+            validationDiv.innerHTML = `<span class="text-red-500">代码长度不能超过 ${maxLength} 个字符</span>`;
+            validationDiv.className = 'text-xs mt-1 text-red-500';
+            return;
+        }
+        
+                 if (!codePattern.test(code)) {
+             validationDiv.innerHTML = '<span class="text-red-500">格式错误：必须以"universe_"开头，后跟小写字母、数字或下划线</span>';
+             validationDiv.className = 'text-xs mt-1 text-red-500';
+             return;
+         }
+        
+        validationDiv.innerHTML = '<span class="text-green-500">✓ 代码格式正确</span>';
+        validationDiv.className = 'text-xs mt-1 text-green-500';
+    }
+
+    // 验证宇宙表单数据
+    validateUniverseForm(formData) {
+        // 检查必填字段
+        if (!formData.name || !formData.name.trim()) {
+            return { isValid: false, message: '请输入宇宙名称' };
+        }
+        
+        if (!formData.code || !formData.code.trim()) {
+            return { isValid: false, message: '请输入宇宙代码' };
+        }
+        
+        if (!formData.type) {
+            return { isValid: false, message: '请选择宇宙类型' };
+        }
+        
+        // 验证名称长度
+        if (formData.name.length < 2) {
+            return { isValid: false, message: '宇宙名称至少需要2个字符' };
+        }
+        
+        if (formData.name.length > 100) {
+            return { isValid: false, message: '宇宙名称不能超过100个字符' };
+        }
+        
+                 // 验证代码格式
+         const codePattern = /^universe_[a-z][a-z0-9_]*$/;
+         if (!codePattern.test(formData.code)) {
+             return { isValid: false, message: '宇宙代码格式错误：必须以"universe_"开头，后跟小写字母、数字或下划线' };
+         }
+         
+         if (formData.code.length < 10) {
+             return { isValid: false, message: '宇宙代码至少需要10个字符（包含"universe_"前缀）' };
+         }
+        
+        if (formData.code.length > 50) {
+            return { isValid: false, message: '宇宙代码不能超过50个字符' };
+        }
+        
+        // 验证描述长度（可选）
+        if (formData.description && formData.description.length > 500) {
+            return { isValid: false, message: '描述不能超过500个字符' };
+        }
+        
+        return { isValid: true, message: '' };
     }
 }
 
