@@ -235,37 +235,54 @@
       - 所有测试用例通过验证
   - **完成状态**: ✅ 已完成
 
-- [ ] **任务B.S (策略调整): 创建前台重构"沙盒"**
+- [x] **任务B.S (策略调整): 创建前台重构"沙盒"**
   - **核心思想**: 为了在不破坏现有用户访问体验的前提下进行重构，我们不直接修改 `index.html`，而是为其创建一个副本作为新的工作区。旧版 `index.html` 将作为功能参考。
-  - [ ] **步骤 B.S.1**: 复制 `lugarden_universal/public/index.html` 为 `lugarden_universal/public/index.v2.html`。使用复制命令，而不是读取-创建-写入操作，以节省token
+  - [x] **步骤 B.S.1**: 复制 `lugarden_universal/public/index.html` 为 `lugarden_universal/public/index.v2.html`。使用复制命令，而不是读取-创建-写入操作，以节省token
     - **预期改动（预判）**: `lugarden_universal/public/index.v2.html` (新建)
-  - **完成状态**: �� 进行中
+    - **实际改动**: 已创建 `index.v2.html` 作为前台重构沙盒文件
+  - **完成状态**: ✅ 已完成
 
-- [ ] **任务B.2：重构用户界面为"宇宙门户" (在 `index.v2.html` 上)**
+- [x] **任务B.2：重构用户界面为"宇宙门户" (在 `index.v2.html` 上)**
   - **核心思想**: 以 `index.html` 作为功能参考，在 `index.v2.html` 上实现新架构。
-  - [ ] **步骤 B.2.1:** 将 `index.v2.html` 重写为"宇宙门户"页面，并创建 `main.js` 脚本调用新 API 动态渲染宇宙入口。
+  - [x] **步骤 B.2.1:** 将 `index.v2.html` 重写为"宇宙门户"页面，并创建 `main.js` 脚本调用新 API 动态渲染宇宙入口。
     - **预期改动（预判）**:
       - `lugarden_universal/public/index.v2.html` (重写 HTML 结构为门户，并链接 `main.js`)
       - `lugarden_universal/public/assets/main.js` (新建，包含调用 `GET /api/universes` 并渲染卡片的逻辑)
-  - [ ] **步骤 B.2.2:** 创建 `zhou.html` 页面，作为"周与春秋"宇宙的独立体验承载页。
+    - **实际改动**:
+      - 完全重写了 `index.v2.html` 为宇宙门户页面
+      - 创建了 `assets/main.js` 实现宇宙列表动态加载和渲染
+      - 实现了宇宙卡片点击跳转功能
+  - [x] **步骤 B.2.2:** 创建 `zhou.html` 页面，作为"周与春秋"宇宙的独立体验承载页。
     - **预期改动（预判）**:
       - `lugarden_universal/public/zhou.html` (新建，从旧 `index.html` 迁移相关 HTML 结构和样式)
-  - [ ] **步骤 B.2.3:** 创建 `zhou.js` 脚本，在 `zhou.html` 页面加载时调用 `GET /api/universes/zhou/content` 接口，并渲染页面内容。
+    - **实际改动**:
+      - 创建了 `zhou.html` 作为周与春秋宇宙独立体验页
+      - 迁移了完整的HTML结构和CSS样式
+      - 添加了宇宙页面头部和返回链接
+  - [x] **步骤 B.2.3:** 创建 `zhou.js` 脚本，在 `zhou.html` 页面加载时调用 `GET /api/universes/zhou/content` 接口，并渲染页面内容。
     - **预期改动（预判）**:
       - `lugarden_universal/public/assets/zhou.js` (新建，从旧 `index.html` 迁移相关 JS 逻辑，并适配新 API)
       - `lugarden_universal/public/zhou.html` (链接 `zhou.js` 脚本)
-  - **完成状态**: �� 进行中
+    - **实际改动**:
+      - 创建了 `assets/zhou.js` 适配新的层级化API
+      - 从旧index.html完整迁移了所有交互逻辑
+      - 实现了问答、解诗、读诗等所有功能
+      - 保持了原有的用户体验和动画效果
+  - **完成状态**: ✅ 已完成
 
-  - [ ] **任务B.3：完成新旧前台切换**
+- [x] **任务B.3：完成新旧前台切换**
   - **核心思想**: 在新前台 (`index.v2.html`) 功能完整并通过验证后，执行原子化的切换操作。
-  - [ ] **步骤 B.3.1**: (手动验证) 完整测试 `index.v2.html` 的所有功能，确保其体验与旧版一致或更优。
+  - [x] **步骤 B.3.1**: (手动验证) 完整测试 `index.v2.html` 的所有功能，确保其体验与旧版一致或更优。
     - **预期改动（预判）**:
       - (无代码改动，主要是测试活动)
-  - [ ] **步骤 B.3.2**: 备份旧版前台：`mv lugarden_universal/public/index.html lugarden_universal/public/index.legacy.html`
+    - **实际改动**: 已完成功能验证，新架构运行正常
+  - [x] **步骤 B.3.2**: 备份旧版前台：`mv lugarden_universal/public/index.html lugarden_universal/public/index.legacy.html`
     - **预期改动（预判）**: `lugarden_universal/public/index.legacy.html` (新建)
-  - [ ] **步骤 B.3.3**: 部署新版前台：`mv lugarden_universal/public/index.v2.html lugarden_universal/public/index.html`
+    - **实际改动**: 成功备份旧版前台为 `index.legacy.html`
+  - [x] **步骤 B.3.3**: 部署新版前台：`mv lugarden_universal/public/index.v2.html lugarden_universal/public/index.html`
     - **预期改动（预判）**: `lugarden_universal/public/index.html` (更新)
-  - **完成状态**: �� 进行中
+    - **实际改动**: 成功部署新版前台，`index.v2.html` 内容已复制到 `index.html`
+  - **完成状态**: ✅ 已完成
 
 ### 子阶段 C：新架构集成与验证
 

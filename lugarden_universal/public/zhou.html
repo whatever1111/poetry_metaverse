@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周与春秋 | 陆家花园</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Noto Serif SC', serif; 
+            background-color: #f3f4f6; 
+            transition: background-color 0.5s ease; 
+        }
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .animate-fadeInUp { 
+            animation: fadeInUp 0.5s ease-out forwards; 
+            opacity: 0; 
+        }
+        .loader { 
+            border: 2px solid #f3f3f3; 
+            border-top: 2px solid #60a5fa; 
+            border-radius: 50%; 
+            width: 16px; 
+            height: 16px; 
+            animation: spin 1s linear infinite; 
+            display: inline-block; 
+            margin-left: 8px; 
+        }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+
+        .card-base {
+            background-color: #f5f1e8;
+            background-image: radial-gradient(ellipse at top left, rgba(228, 222, 210, 0.6) 0%, transparent 70%),
+                              repeating-linear-gradient(88deg, transparent, transparent 40px, rgba(188, 177, 158, 0.07) 40px, rgba(188, 177, 158, 0.07) 41px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.08);
+            border-radius: 12px;
+        }
+        .option-button { 
+            transition: all 0.2s ease-in-out; 
+        }
+        .option-button:hover { 
+            transform: translateY(-2px) scale(1.02); 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1); 
+        }
+        .result-btn { 
+            color: #f0e8d9; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4); 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15); 
+        }
+        .result-btn:hover { 
+            transform: translateY(-2px); 
+        }
+        #interpret-button { 
+            background: linear-gradient(145deg, #789a9a, #527a7a); 
+            border: 1px solid #4a6869; 
+        }
+        #listen-button { 
+            background: linear-gradient(145deg, #9d6b53, #804d39); 
+            border: 1px solid #6a3e2f; 
+        }
+        #poet-interpret-button { 
+            background: linear-gradient(145deg, #8b5a96, #6a4c7a); 
+            border: 1px solid #5a3d6a; 
+        }
+        #restart-button { 
+            background: linear-gradient(145deg, #6c757d, #495057); 
+            border: 1px solid #343a40; 
+        }
+        
+        /* 文本变化动画 */
+        @keyframes textFadeInOut {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .text-change-animation {
+            animation: textFadeInOut 0.6s ease-in-out;
+        }
+
+        /* 宇宙页面头部样式 */
+        .universe-header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- 宇宙页面头部 -->
+    <header class="universe-header py-6 mb-8">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">周与春秋</h1>
+                    <p class="text-lg opacity-90">诗歌问答宇宙</p>
+                </div>
+                <a href="/index.v2.html" class="text-white hover:text-gray-300 transition-colors">
+                    ← 返回宇宙门户
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容容器 -->
+    <div id="app-container" class="w-full max-w-2xl mx-auto p-4 md:p-8">
+        
+        <!-- 主项目选择屏幕 -->
+        <div id="main-project-selection-screen">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-gray-800 animate-fadeInUp">选择一段旅程</h2>
+            <p class="text-lg md:text-xl text-gray-600 mb-8 text-center animate-fadeInUp" style="animation-delay: 0.1s;">开始探索诗歌的奥秘</p>
+            <div id="main-project-list" class="grid grid-cols-1 gap-6"></div>
+            <p id="loading-projects-message" class="text-center text-gray-500 mt-8">正在加载项目列表...</p>
+        </div>
+
+        <!-- 子项目选择屏幕 -->
+        <div id="sub-project-selection-screen" class="hidden">
+            <button id="back-to-main-selection-button" class="text-sm text-gray-500 hover:text-gray-800 transition-colors mb-4">&larr; 返回</button>
+            <h2 id="main-project-title" class="text-3xl font-bold mb-2 text-center"></h2>
+            <p id="main-project-description" class="text-lg text-gray-600 mb-8 text-center"></p>
+            <div id="sub-project-list" class="grid grid-cols-1 gap-6"></div>
+        </div>
+
+        <!-- 问题屏幕 -->
+        <div id="question-screen" class="hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="quiz-project-title" class="text-2xl font-bold text-gray-800"></h2>
+                <button id="back-to-sub-selection-button" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">返回篇章选择</button>
+            </div>
+            <div id="question-container" class="card-base p-8 rounded-lg transition-opacity duration-300 ease-in-out">
+                <p id="question-text" class="text-2xl md:text-3xl font-semibold mb-8 text-center min-h-[100px]"></p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button id="option-a-button" class="option-button py-4 px-6 rounded-lg text-lg"></button>
+                    <button id="option-b-button" class="option-button py-4 px-6 rounded-lg text-lg"></button>
+                </div>
+            </div>
+            <p class="text-center mt-4 text-gray-400 text-sm">问题 <span id="question-counter">1 / 4</span></p>
+        </div>
+
+        <!-- 结果屏幕 -->
+        <div id="result-screen" class="hidden">
+            <div class="card-base p-8 md:p-12 rounded-lg">
+                <div class="text-center animate-fadeInUp">
+                    <h2 id="poem-title" class="text-3xl md:text-4xl font-bold mb-6 text-gray-800"></h2>
+                    <div id="poem-body" class="text-left text-lg leading-loose whitespace-pre-wrap text-gray-700"></div>
+                </div>
+                <div class="mt-10 flex flex-col justify-center items-center gap-4 animate-fadeInUp" style="animation-delay: 0.1s;">
+                    <!-- 第一排：解诗和读诗按钮 -->
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <button id="interpret-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full"></button>
+                        <button id="listen-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full"></button>
+                    </div>
+                    <!-- 第二排：最好不要点和返回按钮 -->
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <button id="poet-interpret-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full">最好不要点</button>
+                        <button id="restart-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full">返回篇章选择</button>
+                    </div>
+                </div>
+                <div id="interpretation-container" class="hidden mt-8 pt-6 border-t border-gray-200 animate-fadeInUp" style="animation-delay: 0.2s;">
+                    <h3 id="interpretation-author" class="text-2xl font-bold text-center mb-4 text-gray-800"></h3>
+                    <div id="interpretation-text" class="text-left text-base leading-relaxed bg-gray-50 p-6 rounded-lg text-gray-600"></div>
+                </div>
+                <audio id="audio-player" class="hidden"></audio>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入周与春秋宇宙专用脚本 -->
+    <script src="assets/zhou.js"></script>
+</body>
+</html>
