@@ -52,6 +52,9 @@ export default class ZhouSpringAutumnModule {
             <div class="mb-6">
                 <h2 class="text-3xl font-bold">周与春秋宇宙管理</h2>
                 <p class="text-gray-600">管理诗歌项目、篇章和内容</p>
+                <div class="mt-4">
+                    <button id="publish-all-updates-btn" class="btn btn-danger">发布所有更新</button>
+                </div>
             </div>
 
             <!-- 主项目列表 -->
@@ -242,7 +245,7 @@ export default class ZhouSpringAutumnModule {
 
     async toggleProjectStatus(projectId, newStatus) {
         try {
-            await this.adminCore.apiRequest(`/api/admin/projects/${projectId}`, 'PUT', { status: newStatus });
+            await this.adminCore.apiRequest(`/api/admin/projects/${projectId}/status`, 'PUT', { status: newStatus });
             await this.loadMainProjects();
             this.adminCore.showSuccess('项目状态更新成功');
         } catch (error) {
@@ -259,6 +262,34 @@ export default class ZhouSpringAutumnModule {
         } catch (error) {
             console.error('更新项目失败:', error);
             this.adminCore.showError(`更新失败: ${error.message}`);
+        }
+    }
+
+    async publishAllUpdates() {
+        try {
+            // 获取所有草稿状态的项目
+            const draftProjects = this.state.mainProjects.filter(p => p.status === 'draft');
+            
+            if (draftProjects.length === 0) {
+                this.adminCore.showError('没有需要发布的项目');
+                return;
+            }
+
+            // 确认操作
+            if (!confirm(`确定要发布 ${draftProjects.length} 个草稿项目吗？`)) {
+                return;
+            }
+
+            // 批量发布所有草稿项目
+            for (const project of draftProjects) {
+                await this.adminCore.apiRequest(`/api/admin/projects/${project.id}/status`, 'PUT', { status: 'published' });
+            }
+
+            await this.loadMainProjects();
+            this.adminCore.showSuccess(`成功发布 ${draftProjects.length} 个项目`);
+        } catch (error) {
+            console.error('发布所有更新失败:', error);
+            this.adminCore.showError(`发布失败: ${error.message}`);
         }
     }
 
@@ -621,6 +652,14 @@ export default class ZhouSpringAutumnModule {
         document.getElementById('create-main-project-btn').addEventListener('click', () => {
             this.createMainProject();
         });
+
+        // 发布所有更新按钮
+        const publishAllBtn = document.getElementById('publish-all-updates-btn');
+        if (publishAllBtn) {
+            publishAllBtn.addEventListener('click', () => {
+                this.publishAllUpdates();
+            });
+        }
     }
 
     destroy() {

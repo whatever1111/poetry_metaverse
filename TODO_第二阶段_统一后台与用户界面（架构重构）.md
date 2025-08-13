@@ -140,6 +140,35 @@
     - 实际改动: 成功部署新版后台，`admin.v2.html` 内容已复制到 `admin.html`
   - **完成状态**: ✅ 已完成
 
+- [x] **任务A.4：修复和改进优化**
+  - **核心思想**: 在完成基础架构重构后，修复发现的问题并进行改进优化，确保新架构的稳定性和可用性。
+  - [x] **步骤 A.4.1**: 修复周与春秋宇宙管理模块的子项目显示问题。
+    - **预期改动（预判）**:
+      - `lugarden_universal/public/assets/universe-modules/zhou_spring_autumn.js` (修正API调用路径和参数)
+      - `lugarden_universal/application/src/routes/admin.js` (可能需要调整项目API以支持宇宙关联)
+    - **问题描述**: 进入周与春秋宇宙管理后，无法看到任何子项目，可能是API路径不匹配或参数错误导致
+    - **实际改动**:
+      - 在 `src/routes/admin.js` 新增 `GET /api/admin/projects/:projectId/sub` 接口，返回项目的所有子项目及其内容
+      - 接口返回结构化的子项目数据，包含诗歌、问题、映射等信息
+  - [x] **步骤 A.4.2**: 修复项目状态切换功能（设为草稿/发布）的API请求问题。
+    - **预期改动（预判）**:
+      - `lugarden_universal/public/assets/universe-modules/zhou_spring_autumn.js` (修正toggleProjectStatus方法的参数格式)
+      - `lugarden_universal/application/src/routes/admin.js` (可能需要调整PUT接口的参数验证逻辑)
+    - **问题描述**: 点击"设为草稿"按钮时提示"项目名称不能为空"，说明API请求参数格式不正确
+    - **实际改动**:
+      - 修正 `zhou_spring_autumn.js` 中的 `toggleProjectStatus` 方法，调用正确的状态切换接口 `/api/admin/projects/:projectId/status`
+  - [x] **步骤 A.4.3**: 调整"发布所有更新"按钮的位置和功能。
+    - **预期改动（预判）**:
+      - `lugarden_universal/public/admin.html` (将按钮从宇宙仪表盘移除)
+      - `lugarden_universal/public/assets/universe-modules/zhou_spring_autumn.js` (在具体宇宙管理页面添加该功能)
+      - `lugarden_universal/public/assets/admin.js` (可能需要调整按钮的事件处理逻辑)
+    - **问题描述**: "发布所有更新"按钮不应该在宇宙导航页显示，应该在进入具体宇宙后才显示，且功能需要适配新架构
+    - **实际改动**:
+      - 从 `admin.html` 的宇宙仪表盘移除"发布所有更新"按钮
+      - 在 `zhou_spring_autumn.js` 模块中添加"发布所有更新"按钮和对应的 `publishAllUpdates` 方法
+      - 实现批量发布所有草稿项目的功能
+  - **完成状态**: ✅ 已完成
+
 ### 子阶段 B：统一用户界面 (UI) 与公开 API 重构
 
 - [ ] **任务B.1：重构公开 API 为“以宇宙为中心”的层级结构**

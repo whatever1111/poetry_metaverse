@@ -153,6 +153,61 @@ router.get('/projects/:projectId/sub/:subProjectName', async (req, res, next) =>
   } catch (err) { return next(err); }
 });
 
+// GET /api/admin/projects/:projectId/sub - 获取项目的所有子项目
+router.get('/projects/:projectId/sub', async (req, res, next) => {
+  const { projectId } = req.params;
+  try {
+    const prisma = getPrismaClient();
+    const subProjects = await prisma.zhouSubProject.findMany({
+      where: { projectId },
+      orderBy: { name: 'asc' }
+    });
+    
+    // 构建子项目数据结构
+    const result = {};
+    for (const sub of subProjects) {
+      result[sub.name] = {
+        description: sub.description || '',
+        poems: [],
+        questions: [],
+        mappings: []
+      };
+      
+      // 获取诗歌
+      const poems = await prisma.zhouPoem.findMany({
+        where: { subProjectId: sub.id },
+        orderBy: { title: 'asc' }
+      });
+      result[sub.name].poems = poems.map(p => ({
+        id: p.title,
+        title: p.title,
+        content: p.body || ''
+      }));
+      
+      // 获取问题
+      const qas = await prisma.zhouQA.findMany({
+        where: { subProjectId: sub.id },
+        orderBy: { index: 'asc' }
+      });
+      result[sub.name].questions = qas.map(q => ({
+        question: q.question,
+        answer: q.optionA || q.optionB || ''
+      }));
+      
+      // 获取映射
+      const mappings = await prisma.zhouMapping.findMany({
+        where: { subProjectId: sub.id }
+      });
+      result[sub.name].mappings = mappings.map(m => ({
+        key: m.combination,
+        value: m.poemTitle
+      }));
+    }
+    
+    return res.json(result);
+  } catch (err) { return next(err); }
+});
+
 export default router;
 
 // ============ 写接口（DB 落库，移除文件写） ============
