@@ -37,11 +37,13 @@
             100% { transform: rotate(360deg); } 
         }
         
-        /* 宇宙门户专用样式 */
+        /* 宇宙门户专用样式 - 响应式优化 */
         .universe-card {
             background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid #e2e8f0;
             transition: all 0.3s ease;
+            /* 确保卡片在小屏幕上有足够的间距 */
+            margin-bottom: 1rem;
         }
         .universe-card:hover {
             transform: translateY(-4px);
@@ -53,17 +55,65 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
+
+        /* 响应式标题优化 */
+        .responsive-title {
+            font-size: clamp(2rem, 8vw, 4rem);
+            line-height: 1.2;
+        }
+        
+        .responsive-subtitle {
+            font-size: clamp(1.125rem, 4vw, 1.5rem);
+            line-height: 1.4;
+        }
+        
+        .responsive-description {
+            font-size: clamp(1rem, 3vw, 1.125rem);
+            line-height: 1.5;
+        }
+
+        /* 响应式网格优化 */
+        .responsive-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: 1fr;
+        }
+        
+        /* 480px以上显示2列 */
+        @media (min-width: 480px) {
+            .responsive-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+        
+        /* 768px以上显示3列 */
+        @media (min-width: 768px) {
+            .responsive-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2.5rem;
+            }
+        }
+
+        /* 确保按钮在小屏幕上有足够的点击区域 */
+        .enter-universe-btn {
+            min-height: 44px;
+            min-width: 120px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body class="min-h-screen">
     <!-- 宇宙门户头部 -->
     <header class="portal-header py-8 mb-8">
         <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4 animate-fadeInUp">陆家花园</h1>
-            <p class="text-xl md:text-2xl opacity-90 animate-fadeInUp" style="animation-delay: 0.1s;">
+            <h1 class="responsive-title font-bold mb-4 animate-fadeInUp">陆家花园</h1>
+            <p class="responsive-subtitle opacity-90 animate-fadeInUp" style="animation-delay: 0.1s;">
                 探索无限可能的诗歌宇宙
             </p>
-            <p class="text-lg opacity-75 mt-2 animate-fadeInUp" style="animation-delay: 0.2s;">
+            <p class="responsive-description opacity-75 mt-2 animate-fadeInUp" style="animation-delay: 0.2s;">
                 选择你的宇宙，开启诗意之旅
             </p>
         </div>
@@ -71,7 +121,7 @@
 
     <!-- 宇宙列表容器 -->
     <main class="container mx-auto px-4 pb-12">
-        <div id="universe-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div id="universe-list" class="responsive-grid max-w-6xl mx-auto">
             <!-- 宇宙卡片将在这里动态渲染 -->
         </div>
         

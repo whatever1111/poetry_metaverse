@@ -55,9 +55,9 @@ class UniversePortal {
                  data-universe-code="${universe.code}">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex-1">
-                        <h2 class="text-2xl font-bold mb-2 text-gray-800">${universe.name}</h2>
-                        <p class="text-gray-600 mb-3">${universe.description || '暂无描述'}</p>
-                        <div class="flex items-center space-x-2">
+                        <h2 class="text-xl sm:text-2xl font-bold mb-2 text-gray-800">${universe.name}</h2>
+                        <p class="text-sm sm:text-base text-gray-600 mb-3 leading-relaxed">${universe.description || '暂无描述'}</p>
+                        <div class="flex flex-wrap items-center gap-2">
                             <span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
                                 ${this.getUniverseTypeLabel(universe.type)}
                             </span>
@@ -67,12 +67,12 @@ class UniversePortal {
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-between items-center mt-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-4">
                     <div class="text-sm text-gray-500">
                         <span class="font-medium">状态:</span> 
                         <span class="text-green-600">${universe.status === 'published' ? '已发布' : '草稿'}</span>
                     </div>
-                    <button class="enter-universe-btn bg-gray-800 text-white font-bold py-2 px-6 rounded-full hover:bg-gray-700 transition-colors">
+                    <button class="enter-universe-btn bg-gray-800 text-white font-bold py-3 px-6 rounded-full hover:bg-gray-700 transition-colors text-sm sm:text-base">
                         进入宇宙
                     </button>
                 </div>
