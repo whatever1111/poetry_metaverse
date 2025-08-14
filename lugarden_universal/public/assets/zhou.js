@@ -374,8 +374,8 @@ class ZhouUniverse {
             container.innerHTML = `
                 <div class="empty-container">
                     <div class="empty-icon">📖</div>
-                    <div class="empty-title">诗歌宇宙暂时安静</div>
-                    <div class="empty-message">此刻没有可用的诗歌内容，请稍后再来探索</div>
+                    <div class="empty-title">当前宇宙暂时安静</div>
+                    <div class="empty-message">你可以先去其他宇宙逛逛</div>
                     <button onclick="location.reload()" class="error-action">
                         重新探索
                     </button>

@@ -43,7 +43,7 @@ class UniversePortal {
             container.innerHTML = `
                 <div class="text-center text-gray-500 py-12">
                     <p class="text-lg">暂无可访问的宇宙</p>
-                    <p class="text-sm mt-2">请稍后再来探索</p>
+                    <p class="text-sm mt-2">主要是大爆炸还没有到来</p>
                 </div>
             `;
             return;
@@ -140,7 +140,7 @@ class UniversePortal {
         overlay.innerHTML = `
             <div class="text-white text-center">
                 <div class="loader mb-4"></div>
-                <p>正在进入宇宙...</p>
+                <p>正在穿越宇宙之门...</p>
             </div>
         `;
         
