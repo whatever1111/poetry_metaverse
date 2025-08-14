@@ -148,29 +148,39 @@
       - 优化标题和描述文字的换行处理 ✅
     - **验收标准**: 从320px开始，布局不再错乱，内容自然流动 ✅
     - **修复报告**: `documentation/testing/a2-1-layout-fix-report.md` ✅
-  - [ ] **步骤 A.2.2**: 解决按钮重叠和点击区域问题。
+  - [x] **步骤 A.2.2**: 解决按钮重叠和点击区域问题。 ✅
     - **预期改动（预判）**:
-      - `lugarden_universal/public/index.html` (调整按钮布局)
-      - `lugarden_universal/public/zhou.html` (优化问答按钮)
-      - `lugarden_universal/public/admin.html` (修复模态框按钮)
+      - `lugarden_universal/public/zhou.html` (优化问答按钮) ✅
+      - `lugarden_universal/public/admin.html` (修复模态框按钮) ✅
     - **具体改进**: 
-      - 增加按钮间距，避免重叠
-      - 扩大按钮点击区域（最小44px）
-      - 优化按钮在不同断点下的布局
-    - **验收标准**: 所有按钮都有足够的点击区域，无重叠现象
-  - [ ] **步骤 A.2.3**: 优化卡片布局和内容层次结构。
+      - 增加按钮间距，避免重叠 ✅
+      - 扩大按钮点击区域（最小44px） ✅
+      - 优化按钮在不同断点下的布局 ✅
+    - **验收标准**: 所有按钮都有足够的点击区域，无重叠现象 ✅
+    - **修复报告**: `documentation/testing/a2-2-button-fix-report.md` ✅
+  - [x] **步骤 A.2.3**: 优化卡片布局和内容层次结构。 ✅
     - **预期改动（预判）**:
-      - `lugarden_universal/public/index.html` (优化卡片设计)
-      - `lugarden_universal/public/zhou.html` (改善内容层次)
-      - `lugarden_universal/public/admin.html` (优化仪表盘布局)
+      - `lugarden_universal/public/index.html` (优化卡片设计) ✅
+      - `lugarden_universal/public/zhou.html` (改善内容层次) ✅
+      - `lugarden_universal/public/admin.html` (优化仪表盘布局) ✅
     - **具体改进**: 
-      - 重新设计卡片间距和边距
-      - 优化内容层次和视觉权重
-      - 改善不同断点下的内容展示
-    - **验收标准**: 内容层次清晰，视觉权重合理，布局稳定
-  - **完成状态**: 🔄 待开始
+      - 重新设计卡片间距和边距 ✅
+      - 优化内容层次和视觉权重 ✅
+      - 改善不同断点下的内容展示 ✅
+    - **验收标准**: 内容层次清晰，视觉权重合理，布局稳定 ✅
+    - [x] **子任务 A.2.3.1**: 优化周与春秋页面问答按钮视觉效果 ✅
+      - **预期改动**:
+        - `lugarden_universal/public/zhou.html` (添加毛玻璃效果样式) ✅
+      - **具体改进**: 
+        - 为问答选项按钮添加透明毛玻璃效果 ✅
+        - 使用 backdrop-filter 实现模糊背景 ✅
+        - 优化按钮的视觉层次和现代感 ✅
+      - **验收标准**: 按钮具有现代毛玻璃效果，视觉层次清晰 ✅
+    - **修复报告**: `documentation/testing/a2-3-card-layout-fix-report.md` ✅
+  - **完成状态**: ✅ 已完成
   - **预计时长**: 2-3天
-  - **测试验证**: 使用A.1的测试方法验证修复效果
+  - **实际完成**: 1天
+  - **测试验证**: 使用A.1的测试方法验证修复效果 ✅
 
 #### **🟡 中优先级任务（逐步进行）**
 

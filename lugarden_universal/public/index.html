@@ -42,8 +42,11 @@
             background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid #e2e8f0;
             transition: all 0.3s ease;
-            /* 确保卡片在小屏幕上有足够的间距 */
-            margin-bottom: 1rem;
+            /* 优化卡片间距和层次结构 */
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
         }
         .universe-card:hover {
             transform: translateY(-4px);
@@ -51,20 +54,53 @@
             border-color: #60a5fa;
         }
         
+        /* 卡片内容层次优化 */
+        .universe-card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .universe-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+        
+        .universe-card-description {
+            font-size: 1rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        .universe-card-meta {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+        
         .portal-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            padding: 2rem 0;
         }
 
         /* 响应式标题优化 */
         .responsive-title {
             font-size: clamp(2rem, 8vw, 4rem);
             line-height: 1.2;
+            font-weight: 700;
         }
         
         .responsive-subtitle {
             font-size: clamp(1.125rem, 4vw, 1.5rem);
             line-height: 1.4;
+            font-weight: 500;
         }
         
         .responsive-description {
@@ -72,10 +108,10 @@
             line-height: 1.5;
         }
 
-        /* 响应式网格优化 */
+        /* 响应式网格优化 - 改善内容层次 */
         .responsive-grid {
             display: grid;
-            gap: 1.5rem;
+            gap: 2rem;
             grid-template-columns: 1fr;
         }
         
@@ -83,7 +119,11 @@
         @media (min-width: 480px) {
             .responsive-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
+                gap: 2.5rem;
+            }
+            
+            .universe-card-content {
+                padding: 2rem;
             }
         }
         
@@ -91,7 +131,15 @@
         @media (min-width: 768px) {
             .responsive-grid {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 2.5rem;
+                gap: 3rem;
+            }
+            
+            .universe-card-title {
+                font-size: 1.5rem;
+            }
+            
+            .universe-card-description {
+                font-size: 1.125rem;
             }
         }
 
@@ -102,6 +150,24 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        /* 卡片状态指示器 */
+        .universe-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #10b981;
+        }
+        
+        .universe-status.inactive {
+            background-color: #6b7280;
         }
     </style>
 </head>

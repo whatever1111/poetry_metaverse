@@ -50,14 +50,15 @@ class UniversePortal {
         }
 
         container.innerHTML = this.universes.map((universe, index) => `
-            <div class="universe-card bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer animate-fadeInUp" 
+            <div class="universe-card animate-fadeInUp" 
                  style="animation-delay: ${0.1 * index}s;" 
                  data-universe-code="${universe.code}">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="flex-1">
-                        <h2 class="text-xl sm:text-2xl font-bold mb-2 text-gray-800">${universe.name}</h2>
-                        <p class="text-sm sm:text-base text-gray-600 mb-3 leading-relaxed">${universe.description || '暂无描述'}</p>
-                        <div class="flex flex-wrap items-center gap-2">
+                <div class="universe-status ${universe.status === 'published' ? '' : 'inactive'}"></div>
+                <div class="universe-card-content">
+                    <h2 class="universe-card-title">${universe.name}</h2>
+                    <p class="universe-card-description">${universe.description || '暂无描述'}</p>
+                    <div class="universe-card-meta">
+                        <div class="flex flex-wrap items-center gap-2 mb-2">
                             <span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
                                 ${this.getUniverseTypeLabel(universe.type)}
                             </span>
@@ -65,14 +66,12 @@ class UniversePortal {
                                 创建于 ${new Date(universe.createdAt).toLocaleDateString('zh-CN')}
                             </span>
                         </div>
+                        <div class="text-sm">
+                            <span class="font-medium">状态:</span> 
+                            <span class="text-green-600">${universe.status === 'published' ? '已发布' : '草稿'}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-4">
-                    <div class="text-sm text-gray-500">
-                        <span class="font-medium">状态:</span> 
-                        <span class="text-green-600">${universe.status === 'published' ? '已发布' : '草稿'}</span>
-                    </div>
-                    <button class="enter-universe-btn bg-gray-800 text-white font-bold py-3 px-6 rounded-full hover:bg-gray-700 transition-colors text-sm sm:text-base">
+                    <button class="enter-universe-btn bg-gray-800 text-white hover:bg-gray-700 transition-colors text-sm sm:text-base">
                         进入宇宙
                     </button>
                 </div>

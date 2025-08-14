@@ -81,13 +81,13 @@ class AdminCore {
         if (!document.getElementById('universe-dashboard-section')) {
             const dashboardSection = document.createElement('div');
             dashboardSection.id = 'universe-dashboard-section';
-            dashboardSection.className = 'mb-8';
+            dashboardSection.className = 'dashboard-section';
             dashboardSection.innerHTML = `
-                <h2 class="text-2xl font-bold mb-4">宇宙仪表盘</h2>
+                <h2 class="dashboard-title">宇宙仪表盘</h2>
                 <div class="mb-4">
                     <button id="create-universe-btn" class="btn btn-primary">创建新宇宙</button>
                 </div>
-                <div id="universe-list" class="space-y-3"></div>
+                <div id="universe-list" class="universe-list"></div>
             `;
             mainContent.insertBefore(dashboardSection, mainContent.firstChild);
         }
@@ -126,31 +126,29 @@ class AdminCore {
         if (!universeList) return;
 
         universeList.innerHTML = this.state.universes.map(universe => `
-            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-semibold">${universe.name}</h3>
-                        <p class="text-gray-600 text-sm">${universe.description || '暂无描述'}</p>
-                        <div class="flex items-center gap-2 mt-2">
-                            <span class="px-2 py-1 text-xs rounded-full ${universe.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
-                                ${universe.status === 'published' ? '已发布' : '草稿'}
-                            </span>
-                            <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                                ${universe.type}
-                            </span>
-                        </div>
+            <div class="universe-item">
+                <div class="universe-item-title">${universe.name}</div>
+                <div class="universe-item-meta">
+                    <p>${universe.description || '暂无描述'}</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="px-2 py-1 text-xs rounded-full ${universe.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                            ${universe.status === 'published' ? '已发布' : '草稿'}
+                        </span>
+                        <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                            ${universe.type}
+                        </span>
                     </div>
-                    <div class="flex gap-2">
-                        <button class="btn btn-primary universe-manage-btn" data-id="${universe.id}" data-type="${universe.type}">
-                            管理
-                        </button>
-                        <button class="btn btn-secondary universe-edit-btn" data-id="${universe.id}">
-                            编辑
-                        </button>
-                        <button class="btn btn-danger universe-delete-btn" data-id="${universe.id}">
-                            删除
-                        </button>
-                    </div>
+                </div>
+                <div class="universe-item-actions">
+                    <button class="action-btn action-btn-edit universe-edit-btn" data-id="${universe.id}">
+                        编辑
+                    </button>
+                    <button class="action-btn action-btn-delete universe-delete-btn" data-id="${universe.id}">
+                        删除
+                    </button>
+                    <button class="btn btn-primary universe-manage-btn" data-id="${universe.id}" data-type="${universe.type}">
+                        管理
+                    </button>
                 </div>
             </div>
         `).join('');
