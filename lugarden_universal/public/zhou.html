@@ -25,10 +25,6 @@
             from { opacity: 0; transform: translateY(20px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
-        .animate-fadeInUp { 
-            animation: fadeInUp 0.5s ease-out forwards; 
-            opacity: 0; 
-        }
         .loader { 
             border: 2px solid #f3f3f3; 
             border-top: 2px solid #60a5fa; 
@@ -44,6 +40,113 @@
             100% { transform: rotate(360deg); } 
         }
 
+        /* 优化的加载状态样式 */
+        .loading-container {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #60a5fa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        .loading-text {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        
+        .loading-subtitle {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        /* 诗意错误状态样式 */
+        .error-container {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+            margin: 1rem;
+            border: 1px solid #f59e0b;
+        }
+        
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+        
+        .error-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-message {
+            font-size: 1rem;
+            color: #a16207;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .error-action {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        
+        .error-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+        }
+
+        /* 空数据状态样式 */
+        .empty-container {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 12px;
+            margin: 1rem;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+        
+        .empty-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-message {
+            font-size: 1rem;
+            color: #0369a1;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
         .card-base {
             background-color: #f5f1e8;
             background-image: radial-gradient(ellipse at top left, rgba(228, 222, 210, 0.6) 0%, transparent 70%),
@@ -51,8 +154,114 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.08);
             border-radius: 12px;
         }
+        /* 统一的动画时间系统 */
+        /* 主要过渡动画：0.4s */
+        .animate-fadeInUp { 
+            animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; 
+            opacity: 0; 
+        }
+        
+        .text-change-animation {
+            animation: textFadeInOut 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* 微交互动画：0.2s */
         .option-button { 
-            transition: all 0.2s ease-in-out; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            /* 确保按钮有足够的点击区域 */
+            min-height: 44px;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* 添加高透明毛玻璃效果 */
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: clamp(1rem, 2.5vw, 1.125rem);
+            color: #1f2937;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            padding: 1rem 1.5rem;
+        }
+        
+        .option-button:hover { 
+            transform: translateY(-2px) scale(1.02); 
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(188, 177, 158, 0.8);
+        }
+        
+        .option-button:active { 
+            transform: translateY(0) scale(0.98); 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(188, 177, 158, 1);
+        }
+        
+        .result-btn { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #f0e8d9; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4); 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15); 
+            /* 确保结果按钮有足够的点击区域 */
+            min-height: 44px;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .result-btn:hover { 
+            transform: translateY(-2px); 
+        }
+        #interpret-button { 
+            background: linear-gradient(145deg, #789a9a, #527a7a); 
+            border: 1px solid #4a6869; 
+        }
+        #listen-button { 
+            background: linear-gradient(145deg, #9d6b53, #804d39); 
+            border: 1px solid #6a3e2f; 
+        }
+        #poet-interpret-button { 
+            background: linear-gradient(145deg, #8b5a96, #6a4c7a); 
+            border: 1px solid #5a3d6a; 
+        }
+        #restart-button { 
+            background: linear-gradient(145deg, #6c757d, #495057); 
+            border: 1px solid #343a40; 
+        }
+        
+        /* 文本变化动画 */
+        @keyframes textFadeInOut {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .text-change-animation {
+            animation: textFadeInOut 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 优化的卡片动画 */
+        .project-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 优化的按钮动画 */
+        .option-button { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
             /* 确保按钮有足够的点击区域 */
             min-height: 44px;
             min-width: 120px;
@@ -83,47 +292,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             background: rgba(255, 255, 255, 0.6);
             border-color: rgba(188, 177, 158, 1);
-        }
-        .result-btn { 
-            color: #f0e8d9; 
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.4); 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15); 
-            /* 确保结果按钮有足够的点击区域 */
-            min-height: 44px;
-            min-width: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .result-btn:hover { 
-            transform: translateY(-2px); 
-        }
-        #interpret-button { 
-            background: linear-gradient(145deg, #789a9a, #527a7a); 
-            border: 1px solid #4a6869; 
-        }
-        #listen-button { 
-            background: linear-gradient(145deg, #9d6b53, #804d39); 
-            border: 1px solid #6a3e2f; 
-        }
-        #poet-interpret-button { 
-            background: linear-gradient(145deg, #8b5a96, #6a4c7a); 
-            border: 1px solid #5a3d6a; 
-        }
-        #restart-button { 
-            background: linear-gradient(145deg, #6c757d, #495057); 
-            border: 1px solid #343a40; 
-        }
-        
-        /* 文本变化动画 */
-        @keyframes textFadeInOut {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        
-        .text-change-animation {
-            animation: textFadeInOut 0.6s ease-in-out;
         }
 
         /* 宇宙页面头部样式 - Low Poly 风格（增强色彩深度与光影） */
@@ -397,6 +565,31 @@
                 min-height: 44px;
             }
         }
+
+        /* 页面切换过渡动画 */
+        .page-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .page-enter {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        
+        .page-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .page-exit {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .page-exit-active {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -418,15 +611,19 @@
     <div id="app-container" class="w-full max-w-2xl mx-auto p-4 md:p-8">
         
         <!-- 主项目选择屏幕 -->
-        <div id="main-project-selection-screen" class="content-section">
+        <div id="main-project-selection-screen" class="content-section page-transition">
             <h2 class="content-title text-center animate-fadeInUp">选择一段旅程</h2>
             <p class="content-subtitle text-center animate-fadeInUp" style="animation-delay: 0.1s;">开始探索诗歌的奥秘</p>
             <div id="main-project-list" class="grid grid-cols-1 gap-6"></div>
-            <p id="loading-projects-message" class="text-center text-gray-500 mt-8">正在加载项目列表...</p>
+            <div id="loading-projects-message" class="loading-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">正在加载诗歌宇宙...</div>
+                <div class="loading-subtitle">让思绪在字里行间徜徉</div>
+            </div>
         </div>
 
         <!-- 子项目选择屏幕 -->
-        <div id="sub-project-selection-screen" class="hidden content-section">
+        <div id="sub-project-selection-screen" class="hidden content-section page-transition">
             <button id="back-to-main-selection-button" class="text-sm text-gray-500 hover:text-gray-800 transition-colors mb-4">&larr; 返回</button>
             <h2 id="main-project-title" class="content-title text-center"></h2>
             <p id="main-project-description" class="content-subtitle text-center"></p>
@@ -434,7 +631,7 @@
         </div>
 
         <!-- 问题屏幕 -->
-        <div id="question-screen" class="hidden content-section">
+        <div id="question-screen" class="hidden content-section page-transition">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="quiz-project-title" class="text-2xl font-bold text-gray-800"></h2>
                 <button id="back-to-sub-selection-button" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">返回篇章选择</button>
@@ -450,7 +647,7 @@
         </div>
 
         <!-- 结果屏幕 -->
-        <div id="result-screen" class="hidden">
+        <div id="result-screen" class="hidden page-transition">
             <div class="card-base p-8 md:p-12 rounded-lg">
                 <div class="text-center animate-fadeInUp">
                     <h2 id="poem-title" class="text-3xl md:text-4xl font-bold mb-6 text-gray-800"></h2>

@@ -65,6 +65,12 @@ class ZhouUniverse {
         const mainProjectList = this.$('#main-project-list');
         mainProjectList.innerHTML = '';
         
+        // 检查是否有项目数据
+        if (!this.state.projects || this.state.projects.length === 0) {
+            this.showEmptyState();
+            return;
+        }
+        
         this.state.projects.forEach((p, index) => {
             mainProjectList.innerHTML += `
                 <div class="project-card bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer animate-fadeInUp" style="animation-delay: ${0.1 * index}s;" data-project-id="${p.id}">
@@ -271,12 +277,12 @@ class ZhouUniverse {
             // 延迟更新文本（在动画中间点）
             setTimeout(() => {
                 btn.innerHTML = this.getPoetButtonText(this.state.poetButtonClickCount);
-            }, 300);
+            }, 200);
             
             // 动画结束后移除类
             setTimeout(() => {
                 btn.classList.remove('text-change-animation');
-            }, 600);
+            }, 400);
         }
     }
 
@@ -315,8 +321,28 @@ class ZhouUniverse {
     }
 
     showScreen(screenName) {
-        Object.values(this.screens).forEach(s => s.classList.add('hidden'));
-        this.screens[screenName].classList.remove('hidden');
+        // 为当前显示的屏幕添加退出动画
+        Object.values(this.screens).forEach(s => {
+            if (!s.classList.contains('hidden')) {
+                s.classList.add('page-exit');
+                setTimeout(() => {
+                    s.classList.add('hidden');
+                    s.classList.remove('page-exit');
+                }, 200);
+            }
+        });
+        
+        // 为新的屏幕添加进入动画
+        setTimeout(() => {
+            this.screens[screenName].classList.remove('hidden');
+            this.screens[screenName].classList.add('page-enter');
+            requestAnimationFrame(() => {
+                this.screens[screenName].classList.add('page-enter-active');
+                setTimeout(() => {
+                    this.screens[screenName].classList.remove('page-enter', 'page-enter-active');
+                }, 400);
+            });
+        }, 200);
     }
 
     hideLoadingMessage() {
@@ -330,10 +356,28 @@ class ZhouUniverse {
         const container = this.$('#main-project-list');
         if (container) {
             container.innerHTML = `
-                <div class="text-center text-red-500 py-12">
-                    <p class="text-lg">${message}</p>
-                    <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                        重新加载
+                <div class="error-container">
+                    <div class="error-icon">🌙</div>
+                    <div class="error-title">诗意之外，就是意外，土味在陆家花园是很受欢迎的</div>
+                    <div class="error-message">${message}</div>
+                    <button onclick="location.reload()" class="error-action">
+                        重新开始旅程
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    showEmptyState() {
+        const container = this.$('#main-project-list');
+        if (container) {
+            container.innerHTML = `
+                <div class="empty-container">
+                    <div class="empty-icon">📖</div>
+                    <div class="empty-title">诗歌宇宙暂时安静</div>
+                    <div class="empty-message">此刻没有可用的诗歌内容，请稍后再来探索</div>
+                    <button onclick="location.reload()" class="error-action">
+                        重新探索
                     </button>
                 </div>
             `;
