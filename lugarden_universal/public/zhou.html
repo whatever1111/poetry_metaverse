@@ -566,30 +566,30 @@
             }
         }
 
-        /* 页面切换过渡动画 */
+        /* 页面切换过渡动画 - 水平滑动结合fadeIn效果 */
         .page-transition {
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .page-enter {
             opacity: 0;
-            transform: translateX(20px);
+            transform: translateX(30px) translateY(10px);
         }
         
         .page-enter-active {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateX(0) translateY(0);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .page-exit {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateX(0) translateY(0);
         }
         
         .page-exit-active {
             opacity: 0;
-            transform: translateX(-20px);
+            transform: translateX(-30px) translateY(-10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
