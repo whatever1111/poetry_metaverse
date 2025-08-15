@@ -568,7 +568,7 @@
 
         /* 页面切换过渡动画 */
         .page-transition {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .page-enter {
@@ -579,6 +579,7 @@
         .page-enter-active {
             opacity: 1;
             transform: translateX(0);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .page-exit {
@@ -589,6 +590,7 @@
         .page-exit-active {
             opacity: 0;
             transform: translateX(-20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>

@@ -333,7 +333,7 @@ class ZhouUniverse {
                 setTimeout(() => {
                     s.classList.add('hidden');
                     s.classList.remove('page-exit');
-                }, 200);
+                }, 300);
             }
         });
         
@@ -345,9 +345,9 @@ class ZhouUniverse {
                 this.screens[screenName].classList.add('page-enter-active');
                 setTimeout(() => {
                     this.screens[screenName].classList.remove('page-enter', 'page-enter-active');
-                }, 400);
+                }, 500);
             });
-        }, 200);
+        }, 300);
     }
 
     hideLoadingMessage() {
