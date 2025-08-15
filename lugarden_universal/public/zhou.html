@@ -260,6 +260,27 @@
             border: 1px solid #343a40; 
         }
         
+        .continue-btn { 
+            background: linear-gradient(145deg, #2d4a4a, #1a2e2e); 
+            border: 1px solid #1a2e2e; 
+            /* 基于文字大小动态计算按钮尺寸 */
+            height: 1.5em; /* 高度绑定文字大小 */
+            width: 2.25em; /* 宽度是高度的1.5倍 */
+            border-radius: 0.75em; /* 圆角为高度的一半 */
+            color: #f0e8d9;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15);
+        }
+        .continue-btn:hover { 
+            background: linear-gradient(145deg, #1a2e2e, #0f1a1a); 
+            transform: translateY(-2px);
+        }
+        
+        .continue-btn-icon {
+            width: 0.75em;
+            height: 0.75em;
+        }
+        
         /* 文本变化动画 - 只保留缩放效果，移除淡入淡出 */
         @keyframes textChangeScale {
             0% { transform: scale(1); }
@@ -635,15 +656,7 @@
                 min-height: 150px;
             }
             
-            #continue-to-poem-button {
-                width: 3rem;
-                height: 3rem;
-            }
-            
-            #continue-to-poem-button svg {
-                width: 1.25rem;
-                height: 1.25rem;
-            }
+
         }
     </style>
 </head>
@@ -717,12 +730,12 @@
                 </div>
                 
                 <!-- 分离式按钮区域 -->
-                <div class="flex flex-col items-center justify-center gap-4 animate-fadeInUp" style="animation-delay: 0.2s;">
+                <div class="flex items-center justify-center gap-2 animate-fadeInUp" style="animation-delay: 0.2s;">
                     <!-- 文字部分：居中显示 -->
                     <span class="text-center text-gray-600 text-lg">当下的你也不孤独，吴任几是你的同行者</span>
                     <!-- 箭头按钮：紧跟文字 -->
-                    <button id="continue-to-poem-button" class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 transform hover:scale-110 shadow-lg">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="continue-to-poem-button" class="continue-btn flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                        <svg class="continue-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </button>
