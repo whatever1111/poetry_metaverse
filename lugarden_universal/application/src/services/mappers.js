@@ -62,11 +62,20 @@ export function mapZhouPoemsToPublicPoems(poems) {
 
 export function mapPoemArchetypesForFrontend(poems) {
   // 输入：ZhouPoem[]（至少含 title, poetExplanation）
-  // 输出：{ poems: [{ title, poet_explanation }] }
+  // 输出：{ poems: [{ title, poet_explanation, classicalEcho, coreTheme, problemSolved, spiritualConsolation, chapter, body }] }
   return {
     poems: (poems || [])
       .filter((p) => (p.poetExplanation ?? '').length > 0)
-      .map((p) => ({ title: p.title, poet_explanation: p.poetExplanation }))
+      .map((p) => ({ 
+        title: p.title, 
+        poet_explanation: p.poetExplanation,
+        classicalEcho: p.classicalEcho ?? null,
+        coreTheme: p.coreTheme ?? null,
+        problemSolved: p.problemSolved ?? null,
+        spiritualConsolation: p.spiritualConsolation ?? null,
+        chapter: p.chapter ?? null,
+        body: p.body ?? null
+      }))
   };
 }
 

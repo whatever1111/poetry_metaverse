@@ -600,30 +600,34 @@
     - **实际完成**: 待定
     - **测试验证**: 测试古典回响页面展示和页面切换流程
 
-    ##### - [ ] **步骤 A.5.5.0**: 修复API字段完整映射，确保返回所有诗歌原型字段。
+    ##### - [x] **步骤 A.5.5.0**: 修复API字段完整映射，确保返回所有诗歌原型字段。 ✅
       - **问题背景**: 当前API的mapPoemArchetypesForFrontend函数只返回title和poet_explanation字段，缺少其他重要字段
       - **问题分析**: 
         - 数据库中ZhouPoem表包含丰富的字段：classicalEcho、coreTheme、problemSolved、spiritualConsolation等
         - 当前API只映射了title和poet_explanation，限制了前端功能开发
+        - **发现的新问题**: API路由中的数据库查询只选择了title和poetExplanation字段，需要修改为选择所有字段
         - 未来A.5.101任务需要coreTheme、problemSolved等字段
         - 每次需要新字段都要修改API，增加开发成本
-      - **解决方案**: 一次性修复API映射，返回所有相关字段
-      - **预期改动（预判）**:
+      - **解决方案**: 一次性修复API映射和数据库查询，返回所有相关字段
+      - **实际改动**:
         - `lugarden_universal/application/src/services/mappers.js` (修复mapPoemArchetypesForFrontend函数)
+        - `lugarden_universal/application/src/routes/public.js` (修复数据库查询，移除字段限制)
       - **具体改进**: 
         - 修改mapPoemArchetypesForFrontend函数，映射所有相关字段
         - 包含字段：title、poet_explanation、classicalEcho、coreTheme、problemSolved、spiritualConsolation、chapter、body
+        - 修改API路由中的数据库查询，从`select: { title: true, poetExplanation: true }`改为`findMany()`
+        - 确保空值字段也返回（使用`?? null`）
         - 保持现有API结构，只扩展字段内容
         - 确保向后兼容，不影响现有功能
       - **验收标准**: 
-        - API正确返回所有诗歌原型字段
-        - 现有功能不受影响
-        - 为A.5.101任务提供数据支持
-        - 前端可以获取完整的诗歌原型数据
-      - **完成状态**: 🔄 待开始
+        - ✅ API正确返回所有诗歌原型字段
+        - ✅ 现有功能不受影响
+        - ✅ 为A.5.101任务提供数据支持
+        - ✅ 前端可以获取完整的诗歌原型数据
+      - **完成状态**: ✅ 已完成
       - **预计时长**: 0.1天
-      - **实际完成**: 待定
-      - **测试验证**: 测试API返回数据的完整性和现有功能稳定性
+      - **实际完成**: 0.1天
+      - **测试验证**: ✅ 测试API返回数据的完整性和现有功能稳定性
 
     ##### - [ ] **步骤 A.5.5.1**: 古典回响页面HTML结构设计与实现。
       - **问题背景**: 需要创建古典回响页面的基础HTML结构，为后续功能实现提供基础
@@ -668,9 +672,10 @@
     ##### - [ ] **步骤 A.5.5.2**: 古典内容展示逻辑实现。
       - **问题背景**: 需要实现`classicalEcho`字段的展示，让古典内容能够正确显示
       - **问题分析**: 
-        - API已修复，classicalEcho字段已可用
+        - ✅ API已修复，classicalEcho字段已可用（A.5.5.0已完成）
         - 前端需要实现classicalEcho内容的直接展示
         - 需要处理无古典数据时的默认内容
+        - 需要实现古典回响页面的内容展示逻辑
       - **解决方案**: 实现前端古典内容展示逻辑
       - **预期改动（预判）**:
         - `lugarden_universal/public/assets/zhou.js` (新增古典内容展示函数)
@@ -679,10 +684,12 @@
         - 从`state.poemArchetypes`获取当前诗歌的`classicalEcho`数据
         - 使用`textContent`和`whitespace-pre-wrap`保持原始格式
         - 提供友好的默认内容："这首诗的古典回响正在寻找中..."
+        - 实现古典回响页面的内容填充逻辑
       - **验收标准**: 
         - 前端正确显示古典内容，格式保持完整
         - 不同诗歌的古典回响内容正确对应
         - 错误处理完善，优雅降级正常
+        - 古典回响页面内容展示正常
       - **完成状态**: 🔄 待开始
       - **预计时长**: 0.2天
       - **实际完成**: 待定

@@ -294,9 +294,7 @@ router.get('/poem-archetypes', async (req, res, next) => {
   if (cached !== undefined) return res.json(cached);
   try {
     const prisma = getPrismaClient();
-    const poems = await prisma.zhouPoem.findMany({
-      select: { title: true, poetExplanation: true },
-    });
+    const poems = await prisma.zhouPoem.findMany();
     const mapped = mapPoemArchetypesForFrontend(poems);
     setCache(cacheKey, mapped);
     return res.json(mapped);
