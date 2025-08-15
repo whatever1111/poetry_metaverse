@@ -313,7 +313,9 @@ class ZhouUniverse {
                 throw new Error("未找到有效音频"); 
             }
         } catch (error) {
-            alert(`朋友，${aiPoetName}的嗓音似乎被风吹散了。`);
+            // 使用内嵌式错误处理，与解诗功能保持一致
+            this.$('#interpretation-text').textContent = `朋友，${aiPoetName}的嗓音似乎被风吹散了，请稍后让我再试一次。`;
+            this.$('#interpretation-container').classList.remove('hidden');
         } finally {
             btn.disabled = false;
             btn.innerHTML = `听${aiPoetName}为你读诗`;
