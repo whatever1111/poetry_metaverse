@@ -226,12 +226,14 @@ class ZhouUniverse {
             if (!response.ok) throw new Error('API请求失败');
             const result = await response.json();
             if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                this.$('#interpretation-author').textContent = aiPoetName;
                 this.$('#interpretation-text').textContent = result.candidates[0].content.parts[0].text;
                 this.$('#interpretation-container').classList.remove('hidden');
             } else { 
                 throw new Error("返回数据格式不正确"); 
             }
         } catch (error) {
+            this.$('#interpretation-author').textContent = aiPoetName;
             this.$('#interpretation-text').textContent = `朋友，${aiPoetName}的思绪似乎被云雾遮蔽，请稍后让我再试一次。`;
             this.$('#interpretation-container').classList.remove('hidden');
         } finally {
@@ -314,6 +316,7 @@ class ZhouUniverse {
             }
         } catch (error) {
             // 使用内嵌式错误处理，与解诗功能保持一致
+            this.$('#interpretation-author').textContent = aiPoetName;
             this.$('#interpretation-text').textContent = `朋友，${aiPoetName}的嗓音似乎被风吹散了，请稍后让我再试一次。`;
             this.$('#interpretation-container').classList.remove('hidden');
         } finally {
