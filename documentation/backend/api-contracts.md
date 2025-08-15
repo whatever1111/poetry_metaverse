@@ -118,8 +118,35 @@
 ##### `[Deprecated]` GET /api/poems-all
 - **状态**: 已废弃。请使用 `GET /api/universes/:universeCode/content`。
 
-##### `[Deprecated]` GET /api/poem-archetypes
-- **状态**: 已废弃。功能将在 Phase 3 重新设计。
+##### `[Phase 3 - Enhanced]` GET /api/poem-archetypes
+- **状态**: Phase 3 重新设计，返回完整的诗歌原型数据。
+- **说明**: 获取诗歌原型数据，包含古典回响、核心主题、人生困境等深度分析字段。
+- **成功响应 (200 OK)**:
+  ```json
+  {
+    "poems": [
+      {
+        "title": "论发生奇怪事情时",
+        "poet_explanation": "这些场景都挺古怪的...",
+        "classicalEcho": "《易经》云：观我生，进退...",
+        "coreTheme": "面对人生中的奇怪现象",
+        "problemSolved": "如何处理生活中突如其来的奇怪事件",
+        "spiritualConsolation": "通过观察和思考获得内心的平静",
+        "chapter": "观我生",
+        "body": "诗歌正文内容..."
+      }
+    ]
+  }
+  ```
+- **字段说明**:
+  - `title`: 诗歌标题
+  - `poet_explanation`: 诗人解读
+  - `classicalEcho`: 古典智慧回响
+  - `coreTheme`: 核心主题
+  - `problemSolved`: 解决的人生困境
+  - `spiritualConsolation`: 精神慰藉
+  - `chapter`: 所属章节
+  - `body`: 诗歌正文
 
 
 ### 管理接口 (Admin API)
