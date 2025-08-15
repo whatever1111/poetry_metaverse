@@ -221,38 +221,19 @@ class ZhouUniverse {
 
     parseClassicalEcho() {
         const currentPoemTitle = this.state.currentPoemTitle;
-        console.log('当前诗歌标题:', currentPoemTitle);
-        console.log('poemArchetypes数据:', this.state.poemArchetypes);
-        console.log('poemArchetypes长度:', this.state.poemArchetypes.length);
-
+        
+        // 在诗歌原型数据中查找对应的古典回响内容
         const poemArchetype = this.state.poemArchetypes.find(p =>
             p.title === currentPoemTitle ||
             p.title === currentPoemTitle.replace(/[《》]/g, '') ||
             p.title.replace(/[《》]/g, '') === currentPoemTitle
         );
 
-        console.log('找到的poemArchetype:', poemArchetype);
-        console.log('poemArchetype的所有字段:', Object.keys(poemArchetype || {}));
-
-        // Check all possible field names
-        const possibleFields = ['classicalEcho', 'classical_echo', 'classicalecho', 'classical'];
-        let foundField = null;
-        let foundValue = null;
-
-        for (const field of possibleFields) {
-            if (poemArchetype && poemArchetype[field]) {
-                foundField = field;
-                foundValue = poemArchetype[field];
-                console.log(`找到字段 ${field}:`, foundValue);
-                break;
-            }
-        }
-
-        if (foundField && foundValue) {
-            return { content: foundValue };
+        // 直接返回classicalEcho字段内容
+        if (poemArchetype && poemArchetype.classicalEcho) {
+            return { content: poemArchetype.classicalEcho };
         } else {
-            console.log('未找到任何classical相关字段，使用默认内容');
-            console.log('poemArchetype的完整内容:', poemArchetype);
+            // 提供友好的默认内容
             return {
                 content: '这首诗的古典回响正在寻找中...\n\n古典智慧与现代诗歌的对话，需要更多的时间来沉淀。'
             };

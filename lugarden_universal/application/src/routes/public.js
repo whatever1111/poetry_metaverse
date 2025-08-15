@@ -114,8 +114,7 @@ router.get('/universes/:universeCode/content', async (req, res, next) => {
           where: { universeId: universe.id }
         }),
         prisma.zhouPoem.findMany({
-          where: { universeId: universe.id },
-          select: { title: true, poetExplanation: true }
+          where: { universeId: universe.id }
         })
       ]);
       
