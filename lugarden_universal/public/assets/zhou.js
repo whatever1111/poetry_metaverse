@@ -37,6 +37,8 @@ class ZhouUniverse {
             this.renderMainProjects();
             this.bindEvents();
             this.hideLoadingMessage();
+            // 标记动画已播放，防止重复触发
+            this.markAnimationsAsPlayed();
         } catch (error) {
             console.error("加载周与春秋宇宙数据失败:", error);
             this.showError('加载数据失败，请稍后重试。');
@@ -355,6 +357,16 @@ class ZhouUniverse {
         if (loadingMessage) {
             loadingMessage.classList.add('hidden');
         }
+    }
+    
+    markAnimationsAsPlayed() {
+        // 等待动画播放完成后，标记为已播放状态
+        setTimeout(() => {
+            const animatedElements = this.$$('.animate-fadeInUp');
+            animatedElements.forEach(element => {
+                element.classList.add('animation-played');
+            });
+        }, 500); // 等待动画完成
     }
 
     showError(message) {
