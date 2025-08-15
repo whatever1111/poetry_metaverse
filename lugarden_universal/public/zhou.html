@@ -25,6 +25,22 @@
             from { opacity: 0; transform: translateY(20px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
+        
+        /* 增强的fadeIn动画，结合轻微缩放效果 */
+        @keyframes fadeIn { 
+            from { 
+                opacity: 0; 
+                transform: scale(0.95);
+            } 
+            to { 
+                opacity: 1; 
+                transform: scale(1);
+            } 
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
         .loader { 
             border: 2px solid #f3f3f3; 
             border-top: 2px solid #60a5fa; 
@@ -238,15 +254,15 @@
             border: 1px solid #343a40; 
         }
         
-        /* 文本变化动画 */
-        @keyframes textFadeInOut {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
+        /* 文本变化动画 - 只保留缩放效果，移除淡入淡出 */
+        @keyframes textChangeScale {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
         }
         
         .text-change-animation {
-            animation: textFadeInOut 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: textChangeScale 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* 优化的卡片动画 */
@@ -667,9 +683,9 @@
                         <button id="restart-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full">返回篇章选择</button>
                     </div>
                 </div>
-                <div id="interpretation-container" class="hidden mt-8 pt-6 border-t border-gray-200 animate-fadeInUp" style="animation-delay: 0.2s;">
+                <div id="interpretation-container" class="hidden mt-8 pt-6 border-t border-gray-200/50 animate-fadeIn" style="animation-delay: 0.1s;">
                     <h3 id="interpretation-author" class="text-2xl font-bold text-center mb-4 text-gray-800"></h3>
-                    <div id="interpretation-text" class="text-left text-base leading-relaxed bg-gray-50 p-6 rounded-lg text-gray-600"></div>
+                    <div id="interpretation-text" class="text-left text-base leading-relaxed backdrop-blur-md bg-white/40 p-6 rounded-lg text-gray-700 border border-white/30 shadow-lg"></div>
                 </div>
                 <audio id="audio-player" class="hidden"></audio>
             </div>
