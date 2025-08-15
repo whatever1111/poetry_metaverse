@@ -614,6 +614,37 @@
             transform: translateX(-30px) translateY(-10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        /* 古典回响页面移动端优化 */
+        @media (max-width: 480px) {
+            #classical-echo-screen .card-base {
+                padding: 1.5rem;
+            }
+            
+            #classical-echo-screen h2 {
+                font-size: 1.75rem;
+            }
+            
+            #classical-echo-screen p {
+                font-size: 1rem;
+            }
+            
+            #classical-content {
+                font-size: 1rem;
+                padding: 1rem;
+                min-height: 150px;
+            }
+            
+            #continue-to-poem-button {
+                width: 3rem;
+                height: 3rem;
+            }
+            
+            #continue-to-poem-button svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -668,6 +699,35 @@
                 </div>
             </div>
             <p class="text-center mt-4 text-gray-400 text-sm">问题 <span id="question-counter">1 / 4</span></p>
+        </div>
+
+        <!-- 古典回响屏幕 -->
+        <div id="classical-echo-screen" class="hidden content-section page-transition">
+            <div class="card-base p-8 md:p-12 rounded-lg">
+                <div class="text-center animate-fadeInUp">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">回响</h2>
+                    <p class="text-lg text-gray-600 mb-8">你选择的道路，有古人智慧的回响</p>
+                </div>
+                
+                <!-- 古典内容展示区域 -->
+                <div class="mb-8 animate-fadeInUp" style="animation-delay: 0.1s;">
+                    <div id="classical-content" class="text-left text-lg leading-loose whitespace-pre-wrap text-gray-700 backdrop-blur-md bg-white/40 p-6 rounded-lg border border-white/30 shadow-lg min-h-[200px]">
+                        <!-- 古典内容将在这里动态填充 -->
+                    </div>
+                </div>
+                
+                <!-- 分离式按钮区域 -->
+                <div class="flex flex-col items-center justify-center gap-4 animate-fadeInUp" style="animation-delay: 0.2s;">
+                    <!-- 文字部分：居中显示 -->
+                    <span class="text-center text-gray-600 text-lg">当下的你也不孤独，吴任几是你的同行者</span>
+                    <!-- 箭头按钮：紧跟文字 -->
+                    <button id="continue-to-poem-button" class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 transform hover:scale-110 shadow-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- 结果屏幕 -->

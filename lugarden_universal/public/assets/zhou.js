@@ -25,6 +25,7 @@ class ZhouUniverse {
             main: this.$('#main-project-selection-screen'),
             sub: this.$('#sub-project-selection-screen'),
             quiz: this.$('#question-screen'),
+            classicalEcho: this.$('#classical-echo-screen'),
             result: this.$('#result-screen'),
         };
 
@@ -164,6 +165,29 @@ class ZhouUniverse {
         const finalPoemTitle = finalPoemTitleWithQuotes.replace(/[《》]/g, '');
         const finalPoemBody = this.state.poems[finalPoemTitle];
 
+        // 保存诗歌信息到state中，供后续使用
+        this.state.currentPoemTitle = finalPoemTitle;
+        this.state.currentPoemTitleWithQuotes = finalPoemTitleWithQuotes;
+        this.state.currentPoemBody = finalPoemBody;
+
+        // 先显示古典回响页面
+        this.showClassicalEcho();
+    }
+
+    showClassicalEcho() {
+        // 解析并显示古典回响内容
+        const classicalData = this.parseClassicalEcho();
+        this.$('#classical-content').textContent = classicalData.content;
+        
+        // 显示古典回响页面
+        this.showScreen('classicalEcho');
+    }
+
+    showPoemResult() {
+        const finalPoemTitle = this.state.currentPoemTitle;
+        const finalPoemTitleWithQuotes = this.state.currentPoemTitleWithQuotes;
+        const finalPoemBody = this.state.currentPoemBody;
+
         if (finalPoemBody) {
             this.$('#poem-title').textContent = finalPoemTitleWithQuotes;
             this.$('#poem-body').textContent = finalPoemBody;
@@ -193,6 +217,46 @@ class ZhouUniverse {
         }
 
         this.showScreen('result');
+    }
+
+    parseClassicalEcho() {
+        const currentPoemTitle = this.state.currentPoemTitle;
+        console.log('当前诗歌标题:', currentPoemTitle);
+        console.log('poemArchetypes数据:', this.state.poemArchetypes);
+        console.log('poemArchetypes长度:', this.state.poemArchetypes.length);
+
+        const poemArchetype = this.state.poemArchetypes.find(p =>
+            p.title === currentPoemTitle ||
+            p.title === currentPoemTitle.replace(/[《》]/g, '') ||
+            p.title.replace(/[《》]/g, '') === currentPoemTitle
+        );
+
+        console.log('找到的poemArchetype:', poemArchetype);
+        console.log('poemArchetype的所有字段:', Object.keys(poemArchetype || {}));
+
+        // Check all possible field names
+        const possibleFields = ['classicalEcho', 'classical_echo', 'classicalecho', 'classical'];
+        let foundField = null;
+        let foundValue = null;
+
+        for (const field of possibleFields) {
+            if (poemArchetype && poemArchetype[field]) {
+                foundField = field;
+                foundValue = poemArchetype[field];
+                console.log(`找到字段 ${field}:`, foundValue);
+                break;
+            }
+        }
+
+        if (foundField && foundValue) {
+            return { content: foundValue };
+        } else {
+            console.log('未找到任何classical相关字段，使用默认内容');
+            console.log('poemArchetype的完整内容:', poemArchetype);
+            return {
+                content: '这首诗的古典回响正在寻找中...\n\n古典智慧与现代诗歌的对话，需要更多的时间来沉淀。'
+            };
+        }
     }
 
     getPoetButtonText(clickCount) {
@@ -438,6 +502,9 @@ class ZhouUniverse {
         this.$('#interpret-button').addEventListener('click', () => this.handleInterpretation());
         this.$('#listen-button').addEventListener('click', () => this.handleListen());
         this.$('#poet-interpret-button').addEventListener('click', () => this.handlePoetInterpretation());
+        
+        // 古典回响页面按钮事件
+        this.$('#continue-to-poem-button').addEventListener('click', () => this.showPoemResult());
     }
 }
 
