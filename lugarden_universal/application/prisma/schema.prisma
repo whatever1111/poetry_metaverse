@@ -151,6 +151,7 @@ model ZhouMapping {
   chapter String
   combination String
   poemTitle String
+  meaning String? // 新增字段：用户原型解读功能
   universeId String
   subProjectId String?
   universe Universe @relation(fields: [universeId], references: [id])
@@ -162,7 +163,7 @@ model ZhouPoem {
   id String @id
   title String
   chapter String
-  body String?
+  body Json? // 重构为JSON格式：支持结构化诗歌内容
   filePath String?
   coreTheme String?
   problemSolved String?
