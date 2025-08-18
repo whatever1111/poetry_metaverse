@@ -15,6 +15,23 @@ describe('Admin Universes API CRUD (authorized)', () => {
 
   let createdId = null;
   const randomCode = `test_uni_${Date.now()}`;
+  
+  // 测试结束后清理
+  afterAll(async () => {
+    if (createdId) {
+      const { PrismaClient } = await import('../generated/prisma/index.js');
+      const prisma = new PrismaClient();
+      try {
+        await prisma.universe.delete({
+          where: { id: createdId }
+        });
+      } catch (error) {
+        console.warn('清理测试宇宙失败:', error.message);
+      } finally {
+        await prisma.$disconnect();
+      }
+    }
+  });
 
   test('POST create universe', async () => {
     const res = await request(app)

@@ -84,23 +84,17 @@ describe('Public API Contract Tests - Phase 2 Universe-Centric Architecture', ()
     });
 
     it('should return zhou_spring_autumn universe content structure', async () => {
-      // 确保存在zhou宇宙
-      let zhouUniverse = await prisma.universe.findFirst({
-        where: { code: 'zhou' }
+      // 使用正确的宇宙ID，而不是创建新的
+      const zhouUniverse = await prisma.universe.findFirst({
+        where: { id: 'universe_zhou_spring_autumn' }
       });
 
       if (!zhouUniverse) {
-        zhouUniverse = await prisma.universe.create({
-          data: {
-            id: 'zhou-universe',
-            code: 'zhou',
-            name: '周与春秋',
-            type: 'zhou_spring_autumn',
-            status: 'published',
-            description: '周与春秋诗歌宇宙'
-          }
-        });
-      } else if (zhouUniverse.status !== 'published') {
+        throw new Error('宇宙 universe_zhou_spring_autumn 不存在，请先运行数据迁移');
+      }
+
+      // 确保宇宙状态为published
+      if (zhouUniverse.status !== 'published') {
         await prisma.universe.update({
           where: { id: zhouUniverse.id },
           data: { status: 'published' }
@@ -108,7 +102,7 @@ describe('Public API Contract Tests - Phase 2 Universe-Centric Architecture', ()
       }
 
       const response = await request(app)
-        .get('/api/universes/zhou/content')
+        .get('/api/universes/universe_zhou_spring_autumn/content')
         .expect(200);
 
       // 验证响应结构
@@ -120,7 +114,7 @@ describe('Public API Contract Tests - Phase 2 Universe-Centric Architecture', ()
       expect(response.body.universe).toHaveProperty('code');
       expect(response.body.universe).toHaveProperty('name');
       expect(response.body.universe).toHaveProperty('type');
-      expect(response.body.universe.code).toBe('zhou');
+      expect(response.body.universe.code).toBe('universe_zhou_spring_autumn');
       expect(response.body.universe.type).toBe('zhou_spring_autumn');
 
       // 验证内容结构
@@ -140,7 +134,7 @@ describe('Public API Contract Tests - Phase 2 Universe-Centric Architecture', ()
 
     it('should support cache refresh parameter', async () => {
       const response = await request(app)
-        .get('/api/universes/zhou/content?refresh=true')
+        .get('/api/universes/universe_zhou_spring_autumn/content?refresh=true')
         .expect(200);
 
       expect(response.body).toHaveProperty('universe');
@@ -155,7 +149,7 @@ describe('Public API Contract Tests - Phase 2 Universe-Centric Architecture', ()
         .expect(200);
 
       expect(response.headers.warning).toContain('This API is deprecated');
-      expect(response.headers.warning).toContain('/api/universes/zhou/content');
+      expect(response.headers.warning).toContain('/api/universes/universe_zhou_spring_autumn/content');
     });
 
     it('should return deprecation warning for /api/questions', async () => {
