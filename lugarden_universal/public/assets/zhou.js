@@ -161,7 +161,15 @@ class ZhouUniverse {
         const answerKeyMap = { 'A': '1', 'B': '0' };
         const resultKey = this.state.userAnswers.map(ans => answerKeyMap[ans]).join('');
         
-        const finalPoemTitleWithQuotes = this.state.mappings[this.state.currentChapterName][resultKey];
+        // 修复mappings访问方式
+        const mappingData = this.state.mappings[this.state.currentChapterName][resultKey];
+        if (!mappingData) {
+            console.error('无法找到映射数据:', this.state.currentChapterName, resultKey);
+            this.showError('无法找到对应的诗歌映射，请重试。');
+            return;
+        }
+        
+        const finalPoemTitleWithQuotes = mappingData.poemTitle;
         const finalPoemTitle = finalPoemTitleWithQuotes.replace(/[《》]/g, '');
         const finalPoemBody = this.state.poems[finalPoemTitle];
 
