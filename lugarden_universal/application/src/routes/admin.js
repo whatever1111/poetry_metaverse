@@ -187,10 +187,34 @@ router.get('/projects/:projectId/sub/:subProjectName', async (req, res, next) =>
 
     const mappings = await prisma.zhouMapping.findMany({ where: { chapter: subProjectName } });
     const resultMap = {};
-    for (const m of mappings) resultMap[m.combination] = m.poemTitle;
+    for (const m of mappings) {
+      // 支持新的meaning字段，保持向后兼容
+      resultMap[m.combination] = {
+        poemTitle: m.poemTitle,
+        ...(m.meaning && { meaning: m.meaning })
+      };
+    }
 
     const poems = await prisma.zhouPoem.findMany({ where: { chapter: subProjectName }, orderBy: { title: 'asc' } });
-    const poemsArr = poems.map((p) => ({ id: p.title, title: p.title, body: p.body ?? '' }));
+    const poemsArr = poems.map((p) => {
+      // 处理新的JSON格式body字段
+      let bodyContent = '';
+      if (p.body) {
+        if (typeof p.body === 'string') {
+          // 向后兼容：如果body仍然是字符串格式
+          bodyContent = p.body;
+        } else if (typeof p.body === 'object' && p.body !== null) {
+          // 新的JSON格式：提取主要文本内容
+          const { quote_text, quote_citation, main_text } = p.body;
+          const parts = [];
+          if (quote_text) parts.push(quote_text);
+          if (quote_citation) parts.push(`——${quote_citation}`);
+          if (main_text) parts.push(main_text);
+          bodyContent = parts.join('\n\n');
+        }
+      }
+      return { id: p.title, title: p.title, body: bodyContent };
+    });
 
     return res.json({ name: subProjectName, questions, resultMap, poems: poemsArr });
   } catch (err) { return next(err); }
@@ -221,11 +245,29 @@ router.get('/projects/:projectId/sub', async (req, res, next) => {
         where: { subProjectId: sub.id },
         orderBy: { title: 'asc' }
       });
-      result[sub.name].poems = poems.map(p => ({
-        id: p.title,
-        title: p.title,
-        content: p.body || ''
-      }));
+      result[sub.name].poems = poems.map(p => {
+        // 处理新的JSON格式body字段
+        let bodyContent = '';
+        if (p.body) {
+          if (typeof p.body === 'string') {
+            // 向后兼容：如果body仍然是字符串格式
+            bodyContent = p.body;
+          } else if (typeof p.body === 'object' && p.body !== null) {
+            // 新的JSON格式：提取主要文本内容
+            const { quote_text, quote_citation, main_text } = p.body;
+            const parts = [];
+            if (quote_text) parts.push(quote_text);
+            if (quote_citation) parts.push(`——${quote_citation}`);
+            if (main_text) parts.push(main_text);
+            bodyContent = parts.join('\n\n');
+          }
+        }
+        return {
+          id: p.title,
+          title: p.title,
+          content: bodyContent
+        };
+      });
       
       // 获取问题
       const qas = await prisma.zhouQA.findMany({
@@ -243,7 +285,8 @@ router.get('/projects/:projectId/sub', async (req, res, next) => {
       });
       result[sub.name].mappings = mappings.map(m => ({
         key: m.combination,
-        value: m.poemTitle
+        value: m.poemTitle,
+        ...(m.meaning && { meaning: m.meaning })
       }));
     }
     
@@ -416,8 +459,33 @@ router.put('/projects/:projectId/sub/:subProjectName/resultMap', async (req, res
     const universeId = await getZhouUniverseId(prisma);
     await prisma.$transaction(async (tx) => {
       await tx.zhouMapping.deleteMany({ where: { subProjectId: sub.id } });
-      for (const [combo, poemTitle] of Object.entries(resultMap || {})) {
-        await tx.zhouMapping.create({ data: { id: crypto.randomUUID(), chapter: sub.name, combination: combo, poemTitle: poemTitle, universeId, subProjectId: sub.id } });
+      for (const [combo, mappingData] of Object.entries(resultMap || {})) {
+        // 支持新的meaning字段，保持向后兼容
+        let poemTitle, meaning;
+        if (typeof mappingData === 'string') {
+          // 向后兼容：如果只是字符串（poemTitle）
+          poemTitle = mappingData;
+          meaning = null;
+        } else if (typeof mappingData === 'object' && mappingData !== null) {
+          // 新的格式：包含poemTitle和可选的meaning
+          poemTitle = mappingData.poemTitle || mappingData.value || '';
+          meaning = mappingData.meaning || null;
+        } else {
+          poemTitle = '';
+          meaning = null;
+        }
+        
+        await tx.zhouMapping.create({ 
+          data: { 
+            id: crypto.randomUUID(), 
+            chapter: sub.name, 
+            combination: combo, 
+            poemTitle: poemTitle, 
+            meaning: meaning,
+            universeId, 
+            subProjectId: sub.id 
+          } 
+        });
       }
     });
     invalidate(['/api/admin/projects', '/api/mappings']);
@@ -442,13 +510,30 @@ router.post('/projects/:projectId/update', async (_req, res) => {
 router.post('/projects/:projectId/sub/:subProjectName/poems', async (req, res, next) => {
   const prisma = getPrismaClient();
   const { projectId, subProjectName } = req.params;
-  const { title, body } = req.body;
-  if (!title || !body) { const e=new Error('诗歌标题和内容不能为空'); e.statusCode=400; e.code='BAD_REQUEST'; return next(e); }
+  const { title, body, quote_text, quote_citation, main_text } = req.body;
+  if (!title) { const e=new Error('诗歌标题不能为空'); e.statusCode=400; e.code='BAD_REQUEST'; return next(e); }
+  
+  // 构建body数据：支持新的JSON格式或传统字符串格式
+  let bodyData = null;
+  if (quote_text || quote_citation || main_text) {
+    // 新的JSON格式
+    bodyData = {
+      quote_text: quote_text || null,
+      quote_citation: quote_citation || null,
+      main_text: main_text || null
+    };
+  } else if (body) {
+    // 传统字符串格式（向后兼容）
+    bodyData = body;
+  } else {
+    const e = new Error('诗歌内容不能为空'); e.statusCode = 400; e.code = 'BAD_REQUEST'; return next(e);
+  }
+  
   try {
     const sub = await prisma.zhouSubProject.findFirst({ where: { projectId, name: subProjectName } });
     if (!sub) { const e=new Error('子项目不存在'); e.statusCode=404; e.code='NOT_FOUND'; throw e; }
     const universeId = await getZhouUniverseId(prisma);
-    const created = await prisma.zhouPoem.create({ data: { id: crypto.randomUUID(), title, chapter: sub.name, body, universeId, subProjectId: sub.id } });
+    const created = await prisma.zhouPoem.create({ data: { id: crypto.randomUUID(), title, chapter: sub.name, body: bodyData, universeId, subProjectId: sub.id } });
     invalidate(['/api/admin/projects', '/api/poems-all']);
     res.status(201).json({ id: created.title, title: created.title, body: created.body ?? '' });
   } catch (err) { next(err); }
@@ -458,15 +543,32 @@ router.post('/projects/:projectId/sub/:subProjectName/poems', async (req, res, n
 router.put('/projects/:projectId/sub/:subProjectName/poems/:poemId', async (req, res, next) => {
   const prisma = getPrismaClient();
   const { projectId, subProjectName, poemId } = req.params;
-  const { title, body } = req.body;
-  if (!title || !body) { const e=new Error('诗歌标题和内容不能为空'); e.statusCode=400; e.code='BAD_REQUEST'; return next(e); }
+  const { title, body, quote_text, quote_citation, main_text } = req.body;
+  if (!title) { const e=new Error('诗歌标题不能为空'); e.statusCode=400; e.code='BAD_REQUEST'; return next(e); }
+  
+  // 构建body数据：支持新的JSON格式或传统字符串格式
+  let bodyData = null;
+  if (quote_text || quote_citation || main_text) {
+    // 新的JSON格式
+    bodyData = {
+      quote_text: quote_text || null,
+      quote_citation: quote_citation || null,
+      main_text: main_text || null
+    };
+  } else if (body) {
+    // 传统字符串格式（向后兼容）
+    bodyData = body;
+  } else {
+    const e = new Error('诗歌内容不能为空'); e.statusCode = 400; e.code = 'BAD_REQUEST'; return next(e);
+  }
+  
   try {
     const sub = await prisma.zhouSubProject.findFirst({ where: { projectId, name: subProjectName } });
     if (!sub) { const e=new Error('子项目不存在'); e.statusCode=404; e.code='NOT_FOUND'; throw e; }
     // poemId 为旧标题
     const poem = await prisma.zhouPoem.findFirst({ where: { subProjectId: sub.id, title: poemId } });
     if (!poem) { const e=new Error('未找到诗歌'); e.statusCode=404; e.code='NOT_FOUND'; throw e; }
-    const updated = await prisma.zhouPoem.update({ where: { id: poem.id }, data: { title, body } });
+    const updated = await prisma.zhouPoem.update({ where: { id: poem.id }, data: { title, body: bodyData } });
     invalidate(['/api/admin/projects', '/api/poems-all']);
     res.json({ id: updated.title, title: updated.title, body: updated.body ?? '' });
   } catch (err) { next(err); }

@@ -16,12 +16,17 @@
   - question, optionA, optionB, meaningA, meaningB → {question, options:{A,B}, meaning:{A,B}}
 
 - ZhouMapping → mappings
-  - chapter + combination + poemTitle → units[chapter][combination] = poemTitle
+  - chapter + combination + poemTitle + meaning → units[chapter][combination] = {poemTitle, meaning?}
   - defaultUnit 由配置或项目首选章生成
+  - **新增**: meaning字段支持用户原型解读功能
 
 - ZhouPoem → poems-all
   - title（去书名号）→ 键名
-  - body → 值
+  - body（JSON格式）→ 值（合并后的文本格式）
+  - **重构**: body字段从String改为JSON格式，支持结构化内容：
+    - `quote_text`: 引用文本
+    - `quote_citation`: 引用出处
+    - `main_text`: 主要文本
 
 - ZhouPoem → poem-archetypes (Phase 3 完整映射)
   - title → title
@@ -31,7 +36,7 @@
   - problemSolved → problemSolved
   - spiritualConsolation → spiritualConsolation
   - chapter → chapter
-  - body → body
+  - body（JSON格式）→ body（合并后的文本格式）
   - 输出格式: { poems: [{ title, poet_explanation, classicalEcho, coreTheme, problemSolved, spiritualConsolation, chapter, body }] }
   - 字段说明:
     - classicalEcho: 古典智慧回响，连接现代诗歌与古典文献
@@ -39,7 +44,7 @@
     - problemSolved: 诗歌解决的人生困境，增强用户共鸣
     - spiritualConsolation: 精神慰藉内容，提供情感支持
     - chapter: 所属章节，用于内容组织和导航
-    - body: 诗歌正文，完整文本内容
+    - body: 诗歌正文，完整文本内容（支持结构化JSON格式）
 
 > 注：后续根据现网数据快照补充细节。
 
@@ -61,15 +66,33 @@
 - mappings
   - `defaultUnit` 的来源：若 DB 未显式设置，则取 `units` 的第一个章节名。
   - 对于不存在的章节，返回空对象，不省略键名。
+  - **新增**: 支持meaning字段，输出格式为：
+    ```json
+    {
+      "defaultUnit": "观我生",
+      "units": {
+        "观我生": {
+          "0000": {
+            "poemTitle": "论不完全只有坏事",
+            "meaning": "这个原型解读告诉我们..."
+          }
+        }
+      }
+    }
+    ```
 
 - poems-all
   - 键名需移除标题中的中文书名号 `《》`。
   - 如正文缺失，键名可存在但值为空字符串或省略，保持与现网一致；推荐省略缺失项。
+  - **重构**: body字段现在支持JSON格式，但API仍返回合并后的文本格式以保持向后兼容：
+    - 如果body是字符串：直接返回
+    - 如果body是JSON对象：合并 `quote_text`、`quote_citation`、`main_text` 为文本格式
 
 - poem-archetypes
   - 输出统一为 `{ poems: [{ title, poet_explanation, classicalEcho, coreTheme, problemSolved, spiritualConsolation, chapter, body }] }`。
   - 若 DB 字段为 `poetExplanation`，需在映射层改名为 `poet_explanation`。
   - Phase 3 新增字段：classicalEcho、coreTheme、problemSolved、spiritualConsolation、chapter、body
+  - **重构**: body字段处理同poems-all
 
 ## 错误响应映射（统一）
 
@@ -80,6 +103,33 @@
 
 建议错误码：
 - `UNAUTHORIZED`、`FORBIDDEN`、`NOT_FOUND`、`CONFLICT`、`INTERNAL_SERVER_ERROR`
+
+---
+
+## 数据结构变更说明
+
+### ZhouMapping表新增字段
+- **meaning**: `String?` - 用户原型解读功能
+  - 用于存储诗歌原型解读的详细说明
+  - 可选字段，支持null值
+  - 在API响应中作为mappings的扩展字段返回
+
+### ZhouPoem表body字段重构
+- **原格式**: `String?` - 纯文本格式
+- **新格式**: `Json?` - 结构化JSON格式
+  ```json
+  {
+    "quote_text": "引用文本内容",
+    "quote_citation": "——《春秋公羊传·闵公》",
+    "main_text": "主要诗歌内容"
+  }
+  ```
+- **向后兼容**: API层自动处理两种格式，确保前端无需修改
+
+### 映射层处理逻辑
+1. **读取时**: 自动检测body字段类型，统一转换为文本格式
+2. **写入时**: 支持传统字符串格式和新的JSON格式
+3. **兼容性**: 保持现有API响应格式不变，前端无需修改
 
 ---
 

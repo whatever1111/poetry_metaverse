@@ -1,6 +1,6 @@
 # 陆家花园项目 - API 合同
 
-> **最后更新**: YYYY-MM-DD
+> **最后更新**: 2025-08-18
 > **通用错误响应**: `{ "error": { "code": "ERROR_CODE", "message": "Error description" } }`
 
 ---
@@ -22,7 +22,7 @@
       "name": "周与春秋",
       "code": "zhou_spring_autumn",
       "type": "POEM_PROJECT",
-      "description": "“观我生”系列诗歌宇宙",
+      "description": ""观我生"系列诗歌宇宙",
       "status": "published",
       "createdAt": "2025-08-15T10:00:00.000Z",
       "updatedAt": "2025-08-15T10:00:00.000Z"
@@ -70,7 +70,7 @@
     {
       "name": "周与春秋",
       "code": "zhou_spring_autumn",
-      "description": "“观我生”系列诗歌宇宙",
+      "description": ""观我生"系列诗歌宇宙",
       "coverImage": "/assets/covers/zhou.png" 
     }
   ]
@@ -82,18 +82,40 @@
   - **示例 (当 `universeCode` = `zhou_spring_autumn`)**:
     ```json
     {
-      "projects": [
-        {
-          "id": "a1b2c3",
-          "name": "观我生",
-          "description": "项目说明",
-          "poet": "周春秋",
-          "subProjects": [ { "name": "观我生", "description": "章节说明" } ]
-        }
-      ],
-      "questions": { /* ... */ },
-      "mappings": { /* ... */ },
-      "poems": { /* ... */ }
+      "universe": {
+        "id": "clxqlb51d000008l4acc6fpw7",
+        "code": "zhou_spring_autumn",
+        "name": "周与春秋",
+        "type": "POEM_PROJECT",
+        "description": ""观我生"系列诗歌宇宙",
+        "createdAt": "2025-08-15T10:00:00.000Z",
+        "updatedAt": "2025-08-15T10:00:00.000Z"
+      },
+      "content": {
+        "projects": [
+          {
+            "id": "a1b2c3",
+            "name": "观我生",
+            "description": "项目说明",
+            "poet": "周春秋",
+            "subProjects": [ { "name": "观我生", "description": "章节说明" } ]
+          }
+        ],
+        "questions": { /* ... */ },
+        "mappings": { 
+          "defaultUnit": "观我生",
+          "units": {
+            "观我生": {
+              "0000": {
+                "poemTitle": "论不完全只有坏事",
+                "meaning": "这个原型解读告诉我们..."
+              }
+            }
+          }
+        },
+        "poems": { /* ... */ },
+        "poemArchetypes": { /* ... */ }
+      }
     }
     ```
 - **错误响应 (404 Not Found)**: 如果 `universeCode` 无效或宇宙未发布。
@@ -114,9 +136,24 @@
 
 ##### `[Deprecated]` GET /api/mappings
 - **状态**: 已废弃。请使用 `GET /api/universes/:universeCode/content`。
+- **注意**: 新的mappings响应格式支持meaning字段：
+  ```json
+  {
+    "defaultUnit": "观我生",
+    "units": {
+      "观我生": {
+        "0000": {
+          "poemTitle": "论不完全只有坏事",
+          "meaning": "这个原型解读告诉我们..."
+        }
+      }
+    }
+  }
+  ```
 
 ##### `[Deprecated]` GET /api/poems-all
 - **状态**: 已废弃。请使用 `GET /api/universes/:universeCode/content`。
+- **注意**: 诗歌内容现在支持结构化的JSON格式，但API仍返回合并后的文本格式以保持向后兼容。
 
 ##### `[Phase 3 - Enhanced]` GET /api/poem-archetypes
 - **状态**: Phase 3 重新设计，返回完整的诗歌原型数据。
@@ -146,16 +183,77 @@
   - `problemSolved`: 解决的人生困境
   - `spiritualConsolation`: 精神慰藉
   - `chapter`: 所属章节
-  - `body`: 诗歌正文
-
+  - `body`: 诗歌正文（支持结构化JSON格式，但API返回合并后的文本）
 
 ### 管理接口 (Admin API)
 
 ##### `[Context-Changed]` GET /api/admin/projects
-- **状态**: 上下文变更。此接口在 Phase 2 中将作为“周与春秋”宇宙的专属管理接口，通过动态路由在后台加载。其功能保持不变。
+- **状态**: 上下文变更。此接口在 Phase 2 中将作为"周与春秋"宇宙的专属管理接口，通过动态路由在后台加载。其功能保持不变。
 
 ##### `[Context-Changed]` GET /api/admin/projects/:projectId/sub/:subProjectName
-- **状态**: 上下文变更。同上，作为“周与春秋”宇宙的专属管理接口。
+- **状态**: 上下文变更。同上，作为"周与春秋"宇宙的专属管理接口。
+- **注意**: 响应格式已更新以支持新的数据结构：
+  ```json
+  {
+    "name": "观我生",
+    "questions": [...],
+    "resultMap": {
+      "0000": {
+        "poemTitle": "论不完全只有坏事",
+        "meaning": "这个原型解读告诉我们..."
+      }
+    },
+    "poems": [
+      {
+        "id": "论不完全只有坏事",
+        "title": "论不完全只有坏事",
+        "body": "诗歌内容..."
+      }
+    ]
+  }
+  ```
+
+##### `[Enhanced]` POST /api/admin/projects/:projectId/sub/:subProjectName/poems
+- **说明**: 新增诗歌，支持新的JSON格式body字段。
+- **请求体**:
+  ```json
+  {
+    "title": "诗歌标题",
+    "body": "传统字符串格式（向后兼容）",
+    "quote_text": "引用文本（新格式）",
+    "quote_citation": "引用出处（新格式）",
+    "main_text": "主要文本（新格式）"
+  }
+  ```
+- **注意**: 支持两种格式：
+  1. 传统格式：使用 `body` 字段
+  2. 新格式：使用 `quote_text`、`quote_citation`、`main_text` 字段
+
+##### `[Enhanced]` PUT /api/admin/projects/:projectId/sub/:subProjectName/poems/:poemId
+- **说明**: 更新诗歌，支持新的JSON格式body字段。
+- **请求体**: 同POST接口。
+
+##### `[Enhanced]` PUT /api/admin/projects/:projectId/sub/:subProjectName/resultMap
+- **说明**: 覆盖更新结果映射，支持meaning字段。
+- **请求体**:
+  ```json
+  {
+    "resultMap": {
+      "0000": {
+        "poemTitle": "论不完全只有坏事",
+        "meaning": "这个原型解读告诉我们..."
+      }
+    }
+  }
+  ```
+- **注意**: 支持向后兼容的字符串格式：
+  ```json
+  {
+    "resultMap": {
+      "0000": "论不完全只有坏事"
+    }
+  }
+  ```
 
 ##### `[Deprecated]` POST /api/admin/publish-all
 - **状态**: 已废弃。发布状态由 `Universe` 模型的 `status` 字段控制。

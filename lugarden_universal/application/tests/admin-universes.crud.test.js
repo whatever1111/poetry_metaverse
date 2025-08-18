@@ -43,7 +43,9 @@ describe('Admin Universes API CRUD (authorized)', () => {
   });
 
   test('DELETE universe', async () => {
-    const del = await request(app).delete(`/api/admin/universes/${createdId}`);
+    const del = await request(app)
+      .delete(`/api/admin/universes/${createdId}`)
+      .send({ superAdminPassword: 'lu_garden_super_admin_2024' });
     expect(del.status).toBe(204);
   });
 });
