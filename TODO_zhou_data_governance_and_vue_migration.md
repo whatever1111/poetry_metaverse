@@ -386,7 +386,7 @@
         - 可复用的组件样式：按钮、卡片、状态组件等
         - 完善的响应式系统：5个断点、移动端优化、触摸设备适配
         - 样式隔离和模块化：按功能分离，保持层叠顺序
-  - [ ] **步骤C.1.2 (核心组件开发)**: 逐步实现核心功能组件
+  - [x] **步骤C.1.2 (核心组件开发)**: 逐步实现核心功能组件 ✅
     - [x] **步骤C.1.2.1 (页面组件开发)**: 实现5个核心页面组件 ✅
       - ✅ **MainProjectSelection**: 主项目选择页面，包含项目列表和加载状态
       - ✅ **SubProjectSelection**: 子项目选择页面，包含返回按钮和项目描述
@@ -405,17 +405,34 @@
         - AI功能集成（解诗、读诗、诗人解读）
         - 完善的加载状态和错误处理
         - 与zhouStore的深度集成，实现数据驱动的UI
-    - [ ] **步骤C.1.2.2 (功能组件开发)**: 实现核心功能组件
-      - **QuestionCard**: 问题卡片组件，包含问题文本和选项按钮
-      - **PoemViewer**: 诗歌展示组件，包含标题、内容和格式处理
-      - **ActionButtons**: 操作按钮组件，包含解诗、读诗、诗人解读等按钮
-      - **InterpretationDisplay**: 解读展示组件，包含作者和解读内容
-      - **LoadingSpinner**: 加载动画组件，包含旋转动画和提示文本
+    - [x] **步骤C.1.2.2 (功能组件开发)**: 实现核心功能组件 ✅
+      - ✅ **QuestionCard**: 问题卡片组件，包含问题文本和选项按钮
+      - ✅ **PoemViewer**: 诗歌展示组件，包含标题、内容和格式处理
+      - ✅ **ActionButtons**: 操作按钮组件，包含解诗、读诗、诗人解读等按钮
+      - ✅ **InterpretationDisplay**: 解读展示组件，包含作者和解读内容
+      - ✅ **LoadingSpinner**: 加载动画组件，包含旋转动画和提示文本
+      - ✅ **EmptyState**: 空状态组件，包含图标、文字和操作按钮
+      - ✅ **ErrorState**: 错误状态组件，包含错误信息和恢复操作
+      - **实际改动文件**:
+        - `lugarden_universal/frontend_vue/src/components/QuestionCard.vue` - 问答卡片，支持动画和禁用状态
+        - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 诗歌展示，支持多格式内容和作者信息
+        - `lugarden_universal/frontend_vue/src/components/ActionButtons.vue` - 操作按钮组，支持多种布局和状态管理
+        - `lugarden_universal/frontend_vue/src/components/InterpretationDisplay.vue` - 解读内容展示，支持AI和诗人双解读
+        - `lugarden_universal/frontend_vue/src/components/LoadingSpinner.vue` - 加载动画，支持多种样式和进度显示
+        - `lugarden_universal/frontend_vue/src/components/EmptyState.vue` - 空状态处理，支持多种场景和自定义操作
+        - `lugarden_universal/frontend_vue/src/components/ErrorState.vue` - 错误状态处理，支持详情展开和建议操作
+      - **核心功能**:
+        - 完整的可复用组件库：7个核心功能组件
+        - 统一的设计语言和动画效果
+        - 响应式设计和可访问性支持
+        - 丰富的自定义选项和插槽系统
+        - 完善的状态管理和错误处理
+        - 支持多种使用场景和样式变体
     - [ ] **步骤C.1.2.3 (通用组件开发)**: 实现可复用通用组件
-      - **ErrorState**: 错误状态组件，包含错误图标、标题和操作按钮
-      - **EmptyState**: 空状态组件，包含空状态图标和提示信息
       - **AnimationWrapper**: 动画包装组件，统一管理页面切换动画
       - **BackButton**: 返回按钮组件，包含箭头图标和点击事件
+      - **ProgressBar**: 进度条组件，用于问答进度显示
+      - **NotificationToast**: 通知提示组件，用于操作反馈
   - [ ] **步骤C.1.3 (API集成与状态管理)**: 实现与后端的数据交互
     - [ ] **步骤C.1.3.1 (API服务)**: 创建API客户端，集成现有的层级化API
       - 创建API客户端类，封装fetch请求和错误处理
