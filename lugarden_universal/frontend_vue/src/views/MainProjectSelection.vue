@@ -35,11 +35,11 @@
       </div>
       
       <!-- 项目列表 -->
-      <div v-else class="project-list grid gap-6 max-w-4xl mx-auto">
+      <div v-else class="grid grid-responsive">
         <div 
           v-for="(project, index) in zhouStore.universeData.projects" 
           :key="project.id"
-          class="project-card bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer animate-fadeInUp"
+          class="card-project animate-fadeInUp"
           :style="{ animationDelay: `${0.1 * index}s` }"
           @click="selectProject(project)"
         >
@@ -47,7 +47,7 @@
           <div class="text-gray-600 mb-4 whitespace-pre-line">{{ project.description }}</div>
           <div class="flex justify-between items-center mt-4">
             <p class="text-sm text-gray-500">导游: {{ project.poet || '未指定' }}</p>
-            <button class="enter-project-btn bg-gray-800 text-white font-bold py-2 px-6 rounded-full hover:bg-gray-700 transition-colors">
+            <button class="btn-primary">
               进入
             </button>
           </div>
@@ -105,106 +105,11 @@ async function retryLoad(): Promise<void> {
 <style scoped>
 .main-project-selection {
   min-height: 100vh;
-  background-color: #f3f4f6;
+  background-color: var(--bg-primary);
 }
 
-/* 加载状态样式 */
-.loading-container {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: #6b7280;
-}
-
+/* 组件特有的样式 */
 .loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e5e7eb;
-  border-top: 3px solid #60a5fa;
-  border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-.loading-text {
-  font-size: 1.1rem;
-  color: #374151;
-}
-
-/* 错误状态样式 */
-.error-container {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-radius: 12px;
-  margin: 1rem;
-  border: 1px solid #f59e0b;
-}
-
-.error-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-/* 空状态样式 */
-.empty-container {
-  text-align: center;
-  padding: 4rem 1rem;
-  color: #6b7280;
-}
-
-.empty-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-/* 项目卡片样式 */
-.project-card {
-  opacity: 0;
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.project-card:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.enter-project-btn {
-  transition: all 0.3s ease;
-}
-
-.enter-project-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .project-list {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .project-card {
-    padding: 1rem;
-  }
-  
-  .project-card h2 {
-    font-size: 1.5rem;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 </style>
