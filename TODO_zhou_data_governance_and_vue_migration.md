@@ -445,20 +445,42 @@
         - 完善的可访问性：ARIA支持、键盘导航、高对比度适配
         - 响应式设计：所有组件支持移动端和触摸设备
         - 现代化功能：Teleport、Transition、TypeScript完整支持
-    - [ ] **步骤C.1.2.4 (组件集成与应用)**: 将所有组件集成到页面中
-      - [ ] **步骤C.1.2.4.1 (功能组件集成)**: 集成7个功能组件到对应页面
+    - [ ] **步骤C.1.2.4.review (组件设计审查)**: 审查现有组件设计和分类的合理性
+      - **审查背景**: 在进行组件集成前，对已完成的11个组件进行设计审查
+      - **审查问题**:
+        1. **分类标准问题**: "功能组件"vs"通用组件"的分类标准不够清晰
+        2. **组件分离合理性**: 某些相似组件（ActionButtons vs BackButton、AnimationWrapper vs LoadingSpinner vs ProgressBar）是否应该合并
+      - **审查结论**:
+        1. **重新定义分类标准**:
+           - ✅ **业务组件**（4个）: 与zhou项目强绑定 - QuestionCard、PoemViewer、ActionButtons、InterpretationDisplay
+           - ✅ **基础组件**（7个）: 高度通用，任何项目可用 - LoadingSpinner、EmptyState、ErrorState、BackButton、ProgressBar、NotificationToast、AnimationWrapper
+        2. **组件分离设计评估**:
+           - ✅ **ActionButtons vs BackButton**: 保持分开，职责差异明显（复合业务逻辑 vs 单一导航功能）
+           - ✅ **AnimationWrapper vs LoadingSpinner vs ProgressBar**: 保持分开，用途差异明显（装饰器 vs 状态指示器 vs 数据可视化）
+           - ✅ **设计原则确认**: 基于单一职责原则的组件分离是正确的，有利于可测试性、可维护性和Tree-shaking
+        3. **改进措施**:
+           - 重新组织文档分类（业务组件 vs 基础组件）
+           - 保持现有组件分离设计
+           - 统一样式系统（通过共享CSS变量和类名）
+      - **审查状态**: ✅ 已完成
+      - **对后续步骤的影响**: 基于审查结论更新C.1.2.4集成策略
+    - [ ] **步骤C.1.2.4 (组件集成与应用)**: 基于审查结论将11个组件按新分类集成到页面中
+      - [ ] **步骤C.1.2.4.1 (业务组件集成)**: 集成4个与zhou项目强绑定的业务组件
         - **QuestionCard**: 集成到QuizScreen，替换现有问答展示逻辑
         - **PoemViewer**: 集成到ClassicalEchoScreen + ResultScreen，统一诗歌展示格式
-        - **ActionButtons**: 集成到ClassicalEchoScreen + ResultScreen，实现操作按钮功能
-        - **InterpretationDisplay**: 集成到ClassicalEchoScreen + ResultScreen，展示解读内容
-        - **LoadingSpinner**: 集成到所有页面，替换基础loading状态
-        - **EmptyState**: 集成到所有页面，统一空状态展示
-        - **ErrorState**: 集成到所有页面，统一错误状态处理
-      - [ ] **步骤C.1.2.4.2 (通用组件集成)**: 集成4个通用组件到全局应用
-        - **AnimationWrapper**: 包装所有页面切换，实现统一过渡动画
-        - **BackButton**: 集成到需要返回功能的页面（SubProjectSelection、QuizScreen等）
-        - **ProgressBar**: 集成到QuizScreen，显示问答进度
-        - **NotificationToast**: 集成到App.vue，提供全局通知功能
+        - **ActionButtons**: 集成到ClassicalEchoScreen + ResultScreen，实现操作按钮功能（解诗、读诗、诗人解读、重新开始）
+        - **InterpretationDisplay**: 集成到ClassicalEchoScreen + ResultScreen，展示AI解读和诗人解读内容
+      - [ ] **步骤C.1.2.4.2 (基础组件集成)**: 集成7个高度通用的基础组件
+        - **状态指示组件**:
+          * LoadingSpinner: 集成到所有页面，替换基础loading状态
+          * EmptyState: 集成到所有页面，统一空状态展示  
+          * ErrorState: 集成到所有页面，统一错误状态处理
+        - **交互控制组件**:
+          * BackButton: 集成到需要返回功能的页面（SubProjectSelection、QuizScreen等）
+          * ProgressBar: 集成到QuizScreen，显示问答进度
+        - **系统级组件**:
+          * AnimationWrapper: 包装所有页面切换，实现统一过渡动画
+          * NotificationToast: 集成到App.vue，提供全局通知功能
       - [ ] **步骤C.1.2.4.3 (组件接口验证)**: 验证组件集成的完整性和正确性
         - 验证所有props/emits接口匹配实际使用需求
         - 验证样式一致性和响应式设计
