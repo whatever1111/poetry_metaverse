@@ -386,7 +386,7 @@
         - 可复用的组件样式：按钮、卡片、状态组件等
         - 完善的响应式系统：5个断点、移动端优化、触摸设备适配
         - 样式隔离和模块化：按功能分离，保持层叠顺序
-  - [x] **步骤C.1.2 (核心组件开发)**: 逐步实现核心功能组件 ✅
+  - [ ] **步骤C.1.2 (核心组件开发)**: 逐步实现核心功能组件 ✅
     - [x] **步骤C.1.2.1 (页面组件开发)**: 实现5个核心页面组件 ✅
       - ✅ **MainProjectSelection**: 主项目选择页面，包含项目列表和加载状态
       - ✅ **SubProjectSelection**: 子项目选择页面，包含返回按钮和项目描述
@@ -428,11 +428,43 @@
         - 丰富的自定义选项和插槽系统
         - 完善的状态管理和错误处理
         - 支持多种使用场景和样式变体
-    - [ ] **步骤C.1.2.3 (通用组件开发)**: 实现可复用通用组件
-      - **AnimationWrapper**: 动画包装组件，统一管理页面切换动画
-      - **BackButton**: 返回按钮组件，包含箭头图标和点击事件
-      - **ProgressBar**: 进度条组件，用于问答进度显示
-      - **NotificationToast**: 通知提示组件，用于操作反馈
+    - [x] **步骤C.1.2.3 (通用组件开发)**: 实现可复用通用组件 ✅
+      - ✅ **AnimationWrapper**: 动画包装组件，统一管理页面切换动画
+      - ✅ **BackButton**: 返回按钮组件，包含箭头图标和点击事件
+      - ✅ **ProgressBar**: 进度条组件，用于问答进度显示
+      - ✅ **NotificationToast**: 通知提示组件，用于操作反馈
+      - **实际改动文件**:
+        - `lugarden_universal/frontend_vue/src/components/AnimationWrapper.vue` - 动画包装器，支持9种动画类型和响应式控制
+        - `lugarden_universal/frontend_vue/src/components/BackButton.vue` - 返回按钮，支持5种变体和4种箭头类型
+        - `lugarden_universal/frontend_vue/src/components/ProgressBar.vue` - 进度条，支持步骤指示器和多种样式变体
+        - `lugarden_universal/frontend_vue/src/components/NotificationToast.vue` - 通知组件，支持4种类型和6种位置
+      - **核心功能**:
+        - 完整的通用组件库：4个可复用基础组件
+        - 高级动画系统：支持减少动画偏好和移动端优化
+        - 丰富的自定义选项：变体、尺寸、颜色、行为配置
+        - 完善的可访问性：ARIA支持、键盘导航、高对比度适配
+        - 响应式设计：所有组件支持移动端和触摸设备
+        - 现代化功能：Teleport、Transition、TypeScript完整支持
+    - [ ] **步骤C.1.2.4 (组件集成与应用)**: 将所有组件集成到页面中
+      - [ ] **步骤C.1.2.4.1 (功能组件集成)**: 集成7个功能组件到对应页面
+        - **QuestionCard**: 集成到QuizScreen，替换现有问答展示逻辑
+        - **PoemViewer**: 集成到ClassicalEchoScreen + ResultScreen，统一诗歌展示格式
+        - **ActionButtons**: 集成到ClassicalEchoScreen + ResultScreen，实现操作按钮功能
+        - **InterpretationDisplay**: 集成到ClassicalEchoScreen + ResultScreen，展示解读内容
+        - **LoadingSpinner**: 集成到所有页面，替换基础loading状态
+        - **EmptyState**: 集成到所有页面，统一空状态展示
+        - **ErrorState**: 集成到所有页面，统一错误状态处理
+      - [ ] **步骤C.1.2.4.2 (通用组件集成)**: 集成4个通用组件到全局应用
+        - **AnimationWrapper**: 包装所有页面切换，实现统一过渡动画
+        - **BackButton**: 集成到需要返回功能的页面（SubProjectSelection、QuizScreen等）
+        - **ProgressBar**: 集成到QuizScreen，显示问答进度
+        - **NotificationToast**: 集成到App.vue，提供全局通知功能
+      - [ ] **步骤C.1.2.4.3 (组件接口验证)**: 验证组件集成的完整性和正确性
+        - 验证所有props/emits接口匹配实际使用需求
+        - 验证样式一致性和响应式设计
+        - 验证动画效果和用户体验
+        - 验证错误处理和边界情况
+        - 确保所有组件正常工作并符合设计预期
   - [ ] **步骤C.1.3 (API集成与状态管理)**: 实现与后端的数据交互
     - [ ] **步骤C.1.3.1 (API服务)**: 创建API客户端，集成现有的层级化API
       - 创建API客户端类，封装fetch请求和错误处理
