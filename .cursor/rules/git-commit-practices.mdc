@@ -1,0 +1,32 @@
+---
+alwaysApply: true
+description: "Defines the best practices for writing Git commit messages, following the Conventional Commits specification and including detailed descriptions for significant changes."
+---
+# Git 提交最佳实践
+
+所有生成的 `git commit` 命令都必须严格遵循项目定义的最佳实践。完整细节请参考 [Git 开发指南](mdc:documentation/git-development-guide.md) 的“最佳实践”章节。
+
+## 1. 提交信息规范 (Conventional Commits)
+
+- **类型前缀**: 所有提交信息都必须以一个类型前缀开头，例如 `feat:`, `fix:`, `docs:`, `refactor:`, `style:`, `test:`。
+- **简洁的标题**: 标题行（第一行）应该清晰、简明地概括变更内容。
+
+## 2. 详细提交信息 (推荐用于重要变更)
+
+对于任何非微不足道的变更（如新功能、重构），都应该使用详细的提交信息格式。
+
+**示例**:
+```bash
+git commit -m "feat: 添加诗歌编辑器增强功能" -m "
+- 新增诗歌格式自动检测功能
+- 实现实时预览编辑效果
+- 添加多种诗歌模板选择
+- 优化编辑器响应速度
+- 修复已知的格式兼容性问题"
+```
+
+### 重要约定：不要在提交信息中使用字面量 `\n`
+
+- 在命令中写入 `\n` 不会在 GitHub 网页渲染为换行，严重影响可读性。
+- 请使用多个 `-m` 参数或在交互式编辑器中实际换行来书写正文。
+- 推荐：`git commit -m "feat: ..." -m "第一行" -m "第二行"` 或使用实际换行的第二个 `-m` 文本块。

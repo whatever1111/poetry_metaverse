@@ -152,7 +152,7 @@ router.get('/universes/:universeCode/content', async (req, res, next) => {
 // GET /api/projects - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
 router.get('/projects', async (req, res, next) => {
   // 返回废弃提示，但保持向后兼容
-  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/universe_zhou_spring_autumn/content instead."');
   
   const cacheKey = '/api/projects';
   if (req.query.refresh === 'true') invalidate([cacheKey]);
