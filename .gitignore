@@ -41,3 +41,5 @@ lugarden_universal/application/generated/
 # - lugarden_universal/application/prisma/migrations/ (迁移历史)
 # - lugarden_universal/application/package.json (依赖配置)
 # - lugarden_universal/application/.env (环境变量配置)
+# Cursor - 本地AI配置
+.cursor/

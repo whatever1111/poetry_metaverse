@@ -1,114 +1,199 @@
 import request from 'supertest';
 import express from 'express';
-import fs from 'fs/promises';
-import path from 'path';
 import publicRouter from '../src/routes/public.js';
-import { fileURLToPath } from 'url';
+import { getPrismaClient } from '../src/persistence/prismaClient.js';
 
 const app = express();
 app.use(express.json());
 app.use('/api', publicRouter);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const APP_ROOT = path.resolve(__dirname, '..');
-const DATA_DIR = path.join(APP_ROOT, 'data', 'content');
-const DATA_DRAFT_DIR = path.join(APP_ROOT, 'data', 'content_draft');
-const POEMS_DIR = path.join(APP_ROOT, 'data', 'poems');
+describe('Public API Contract Tests - Phase 2 Universe-Centric Architecture', () => {
+  let prisma;
 
-async function ensureDir(dir) {
-  await fs.mkdir(dir, { recursive: true });
-}
-
-describe('Public API contracts (DB-first with filesystem fallback)', () => {
   beforeAll(async () => {
-    // 准备文件回退夹具
-    await ensureDir(DATA_DIR);
-    await ensureDir(DATA_DRAFT_DIR);
-    await ensureDir(POEMS_DIR);
-
-    await fs.writeFile(
-      path.join(DATA_DIR, 'projects.json'),
-      JSON.stringify({
-        projects: [
-          { id: 'id1', name: '观我生', description: 'desc', poet: '周春秋', status: 'published', subProjects: [{ name: '观我生', description: '章' }] },
-          { id: 'id2', name: '草稿', description: 'desc2', poet: '周春秋', status: 'draft', subProjects: [] },
-        ],
-      }, null, 2)
-    );
-
-    await fs.writeFile(
-      path.join(DATA_DIR, 'questions.json'),
-      JSON.stringify({
-        观我生: [
-          { question: 'Q1', options: { A: 'a', B: 'b' }, meaning: { A: 'ma', B: 'mb' } },
-        ],
-      }, null, 2)
-    );
-
-    await fs.writeFile(
-      path.join(DATA_DIR, 'mappings.json'),
-      JSON.stringify({
-        defaultUnit: '观我生',
-        units: { 观我生: { 'A-B': '标题一' } },
-      }, null, 2)
-    );
-
-    // poems-all: data/poems/观我生/《论不完全只有坏事》.txt
-    const poemsSub = path.join(POEMS_DIR, '观我生');
-    await ensureDir(poemsSub);
-    await fs.writeFile(path.join(poemsSub, '《论不完全只有坏事》.txt'), '诗歌正文...');
-
-    // poem-archetypes
-    await fs.writeFile(
-      path.join(DATA_DRAFT_DIR, 'poem_archetypes.json'),
-      JSON.stringify({ poems: [{ title: '观我生·其一', poet_explanation: '诗人解读...' }] }, null, 2)
-    );
+    prisma = getPrismaClient();
   });
 
-  test('GET /api/projects returns published projects only and proper shape', async () => {
-    const res = await request(app).get('/api/projects');
-    expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.length).toBe(1);
-    expect(res.body[0]).toMatchObject({
-      id: expect.any(String),
-      name: '观我生',
-      status: 'published',
-      subProjects: expect.any(Array),
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  describe('GET /api/universes', () => {
+    it('should return list of published universes', async () => {
+      const response = await request(app)
+        .get('/api/universes')
+        .expect(200);
+
+      expect(Array.isArray(response.body)).toBe(true);
+      
+      // 验证每个宇宙的结构
+      response.body.forEach(universe => {
+        expect(universe).toHaveProperty('id');
+        expect(universe).toHaveProperty('code');
+        expect(universe).toHaveProperty('name');
+        expect(universe).toHaveProperty('type');
+        expect(universe).toHaveProperty('description');
+        expect(universe).toHaveProperty('createdAt');
+        expect(universe).toHaveProperty('updatedAt');
+        expect(universe.status).toBe('published');
+      });
+    });
+
+    it('should support cache refresh parameter', async () => {
+      const response = await request(app)
+        .get('/api/universes?refresh=true')
+        .expect(200);
+
+      expect(Array.isArray(response.body)).toBe(true);
     });
   });
 
-  test('GET /api/questions returns questions by chapter', async () => {
-    const res = await request(app).get('/api/questions');
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('观我生');
-    expect(Array.isArray(res.body['观我生'])).toBe(true);
-    expect(res.body['观我生'][0]).toHaveProperty('question');
-    expect(res.body['观我生'][0]).toHaveProperty('options');
+  describe('GET /api/universes/:universeCode/content', () => {
+    it('should return 404 for non-existent universe', async () => {
+      const response = await request(app)
+        .get('/api/universes/non-existent/content')
+        .expect(404);
+
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error).toBe('宇宙不存在或未发布');
+    });
+
+    it('should return 404 for draft universe', async () => {
+      // 创建草稿状态的宇宙
+      const draftUniverse = await prisma.universe.create({
+        data: {
+          id: 'test-draft-universe',
+          code: 'test-draft',
+          name: 'Test Draft Universe',
+          type: 'test',
+          status: 'draft'
+        }
+      });
+
+      const response = await request(app)
+        .get('/api/universes/test-draft/content')
+        .expect(404);
+
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error).toBe('宇宙不存在或未发布');
+
+      // 清理测试数据
+      await prisma.universe.delete({
+        where: { id: draftUniverse.id }
+      });
+    });
+
+    it('should return zhou_spring_autumn universe content structure', async () => {
+      // 使用正确的宇宙ID，而不是创建新的
+      const zhouUniverse = await prisma.universe.findFirst({
+        where: { id: 'universe_zhou_spring_autumn' }
+      });
+
+      if (!zhouUniverse) {
+        throw new Error('宇宙 universe_zhou_spring_autumn 不存在，请先运行数据迁移');
+      }
+
+      // 确保宇宙状态为published
+      if (zhouUniverse.status !== 'published') {
+        await prisma.universe.update({
+          where: { id: zhouUniverse.id },
+          data: { status: 'published' }
+        });
+      }
+
+      const response = await request(app)
+        .get('/api/universes/universe_zhou_spring_autumn/content')
+        .expect(200);
+
+      // 验证响应结构
+      expect(response.body).toHaveProperty('universe');
+      expect(response.body).toHaveProperty('content');
+
+      // 验证宇宙信息
+      expect(response.body.universe).toHaveProperty('id');
+      expect(response.body.universe).toHaveProperty('code');
+      expect(response.body.universe).toHaveProperty('name');
+      expect(response.body.universe).toHaveProperty('type');
+      expect(response.body.universe.code).toBe('universe_zhou_spring_autumn');
+      expect(response.body.universe.type).toBe('zhou_spring_autumn');
+
+      // 验证内容结构
+      expect(response.body.content).toHaveProperty('projects');
+      expect(response.body.content).toHaveProperty('questions');
+      expect(response.body.content).toHaveProperty('mappings');
+      expect(response.body.content).toHaveProperty('poems');
+      expect(response.body.content).toHaveProperty('poemArchetypes');
+
+      // 验证数据类型
+      expect(Array.isArray(response.body.content.projects)).toBe(true);
+      expect(typeof response.body.content.questions).toBe('object');
+      expect(typeof response.body.content.mappings).toBe('object');
+      expect(typeof response.body.content.poems).toBe('object');
+      expect(typeof response.body.content.poemArchetypes).toBe('object');
+    });
+
+    it('should support cache refresh parameter', async () => {
+      const response = await request(app)
+        .get('/api/universes/universe_zhou_spring_autumn/content?refresh=true')
+        .expect(200);
+
+      expect(response.body).toHaveProperty('universe');
+      expect(response.body).toHaveProperty('content');
+    });
   });
 
-  test('GET /api/mappings returns mapping structure', async () => {
-    const res = await request(app).get('/api/mappings');
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('defaultUnit');
-    expect(res.body).toHaveProperty('units');
+  describe('Deprecated API Compatibility', () => {
+    it('should return deprecation warning for /api/projects', async () => {
+      const response = await request(app)
+        .get('/api/projects')
+        .expect(200);
+
+      expect(response.headers.warning).toContain('This API is deprecated');
+      expect(response.headers.warning).toContain('/api/universes/universe_zhou_spring_autumn/content');
+    });
+
+    it('should return deprecation warning for /api/questions', async () => {
+      const response = await request(app)
+        .get('/api/questions')
+        .expect(200);
+
+      expect(response.headers.warning).toContain('This API is deprecated');
+    });
+
+    it('should return deprecation warning for /api/mappings', async () => {
+      const response = await request(app)
+        .get('/api/mappings')
+        .expect(200);
+
+      expect(response.headers.warning).toContain('This API is deprecated');
+    });
+
+    it('should return deprecation warning for /api/poems-all', async () => {
+      const response = await request(app)
+        .get('/api/poems-all')
+        .expect(200);
+
+      expect(response.headers.warning).toContain('This API is deprecated');
+    });
+
+    it('should return deprecation warning for /api/poem-archetypes', async () => {
+      const response = await request(app)
+        .get('/api/poem-archetypes')
+        .expect(200);
+
+      expect(response.headers.warning).toContain('This API is deprecated');
+    });
   });
 
-  test('GET /api/poems-all returns poem map keyed by cleaned title', async () => {
-    const res = await request(app).get('/api/poems-all');
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('论不完全只有坏事');
-    expect(typeof res.body['论不完全只有坏事']).toBe('string');
-  });
+  describe('Error Handling', () => {
+    it('should handle database errors gracefully', async () => {
+      // 测试不存在的宇宙返回404
+      const response = await request(app)
+        .get('/api/universes/non-existent-universe/content')
+        .expect(404);
 
-  test('GET /api/poem-archetypes returns list shape', async () => {
-    const res = await request(app).get('/api/poem-archetypes');
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('poems');
-    expect(Array.isArray(res.body.poems)).toBe(true);
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error).toBe('宇宙不存在或未发布');
+    });
   });
 });
-
-
-

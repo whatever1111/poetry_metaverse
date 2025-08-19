@@ -1,0 +1,16 @@
+{
+  "verified_at": "2025-08-18T08:58:27.250Z",
+  "summary": {
+    "total_mappings": 48,
+    "mappings_with_meaning": 48,
+    "total_poems": 48,
+    "poems_with_structured_body": 48,
+    "mapping_completeness": 100,
+    "poem_completeness": 100
+  },
+  "verification_result": {
+    "meaning_data_complete": true,
+    "body_data_complete": true,
+    "all_data_verified": true
+  }
+}

@@ -7,9 +7,11 @@
 ## 分支结构
 
 ```
-main
-├── feature/maoxiaodou-universe  (毛小豆宇宙项目)
-├── feature/zhou-spring-autumn   (周与春秋项目)
+(示例分支结构)
+├── main                           # 主分支
+├── feature/                       # 功能开发分支的前缀
+│   ├── user-authentication        # 示例：用户认证功能
+│   └── new-poem-display           # 示例：新的诗歌展示功能
 └── docs/shared                  (共享文档分支)
 ```
 

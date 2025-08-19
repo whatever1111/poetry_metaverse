@@ -34,8 +34,8 @@ export function mapZhouQAToPublicQuestions(qas) {
 }
 
 export function mapZhouMappingToPublicMappings(mappings) {
-  // 输入：ZhouMapping[]
-  // 输出：{ defaultUnit, units: { [chapter]: { [combo]: poemTitle } } }
+  // 输入：ZhouMapping[]（包含meaning字段）
+  // 输出：{ defaultUnit, units: { [chapter]: { [combo]: { poemTitle, meaning? } } } }
   const units = {};
   const chapterOrder = [];
   for (const m of mappings || []) {
@@ -43,30 +43,80 @@ export function mapZhouMappingToPublicMappings(mappings) {
       units[m.chapter] = {};
       chapterOrder.push(m.chapter);
     }
-    units[m.chapter][m.combination] = m.poemTitle;
+    // 支持新的meaning字段，保持向后兼容
+    units[m.chapter][m.combination] = {
+      poemTitle: m.poemTitle,
+      ...(m.meaning && { meaning: m.meaning })
+    };
   }
   const defaultUnit = chapterOrder.length > 0 ? chapterOrder[0] : '';
   return { defaultUnit, units };
 }
 
 export function mapZhouPoemsToPublicPoems(poems) {
-  // 输入：ZhouPoem[]
+  // 输入：ZhouPoem[]（body字段现在是JSON格式）
   // 输出：{ [titleWithoutBrackets]: body }
   const result = {};
   for (const poem of poems || []) {
     const cleaned = (poem.title || '').replace(/[《》]/g, '');
-    if (cleaned) result[cleaned] = poem.body ?? '';
+    if (cleaned) {
+      // 处理新的JSON格式body字段
+      let bodyContent = '';
+      if (poem.body) {
+        if (typeof poem.body === 'string') {
+          // 向后兼容：如果body仍然是字符串格式
+          bodyContent = poem.body;
+        } else if (typeof poem.body === 'object' && poem.body !== null) {
+          // 新的JSON格式：提取主要文本内容
+          const { quote_text, quote_citation, main_text } = poem.body;
+          const parts = [];
+          if (quote_text) parts.push(quote_text);
+          if (quote_citation) parts.push(`——${quote_citation}`);
+          if (main_text) parts.push(main_text);
+          bodyContent = parts.join('\n\n');
+        }
+      }
+      result[cleaned] = bodyContent;
+    }
   }
   return result;
 }
 
 export function mapPoemArchetypesForFrontend(poems) {
-  // 输入：ZhouPoem[]（至少含 title, poetExplanation）
-  // 输出：{ poems: [{ title, poet_explanation }] }
+  // 输入：ZhouPoem[]（至少含 title, poetExplanation，body现在是JSON格式）
+  // 输出：{ poems: [{ title, poet_explanation, classicalEcho, coreTheme, problemSolved, spiritualConsolation, chapter, body }] }
   return {
     poems: (poems || [])
       .filter((p) => (p.poetExplanation ?? '').length > 0)
-      .map((p) => ({ title: p.title, poet_explanation: p.poetExplanation }))
+      .map((p) => {
+        // 处理新的JSON格式body字段
+        let bodyContent = '';
+        if (p.body) {
+          if (typeof p.body === 'string') {
+            // 向后兼容：如果body仍然是字符串格式
+            bodyContent = p.body;
+          } else if (typeof p.body === 'object' && p.body !== null) {
+            // 新的JSON格式：提取主要文本内容
+            const { quote_text, quote_citation, main_text } = p.body;
+            const parts = [];
+            if (quote_text) parts.push(quote_text);
+            if (quote_citation) parts.push(`——${quote_citation}`);
+            if (main_text) parts.push(main_text);
+            bodyContent = parts.join('\n\n');
+          }
+        }
+        
+        return { 
+          title: p.title, 
+          poet_explanation: p.poetExplanation,
+          classicalEcho: p.classicalEcho ?? null,
+          coreTheme: p.coreTheme ?? null,
+          problemSolved: p.problemSolved ?? null,
+          spiritualConsolation: p.spiritualConsolation ?? null,
+          chapter: p.chapter ?? null,
+          body: bodyContent
+        };
+      })
   };
 }
 
@@ -81,6 +131,30 @@ export function getPublishedChapterSetFromProjects(projects) {
     }
   }
   return set;
+}
+
+// 宇宙内容聚合映射函数
+export function mapUniverseContent(universe, projects, qas, mappings, poems, poemArchetypes) {
+  // 输入：宇宙信息和相关数据
+  // 输出：统一的宇宙内容结构
+  return {
+    universe: {
+      id: universe.id,
+      code: universe.code,
+      name: universe.name,
+      type: universe.type,
+      description: universe.description,
+      createdAt: universe.createdAt,
+      updatedAt: universe.updatedAt
+    },
+    content: {
+      projects: projects || [],
+      questions: qas || {},
+      mappings: mappings || { defaultUnit: '', units: {} },
+      poems: poems || {},
+      poemArchetypes: poemArchetypes || { poems: [] }
+    }
+  };
 }
 
 
