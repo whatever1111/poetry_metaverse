@@ -9,29 +9,40 @@
       </div>
       
       <!-- 加载状态 -->
-      <div v-if="zhouStore.universeData.loading" class="loading-container">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">{{ zhouStore.ui.loadingMessage }}</div>
+      <div v-if="zhouStore.universeData.loading">
+        <LoadingSpinner 
+          size="large"
+          :loading-text="zhouStore.ui.loadingMessage || '正在加载项目...'"
+          subtitle="为您准备诗歌之旅"
+          variant="default"
+          :show-progress="false"
+          centered
+        />
       </div>
       
       <!-- 错误状态 -->
-      <div v-else-if="zhouStore.universeData.error" class="error-container">
-        <div class="error-icon">⚠️</div>
-        <h3 class="text-xl font-bold mb-2 text-orange-800">加载失败</h3>
-        <p class="text-orange-600 mb-4">{{ zhouStore.universeData.error }}</p>
-        <button 
-          @click="retryLoad" 
-          class="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 transition-colors"
-        >
-          重试
-        </button>
+      <div v-else-if="zhouStore.universeData.error">
+        <ErrorState 
+          error-type="network"
+          error-title="加载失败"
+          :error-message="zhouStore.universeData.error"
+          :show-retry="true"
+          :show-back="false"
+          retry-text="重试"
+          @retry="retryLoad"
+          :suggestions="['请检查网络连接', '刷新页面重试', '联系技术支持']"
+        />
       </div>
       
       <!-- 空状态 -->
-      <div v-else-if="zhouStore.universeData.projects.length === 0" class="empty-container">
-        <div class="empty-icon">📚</div>
-        <h3 class="text-xl font-bold mb-2 text-gray-600">暂无项目</h3>
-        <p class="text-gray-500">当前没有可用的项目，请稍后再试</p>
+      <div v-else-if="zhouStore.universeData.projects.length === 0">
+        <EmptyState 
+          icon="📚"
+          title="暂无项目"
+          description="当前没有可用的项目，请稍后再试"
+          size="large"
+          variant="default"
+        />
       </div>
       
       <!-- 项目列表 -->
@@ -62,6 +73,9 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import type { ZhouProject } from '../types/zhou'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
+import ErrorState from '../components/ErrorState.vue'
+import EmptyState from '../components/EmptyState.vue'
 
 const router = useRouter()
 const zhouStore = useZhouStore()

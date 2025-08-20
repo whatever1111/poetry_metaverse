@@ -3,12 +3,13 @@
     <div class="container mx-auto px-4 py-8">
       <!-- 返回按钮 -->
       <div class="mb-6">
-        <button @click="goBack" class="flex items-center text-gray-600 hover:text-gray-800 transition-colors">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-          返回
-        </button>
+        <BackButton 
+          text="返回"
+          variant="default"
+          size="medium"
+          :hover-animation="true"
+          @click="goBack"
+        />
       </div>
 
       <!-- 项目信息 -->
@@ -44,16 +45,25 @@
       </div>
 
       <!-- 空状态 -->
-      <div v-else-if="!zhouStore.universeData.loading" class="empty-container animate-fadeIn">
-        <div class="empty-icon">📝</div>
-        <h3 class="text-xl font-bold mb-2 text-gray-600">暂无子项目</h3>
-        <p class="text-gray-500">当前项目没有可用的子项目</p>
+      <div v-else-if="!zhouStore.universeData.loading">
+        <EmptyState 
+          icon="📝"
+          title="暂无子项目"
+          description="当前项目没有可用的子项目"
+          size="medium"
+          variant="default"
+        />
       </div>
 
       <!-- 加载状态 -->
-      <div v-else class="loading-container">
-        <div class="loading-spinner animate-spin"></div>
-        <div class="loading-text">正在加载项目信息...</div>
+      <div v-else>
+        <LoadingSpinner 
+          size="large"
+          loading-text="正在加载项目信息..."
+          subtitle="请稍候，正在为您准备内容"
+          variant="default"
+          centered
+        />
       </div>
     </div>
   </div>
@@ -63,6 +73,9 @@
 import { onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
+import BackButton from '../components/BackButton.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
+import EmptyState from '../components/EmptyState.vue'
 
 const router = useRouter()
 const route = useRoute()

@@ -3,25 +3,32 @@
     <div class="container mx-auto px-4 py-8">
       <!-- 返回按钮 -->
       <div class="mb-6">
-        <button @click="goBack" class="flex items-center text-gray-600 hover:text-gray-800 transition-colors">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-          返回
-        </button>
+        <BackButton 
+          text="返回"
+          variant="default"
+          size="medium"
+          :hover-animation="true"
+          @click="goBack"
+        />
       </div>
 
       <!-- 进度指示器 -->
       <div class="progress-indicator mb-8 animate-fadeIn">
-        <div class="text-center text-sm text-gray-500 mb-2">
-          进度: {{ zhouStore.quiz.currentQuestionIndex + 1 }} / {{ zhouStore.quiz.totalQuestions }}
-        </div>
-        <div class="w-full bg-gray-200 rounded-full h-2">
-          <div 
-            class="bg-blue-500 h-2 rounded-full transition-all duration-300" 
-            :style="{ width: `${zhouStore.quizProgress}%` }"
-          ></div>
-        </div>
+        <ProgressBar 
+          :model-value="zhouStore.quizProgress"
+          :min="0"
+          :max="100"
+          :show-label="true"
+          :show-percentage="true"
+          label-text="问答进度"
+          variant="rounded"
+          color="info"
+          size="medium"
+          :animated="true"
+          :smooth="true"
+          :inner-text="`${zhouStore.quiz.currentQuestionIndex + 1} / ${zhouStore.quiz.totalQuestions}`"
+          :show-inner-text="true"
+        />
       </div>
       
       <!-- 问题卡片 -->
@@ -34,25 +41,41 @@
       </div>
 
       <!-- 加载状态 -->
-      <div v-else-if="zhouStore.universeData.loading" class="loading-container">
-        <div class="loading-spinner animate-spin"></div>
-        <div class="loading-text">正在加载问题...</div>
+      <div v-else-if="zhouStore.universeData.loading">
+        <LoadingSpinner 
+          size="large"
+          loading-text="正在加载问题..."
+          subtitle="请稍候，正在为您准备题目"
+          :show-progress="false"
+          centered
+        />
       </div>
 
       <!-- 错误状态 -->
-      <div v-else-if="zhouStore.universeData.error" class="error-container">
-        <div class="error-icon">⚠️</div>
-        <h3 class="error-title">加载失败</h3>
-        <p class="error-message">{{ zhouStore.universeData.error }}</p>
-        <button @click="retryLoad" class="error-action">重试</button>
+      <div v-else-if="zhouStore.universeData.error">
+        <ErrorState 
+          error-type="network"
+          error-title="加载失败"
+          :error-message="zhouStore.universeData.error"
+          :show-retry="true"
+          :show-back="true"
+          retry-text="重新加载"
+          back-text="返回上一页"
+          @retry="retryLoad"
+          @back="goBack"
+        />
       </div>
 
       <!-- 无问题状态 -->
-      <div v-else class="empty-container">
-        <div class="empty-icon">❓</div>
-        <h3 class="text-xl font-bold mb-2 text-gray-600">没有找到问题</h3>
-        <p class="text-gray-500">当前章节没有可用的问题</p>
-        <button @click="goBack" class="btn-secondary mt-4">返回上一页</button>
+      <div v-else>
+        <EmptyState 
+          icon="❓"
+          title="没有找到问题"
+          description="当前章节没有可用的问题"
+          :show-action="true"
+          action-text="返回上一页"
+          @action="goBack"
+        />
       </div>
     </div>
   </div>
@@ -63,6 +86,11 @@ import { onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import QuestionCard from '../components/QuestionCard.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
+import ErrorState from '../components/ErrorState.vue'
+import EmptyState from '../components/EmptyState.vue'
+import BackButton from '../components/BackButton.vue'
+import ProgressBar from '../components/ProgressBar.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -148,10 +176,6 @@ const retryLoad = async () => {
   background-color: var(--bg-primary);
 }
 
-.progress-indicator .bg-blue-500 {
-  background-color: var(--color-info);
-  transition: width 0.3s ease;
-}
-
+/* ProgressBar组件样式已迁移到组件内部 */
 /* QuestionCard组件样式已迁移到组件内部 */
 </style>

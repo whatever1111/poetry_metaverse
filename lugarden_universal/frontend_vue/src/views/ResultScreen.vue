@@ -45,17 +45,29 @@
         </div>
 
         <!-- 加载状态 -->
-        <div v-if="!zhouStore.result.selectedPoem && !zhouStore.universeData.error" class="loading-container">
-          <div class="loading-spinner animate-spin"></div>
-          <div class="loading-text">正在准备您的诗歌...</div>
+        <div v-if="!zhouStore.result.selectedPoem && !zhouStore.universeData.error">
+          <LoadingSpinner 
+            size="large"
+            loading-text="正在准备您的诗歌..."
+            subtitle="诗意正在汇聚，请稍候..."
+            variant="pulse"
+            :show-progress="false"
+            centered
+          />
         </div>
 
         <!-- 错误状态 -->
-        <div v-if="zhouStore.universeData.error" class="error-container">
-          <div class="error-icon">⚠️</div>
-          <h3 class="error-title">出现了问题</h3>
-          <p class="error-message">{{ zhouStore.universeData.error }}</p>
-          <button @click="retryLoad" class="error-action">重试</button>
+        <div v-if="zhouStore.universeData.error">
+          <ErrorState 
+            error-type="unknown"
+            error-title="出现了问题"
+            :error-message="zhouStore.universeData.error"
+            :show-retry="true"
+            :show-back="false"
+            retry-text="重试"
+            @retry="retryLoad"
+            :suggestions="['请检查网络连接', '刷新页面重试', '稍后再试']"
+          />
         </div>
       </div>
     </div>
@@ -69,6 +81,8 @@ import { useZhouStore } from '../stores/zhou'
 import PoemViewer from '../components/PoemViewer.vue'
 import ActionButtons from '../components/ActionButtons.vue'
 import InterpretationDisplay from '../components/InterpretationDisplay.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
+import ErrorState from '../components/ErrorState.vue'
 
 const router = useRouter()
 const zhouStore = useZhouStore()
