@@ -14,6 +14,11 @@
               :poem-title="zhouStore.result.poemTitle || zhouStore.result.selectedPoem.title"
               :poem-body="zhouStore.result.selectedPoem.body"
               animation-delay="0.2s"
+              :show-actions="true"
+              :show-download="true"
+              @copied="handlePoemCopied"
+              @shared="handlePoemShared"
+              @downloaded="handlePoemDownloaded"
             />
           </div>
           
@@ -21,7 +26,7 @@
           <div class="mb-8 animate-fadeInUp" style="animation-delay: 0.4s;">
             <ActionButtons 
               :interpretation-loading="zhouStore.result.interpretationLoading"
-              :audio-loading="audioLoading"
+              :audio-loading="zhouStore.result.audioLoading"
               :audio-playing="zhouStore.result.audioPlaying"
               :poet-button-clicked="zhouStore.result.poetButtonClicked"
               :poet-button-click-count="zhouStore.result.poetButtonClickCount"
@@ -37,9 +42,14 @@
             <InterpretationDisplay 
               :ai-interpretation="zhouStore.result.interpretationContent"
               :poet-explanation="zhouStore.result.poetExplanation"
+              :ai-error="zhouStore.result.audioError || zhouStore.ui.errorMessage"
+              :show-ai-error="!!zhouStore.result.audioError || !!zhouStore.ui.errorMessage"
+              :show-retry-action="true"
+              :retrying="zhouStore.result.audioLoading || zhouStore.result.interpretationLoading"
               ai-animation-delay="0.6s"
               poet-animation-delay="0.8s"
               empty-message="点击上方按钮获取诗歌解读"
+              @retry-ai="retryAiFeatures"
             />
           </div>
         </div>
@@ -75,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import PoemViewer from '../components/PoemViewer.vue'
@@ -86,7 +96,6 @@ import ErrorState from '../components/ErrorState.vue'
 
 const router = useRouter()
 const zhouStore = useZhouStore()
-const audioLoading = ref(false)
 
 // 结果页面
 // 对应原 zhou.html 中的 #result-screen
@@ -117,15 +126,10 @@ const getInterpretation = async () => {
 
 // 播放诗歌
 const playPoem = async () => {
-  if (audioLoading.value) return
-  
-  audioLoading.value = true
   try {
     await zhouStore.playPoem()
   } catch (error) {
     console.error('播放诗歌失败:', error)
-  } finally {
-    audioLoading.value = false
   }
 }
 
@@ -144,6 +148,42 @@ const startOver = () => {
 const retryLoad = async () => {
   zhouStore.clearError()
   zhouStore.calculatePoemMapping()
+}
+
+// 处理诗歌复制事件
+const handlePoemCopied = (text: string) => {
+  console.log('诗歌已复制到剪贴板:', text.substring(0, 50) + '...')
+  // 可以在这里显示成功提示
+}
+
+// 处理诗歌分享事件
+const handlePoemShared = (shareData: { title: string; text: string; url?: string }) => {
+  console.log('诗歌已分享:', shareData.title)
+  // 可以在这里记录分享统计
+}
+
+// 处理诗歌下载事件
+const handlePoemDownloaded = (fileName: string) => {
+  console.log('诗歌已下载为文件:', fileName)
+  // 可以在这里显示下载成功提示
+}
+
+// 重试AI功能
+const retryAiFeatures = () => {
+  // 清除错误状态
+  zhouStore.clearError()
+  
+  // 可以选择重新获取解读或音频
+  console.log('重试AI功能')
+  
+  // 如果有具体的错误类型，可以根据错误类型决定重试什么
+  if (zhouStore.result.audioError) {
+    // 重试音频功能
+    playPoem()
+  } else if (!zhouStore.result.interpretationContent) {
+    // 重试解读功能
+    getInterpretation()
+  }
 }
 </script>
 

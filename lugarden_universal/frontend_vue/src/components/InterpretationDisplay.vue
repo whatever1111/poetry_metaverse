@@ -69,8 +69,23 @@
       <slot name="custom"></slot>
     </div>
     
+    <!-- AI功能错误状态 -->
+    <div v-if="showAiError && aiError" class="ai-error card-base animate-fadeInUp">
+      <div class="error-content">
+        <div class="error-icon">⚠️</div>
+        <h3 class="error-title">AI功能暂时无法使用</h3>
+        <p class="error-message">{{ aiError }}</p>
+        <div v-if="showRetryAction" class="error-actions">
+          <button @click="handleRetryAi" class="btn-retry" :disabled="retrying">
+            <span v-if="retrying">重试中...</span>
+            <span v-else>重试</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- 空状态 -->
-    <div v-if="!aiInterpretation && !poetExplanation && !$slots.custom" class="empty-interpretation">
+    <div v-if="!aiInterpretation && !poetExplanation && !$slots.custom && !showAiError" class="empty-interpretation">
       <div class="empty-icon">💭</div>
       <p class="empty-text">{{ emptyMessage }}</p>
     </div>
@@ -91,11 +106,16 @@ interface Props {
   showAiActions?: boolean
   regenerating?: boolean
   emptyMessage?: string
+  aiError?: string | null
+  showAiError?: boolean
+  showRetryAction?: boolean
+  retrying?: boolean
 }
 
 // 组件Emits
 interface Emits {
   regenerateAi: []
+  retryAi: []
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -109,7 +129,11 @@ const props = withDefaults(defineProps<Props>(), {
   poetAnimationDelay: '0.2s',
   showAiActions: false,
   regenerating: false,
-  emptyMessage: '暂无解读内容'
+  emptyMessage: '暂无解读内容',
+  aiError: null,
+  showAiError: false,
+  showRetryAction: true,
+  retrying: false
 })
 
 const emit = defineEmits<Emits>()
@@ -128,6 +152,12 @@ const formatTimestamp = (timestamp: Date): string => {
 const handleRegenerateAi = () => {
   if (props.regenerating) return
   emit('regenerateAi')
+}
+
+// 重试AI功能
+const handleRetryAi = () => {
+  if (props.retrying) return
+  emit('retryAi')
 }
 </script>
 
@@ -250,6 +280,62 @@ const handleRegenerateAi = () => {
 }
 
 .btn-regenerate:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* AI错误状态 */
+.ai-error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(248, 113, 113, 0.08) 100%);
+  border-left: 4px solid #ef4444;
+  text-align: center;
+}
+
+.error-content {
+  padding: var(--spacing-lg);
+}
+
+.error-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-base);
+}
+
+.error-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: #dc2626;
+  margin-bottom: var(--spacing-sm);
+}
+
+.error-message {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+.error-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-retry {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.btn-retry:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.btn-retry:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;

@@ -34,6 +34,10 @@
               :poem-title="zhouStore.result.poemTitle || zhouStore.result.selectedPoem.title"
               :poem-body="zhouStore.result.selectedPoem.body"
               animation-delay="0.0s"
+              :show-actions="true"
+              :show-download="false"
+              @copied="handlePoemCopied"
+              @shared="handlePoemShared"
             />
           </div>
           
@@ -151,6 +155,16 @@ const continueToResult = async () => {
   } finally {
     isTransitioning.value = false
   }
+}
+
+// 处理诗歌复制事件
+const handlePoemCopied = (text: string) => {
+  console.log('古典回响页面：诗歌已复制到剪贴板:', text.substring(0, 50) + '...')
+}
+
+// 处理诗歌分享事件
+const handlePoemShared = (shareData: { title: string; text: string; url?: string }) => {
+  console.log('古典回响页面：诗歌已分享:', shareData.title)
 }
 </script>
 

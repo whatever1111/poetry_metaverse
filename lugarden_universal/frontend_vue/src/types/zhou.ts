@@ -151,6 +151,9 @@ export interface ResultState {
   interpretationLoading: boolean
   audioUrl: string | null
   audioPlaying: boolean
+  audioLoading: boolean
+  audioElement: HTMLAudioElement | null
+  audioError: string | null
   poetExplanation: string | null
   poetButtonClicked: boolean
   poetButtonClickCount: number

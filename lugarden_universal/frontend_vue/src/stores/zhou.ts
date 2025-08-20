@@ -95,11 +95,14 @@ export const useZhouStore = defineStore('zhou', () => {
     poemTitle: null,
     interpretationContent: null,
     interpretationLoading: false,
-    audioUrl: null,
-    audioPlaying: false,
-    poetExplanation: null,
-    poetButtonClicked: false,
-    poetButtonClickCount: 0
+      audioUrl: null,
+  audioPlaying: false,
+  audioLoading: false,
+  audioElement: null as HTMLAudioElement | null,
+  audioError: null,
+  poetExplanation: null,
+  poetButtonClicked: false,
+  poetButtonClickCount: 0
   })
 
   // ================================
@@ -522,11 +525,70 @@ export const useZhouStore = defineStore('zhou', () => {
     }
   }
 
-  // 播放读诗音频
+  // 播放/暂停读诗音频
   async function playPoem(): Promise<void> {
     if (!result.selectedPoem) return
 
+    // 如果音频正在播放，暂停它
+    if (result.audioPlaying && result.audioElement) {
+      pauseAudio()
+      return
+    }
+
+    // 如果有现有的音频URL，直接播放
+    if (result.audioUrl && result.audioElement) {
+      playExistingAudio()
+      return
+    }
+
+    // 获取新的音频URL并播放
+    await loadAndPlayNewAudio()
+  }
+
+  // 暂停音频播放
+  function pauseAudio(): void {
+    if (result.audioElement && result.audioPlaying) {
+      result.audioElement.pause()
+      result.audioPlaying = false
+      console.log('音频播放已暂停')
+    }
+  }
+
+  // 停止音频播放
+  function stopAudio(): void {
+    if (result.audioElement) {
+      result.audioElement.pause()
+      result.audioElement.currentTime = 0
+      result.audioPlaying = false
+      console.log('音频播放已停止')
+    }
+  }
+
+  // 播放现有音频
+  function playExistingAudio(): void {
+    if (result.audioElement) {
+      result.audioElement.play()
+        .then(() => {
+          result.audioPlaying = true
+          result.audioError = null
+          console.log('音频播放已恢复')
+        })
+        .catch((error) => {
+          console.error('音频播放失败:', error)
+          result.audioError = '音频播放失败'
+          ui.errorMessage = '音频播放失败，请重试'
+        })
+    }
+  }
+
+  // 加载并播放新音频
+  async function loadAndPlayNewAudio(): Promise<void> {
+    if (!result.selectedPoem) return
+
     try {
+      result.audioLoading = true
+      result.audioError = null
+
       const api = initializeApiServices()
       const aiService = api.getAIService()
       
@@ -540,7 +602,9 @@ export const useZhouStore = defineStore('zhou', () => {
       )
       
       result.audioUrl = data.audioUrl
-      result.audioPlaying = true
+
+      // 创建音频元素
+      await createAndSetupAudioElement(data.audioUrl)
 
       console.log('读诗音频获取成功:', {
         title: data.poem_title,
@@ -549,14 +613,73 @@ export const useZhouStore = defineStore('zhou', () => {
       })
 
     } catch (error) {
-      console.error('播放读诗失败:', error)
+      console.error('获取读诗音频失败:', error)
       
       if (isApiError(error)) {
+        result.audioError = getUserFriendlyErrorMessage(error)
         ui.errorMessage = getUserFriendlyErrorMessage(error)
       } else {
-        ui.errorMessage = '播放音频失败，请稍后重试'
+        result.audioError = '获取音频失败，请稍后重试'
+        ui.errorMessage = '获取音频失败，请稍后重试'
       }
+    } finally {
+      result.audioLoading = false
     }
+  }
+
+  // 创建并设置音频元素
+  async function createAndSetupAudioElement(audioUrl: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // 清理现有的音频元素
+      if (result.audioElement) {
+        result.audioElement.pause()
+        result.audioElement.src = ''
+        result.audioElement = null
+      }
+
+      // 创建新的音频元素
+      const audio = new Audio(audioUrl)
+      audio.preload = 'auto'
+
+      // 设置事件监听器
+      const handleAudioLoaded = () => {
+        result.audioElement = audio
+        result.audioError = null
+        
+        // 开始播放
+        audio.play()
+          .then(() => {
+            result.audioPlaying = true
+            console.log('音频开始播放')
+            resolve()
+          })
+          .catch((error) => {
+            console.error('音频播放启动失败:', error)
+            result.audioError = '音频播放启动失败'
+            reject(error)
+          })
+      }
+
+      const handleAudioError = (error: Event) => {
+        console.error('音频加载错误:', error)
+        result.audioError = '音频加载失败'
+        result.audioElement = null
+        reject(new Error('音频加载失败'))
+      }
+
+      const handleAudioEnded = () => {
+        result.audioPlaying = false
+        console.log('音频播放完成')
+      }
+
+      // 绑定事件监听器
+      audio.addEventListener('loadeddata', handleAudioLoaded, { once: true })
+      audio.addEventListener('error', handleAudioError, { once: true })
+      audio.addEventListener('ended', handleAudioEnded)
+
+      // 开始加载音频
+      audio.load()
+    })
   }
 
   // 显示诗人解读
@@ -615,8 +738,18 @@ export const useZhouStore = defineStore('zhou', () => {
     result.selectedPoem = null
     result.poemTitle = null
     result.interpretationContent = null
+    
+    // 清理音频资源
+    if (result.audioElement) {
+      result.audioElement.pause()
+      result.audioElement.src = ''
+      result.audioElement = null
+    }
+    
     result.audioUrl = null
     result.audioPlaying = false
+    result.audioLoading = false
+    result.audioError = null
     result.poetExplanation = null
     result.poetButtonClicked = false
     result.poetButtonClickCount = 0
@@ -679,6 +812,8 @@ export const useZhouStore = defineStore('zhou', () => {
     // AI功能
     getInterpretation,
     playPoem,
+    pauseAudio,
+    stopAudio,
     showPoetExplanation,
 
     // UI状态
