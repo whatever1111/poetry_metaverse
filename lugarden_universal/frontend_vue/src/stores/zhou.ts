@@ -247,6 +247,14 @@ export const useZhouStore = defineStore('zhou', () => {
     quiz.isQuizComplete = false
     quiz.quizStartTime = Date.now()
     
+    // 尝试恢复保存的问答状态
+    const restored = restoreQuizState()
+    if (restored) {
+      console.log('已恢复之前的问答进度')
+    } else {
+      console.log('开始新的问答流程')
+    }
+    
     appState.currentStep = 3
     navigation.navigationHistory.push('/quiz')
     
@@ -279,6 +287,81 @@ export const useZhouStore = defineStore('zhou', () => {
   // Actions - 问答流程管理
   // ================================
 
+  // 保存问答状态到localStorage
+  function saveQuizState(): void {
+    if (!navigation.currentChapterName) return
+    
+    const quizState = {
+      chapterName: navigation.currentChapterName,
+      currentQuestionIndex: quiz.currentQuestionIndex,
+      totalQuestions: quiz.totalQuestions,
+      userAnswers: quiz.userAnswers,
+      userAnswerMeanings: quiz.userAnswerMeanings,
+      isQuizComplete: quiz.isQuizComplete,
+      quizStartTime: quiz.quizStartTime,
+      savedAt: Date.now()
+    }
+    
+    try {
+      localStorage.setItem('zhou_quiz_state', JSON.stringify(quizState))
+      console.log('问答状态已保存:', quizState)
+    } catch (error) {
+      console.warn('保存问答状态失败:', error)
+    }
+  }
+
+  // 从localStorage恢复问答状态
+  function restoreQuizState(): boolean {
+    try {
+      const savedState = localStorage.getItem('zhou_quiz_state')
+      if (!savedState) return false
+      
+      const state = JSON.parse(savedState)
+      
+      // 检查状态是否过期（24小时）
+      const isExpired = Date.now() - state.savedAt > 24 * 60 * 60 * 1000
+      if (isExpired) {
+        localStorage.removeItem('zhou_quiz_state')
+        return false
+      }
+      
+      // 检查章节是否匹配
+      if (state.chapterName !== navigation.currentChapterName) {
+        return false
+      }
+      
+      // 恢复问答状态
+      quiz.currentQuestionIndex = state.currentQuestionIndex
+      quiz.totalQuestions = state.totalQuestions
+      quiz.userAnswers = state.userAnswers || []
+      quiz.userAnswerMeanings = state.userAnswerMeanings || []
+      quiz.isQuizComplete = state.isQuizComplete || false
+      quiz.quizStartTime = state.quizStartTime
+      
+      console.log('问答状态已恢复:', {
+        chapterName: state.chapterName,
+        currentIndex: quiz.currentQuestionIndex,
+        answersCount: quiz.userAnswers.length
+      })
+      
+      return true
+    } catch (error) {
+      console.warn('恢复问答状态失败:', error)
+      localStorage.removeItem('zhou_quiz_state')
+      return false
+    }
+  }
+
+  // 清除保存的问答状态
+  function clearSavedQuizState(): void {
+    try {
+      localStorage.removeItem('zhou_quiz_state')
+      console.log('已清除保存的问答状态')
+    } catch (error) {
+      console.warn('清除问答状态失败:', error)
+    }
+  }
+
   // 回答问题
   function answerQuestion(selectedOption: 'A' | 'B'): void {
     const question = currentQuestion.value
@@ -305,6 +388,9 @@ export const useZhouStore = defineStore('zhou', () => {
       text: answer.selectedText
     })
 
+    // 保存问答状态
+    saveQuizState()
+
     // 进入下一题或完成问答
     proceedToNextQuestion()
   }
@@ -329,6 +415,9 @@ export const useZhouStore = defineStore('zhou', () => {
     // 计算诗歌映射
     calculatePoemMapping()
     
+    // 清除保存的问答状态（已完成，不需要恢复）
+    clearSavedQuizState()
+    
     appState.currentStep = 4
     navigation.navigationHistory.push('/classical-echo')
     
@@ -343,6 +432,9 @@ export const useZhouStore = defineStore('zhou', () => {
     quiz.isQuizComplete = false
     quiz.quizStartTime = null
     quiz.quizEndTime = null
+    
+    // 清除保存的问答状态
+    clearSavedQuizState()
   }
 
   // ================================
@@ -576,6 +668,9 @@ export const useZhouStore = defineStore('zhou', () => {
     proceedToNextQuestion,
     completeQuiz,
     resetQuiz,
+    saveQuizState,
+    restoreQuizState,
+    clearSavedQuizState,
 
     // 结果管理
     calculatePoemMapping,

@@ -12,6 +12,37 @@
         />
       </div>
 
+      <!-- 状态恢复提示 -->
+      <div v-if="showRestorePrompt" class="restore-prompt mb-6 animate-fadeInUp">
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+          <div class="flex items-start gap-3">
+            <div class="text-blue-500 text-xl">💾</div>
+            <div class="flex-1">
+              <h3 class="font-medium text-blue-800 dark:text-blue-200 mb-2">
+                发现未完成的问答进度
+              </h3>
+              <p class="text-sm text-blue-600 dark:text-blue-300 mb-3">
+                您在此章节中已回答 {{ savedAnswersCount }} / {{ zhouStore.quiz.totalQuestions }} 道题目，是否继续之前的进度？
+              </p>
+              <div class="flex gap-2">
+                <button 
+                  @click="restorePreviousProgress"
+                  class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                >
+                  继续上次进度
+                </button>
+                <button 
+                  @click="startNewQuiz"
+                  class="px-3 py-1 border border-blue-300 text-blue-600 text-sm rounded hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+                >
+                  重新开始
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 进度指示器 -->
       <div class="progress-indicator mb-8 animate-fadeIn">
         <ProgressBar 
@@ -82,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { onMounted, watch, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import QuestionCard from '../components/QuestionCard.vue'
@@ -95,6 +126,10 @@ import ProgressBar from '../components/ProgressBar.vue'
 const router = useRouter()
 const route = useRoute()
 const zhouStore = useZhouStore()
+
+// 状态恢复相关
+const showRestorePrompt = ref(false)
+const savedAnswersCount = ref(0)
 
 // 问答页面
 // 对应原 zhou.html 中的 #question-screen
@@ -124,11 +159,17 @@ onMounted(async () => {
     // 选择章节
     if (zhouStore.universeData.questions[chapterName]) {
       zhouStore.selectChapter(chapterName)
+      
+      // 检查是否有保存的状态
+      checkForSavedState(chapterName)
     } else {
       // 章节不存在，返回主页
       router.replace('/')
       return
     }
+  } else if (zhouStore.navigation.currentChapterName) {
+    // 如果已有当前章节，检查保存的状态
+    checkForSavedState(zhouStore.navigation.currentChapterName)
   }
 
   // 如果没有当前章节，返回上一页
@@ -136,6 +177,35 @@ onMounted(async () => {
     router.replace('/project')
   }
 })
+
+// 检查保存的状态
+const checkForSavedState = (chapterName: string) => {
+  try {
+    const savedState = localStorage.getItem('zhou_quiz_state')
+    if (savedState) {
+      const state = JSON.parse(savedState)
+      
+      // 检查是否是同一章节且未过期
+      if (state.chapterName === chapterName && 
+          state.userAnswers && 
+          state.userAnswers.length > 0 &&
+          !state.isQuizComplete &&
+          Date.now() - state.savedAt < 24 * 60 * 60 * 1000) {
+        
+        savedAnswersCount.value = state.userAnswers.length
+        showRestorePrompt.value = true
+        
+        console.log('发现可恢复的问答状态:', {
+          chapter: chapterName,
+          answersCount: savedAnswersCount.value,
+          totalQuestions: state.totalQuestions
+        })
+      }
+    }
+  } catch (error) {
+    console.warn('检查保存状态失败:', error)
+  }
+}
 
 // 监听问答完成状态
 watch(
@@ -167,6 +237,35 @@ const goBack = () => {
 const retryLoad = async () => {
   zhouStore.clearError()
   await zhouStore.loadUniverseContent()
+}
+
+// 恢复之前的进度
+const restorePreviousProgress = () => {
+  const restored = zhouStore.restoreQuizState()
+  if (restored) {
+    showRestorePrompt.value = false
+    console.log('已恢复之前的问答进度')
+  } else {
+    console.warn('恢复问答进度失败')
+    startNewQuiz()
+  }
+}
+
+// 重新开始问答
+const startNewQuiz = () => {
+  zhouStore.clearSavedQuizState()
+  zhouStore.resetQuiz()
+  
+  // 重新初始化当前章节
+  const chapterName = zhouStore.navigation.currentChapterName
+  if (chapterName && zhouStore.universeData.questions[chapterName]) {
+    const questions = zhouStore.universeData.questions[chapterName]
+    zhouStore.quiz.totalQuestions = questions.length
+    zhouStore.quiz.quizStartTime = Date.now()
+  }
+  
+  showRestorePrompt.value = false
+  console.log('开始新的问答流程')
 }
 </script>
 
