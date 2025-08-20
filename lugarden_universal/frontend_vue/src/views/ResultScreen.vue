@@ -30,6 +30,7 @@
               :audio-playing="zhouStore.result.audioPlaying"
               :poet-button-clicked="zhouStore.result.poetButtonClicked"
               :poet-button-click-count="zhouStore.result.poetButtonClickCount"
+              :poet-button-text="zhouStore.getPoetButtonText()"
               @interpret="getInterpretation"
               @play-poem="playPoem"
               @poet-explanation="showPoetExplanation"

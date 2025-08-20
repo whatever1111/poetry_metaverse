@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick } from 'vue'
+import { computed, ref } from 'vue'
 
 // 组件Props
 interface Props {
@@ -196,7 +196,7 @@ const copyPoem = async () => {
       
       try {
         document.execCommand('copy')
-      } catch (err) {
+      } catch {
         throw new Error('复制失败')
       } finally {
         document.body.removeChild(textArea)

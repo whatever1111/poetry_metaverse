@@ -25,7 +25,7 @@ export const useZhouStore = defineStore('zhou', () => {
         onLoadingChange: (loading: boolean) => {
           ui.showLoadingScreen = loading
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
           console.error('API错误:', error)
           ui.errorMessage = getUserFriendlyErrorMessage(error)
         },
@@ -686,15 +686,38 @@ export const useZhouStore = defineStore('zhou', () => {
   function showPoetExplanation(): void {
     if (!result.selectedPoem) return
 
+    // 增加点击计数
+    result.poetButtonClickCount++
+    result.poetButtonClicked = true
+
     // 查找对应的诗人解读
     const archetype = universeData.poemArchetypes.find(
       p => p.title === result.selectedPoem?.title
     )
 
-    if (archetype) {
+    if (archetype && archetype.poet_explanation) {
       result.poetExplanation = archetype.poet_explanation
-      result.poetButtonClicked = true
-      result.poetButtonClickCount++
+    } else {
+      // 无解读内容时的幽默提示
+      result.poetExplanation = "恭喜你，虽然你不听劝，但诗人听劝，没给这首诗也提供官方解读"
+    }
+  }
+
+  // 获取诗人解读按钮文本
+  function getPoetButtonText(): string {
+    const count = result.poetButtonClickCount
+    
+    switch (count) {
+      case 0:
+        return "最好不要点"
+      case 1:
+        return "哎，还是点了……"
+      case 2:
+        return "点都点了，看吧"
+      case 3:
+        return "别点了，别点了"
+      default:
+        return "点吧，点吧……"
     }
   }
 
@@ -815,6 +838,7 @@ export const useZhouStore = defineStore('zhou', () => {
     pauseAudio,
     stopAudio,
     showPoetExplanation,
+    getPoetButtonText,
 
     // UI状态
     showLoading,

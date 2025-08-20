@@ -25,14 +25,11 @@
       <!-- 诗人解读按钮 -->
       <button 
         @click="handlePoetExplanation" 
-        class="btn-poet btn-base"
-        :class="{ 'opacity-75': poetButtonClicked }"
+        class="btn-poet btn-base text-change-animation"
+        :class="{ 'opacity-75': poetButtonClicked, 'text-changing': textChanging }"
         :disabled="disabled"
       >
-        <span v-if="poetButtonClicked">
-          诗人解读 ({{ poetButtonClickCount }})
-        </span>
-        <span v-else>诗人解读</span>
+        <span>{{ poetButtonText }}</span>
       </button>
       
       <!-- 重新开始按钮 -->
@@ -58,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 // 组件Props
 interface Props {
@@ -70,6 +67,7 @@ interface Props {
   disabled?: boolean
   showHints?: boolean
   gridLayout?: 'grid-2x2' | 'grid-1x4' | 'grid-responsive'
+  poetButtonText?: string
 }
 
 // 组件Emits
@@ -88,8 +86,12 @@ const props = withDefaults(defineProps<Props>(), {
   poetButtonClickCount: 0,
   disabled: false,
   showHints: true,
-  gridLayout: 'grid-responsive'
+  gridLayout: 'grid-responsive',
+  poetButtonText: '最好不要点'
 })
+
+// 文本变化动画状态
+const textChanging = ref(false)
 
 const emit = defineEmits<Emits>()
 
@@ -119,6 +121,13 @@ const handlePlayPoem = () => {
 
 const handlePoetExplanation = () => {
   if (props.disabled) return
+  
+  // 触发文本变化动画
+  textChanging.value = true
+  setTimeout(() => {
+    textChanging.value = false
+  }, 400) // 与CSS动画时间一致
+  
   emit('poetExplanation')
 }
 
@@ -297,6 +306,17 @@ const handleRestart = () => {
   border-top: 2px solid currentColor;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+
+/* 文本变化动画 */
+.text-change-animation.text-changing {
+  animation: textChangeScale 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes textChangeScale {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
 }
 
 /* 按钮组动画 */
