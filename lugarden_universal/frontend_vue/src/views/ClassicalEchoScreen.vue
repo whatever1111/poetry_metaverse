@@ -2,54 +2,42 @@
   <div class="classical-echo-screen">
     <div class="container mx-auto px-4 py-8">
       <div class="max-w-4xl mx-auto">
-        <!-- 古典回响内容 -->
-        <div class="echo-content text-center">
-          <h1 class="content-title mb-6 animate-fadeIn">
-            古典回响
-          </h1>
-          
-          <!-- 古典回响内容 -->
-          <div class="echo-text animate-fadeInUp" style="animation-delay: 0.3s;">
-            <InterpretationDisplay 
-              :ai-interpretation="classicalEchoContent"
-              empty-message="您的心境与古人相通，即将为您呈现一首与您内心共鸣的诗歌。"
-              ai-animation-delay="0.0s"
-            >
-              <template #custom v-if="!classicalEchoContent">
-                <div class="default-echo-content">
-                  <p class="italic text-gray-600 mb-4">
-                    "诗者，志之所之也。在心为志，发言为诗。"
-                  </p>
-                  <p class="text-base">
-                    您的心境与古人相通，即将为您呈现一首与您内心共鸣的诗歌。
-                  </p>
-                </div>
-              </template>
-            </InterpretationDisplay>
-          </div>
-          
-          <!-- 诗歌预览 -->
-          <div v-if="zhouStore.result.selectedPoem" class="poem-preview animate-fadeInUp" style="animation-delay: 0.5s;">
-            <PoemViewer 
-              :poem-title="zhouStore.result.poemTitle || zhouStore.result.selectedPoem.title"
-              :poem-body="zhouStore.result.selectedPoem.body"
-              animation-delay="0.0s"
-              :show-actions="true"
-              :show-download="false"
-              @copied="handlePoemCopied"
-              @shared="handlePoemShared"
-            />
-          </div>
-          
-          <!-- 继续按钮 -->
-          <div class="action-buttons animate-fadeInUp" style="animation-delay: 0.6s;">
+        <!-- 古典回响内容展示 - 使用专门的ClassicalEchoDisplay组件 -->
+        <div class="echo-content">
+          <ClassicalEchoDisplay 
+            :quote-citation="quoteCitation"
+            :quote-text="quoteText"
+            :classical-echo="classicalEchoContent"
+            content-animation-delay="0.1s"
+          />
+        </div>
+        
+        <!-- 继续按钮区域 - 对齐原版zhou.html的分离式设计 -->
+        <div class="continue-section animate-fadeInUp" style="animation-delay: 0.5s;">
+          <div class="flex items-center justify-center gap-2">
+            <!-- 引导文字 - 来自原版zhou.html -->
+            <span class="continue-text">看看你的同行者吴任几是怎么说的</span>
+            <!-- 箭头按钮 -->
             <button 
               @click="continueToResult"
-              class="btn-continue flex items-center justify-center mx-auto"
+              class="btn-continue-arrow"
               :class="{ 'animate-pulse': isTransitioning }"
               :disabled="isTransitioning"
             >
-              <span v-if="!isTransitioning">继续</span>
+              <svg 
+                v-if="!isTransitioning"
+                class="continue-btn-icon" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="2" 
+                  d="M9 5l7 7-7 7"
+                ></path>
+              </svg>
               <svg 
                 v-else
                 class="animate-spin h-5 w-5" 
@@ -71,10 +59,6 @@
                 ></path>
               </svg>
             </button>
-            
-            <p class="text-sm text-gray-500 mt-4 italic">
-              静心凝神，诗意正在汇聚...
-            </p>
           </div>
         </div>
       </div>
@@ -86,8 +70,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
-import PoemViewer from '../components/PoemViewer.vue'
-import InterpretationDisplay from '../components/InterpretationDisplay.vue'
+import ClassicalEchoDisplay from '../components/ClassicalEchoDisplay.vue'
 
 const router = useRouter()
 const zhouStore = useZhouStore()
@@ -95,6 +78,48 @@ const isTransitioning = ref(false)
 
 // 古典回响页面
 // 对应原 zhou.html 中的 #classical-echo-screen
+// 使用专门的ClassicalEchoDisplay组件实现原版的"你选择的道路，有古人智慧的回响"体验
+
+// 从合并后的诗歌body字符串中解析引文篇目名
+const quoteCitation = computed(() => {
+  const selectedPoem = zhouStore.result.selectedPoem
+  if (!selectedPoem || !selectedPoem.body || typeof selectedPoem.body !== 'string') return null
+  
+  // 后端合并格式：quote_text + "\n\n" + "——" + quote_citation + "\n\n" + main_text
+  const bodyContent = selectedPoem.body as string
+  const parts = bodyContent.split('\n\n')
+  
+  // 查找以"——"开头的部分，这是引文篇目名
+  for (const part of parts) {
+    if (part.startsWith('——')) {
+      return part.substring(1).trim() // 移除"——"前缀并去除空格
+    }
+  }
+  
+  return null
+})
+
+// 从合并后的诗歌body字符串中解析引文内容
+const quoteText = computed(() => {
+  const selectedPoem = zhouStore.result.selectedPoem
+  if (!selectedPoem || !selectedPoem.body || typeof selectedPoem.body !== 'string') return null
+  
+  // 后端合并格式：quote_text + "\n\n" + "——" + quote_citation + "\n\n" + main_text
+  const bodyContent = selectedPoem.body as string
+  const parts = bodyContent.split('\n\n')
+  
+  // 第一个部分通常是引文内容（如果存在的话）
+  // 需要排除以"——"开头的篇目名部分
+  if (parts.length > 0 && !parts[0].startsWith('——')) {
+    // 检查这个部分是否看起来像引文（通常比较短，且不是完整的诗歌）
+    const firstPart = parts[0].trim()
+    if (firstPart && firstPart.length < 200) { // 引文通常较短
+      return firstPart
+    }
+  }
+  
+  return null
+})
 
 // 根据用户答案生成古典回响内容
 const classicalEchoContent = computed(() => {
@@ -156,16 +181,6 @@ const continueToResult = async () => {
     isTransitioning.value = false
   }
 }
-
-// 处理诗歌复制事件
-const handlePoemCopied = (text: string) => {
-  console.log('古典回响页面：诗歌已复制到剪贴板:', text.substring(0, 50) + '...')
-}
-
-// 处理诗歌分享事件
-const handlePoemShared = (shareData: { title: string; text: string; url?: string }) => {
-  console.log('古典回响页面：诗歌已分享:', shareData.title)
-}
 </script>
 
 <style scoped>
@@ -178,49 +193,61 @@ const handlePoemShared = (shareData: { title: string; text: string; url?: string
 }
 
 .echo-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.echo-text {
-  margin-bottom: var(--spacing-xl);
-}
-
-.poem-preview {
   margin-bottom: var(--spacing-2xl);
 }
 
-.default-echo-content {
+/* 继续按钮区域 - 对齐原版zhou.html的分离式设计 */
+.continue-section {
   text-align: center;
-  padding: var(--spacing-lg);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.95) 100%);
-  border-radius: var(--radius-base);
+  margin-top: var(--spacing-xl);
 }
 
-.btn-continue {
-  min-width: 120px;
-  min-height: 48px;
+.continue-text {
+  color: var(--text-secondary);
   font-size: var(--font-size-lg);
-  font-weight: 600;
-  padding: var(--spacing-base) var(--spacing-2xl);
-  border-radius: var(--radius-full);
-  transition: all var(--duration-normal) var(--ease-out);
+  font-weight: 500;
 }
 
-.btn-continue:disabled {
+/* 箭头按钮样式 - 对齐原版zhou.html */
+.btn-continue-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-600) 100%);
+  color: white;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  box-shadow: 
+    0 4px 12px rgba(var(--color-primary-500-rgb), 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-continue-arrow:hover:not(:disabled) {
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 
+    0 6px 16px rgba(var(--color-primary-500-rgb), 0.4),
+    0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-continue-arrow:active:not(:disabled) {
+  transform: translateY(0) scale(1.02);
+  transition-duration: 0.1s;
+}
+
+.btn-continue-arrow:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* 诗意的卡片效果 */
-.card-base {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.95) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+.continue-btn-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 2px; /* 视觉居中调整 */
 }
 
 /* 响应式设计 */
@@ -231,27 +258,67 @@ const handlePoemShared = (shareData: { title: string; text: string; url?: string
   }
   
   .echo-content {
-    padding: 0 var(--spacing-base);
+    margin-bottom: var(--spacing-xl);
   }
   
-  .content-title {
-    font-size: var(--font-size-3xl);
-    margin-bottom: var(--spacing-base);
+  .continue-section {
+    margin-top: var(--spacing-lg);
   }
   
-  .echo-text .card-base {
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
+  .continue-text {
+    font-size: var(--font-size-base);
+  }
+  
+  .btn-continue-arrow {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .continue-btn-icon {
+    width: 18px;
+    height: 18px;
   }
 }
 
 @media (max-width: 480px) {
-  .echo-text .card-base {
-    padding: var(--spacing-base);
+  .continue-section {
+    flex-direction: column;
+    gap: var(--spacing-base);
   }
   
-  .content-title {
-    font-size: var(--font-size-2xl);
+  .continue-text {
+    font-size: var(--font-size-sm);
   }
+  
+  .btn-continue-arrow {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+  }
+  
+  .continue-btn-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* 移动端取消悬浮效果 */
+@media (max-width: 768px) {
+  .btn-continue-arrow:hover:not(:disabled) {
+    transform: none;
+    box-shadow: 
+      0 4px 12px rgba(var(--color-primary-500-rgb), 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 无障碍访问增强 */
+.btn-continue-arrow:focus {
+  outline: 2px solid var(--color-primary-300);
+  outline-offset: 2px;
+}
+
+.btn-continue-arrow:focus:not(:focus-visible) {
+  outline: none;
 }
 </style>

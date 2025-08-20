@@ -689,7 +689,7 @@
 - 提升交互反馈和用户体验，建立现代化界面标准
 - 确保设计系统的一致性和可扩展性
 
-#### - [ ] 任务D.1：古典回响页面内容展示优化
+#### - [x] 任务D.1：古典回响页面内容展示优化 ✅
 
 - **核心思想**: 创建专门的ClassicalEchoDisplay组件，实现原版引导语和引文篇目名→引文内容→古典回响的正确展示流程
 - **设计理念决策**: 
@@ -704,22 +704,26 @@
   - `classicalEcho`字段（String格式）：对引文的背景故事解释
   - **原版结构** (zhou.html第718-743行)：引导语 + 专门展示区域 + 后续引导
 - **交付物**:
-  - 全新的ClassicalEchoDisplay.vue组件
-  - 更新后的ClassicalEchoScreen.vue页面
-  - 完全还原原版zhou.html的用户体验
+  - ✅ 全新的ClassicalEchoDisplay.vue组件
+  - ✅ 更新后的ClassicalEchoScreen.vue页面
+  - ✅ 完全还原原版zhou.html的用户体验
 - **验收标准**:
-  - 恢复原版核心引导语："你选择的道路，有古人智慧的回响"
-  - 内容按引文篇目名→引文内容→古典回响顺序展示
-  - 页面结构与原版zhou.html完全对齐
-  - 组件职责清晰，代码可维护性良好
+  - ✅ 恢复原版核心引导语："你选择的道路，有古人智慧的回响"
+  - ✅ 内容按引文篇目名→引文内容→古典回响顺序展示
+  - ✅ 页面结构与原版zhou.html完全对齐
+  - ✅ 组件职责清晰，代码可维护性良好
 - **预期改动文件**:
   - `lugarden_universal/frontend_vue/src/components/ClassicalEchoDisplay.vue` - 新建专门的古典回响展示组件
   - `lugarden_universal/frontend_vue/src/views/ClassicalEchoScreen.vue` - 集成新组件并移除InterpretationDisplay的使用
-- **完成状态**: 🔄 待开始
+- **实际改动文件**:
+  - `lugarden_universal/frontend_vue/src/components/ClassicalEchoDisplay.vue` - ✅ 新建专门的古典回响展示组件
+  - `lugarden_universal/frontend_vue/src/views/ClassicalEchoScreen.vue` - ✅ 集成新组件并移除InterpretationDisplay的使用
+- **完成状态**: ✅ 已完成
 - **执行步骤**:
-  - [ ] **步骤D.1.1 (创建ClassicalEchoDisplay组件)**: 设计专门的古典回响展示组件，包含'你选择的道路，有古人智慧的回响'核心引导语和独特的视觉设计
-  - [ ] **步骤D.1.2 (实现古典回响内容展示逻辑)**: 在ClassicalEchoDisplay组件中实现引文篇目名(quote_citation)→引文内容(quote_text)→古典回响内容(classicalEcho)的正确展示顺序和布局结构
-  - [ ] **步骤D.1.3 (集成新组件到ClassicalEchoScreen)**: 移除InterpretationDisplay组件使用，集成ClassicalEchoDisplay组件，确保页面结构与原版zhou.html完全对齐
+  - [x] **步骤D.1.1 (创建ClassicalEchoDisplay组件)**: ✅ 设计专门的古典回响展示组件，包含'你选择的道路，有古人智慧的回响'核心引导语和独特的视觉设计
+  - [x] **步骤D.1.2 (实现古典回响内容展示逻辑)**: ✅ 在ClassicalEchoDisplay组件中实现引文篇目名(quote_citation)→引文内容(quote_text)→古典回响内容(classicalEcho)的正确展示顺序和布局结构，支持字符串解析逻辑
+  - [x] **步骤D.1.3 (集成新组件到ClassicalEchoScreen)**: ✅ 移除InterpretationDisplay组件使用，集成ClassicalEchoDisplay组件，确保页面结构与原版zhou.html完全对齐
+  - [x] **步骤D.1.4 (优化设计系统)**: ✅ 优化ClassicalEchoDisplay组件设计：将三个分离卡片改为统一卡片，使用字重和对齐区分内容层次（篇目名居中加粗、引文粗体、古典回响标准粗细），回归原版简洁设计理念，构建成功并CSS大小优化
 
 #### - [ ] 任务D.99：诗歌展示页交互体验现代化重构（低优先级）
 
