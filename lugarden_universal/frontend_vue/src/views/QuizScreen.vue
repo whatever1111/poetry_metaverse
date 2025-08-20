@@ -26,25 +26,11 @@
       
       <!-- 问题卡片 -->
       <div v-if="zhouStore.currentQuestion" class="max-w-2xl mx-auto">
-        <div class="card-question animate-fadeInUp">
-          <div class="question-text animate-textChange" :key="zhouStore.quiz.currentQuestionIndex">
-            {{ zhouStore.currentQuestion.question }}
-          </div>
-          
-          <!-- 选项按钮 -->
-          <div class="options-grid grid-cols-1 gap-4">
-            <button 
-              v-for="(option, key) in zhouStore.currentQuestion.options"
-              :key="key"
-              class="btn-option text-left animate-fadeInUp"
-              :style="{ animationDelay: `${0.3 + (key === 'A' ? 0 : 0.1)}s` }"
-              @click="handleAnswer(key as 'A' | 'B')"
-            >
-              <span class="font-bold mr-2">{{ key }}.</span>
-              {{ option }}
-            </button>
-          </div>
-        </div>
+        <QuestionCard 
+          :question="zhouStore.currentQuestion"
+          :question-index="zhouStore.quiz.currentQuestionIndex"
+          @answer="handleAnswer"
+        />
       </div>
 
       <!-- 加载状态 -->
@@ -76,6 +62,7 @@
 import { onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
+import QuestionCard from '../components/QuestionCard.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -166,27 +153,5 @@ const retryLoad = async () => {
   transition: width 0.3s ease;
 }
 
-.options-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-base);
-}
-
-@media (min-width: 480px) {
-  .options-grid {
-    gap: var(--spacing-lg);
-  }
-}
-
-@media (min-width: 768px) {
-  .options-grid {
-    gap: var(--spacing-xl);
-  }
-}
-
-/* 确保按钮文本左对齐 */
-.btn-option {
-  text-align: left;
-  justify-content: flex-start;
-}
+/* QuestionCard组件样式已迁移到组件内部 */
 </style>

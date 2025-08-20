@@ -8,14 +8,15 @@
             古典回响
           </h1>
           
+          <!-- 古典回响内容 -->
           <div class="echo-text animate-fadeInUp" style="animation-delay: 0.3s;">
-            <div class="card-base mb-8">
-              <div class="text-lg text-gray-700 leading-relaxed">
-                <!-- 根据用户答案显示的古典智慧回响 -->
-                <div v-if="classicalEchoContent" class="whitespace-pre-line">
-                  {{ classicalEchoContent }}
-                </div>
-                <div v-else>
+            <InterpretationDisplay 
+              :ai-interpretation="classicalEchoContent"
+              empty-message="您的心境与古人相通，即将为您呈现一首与您内心共鸣的诗歌。"
+              ai-animation-delay="0.0s"
+            >
+              <template #custom v-if="!classicalEchoContent">
+                <div class="default-echo-content">
                   <p class="italic text-gray-600 mb-4">
                     "诗者，志之所之也。在心为志，发言为诗。"
                   </p>
@@ -23,8 +24,17 @@
                     您的心境与古人相通，即将为您呈现一首与您内心共鸣的诗歌。
                   </p>
                 </div>
-              </div>
-            </div>
+              </template>
+            </InterpretationDisplay>
+          </div>
+          
+          <!-- 诗歌预览 -->
+          <div v-if="zhouStore.result.selectedPoem" class="poem-preview animate-fadeInUp" style="animation-delay: 0.5s;">
+            <PoemViewer 
+              :poem-title="zhouStore.result.poemTitle || zhouStore.result.selectedPoem.title"
+              :poem-body="zhouStore.result.selectedPoem.body"
+              animation-delay="0.0s"
+            />
           </div>
           
           <!-- 继续按钮 -->
@@ -72,6 +82,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
+import PoemViewer from '../components/PoemViewer.vue'
+import InterpretationDisplay from '../components/InterpretationDisplay.vue'
 
 const router = useRouter()
 const zhouStore = useZhouStore()
@@ -157,7 +169,18 @@ const continueToResult = async () => {
 }
 
 .echo-text {
+  margin-bottom: var(--spacing-xl);
+}
+
+.poem-preview {
   margin-bottom: var(--spacing-2xl);
+}
+
+.default-echo-content {
+  text-align: center;
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.95) 100%);
+  border-radius: var(--radius-base);
 }
 
 .btn-continue {
