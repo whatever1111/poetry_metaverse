@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 
 // 操作按钮接口
 interface ToastAction {
@@ -327,7 +327,7 @@ const resumeTimer = () => {
   
   isPaused.value = false
   startTime.value = Date.now()
-  props.duration = remainingTime.value
+  // 使用剩余时间重新开始计时器
   startTimer()
 }
 

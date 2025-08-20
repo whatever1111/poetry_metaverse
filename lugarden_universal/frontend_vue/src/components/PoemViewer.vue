@@ -59,16 +59,16 @@ const formattedBody = computed(() => {
   }
   
   if (typeof props.poemBody === 'object' && props.poemBody !== null) {
-    const body = props.poemBody as any
+    const body = props.poemBody as Record<string, unknown>
     const parts: string[] = []
     
-    if (body.quote_text) {
+    if (body.quote_text && typeof body.quote_text === 'string') {
       parts.push(body.quote_text)
     }
-    if (body.quote_citation) {
+    if (body.quote_citation && typeof body.quote_citation === 'string') {
       parts.push(`——${body.quote_citation}`)
     }
-    if (body.main_text) {
+    if (body.main_text && typeof body.main_text === 'string') {
       parts.push(body.main_text)
     }
     

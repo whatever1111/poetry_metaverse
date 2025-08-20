@@ -1,10 +1,8 @@
-import { ref, computed, reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import type {
   UniverseContentResponse,
   ZhouProject,
-  ZhouQuestion,
-  ZhouPoem,
   UserAnswer,
   UniverseDataState,
   AppState,

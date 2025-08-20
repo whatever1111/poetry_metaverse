@@ -35,10 +35,9 @@
         </div>
       </div>
       
-      <!-- 操作按钮 */
+      <!-- 操作按钮 -->
       <div v-if="showActions || $slots.actions" class="error-actions">
         <slot name="actions">
-          <!-- 重试按钮 -->
           <button 
             v-if="showRetry"
             @click="handleRetry"
@@ -52,7 +51,6 @@
             <span>{{ retrying ? retryingText : retryText }}</span>
           </button>
           
-          <!-- 返回按钮 -->
           <button 
             v-if="showBack"
             @click="handleBack"
@@ -61,7 +59,6 @@
             {{ backText }}
           </button>
           
-          <!-- 报告问题按钮 -->
           <button 
             v-if="showReport"
             @click="handleReport"
@@ -72,7 +69,7 @@
         </slot>
       </div>
       
-      <!-- 额外建议 */
+      <!-- 额外建议 -->
       <div v-if="suggestions.length > 0" class="error-suggestions">
         <h4 class="suggestions-title">建议尝试：</h4>
         <ul class="suggestions-list">

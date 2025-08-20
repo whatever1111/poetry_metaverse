@@ -52,7 +52,7 @@
       </div>
     </div>
     
-    <!-- 可选的详细信息 */
+    <!-- 可选的详细信息 -->
     <div v-if="showDetails || $slots.details" class="progress-details">
       <slot name="details">
         <div v-if="showTimeEstimate && timeEstimate" class="time-estimate">
@@ -77,8 +77,7 @@ interface ProgressStep {
   clickable?: boolean
 }
 
-// 组件Props
-interface Props {
+const props = withDefaults(defineProps<{
   // 基础数值
   modelValue?: number
   min?: number
@@ -119,17 +118,7 @@ interface Props {
   striped?: boolean
   indeterminate?: boolean
   disabled?: boolean
-}
-
-// 组件Emits
-interface Emits {
-  'update:modelValue': [value: number]
-  stepClick: [stepIndex: number, step: ProgressStep]
-  complete: []
-  change: [value: number]
-}
-
-const props = withDefaults(defineProps<Props>(), {
+}>(), {
   modelValue: 0,
   min: 0,
   max: 100,
@@ -159,7 +148,12 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 })
 
-const emit = defineEmits<Emits>()
+const emit = defineEmits<{
+  'update:modelValue': [value: number]
+  'stepClick': [stepIndex: number, step: ProgressStep]
+  'complete': []
+  'change': [value: number]
+}>()
 
 // 响应式状态
 const animatedValue = ref(props.modelValue)
