@@ -1,7 +1,8 @@
 import { computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
+import { getApiServices, type ApiServiceFactory } from '../services/enhancedApi'
+import { isApiError, getUserFriendlyErrorMessage } from '../services/api'
 import type {
-  UniverseContentResponse,
   ZhouProject,
   UserAnswer,
   UniverseDataState,
@@ -13,6 +14,28 @@ import type {
 } from '../types/zhou'
 
 export const useZhouStore = defineStore('zhou', () => {
+  // ================================
+  // API服务初始化
+  // ================================
+  let apiServices: ApiServiceFactory | null = null
+
+  const initializeApiServices = () => {
+    if (!apiServices) {
+      apiServices = getApiServices({
+        onLoadingChange: (loading: boolean) => {
+          ui.showLoadingScreen = loading
+        },
+        onError: (error: any) => {
+          console.error('API错误:', error)
+          ui.errorMessage = getUserFriendlyErrorMessage(error)
+        },
+        enableLogging: true,
+        enableCaching: true,
+        cacheDuration: 5 * 60 * 1000 // 5分钟缓存
+      })
+    }
+    return apiServices
+  }
   // ================================
   // 状态域1: universeData - 管理宇宙数据
   // ================================
@@ -150,7 +173,7 @@ export const useZhouStore = defineStore('zhou', () => {
   // ================================
 
   // 加载宇宙内容数据
-  async function loadUniverseContent(): Promise<void> {
+  async function loadUniverseContent(refresh = false): Promise<void> {
     if (universeData.loading) return
 
     try {
@@ -158,12 +181,10 @@ export const useZhouStore = defineStore('zhou', () => {
       universeData.error = null
       ui.loadingMessage = '正在加载宇宙内容...'
 
-      const response = await fetch('/api/universes/universe_zhou_spring_autumn/content')
-      if (!response.ok) {
-        throw new Error(`API请求失败: ${response.status} ${response.statusText}`)
-      }
-
-      const data: UniverseContentResponse = await response.json()
+      const api = initializeApiServices()
+      const universeService = api.getUniverseService()
+      
+      const data = await universeService.getUniverseContent('universe_zhou_spring_autumn', refresh)
 
       // 更新状态
       universeData.projects = data.content.projects || []
@@ -183,8 +204,14 @@ export const useZhouStore = defineStore('zhou', () => {
 
     } catch (error) {
       console.error('加载宇宙内容失败:', error)
-      universeData.error = error instanceof Error ? error.message : '未知错误'
-      ui.errorMessage = '加载数据失败，请稍后重试'
+      
+      if (isApiError(error)) {
+        universeData.error = error.message
+        ui.errorMessage = getUserFriendlyErrorMessage(error)
+      } else {
+        universeData.error = error instanceof Error ? error.message : '未知错误'
+        ui.errorMessage = '加载数据失败，请稍后重试'
+      }
     } finally {
       universeData.loading = false
       ui.showLoadingScreen = false
@@ -371,25 +398,33 @@ export const useZhouStore = defineStore('zhou', () => {
     try {
       result.interpretationLoading = true
       
-      const response = await fetch('/api/interpret', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          poem: result.selectedPoem.body,
-          title: result.selectedPoem.title
-        })
-      })
-
-      if (!response.ok) {
-        throw new Error('解诗请求失败')
-      }
-
-      const data = await response.json()
+      const api = initializeApiServices()
+      const aiService = api.getAIService()
+      
+      const poemBody = typeof result.selectedPoem.body === 'string' 
+        ? result.selectedPoem.body 
+        : JSON.stringify(result.selectedPoem.body)
+      
+      const data = await aiService.interpretPoem(
+        poemBody,
+        result.selectedPoem.title
+      )
+      
       result.interpretationContent = data.interpretation
+
+      console.log('解诗获取成功:', {
+        title: data.poem_title,
+        processed_at: data.processed_at
+      })
 
     } catch (error) {
       console.error('获取解诗失败:', error)
-      ui.errorMessage = '获取解诗失败，请稍后重试'
+      
+      if (isApiError(error)) {
+        ui.errorMessage = getUserFriendlyErrorMessage(error)
+      } else {
+        ui.errorMessage = '获取解诗失败，请稍后重试'
+      }
     } finally {
       result.interpretationLoading = false
     }
@@ -400,26 +435,35 @@ export const useZhouStore = defineStore('zhou', () => {
     if (!result.selectedPoem) return
 
     try {
-      const response = await fetch('/api/listen', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          poem: result.selectedPoem.body,
-          title: result.selectedPoem.title
-        })
-      })
-
-      if (!response.ok) {
-        throw new Error('读诗请求失败')
-      }
-
-      const data = await response.json()
+      const api = initializeApiServices()
+      const aiService = api.getAIService()
+      
+      const poemBody = typeof result.selectedPoem.body === 'string' 
+        ? result.selectedPoem.body 
+        : JSON.stringify(result.selectedPoem.body)
+      
+      const data = await aiService.listenPoem(
+        poemBody,
+        result.selectedPoem.title
+      )
+      
       result.audioUrl = data.audioUrl
       result.audioPlaying = true
 
+      console.log('读诗音频获取成功:', {
+        title: data.poem_title,
+        duration: data.duration,
+        generated_at: data.generated_at
+      })
+
     } catch (error) {
       console.error('播放读诗失败:', error)
-      ui.errorMessage = '播放音频失败，请稍后重试'
+      
+      if (isApiError(error)) {
+        ui.errorMessage = getUserFriendlyErrorMessage(error)
+      } else {
+        ui.errorMessage = '播放音频失败，请稍后重试'
+      }
     }
   }
 

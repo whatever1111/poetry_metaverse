@@ -522,12 +522,33 @@
           * 组件功能和用户体验未受影响
           * 错误处理和边界情况处理正常
           * 代码质量达到项目标准
-  - [ ] **步骤C.1.3 (API集成与状态管理)**: 实现与后端的数据交互
-    - [ ] **步骤C.1.3.1 (API服务)**: 创建API客户端，集成现有的层级化API
-      - 创建API客户端类，封装fetch请求和错误处理
-      - 实现宇宙内容获取API（/api/universes/:code/content）
-      - 实现解诗和读诗API（/api/interpret, /api/listen）
-      - 添加请求拦截器，统一处理认证和错误
+  - [x] **步骤C.1.3 (API集成与状态管理)**: 实现与后端的数据交互 ✅
+    - [x] **步骤C.1.3.1 (API服务)**: 创建API客户端，集成现有的层级化API ✅
+      - **API客户端架构**:
+        * ✅ **基础API客户端** (`src/services/api.ts`): 封装HTTP请求、错误处理、重试机制
+        * ✅ **增强API客户端** (`src/services/enhancedApi.ts`): 集成拦截器、加载状态管理
+        * ✅ **请求拦截器** (`src/services/interceptors.ts`): 认证、日志、缓存、错误处理拦截器
+        * ✅ **服务工厂模式**: 统一管理所有API服务实例，支持配置和销毁
+      - **核心功能实现**:
+        * ✅ **宇宙内容API**: 集成`/api/universes/:code/content`，支持缓存和刷新
+        * ✅ **AI功能API**: 实现`/api/interpret`和`/api/listen`，支持诗歌解读和朗读
+        * ✅ **错误处理**: 统一的ApiError类，类型安全的错误处理和用户友好提示
+        * ✅ **请求重试**: 智能重试机制，区分网络错误和服务器错误
+        * ✅ **加载状态**: 全局加载状态管理，防止重复请求
+      - **后端API扩展**:
+        * ✅ **解诗服务** (`POST /api/interpret`): 接收诗歌内容，返回AI解读
+        * ✅ **读诗服务** (`POST /api/listen`): 接收诗歌内容，返回音频URL
+        * ✅ **参数验证**: 完整的请求参数验证和错误响应
+      - **Store集成**:
+        * ✅ **zhou store更新**: 完全替换原有fetch调用，使用新的API客户端
+        * ✅ **类型安全**: 所有API调用都有完整的TypeScript类型定义
+        * ✅ **错误处理**: 统一的错误处理逻辑，改善用户体验
+      - **实际改动文件**:
+        * `lugarden_universal/frontend_vue/src/services/api.ts` - 基础API客户端
+        * `lugarden_universal/frontend_vue/src/services/enhancedApi.ts` - 增强API客户端和服务工厂
+        * `lugarden_universal/frontend_vue/src/services/interceptors.ts` - 请求拦截器系统
+        * `lugarden_universal/frontend_vue/src/stores/zhou.ts` - Store集成新API客户端
+        * `lugarden_universal/application/src/routes/public.js` - 后端AI API实现
     - [ ] **步骤C.1.3.2 (状态同步)**: 实现Pinia store与API的完整集成
       - 在zhouStore中实现loadUniverseData action
       - 实现问答流程的状态管理（startQuiz, handleAnswer）
