@@ -725,56 +725,83 @@
   - [x] **步骤D.1.3 (集成新组件到ClassicalEchoScreen)**: ✅ 移除InterpretationDisplay组件使用，集成ClassicalEchoDisplay组件，确保页面结构与原版zhou.html完全对齐
   - [x] **步骤D.1.4 (优化设计系统)**: ✅ 优化ClassicalEchoDisplay组件设计：将三个分离卡片改为统一卡片，使用字重和对齐区分内容层次（篇目名居中加粗、引文粗体、古典回响标准粗细），回归原版简洁设计理念，构建成功并CSS大小优化
 
-#### - [ ] 任务D.2：优化古典回响页面数据架构
+#### - [ ] 任务D.2：古典回响页面数据解析优化
 
-- **核心思想**: 消除前端字符串解析反模式，在API层提供结构化数据，实现数据库JSON → API结构化 → 前端直接使用的合理数据流
+- **核心思想**: 消除Vue版古典回响页面的字符串解析反模式，API直接提供结构化数据，解决前端重复解析JSON的架构问题
 - **问题识别**:
-  1. **数据流反模式**: 数据库JSON → mappers聚合为字符串 → 前端解析回结构，违背分层架构原则
-  2. **职责混乱**: 前端承担了本应在API层完成的数据结构化工作
-  3. **维护成本**: 字符串解析逻辑复杂，容易出错且难以维护
-  4. **性能浪费**: 前端重复解析工作，影响用户体验
-- **根本原因分析**: 
-  - mappers.js设计时主要服务原版zhou.html（只需聚合字符串）
-  - Vue版本需要结构化数据的需求未在API设计时考虑
-  - API层缺乏对不同客户端数据格式需求的抽象
-- **技术方案**: 修改mappers.js同时提供body（字符串兼容）和bodyData（结构化数据）
+  1. **Vue版数据解析反模式**: `ClassicalEchoScreen.vue`中手动解析`selectedPoem.body`字符串获取`quote_text`和`quote_citation`
+  2. **原版zhou.html兼容需求**: 原版期望`poems[title]`为聚合字符串格式
+  3. **前端承担后端职责**: Vue版本不应该解析字符串，应该直接使用结构化数据
+- **当前问题代码**: 
   ```javascript
-  // 当前格式
-  poems: { "诗歌标题": "quote_text\n\n——quote_citation\n\n main_text" }
+  // Vue版本当前的问题代码 (ClassicalEchoScreen.vue):
+  const bodyContent = selectedPoem.body as string
+  const parts = bodyContent.split('\n\n') // ❌ 前端不应该解析字符串
+  ```
+- **解决方案**: 使用查询参数支持两种数据格式
+  ```javascript
+  // API设计：
+  GET /api/universes/:code/content?format=legacy  // 原版zhou.html使用，返回聚合字符串
+  GET /api/universes/:code/content                // Vue版本使用，返回结构化数据
   
-  // 优化后格式  
+  // Vue版本期望的结构化格式：
   poems: { 
     "诗歌标题": {
-      body: "quote_text\n\n——quote_citation\n\n main_text", // 保持兼容
-      bodyData: { quote_text: "...", quote_citation: "...", main_text: "..." } // 新增结构化
+      quote_text: "引文内容",
+      quote_citation: "引文篇目名", 
+      main_text: "诗歌正文"
     }
   }
   ```
-- **影响分析完成**: 
-  - ✅ **不影响原版zhou.html**: 可通过`poems[title].body`保持兼容
-  - ✅ **不影响废弃API**: 它们本来就要被移除  
-  - ✅ **优化Vue版本**: 直接使用`poems[title].bodyData.quote_text`等字段
-- **兼容策略**: 渐进式升级，支持新旧两种数据格式的客户端
+- **实现策略**: 
+  - **原版zhou.html**: 修改API调用增加`?format=legacy`参数，保持现有功能不变
+  - **Vue版本**: 移除`ClassicalEchoScreen.vue`中的字符串解析逻辑，直接使用结构化数据
+  - **API后端**: `mappers.js`根据`format`参数返回不同格式
+  - **技术债务管理**: 原版废弃时直接移除`?format=legacy`支持，核心代码保持干净
+- **架构优势**（查询参数版本化方案）:
+  - **技术债务可控**: 废弃时直接移除`?format=legacy`支持，核心代码保持干净
+  - **代码路径分离**: 两种格式完全独立的处理逻辑，互不影响
+  - **维护成本低**: 新开发者容易理解版本化机制，符合RESTful最佳实践
+  - **向后兼容**: 原版zhou.html使用`?format=legacy`，功能100%不变
+  - **清晰的迁移路径**: Vue版本使用默认API，原版使用legacy参数，废弃时路径明确
 - **交付物**:
-  - 更新后的mappers.js（同时提供body和bodyData）
-  - 更新后的ClassicalEchoDisplay.vue（使用结构化数据）
-  - 更新后的ClassicalEchoScreen.vue（移除字符串解析逻辑）
-  - 兼容性测试验证（确保原版zhou.html正常工作）
+  - 基于查询参数版本化的API架构重构
+  - 更新后的mappers.js和API路由（支持format参数）
+  - 修改后的原版zhou.html（使用`?format=legacy`）
+  - 优化后的Vue前端（使用默认结构化API）
+  - 完整的版本化API文档和废弃路径说明
 - **验收标准**:
-  - mappers.js同时提供body（字符串）和bodyData（结构化JSON）格式
-  - Vue版前端移除所有字符串解析逻辑，直接使用bodyData字段
-  - 原版zhou.html功能完全正常，无任何影响
-  - API响应格式保持向后兼容，不破坏现有客户端
-  - 构建和类型检查全部通过
+  - API支持`?format=legacy`参数，返回聚合字符串格式
+  - API默认返回结构化数据，满足Vue客户端需求
+  - Vue前端完全移除字符串解析逻辑，使用结构化数据
+  - 原版zhou.html通过`?format=legacy`保持100%功能正常
+  - 构建、类型检查、两种格式兼容性测试全部通过
+  - 明确的技术债务管理机制和废弃时间表
 - **预期改动文件**:
-  - `lugarden_universal/application/src/services/mappers.js` - 修改mapZhouPoemsToPublicPoems和mapPoemArchetypesForFrontend函数
-  - `lugarden_universal/frontend_vue/src/views/ClassicalEchoScreen.vue` - 移除字符串解析逻辑，直接使用API结构化数据
-  - `lugarden_universal/frontend_vue/src/components/ClassicalEchoDisplay.vue` - 接收结构化props而非解析字符串
+  **后端API层**:
+  - `lugarden_universal/application/src/services/mappers.js` - 支持格式参数的条件输出
+  - `lugarden_universal/application/src/routes/public.js` - 解析format参数，调用不同映射逻辑
+  - `lugarden_universal/application/tests/public-api.contract.test.js` - ⚠️新增：添加format参数测试用例
+  
+  **原版客户端**:
+  - `lugarden_universal/public/assets/zhou.js` - API调用增加`?format=legacy`参数
+  
+  **Vue前端API层**:
+  - `lugarden_universal/frontend_vue/src/services/enhancedApi.ts` - ⚠️新增：getUniverseContent方法支持format参数
+  - `lugarden_universal/frontend_vue/src/stores/zhou.ts` - ⚠️扩展：更新API调用、类型定义，移除body字段的JSON处理逻辑
+  
+  **Vue前端组件层**:
+  - `lugarden_universal/frontend_vue/src/views/ClassicalEchoScreen.vue` - ⚠️重要：移除字符串解析逻辑，使用结构化数据
+  - `lugarden_universal/frontend_vue/src/components/ClassicalEchoDisplay.vue` - 接收结构化props
+  - `lugarden_universal/frontend_vue/src/types/zhou.ts` - 更新API响应类型
+  
+  **文档**:
+  - `documentation/backend/api-contracts.md` - 更新版本化API文档
 - **完成状态**: 🔄 待开始
 - **执行步骤**:
-  - [ ] **步骤D.2.1 (修改mappers.js数据格式)**: 修改mapZhouPoemsToPublicPoems和mapPoemArchetypesForFrontend函数，同时提供body字符串和bodyData结构化数据，确保向后兼容
-  - [ ] **步骤D.2.2 (优化前端数据使用)**: 更新ClassicalEchoScreen.vue和ClassicalEchoDisplay.vue，移除字符串解析逻辑，直接使用API提供的结构化bodyData字段
-  - [ ] **步骤D.2.3 (兼容性验证)**: 验证原版zhou.html功能完全正常，确保API修改不影响现有客户端，完成构建和类型检查
+  - [ ] **步骤D.2.1 (API格式参数支持)**: 修改`mappers.js`和`public.js`，支持`?format=legacy`参数返回聚合字符串，默认返回结构化数据
+  - [ ] **步骤D.2.2 (客户端数据格式适配)**: 原版zhou.js使用`?format=legacy`，Vue版ClassicalEchoScreen.vue移除字符串解析逻辑使用结构化数据
+  - [ ] **步骤D.2.3 (功能验证)**: 验证原版和Vue版古典回响页面都正常显示，完成构建和类型检查
 
 #### - [ ] 任务D.99：诗歌展示页交互体验现代化重构（低优先级）
 
