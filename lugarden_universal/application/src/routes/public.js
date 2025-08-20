@@ -8,6 +8,7 @@ import {
   mapZhouQAToPublicQuestions,
   mapZhouMappingToPublicMappings,
   mapZhouPoemsToPublicPoems,
+  mapZhouPoemsToStructuredPoems,
   mapPoemArchetypesForFrontend,
   mapUniverseContent,
 } from '../services/mappers.js';
@@ -76,7 +77,10 @@ router.get('/universes', async (req, res, next) => {
 // GET /api/universes/:universeCode/content - 获取特定宇宙的内容聚合
 router.get('/universes/:universeCode/content', async (req, res, next) => {
   const { universeCode } = req.params;
-  const cacheKey = `/api/universes/${universeCode}/content`;
+  const { format } = req.query; // 支持format查询参数
+  const isLegacyFormat = format === 'legacy';
+  
+  const cacheKey = `/api/universes/${universeCode}/content${isLegacyFormat ? '?format=legacy' : ''}`;
   if (req.query.refresh === 'true') invalidate([cacheKey]);
   const cached = getCache(cacheKey);
   if (cached !== undefined) return res.json(cached);
@@ -118,13 +122,18 @@ router.get('/universes/:universeCode/content', async (req, res, next) => {
         })
       ]);
       
-      // 映射数据
+      // 映射数据 - 根据format参数选择不同的映射函数
       const mappedProjects = mapZhouProjectsToPublicProjects(projects).filter(
         (p) => (p.status || '').toLowerCase() === 'published'
       );
       const mappedQAs = mapZhouQAToPublicQuestions(qas);
       const mappedMappings = mapZhouMappingToPublicMappings(mappings);
-      const mappedPoems = mapZhouPoemsToPublicPoems(poems);
+      
+      // 诗歌映射：根据format参数选择聚合字符串或结构化数据
+      const mappedPoems = isLegacyFormat 
+        ? mapZhouPoemsToPublicPoems(poems)     // legacy格式：聚合字符串 
+        : mapZhouPoemsToStructuredPoems(poems); // 默认格式：结构化数据
+        
       const mappedArchetypes = mapPoemArchetypesForFrontend(poemArchetypes);
       
       const result = mapUniverseContent(

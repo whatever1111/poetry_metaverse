@@ -55,7 +55,7 @@ export function mapZhouMappingToPublicMappings(mappings) {
 
 export function mapZhouPoemsToPublicPoems(poems) {
   // 输入：ZhouPoem[]（body字段现在是JSON格式）
-  // 输出：{ [titleWithoutBrackets]: body }
+  // 输出：{ [titleWithoutBrackets]: body } - 聚合字符串格式（legacy格式）
   const result = {};
   for (const poem of poems || []) {
     const cleaned = (poem.title || '').replace(/[《》]/g, '');
@@ -77,6 +77,47 @@ export function mapZhouPoemsToPublicPoems(poems) {
         }
       }
       result[cleaned] = bodyContent;
+    }
+  }
+  return result;
+}
+
+export function mapZhouPoemsToStructuredPoems(poems) {
+  // 输入：ZhouPoem[]（body字段现在是JSON格式）
+  // 输出：{ [titleWithoutBrackets]: { quote_text, quote_citation, main_text } } - 结构化格式（Vue版本使用）
+  const result = {};
+  for (const poem of poems || []) {
+    const cleaned = (poem.title || '').replace(/[《》]/g, '');
+    if (cleaned) {
+      // 处理新的JSON格式body字段
+      let bodyData = {};
+      if (poem.body) {
+        if (typeof poem.body === 'string') {
+          // 向后兼容：如果body仍然是字符串格式，尝试解析
+          const parts = poem.body.split('\n\n');
+          if (parts.length >= 2) {
+            bodyData = {
+              quote_text: parts[0] || '',
+              quote_citation: parts[1]?.replace(/^——/, '') || '',
+              main_text: parts.slice(2).join('\n\n') || ''
+            };
+          } else {
+            bodyData = {
+              quote_text: '',
+              quote_citation: '',
+              main_text: poem.body
+            };
+          }
+        } else if (typeof poem.body === 'object' && poem.body !== null) {
+          // 新的JSON格式：直接使用结构化数据
+          bodyData = {
+            quote_text: poem.body.quote_text || '',
+            quote_citation: poem.body.quote_citation || '',
+            main_text: poem.body.main_text || ''
+          };
+        }
+      }
+      result[cleaned] = bodyData;
     }
   }
   return result;

@@ -458,12 +458,12 @@ export const useZhouStore = defineStore('zhou', () => {
       const mapping = chapterMappings[combination]
       result.poemTitle = mapping.poemTitle
       
-      // 获取诗歌内容
+      // 获取诗歌内容 - 现在是结构化数据
       const poemContent = universeData.poems[mapping.poemTitle]
       if (poemContent) {
         result.selectedPoem = {
           title: mapping.poemTitle,
-          body: poemContent
+          body: poemContent // 直接使用结构化数据
         }
       }
 
@@ -496,9 +496,10 @@ export const useZhouStore = defineStore('zhou', () => {
       const api = initializeApiServices()
       const aiService = api.getAIService()
       
+      // 从结构化数据构建完整的诗歌内容
       const poemBody = typeof result.selectedPoem.body === 'string' 
         ? result.selectedPoem.body 
-        : JSON.stringify(result.selectedPoem.body)
+        : `${result.selectedPoem.body.quote_text || ''}\n\n${result.selectedPoem.body.main_text || ''}`.trim()
       
       const data = await aiService.interpretPoem(
         poemBody,
@@ -592,9 +593,10 @@ export const useZhouStore = defineStore('zhou', () => {
       const api = initializeApiServices()
       const aiService = api.getAIService()
       
+      // 从结构化数据构建完整的诗歌内容
       const poemBody = typeof result.selectedPoem.body === 'string' 
         ? result.selectedPoem.body 
-        : JSON.stringify(result.selectedPoem.body)
+        : `${result.selectedPoem.body.quote_text || ''}\n\n${result.selectedPoem.body.main_text || ''}`.trim()
       
       const data = await aiService.listenPoem(
         poemBody,

@@ -42,6 +42,13 @@ export interface ZhouPoem {
   }
 }
 
+// 结构化诗歌内容类型（用于Vue版本API响应）
+export interface StructuredPoemContent {
+  quote_text: string
+  quote_citation: string
+  main_text: string
+}
+
 export interface ZhouPoemArchetype {
   title: string
   poet_explanation: string
@@ -71,7 +78,7 @@ export interface UniverseContentResponse {
       defaultUnit: string
       units: Record<string, Record<string, ZhouMapping>>
     }
-    poems: Record<string, string>
+    poems: Record<string, StructuredPoemContent>
     poemArchetypes: {
       poems: ZhouPoemArchetype[]
     }
@@ -107,7 +114,7 @@ export interface QuestionCardProps {
 // 状态域接口定义
 export interface UniverseDataState {
   projects: ZhouProject[]
-  poems: Record<string, string>
+  poems: Record<string, StructuredPoemContent>
   questions: Record<string, ZhouQuestion[]>
   mappings: {
     defaultUnit: string

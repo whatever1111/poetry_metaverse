@@ -80,45 +80,22 @@ const isTransitioning = ref(false)
 // 对应原 zhou.html 中的 #classical-echo-screen
 // 使用专门的ClassicalEchoDisplay组件实现原版的"你选择的道路，有古人智慧的回响"体验
 
-// 从合并后的诗歌body字符串中解析引文篇目名
+// 直接从结构化数据获取引文篇目名
 const quoteCitation = computed(() => {
-  const selectedPoem = zhouStore.result.selectedPoem
-  if (!selectedPoem || !selectedPoem.body || typeof selectedPoem.body !== 'string') return null
+  const poemTitle = zhouStore.result.poemTitle
+  if (!poemTitle || !zhouStore.universeData.poems[poemTitle]) return null
   
-  // 后端合并格式：quote_text + "\n\n" + "——" + quote_citation + "\n\n" + main_text
-  const bodyContent = selectedPoem.body as string
-  const parts = bodyContent.split('\n\n')
-  
-  // 查找以"——"开头的部分，这是引文篇目名
-  for (const part of parts) {
-    if (part.startsWith('——')) {
-      return part.substring(1).trim() // 移除"——"前缀并去除空格
-    }
-  }
-  
-  return null
+  const poemData = zhouStore.universeData.poems[poemTitle]
+  return poemData.quote_citation || null
 })
 
-// 从合并后的诗歌body字符串中解析引文内容
+// 直接从结构化数据获取引文内容
 const quoteText = computed(() => {
-  const selectedPoem = zhouStore.result.selectedPoem
-  if (!selectedPoem || !selectedPoem.body || typeof selectedPoem.body !== 'string') return null
+  const poemTitle = zhouStore.result.poemTitle
+  if (!poemTitle || !zhouStore.universeData.poems[poemTitle]) return null
   
-  // 后端合并格式：quote_text + "\n\n" + "——" + quote_citation + "\n\n" + main_text
-  const bodyContent = selectedPoem.body as string
-  const parts = bodyContent.split('\n\n')
-  
-  // 第一个部分通常是引文内容（如果存在的话）
-  // 需要排除以"——"开头的篇目名部分
-  if (parts.length > 0 && !parts[0].startsWith('——')) {
-    // 检查这个部分是否看起来像引文（通常比较短，且不是完整的诗歌）
-    const firstPart = parts[0].trim()
-    if (firstPart && firstPart.length < 200) { // 引文通常较短
-      return firstPart
-    }
-  }
-  
-  return null
+  const poemData = zhouStore.universeData.poems[poemTitle]
+  return poemData.quote_text || null
 })
 
 // 根据用户答案生成古典回响内容
