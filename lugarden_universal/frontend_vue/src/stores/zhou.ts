@@ -4,6 +4,7 @@ import { getApiServices, type ApiServiceFactory } from '../services/enhancedApi'
 import { isApiError, getUserFriendlyErrorMessage } from '../services/api'
 import type {
   ZhouProject,
+  ZhouPoem,
   UserAnswer,
   UniverseDataState,
   AppState,
@@ -486,6 +487,35 @@ export const useZhouStore = defineStore('zhou', () => {
   // Actions - AI功能
   // ================================
 
+  // 构建完整的诗歌内容（用于AI服务）
+  function buildFullPoemContent(poem: ZhouPoem | null): string {
+    if (!poem || !poem.body) return ''
+    
+    // 如果body是字符串，直接返回（向后兼容）
+    if (typeof poem.body === 'string') {
+      return poem.body
+    }
+    
+    // 如果body是结构化对象，拼接各部分
+    if (typeof poem.body === 'object' && poem.body !== null) {
+      const parts: string[] = []
+      
+      if (poem.body.quote_text) {
+        parts.push(poem.body.quote_text)
+      }
+      if (poem.body.quote_citation) {
+        parts.push(`——${poem.body.quote_citation}`)
+      }
+      if (poem.body.main_text) {
+        parts.push(poem.body.main_text)
+      }
+      
+      return parts.join('\n\n')
+    }
+    
+    return ''
+  }
+
   // 获取AI解诗
   async function getInterpretation(): Promise<void> {
     if (!result.selectedPoem) return
@@ -496,13 +526,11 @@ export const useZhouStore = defineStore('zhou', () => {
       const api = initializeApiServices()
       const aiService = api.getAIService()
       
-      // 从结构化数据构建完整的诗歌内容
-      const poemBody = typeof result.selectedPoem.body === 'string' 
-        ? result.selectedPoem.body 
-        : `${result.selectedPoem.body.quote_text || ''}\n\n${result.selectedPoem.body.main_text || ''}`.trim()
+      // 使用统一的内容构建函数
+      const poemContent = buildFullPoemContent(result.selectedPoem)
       
       const data = await aiService.interpretPoem(
-        poemBody,
+        poemContent,
         result.selectedPoem.title
       )
       
@@ -593,13 +621,11 @@ export const useZhouStore = defineStore('zhou', () => {
       const api = initializeApiServices()
       const aiService = api.getAIService()
       
-      // 从结构化数据构建完整的诗歌内容
-      const poemBody = typeof result.selectedPoem.body === 'string' 
-        ? result.selectedPoem.body 
-        : `${result.selectedPoem.body.quote_text || ''}\n\n${result.selectedPoem.body.main_text || ''}`.trim()
+      // 使用统一的内容构建函数
+      const poemContent = buildFullPoemContent(result.selectedPoem)
       
       const data = await aiService.listenPoem(
-        poemBody,
+        poemContent,
         result.selectedPoem.title
       )
       

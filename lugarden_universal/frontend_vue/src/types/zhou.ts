@@ -111,6 +111,19 @@ export interface QuestionCardProps {
   onAnswer: (option: 'A' | 'B') => void
 }
 
+export interface PoemViewerProps {
+  poemTitle?: string | null
+  quoteText?: string | null      // 引文内容
+  quoteCitation?: string | null  // 引文出处
+  mainText?: string | null       // 诗歌原文
+  poemBody?: string | null       // 兼容原有格式（仅支持string）
+  author?: string
+  additionalInfo?: string
+  animationDelay?: string
+  showActions?: boolean
+  showDownload?: boolean
+}
+
 // 状态域接口定义
 export interface UniverseDataState {
   projects: ZhouProject[]

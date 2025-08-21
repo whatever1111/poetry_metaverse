@@ -12,7 +12,9 @@
           <div v-if="zhouStore.result.selectedPoem" class="mb-8">
             <PoemViewer 
               :poem-title="zhouStore.result.poemTitle || zhouStore.result.selectedPoem.title"
-              :poem-body="zhouStore.result.selectedPoem.body"
+              :quote-text="selectedPoemQuoteText"
+              :quote-citation="selectedPoemQuoteCitation"
+              :main-text="selectedPoemMainText"
               animation-delay="0.2s"
               :show-actions="true"
               :show-download="true"
@@ -86,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import PoemViewer from '../components/PoemViewer.vue'
@@ -100,6 +102,45 @@ const zhouStore = useZhouStore()
 
 // 结果页面
 // 对应原 zhou.html 中的 #result-screen
+
+// 计算属性：获取结构化诗歌数据
+const selectedPoemQuoteText = computed(() => {
+  const poem = zhouStore.result.selectedPoem
+  if (!poem || !poem.body) return null
+  
+  if (typeof poem.body === 'object' && poem.body !== null) {
+    return poem.body.quote_text || null
+  }
+  
+  return null
+})
+
+const selectedPoemQuoteCitation = computed(() => {
+  const poem = zhouStore.result.selectedPoem
+  if (!poem || !poem.body) return null
+  
+  if (typeof poem.body === 'object' && poem.body !== null) {
+    return poem.body.quote_citation || null
+  }
+  
+  return null
+})
+
+const selectedPoemMainText = computed(() => {
+  const poem = zhouStore.result.selectedPoem
+  if (!poem || !poem.body) return null
+  
+  if (typeof poem.body === 'object' && poem.body !== null) {
+    return poem.body.main_text || null
+  }
+  
+  // 如果是字符串格式（向后兼容），将整个body作为主文本
+  if (typeof poem.body === 'string') {
+    return poem.body
+  }
+  
+  return null
+})
 
 onMounted(() => {
   // 检查是否有结果数据

@@ -4,8 +4,25 @@
       <h2 class="poem-title">
         {{ cleanTitle(poemTitle) }}
       </h2>
-      <div class="poem-body">
-        {{ formattedBody }}
+      
+      <!-- 引文内容 -->
+      <div v-if="quoteText" class="poem-quote">
+        {{ formattedQuoteText }}
+      </div>
+      
+      <!-- 引文出处 -->
+      <div v-if="quoteCitation" class="poem-citation">
+        ——{{ formattedQuoteCitation }}
+      </div>
+      
+      <!-- 诗歌原文 -->
+      <div v-if="mainText" class="poem-main">
+        {{ formattedMainText }}
+      </div>
+      
+      <!-- 兼容原有poemBody格式（仅支持string类型） -->
+      <div v-if="poemBody && !quoteText && !mainText" class="poem-body">
+        {{ formattedLegacyBody }}
       </div>
       
       <!-- 可选的作者信息 -->
@@ -63,17 +80,10 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import type { PoemViewerProps } from '../types/zhou'
 
-// 组件Props
-interface Props {
-  poemTitle?: string | null
-  poemBody?: string | object | null
-  author?: string
-  additionalInfo?: string
-  animationDelay?: string
-  showActions?: boolean
-  showDownload?: boolean
-}
+// 使用统一的类型定义
+type Props = PoemViewerProps
 
 // 组件Emits
 interface Emits {
@@ -90,6 +100,9 @@ interface ShareData {
 
 const props = withDefaults(defineProps<Props>(), {
   poemTitle: null,
+  quoteText: null,
+  quoteCitation: null,
+  mainText: null,
   poemBody: null,
   author: '',
   additionalInfo: '',
@@ -110,8 +123,24 @@ const cleanTitle = (title: string | null): string => {
   return title.replace(/[《》]/g, '')
 }
 
-// 格式化诗歌内容（增强换行和缩进处理）
-const formattedBody = computed(() => {
+// 格式化引文内容
+const formattedQuoteText = computed(() => 
+  props.quoteText ? enhanceTextFormatting(props.quoteText) : ''
+)
+
+// 格式化引文出处（去除——前缀）
+const formattedQuoteCitation = computed(() => {
+  if (!props.quoteCitation) return ''
+  return props.quoteCitation.replace(/^——/, '').trim()
+})
+
+// 格式化诗歌原文
+const formattedMainText = computed(() => 
+  props.mainText ? enhanceTextFormatting(props.mainText) : ''
+)
+
+// 兼容原有poemBody格式（仅支持string类型）
+const formattedLegacyBody = computed(() => {
   if (!props.poemBody) {
     return '诗歌内容加载中...'
   }
@@ -120,25 +149,7 @@ const formattedBody = computed(() => {
     return enhanceTextFormatting(props.poemBody)
   }
   
-  if (typeof props.poemBody === 'object' && props.poemBody !== null) {
-    const body = props.poemBody as Record<string, unknown>
-    const parts: string[] = []
-    
-    if (body.quote_text && typeof body.quote_text === 'string') {
-      parts.push(enhanceTextFormatting(body.quote_text))
-    }
-    if (body.quote_citation && typeof body.quote_citation === 'string') {
-      const citation = body.quote_citation.replace(/^——/, '').trim()
-      parts.push(`——${citation}`)
-    }
-    if (body.main_text && typeof body.main_text === 'string') {
-      parts.push(enhanceTextFormatting(body.main_text))
-    }
-    
-    return parts.join('\n\n')
-  }
-  
-  return '诗歌格式错误'
+  return '不支持的诗歌格式'
 })
 
 // 增强文本格式处理
@@ -159,7 +170,23 @@ const enhanceTextFormatting = (text: string): string => {
 // 获取纯文本内容（用于复制和分享）
 const plainTextContent = computed(() => {
   const title = cleanTitle(props.poemTitle)
-  const content = formattedBody.value
+  
+  // 构建诗歌内容：优先使用结构化数据，兼容原有格式
+  let content = ''
+  if (props.quoteText || props.quoteCitation || props.mainText) {
+    // 使用结构化数据
+    const parts: string[] = []
+    if (props.quoteText) parts.push(formattedQuoteText.value)
+    if (props.quoteCitation) parts.push(`——${formattedQuoteCitation.value}`)
+    if (props.mainText) parts.push(formattedMainText.value)
+    content = parts.join('\n\n')
+  } else if (props.poemBody) {
+    // 兼容原有格式
+    content = formattedLegacyBody.value
+  } else {
+    content = '诗歌内容加载中...'
+  }
+  
   const authorText = props.author ? `\n\n作者：${props.author}` : ''
   const infoText = props.additionalInfo ? `\n${props.additionalInfo}` : ''
   
@@ -347,6 +374,45 @@ const downloadPoem = () => {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* 结构化诗歌内容样式 */
+.poem-quote {
+  font-size: var(--font-size-base);
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-base);
+  text-align: center;
+  white-space: pre-line;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+}
+
+.poem-citation {
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--text-tertiary);
+  margin-bottom: var(--spacing-lg);
+  text-align: right;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 500;
+}
+
+.poem-main {
+  font-size: var(--font-size-base);
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  white-space: pre-line;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 600;
 }
 
 .poem-author {

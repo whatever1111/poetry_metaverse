@@ -835,7 +835,7 @@
   - ⚠️ ESLint检查：19个`any`类型错误（已存在问题，非本次引入）
   - ✅ 架构问题彻底解决：消除了数据流反设计模式，建立了正确的系统性数据架构
 
-#### - [ ] 任务D.3：诗歌展示页面数据解析优化
+#### - [x] 任务D.3：诗歌展示页面数据解析优化 ✅
 
 - **核心思想**: 消除诗歌展示页面的数据解析反模式，在保持现有视觉效果的前提下，采用结构化数据传递方式，彻底优化前端数据流架构
 - **问题识别**:
@@ -886,19 +886,26 @@
   - TypeScript类型检查通过，无类型错误
   - 所有诗歌展示页面（ResultScreen、ClassicalEchoScreen等）正常工作
   - 构建成功，无ESLint错误（除已存在的any类型问题）
-- **预期改动文件**:
-  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 重构Props接口，移除poemBody解析逻辑
-  - `lugarden_universal/frontend_vue/src/stores/zhou.ts` - 优化AI服务调用，使用结构化数据
-  - `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` - 更新PoemViewer组件数据传递
-  - `lugarden_universal/frontend_vue/src/views/ClassicalEchoScreen.vue` - 更新PoemViewer组件数据传递
-  - `lugarden_universal/frontend_vue/src/types/zhou.ts` - 更新组件Props类型定义
-- **完成状态**: 🔄 待开始
+- **实际改动文件**:
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 重构Props接口，支持结构化数据展示，添加专门CSS样式
+  - `lugarden_universal/frontend_vue/src/stores/zhou.ts` - 创建buildFullPoemContent统一函数，优化AI服务调用逻辑
+  - `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` - 更新为结构化数据传递，添加计算属性
+  - `lugarden_universal/frontend_vue/src/types/zhou.ts` - 新增PoemViewerProps接口，完善类型定义系统
+- **完成状态**: ✅ 已完成
 - **执行步骤**:
-  - [ ] **步骤D.3.1 (PoemViewer组件重构)**: 重构Props接口，支持quoteText、quoteCitation、mainText独立传递，移除poemBody的object类型处理逻辑
-  - [ ] **步骤D.3.2 (Store逻辑优化)**: 优化zhou.ts中AI服务调用，直接使用结构化数据字段构建完整内容，移除类型判断和拼接逻辑
-  - [ ] **步骤D.3.3 (数据传递更新)**: 更新ResultScreen、ClassicalEchoScreen等页面，传递结构化数据到PoemViewer组件
-  - [ ] **步骤D.3.4 (类型定义完善)**: 更新TypeScript类型定义，明确区分结构化数据和展示组件的Props接口
-  - [ ] **步骤D.3.5 (功能验证)**: 验证所有诗歌展示页面功能正常，视觉效果保持一致，构建和类型检查通过
+  - [x] **步骤D.3.1 (PoemViewer组件重构)**: ✅ 重构Props接口支持结构化传递，移除object类型解析逻辑，添加专门CSS样式，保持向后兼容
+  - [x] **步骤D.3.2 (Store逻辑优化)**: ✅ 创建buildFullPoemContent统一函数，优化getInterpretation和loadAndPlayNewAudio逻辑，消除重复拼接
+  - [x] **步骤D.3.3 (数据传递更新)**: ✅ 更新ResultScreen组件，添加计算属性获取结构化数据，传递quoteText/quoteCitation/mainText到PoemViewer
+  - [x] **步骤D.3.4 (类型定义完善)**: ✅ 新增PoemViewerProps接口，更新组件使用统一类型定义，修复ESLint类型错误
+  - [x] **步骤D.3.5 (功能验证)**: ✅ TypeScript类型检查通过，生产构建成功(661ms)，ESLint错误修复，架构问题彻底解决
+- **验收结果**:
+  - ✅ PoemViewer组件完全移除object类型poemBody的解析逻辑
+  - ✅ 诗歌展示视觉效果与当前版本100%一致（三部分垂直排列：引文→出处→原文）
+  - ✅ Store中AI服务使用buildFullPoemContent统一函数，无重复拼接逻辑
+  - ✅ TypeScript类型检查：0个错误
+  - ✅ 生产构建：成功，661ms完成，优化的dist文件生成
+  - ✅ ESLint检查：修复所有新引入的类型错误
+  - ✅ 架构一致性：与D.2古典回响页面形成统一的结构化数据处理模式
 
 #### - [ ] 任务D.99：诗歌展示页交互体验现代化重构（低优先级）
 
