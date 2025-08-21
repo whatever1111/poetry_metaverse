@@ -2,8 +2,96 @@
 /* 这个文件作为UnoCSS样式的入口点 */
 /* UnoCSS将在这里注入生成的utility类 */
 
-/* 自定义CSS变量映射 - 在A.2阶段配置 */
-/* 预留空间给现有CSS变量系统的映射 */
+/* ================================
+   CSS变量与UnoCSS令牌双向映射
+   确保现有CSS变量与UnoCSS utility类协同工作
+================================ */
 
-/* 兼容层样式 - 在B.1阶段配置 */
-/* 预留空间给UnoCSS与现有CSS系统的兼容层 */
+/* UnoCSS与现有CSS变量的兼容映射 */
+:root {
+  /* 
+    这些CSS变量与UnoCSS theme配置保持同步
+    现有组件可以继续使用CSS变量
+    新组件可以使用UnoCSS utility类
+  */
+  
+  /* UnoCSS颜色令牌映射 */
+  --uno-color-primary-50: theme('colors.primary.50');
+  --uno-color-primary-100: theme('colors.primary.100');
+  --uno-color-primary-200: theme('colors.primary.200');
+  --uno-color-primary-300: theme('colors.primary.300');
+  --uno-color-primary-400: theme('colors.primary.400');
+  --uno-color-primary-500: theme('colors.primary.500');
+  --uno-color-primary-600: theme('colors.primary.600');
+  --uno-color-primary-700: theme('colors.primary.700');
+  --uno-color-primary-800: theme('colors.primary.800');
+  --uno-color-primary-900: theme('colors.primary.900');
+  
+  --uno-color-brand-light: theme('colors.brand.light');
+  --uno-color-brand-primary: theme('colors.brand.primary');
+  --uno-color-brand-dark: theme('colors.brand.dark');
+  
+  --uno-color-success: theme('colors.success');
+  --uno-color-warning: theme('colors.warning');
+  --uno-color-error: theme('colors.error');
+  --uno-color-info: theme('colors.info');
+  
+  /* UnoCSS间距令牌映射 */
+  --uno-spacing-xs: theme('spacing.xs');
+  --uno-spacing-sm: theme('spacing.sm');
+  --uno-spacing-base: theme('spacing.base');
+  --uno-spacing-lg: theme('spacing.lg');
+  --uno-spacing-xl: theme('spacing.xl');
+  --uno-spacing-2xl: theme('spacing.2xl');
+  --uno-spacing-3xl: theme('spacing.3xl');
+  
+  /* UnoCSS圆角令牌映射 */
+  --uno-radius-sm: theme('borderRadius.sm');
+  --uno-radius-base: theme('borderRadius.base');
+  --uno-radius-lg: theme('borderRadius.lg');
+  --uno-radius-xl: theme('borderRadius.xl');
+  --uno-radius-full: theme('borderRadius.full');
+  
+  /* UnoCSS阴影令牌映射 */
+  --uno-shadow-sm: theme('boxShadow.sm');
+  --uno-shadow-base: theme('boxShadow.base');
+  --uno-shadow-md: theme('boxShadow.md');
+  --uno-shadow-lg: theme('boxShadow.lg');
+  --uno-shadow-xl: theme('boxShadow.xl');
+  --uno-shadow-2xl: theme('boxShadow.2xl');
+  
+  /* UnoCSS动画时长令牌映射 */
+  --uno-duration-fast: theme('transitionDuration.fast');
+  --uno-duration-normal: theme('transitionDuration.normal');
+  --uno-duration-slow: theme('transitionDuration.slow');
+  --uno-duration-slower: theme('transitionDuration.slower');
+}
+
+/* ================================
+   渐进式迁移支持类
+   帮助现有组件逐步迁移到UnoCSS
+================================ */
+
+/* 提供与现有样式系统一致的utility类别名 */
+.color-primary { @apply text-primary-500; }
+.color-secondary { @apply text-primary-400; }
+.color-tertiary { @apply text-primary-300; }
+.color-brand { @apply text-brand-primary; }
+
+.bg-card { @apply bg-brand-light; }
+.bg-overlay { @apply bg-white/30; }
+
+.spacing-base { @apply p-base; }
+.spacing-lg { @apply p-lg; }
+.spacing-xl { @apply p-xl; }
+
+.radius-base { @apply rounded-base; }
+.radius-lg { @apply rounded-lg; }
+
+.shadow-base { @apply shadow-base; }
+.shadow-lg { @apply shadow-lg; }
+
+/* ================================
+   兼容层样式 - B.1阶段扩展
+   预留空间给UnoCSS与现有CSS系统的兼容层
+================================ */

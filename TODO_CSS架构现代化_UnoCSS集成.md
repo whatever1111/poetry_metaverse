@@ -44,6 +44,13 @@
   - `lugarden_universal/frontend_vue/vite.config.ts` - Vite插件配置
   - `lugarden_universal/frontend_vue/src/main.ts` - 导入UnoCSS样式
   - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - UnoCSS入口文件
+- **实际改动文件**:
+  - `lugarden_universal/frontend_vue/package.json` - 添加UnoCSS依赖(unocss, @unocss/preset-wind, @unocss/preset-uno)
+  - `lugarden_universal/frontend_vue/package-lock.json` - 锁定61个新依赖包版本
+  - `lugarden_universal/frontend_vue/uno.config.ts` - UnoCSS配置文件，启用Tailwind兼容预设
+  - `lugarden_universal/frontend_vue/vite.config.ts` - 集成UnoCSS插件到构建流程
+  - `lugarden_universal/frontend_vue/src/main.ts` - 导入UnoCSS虚拟模块
+  - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - UnoCSS样式入口文件
 - **完成状态**: ✅ 已完成
 - **执行步骤**:
   - [x] **步骤A.1.1 (安装依赖)**: 安装UnoCSS相关依赖包 (unocss, @unocss/preset-wind, @unocss/preset-uno)
@@ -51,7 +58,7 @@
   - [x] **步骤A.1.3 (Vite集成)**: 配置Vite UnoCSS插件，确保与现有样式不冲突
   - [x] **步骤A.1.4 (样式入口)**: 创建UnoCSS入口文件并在main.ts中引入
 
-#### - [ ] 任务A.2：设计系统映射与CSS变量集成
+#### - [x] 任务A.2：设计系统映射与CSS变量集成
 - **核心思想**: 建立现有CSS变量系统与UnoCSS设计令牌的双向映射关系，确保设计系统的一致性和可维护性，为组件级迁移做好准备。
 - **交付物**:
   - CSS变量与UnoCSS令牌映射配置
@@ -65,12 +72,15 @@
 - **预期改动文件**:
   - `lugarden_universal/frontend_vue/uno.config.ts` - 扩展主题配置
   - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - 自定义CSS变量映射
-- **完成状态**: 🔄 待开始
+- **实际改动文件**:
+  - `lugarden_universal/frontend_vue/uno.config.ts` - 完整主题配置，103个设计令牌映射
+  - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - CSS变量双向映射+渐进式迁移支持类
+- **完成状态**: ✅ 已完成
 - **执行步骤**:
-  - [ ] **步骤A.2.1 (变量分析)**: 分析现有CSS变量系统结构
-  - [ ] **步骤A.2.2 (主题扩展)**: 在UnoCSS配置中创建对应的theme扩展
-  - [ ] **步骤A.2.3 (映射建立)**: 建立CSS变量与UnoCSS令牌的双向映射关系
-  - [ ] **步骤A.2.4 (功能验证)**: 验证自定义主题正确工作
+  - [x] **步骤A.2.1 (变量分析)**: 分析现有CSS变量系统结构
+  - [x] **步骤A.2.2 (主题扩展)**: 在UnoCSS配置中创建对应的theme扩展
+  - [x] **步骤A.2.3 (映射建立)**: 建立CSS变量与UnoCSS令牌的双向映射关系
+  - [x] **步骤A.2.4 (功能验证)**: 验证自定义主题正确工作
 
 ---
 
