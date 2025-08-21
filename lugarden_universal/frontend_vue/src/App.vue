@@ -4,15 +4,13 @@
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" class="min-h-screen">
     <!-- 路由视图容器 -->
     <RouterView />
   </div>
 </template>
 
 <style scoped>
-#app {
-  /* 应用容器基础样式已在全局样式中定义 */
-  min-height: 100vh;
-}
+/* App.vue基础样式已迁移至UnoCSS utility类 */
+/* min-height: 100vh → class="min-h-screen" */
 </style>
