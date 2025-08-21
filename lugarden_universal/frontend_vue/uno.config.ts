@@ -118,11 +118,18 @@ export default defineConfig({
     }
   },
   
-  // CSS层级配置，避免与现有样式冲突
+  // CSS层级配置，确保UnoCSS与现有样式的正确优先级
   layers: {
-    'utilities': 1,
-    'components': 2,
-    'base': 3
+    'base': 1,        // 基础样式层（最低优先级）
+    'components': 2,  // 组件样式层 
+    'utilities': 3    // 工具类层（最高优先级，可覆盖组件样式）
+  },
+  
+  // CSS输出控制和命名空间
+  cssLayers: {
+    base: 'uno-base',
+    components: 'uno-components', 
+    utilities: 'uno-utilities'
   },
   
   // 开发环境配置
