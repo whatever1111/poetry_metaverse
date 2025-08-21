@@ -907,6 +907,71 @@
   - ✅ ESLint检查：修复所有新引入的类型错误
   - ✅ 架构一致性：与D.2古典回响页面形成统一的结构化数据处理模式
 
+#### - [ ] 任务D.4：诗歌展示页面视觉一致性与现代化卡片统一 
+
+- **核心思想**: 基于用户偏好分析，统一卡片设计语言，采用现代玻璃态设计，提升整体视觉一致性和现代感
+- **问题分析**:
+  - **多余标题问题**: ResultScreen中的"您的诗歌"标题在原版中不存在，属于迁移过程中的多余元素
+  - **全局卡片样式割裂**: 发现5种不同卡片样式并存，造成严重的视觉设计不一致
+    * `PoemViewer.vue`: 使用传统`card-base`
+    * `InterpretationDisplay.vue`: 4个卡片使用传统`card-base`
+    * `QuestionCard.vue`: 使用`card-question`
+    * `MainProjectSelection.vue`/`SubProjectSelection.vue`: 使用`card-project`
+    * `ClassicalEchoDisplay.vue`: 使用现代`unified-content-card`（标准）
+  - **设计语言分歧**: 4种不同的卡片设计语言并存，需要统一到现代玻璃态设计
+- **用户偏好确认**:
+  - ✅ **保留Vue版诗歌内容展示风格**: 居中对齐+差异化样式（引文斜体、出处右对齐等）用户满意
+  - ✅ **偏好古典回响现代卡片样式**: unified-content-card的玻璃态设计更简约摩登，符合现代页面理念
+  - ✅ **CSS样式复用架构**: 理解并认同"样式复用而非组件复用"的设计思路
+- **现代设计优势分析**:
+  - **玻璃态美学**: 半透明背景+毛玻璃效果符合2020年后流行的设计语言
+  - **层次化阴影**: 多层阴影+inset高光创造更精致的视觉深度
+  - **微交互设计**: 悬浮位移+平滑过渡增强用户体验反馈
+  - **现代感体验**: 透明轻盈感+科技产品主流设计语言，兼具功能性和美感
+- **风险评估与安全性确认**:
+  - **修改范围明确**: 仅修改CSS外观样式(背景、阴影、边框)，不改变宽度和布局结构
+  - **宽度控制不变**: 各组件的max-width容器设置保持不变，确保布局一致性
+  - **响应式兼容**: 不影响现有响应式断点和移动端适配
+  - **功能安全性**: 纯CSS样式修改，不涉及组件逻辑变更，风险大幅降低
+  - **浏览器兼容性**: backdrop-filter需验证目标浏览器支持，可提供降级方案
+- **交付物**:
+  - 清理后的ResultScreen（移除多余标题）
+  - 统一的现代卡片设计系统
+  - 确保卡片等宽一致性
+  - 保持现有诗歌内容展示风格不变
+- **验收标准**:
+  - ResultScreen页面删除"您的诗歌"多余标题
+  - 全局卡片样式统一为unified-content-card现代设计
+  - 卡片宽度和布局结构100%保持不变（仅外观样式修改）
+  - 现有诗歌内容展示效果完全保持（居中对齐+差异化样式）
+  - backdrop-filter毛玻璃效果在目标浏览器正常工作
+  - 响应式设计和移动端适配不受影响
+  - TypeScript类型检查通过，构建成功，无功能回归
+- **预期改动文件**:
+  - `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` - 删除多余标题，确保布局一致性
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 从card-base统一为现代unified-content-card设计
+  - `lugarden_universal/frontend_vue/src/components/InterpretationDisplay.vue` - 4个卡片从card-base统一为现代设计
+  - `lugarden_universal/frontend_vue/src/components/QuestionCard.vue` - 从card-question统一为现代unified-content-card设计
+  - `lugarden_universal/frontend_vue/src/views/MainProjectSelection.vue` - 从card-project统一为现代unified-content-card设计
+  - `lugarden_universal/frontend_vue/src/views/SubProjectSelection.vue` - 从card-project统一为现代unified-content-card设计
+  - `lugarden_universal/frontend_vue/src/assets/styles/` - 调整全局样式规范，统一卡片设计语言
+- **完成状态**: 🔄 待开始
+- **执行步骤**:
+  - [ ] **步骤D.4.1 (清理多余标题)**: 删除ResultScreen中的"您的诗歌"标题，保持页面简洁
+  - [ ] **步骤D.4.2 (全局卡片样式统一)**: 将所有组件卡片样式统一为unified-content-card现代设计
+    * PoemViewer: card-base → unified-content-card
+    * InterpretationDisplay: 4个card-base → unified-content-card  
+    * QuestionCard: card-question → unified-content-card
+    * MainProjectSelection: card-project → unified-content-card
+    * SubProjectSelection: card-project → unified-content-card
+  - [ ] **步骤D.4.3 (卡片等宽确保)**: 验证并修复不同页面间卡片宽度的视觉一致性问题
+  - [ ] **步骤D.4.4 (样式系统优化)**: 优化CSS样式组织，确保现代设计语言的统一应用
+  - [ ] **步骤D.4.5 (功能验证与浏览器兼容性测试)**: 验证所有改动不影响现有功能，确保视觉效果符合预期
+    * 功能完整性验证：问答流程、诗歌展示、AI功能、诗人解读
+    * 布局一致性验证：卡片宽度、响应式断点、移动端适配
+    * 浏览器兼容性：backdrop-filter毛玻璃效果支持检查
+    * 性能影响评估：动画流畅度、页面渲染性能
+
 #### - [ ] 任务D.99：诗歌展示页交互体验现代化重构（低优先级）
 
 - **核心思想**: 跳出传统四按钮框架，重新设计诗歌展示页的交互体验，利用现代前端技术创造更优雅的用户体验
