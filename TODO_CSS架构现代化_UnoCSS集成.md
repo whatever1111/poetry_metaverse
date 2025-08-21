@@ -26,7 +26,7 @@
 
 ### **阶段A：基础设施搭建与设计系统映射**
 
-#### - [ ] 任务A.1：UnoCSS基础设施搭建
+#### - [x] 任务A.1：UnoCSS基础设施搭建
 - **核心思想**: 建立UnoCSS开发环境基础设施，确保与现有Vue3 + TypeScript + Vite技术栈完全兼容，为后续CSS架构迁移奠定稳固技术基础。
 - **交付物**:
   - UnoCSS配置文件和Vite插件集成
@@ -44,12 +44,12 @@
   - `lugarden_universal/frontend_vue/vite.config.ts` - Vite插件配置
   - `lugarden_universal/frontend_vue/src/main.ts` - 导入UnoCSS样式
   - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - UnoCSS入口文件
-- **完成状态**: 🔄 待开始
+- **完成状态**: ✅ 已完成
 - **执行步骤**:
-  - [ ] **步骤A.1.1 (安装依赖)**: 安装UnoCSS相关依赖包 (unocss, @unocss/preset-wind, @unocss/preset-uno)
-  - [ ] **步骤A.1.2 (配置文件)**: 创建uno.config.ts，启用Tailwind兼容预设
-  - [ ] **步骤A.1.3 (Vite集成)**: 配置Vite UnoCSS插件，确保与现有样式不冲突
-  - [ ] **步骤A.1.4 (样式入口)**: 创建UnoCSS入口文件并在main.ts中引入
+  - [x] **步骤A.1.1 (安装依赖)**: 安装UnoCSS相关依赖包 (unocss, @unocss/preset-wind, @unocss/preset-uno)
+  - [x] **步骤A.1.2 (配置文件)**: 创建uno.config.ts，启用Tailwind兼容预设
+  - [x] **步骤A.1.3 (Vite集成)**: 配置Vite UnoCSS插件，确保与现有样式不冲突
+  - [x] **步骤A.1.4 (样式入口)**: 创建UnoCSS入口文件并在main.ts中引入
 
 #### - [ ] 任务A.2：设计系统映射与CSS变量集成
 - **核心思想**: 建立现有CSS变量系统与UnoCSS设计令牌的双向映射关系，确保设计系统的一致性和可维护性，为组件级迁移做好准备。
