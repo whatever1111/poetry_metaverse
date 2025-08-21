@@ -4,10 +4,6 @@
       <div class="max-w-4xl mx-auto">
         <!-- 结果展示 -->
         <div class="result-content">
-          <h1 class="content-title text-center mb-8 animate-fadeIn">
-            您的诗歌
-          </h1>
-          
           <!-- 诗歌内容 -->
           <div v-if="zhouStore.result.selectedPoem" class="mb-8">
             <PoemViewer 

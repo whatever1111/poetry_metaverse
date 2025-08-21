@@ -93,25 +93,7 @@ const hasAnyContent = computed(() => {
   margin-bottom: 3rem;
 }
 
-/* 统一内容卡片样式 - 对齐原版zhou.html的backdrop-blur效果 */
-.unified-content-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(248, 250, 252, 0.6) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  border-radius: var(--radius-base);
-  padding: var(--spacing-2xl);
-  color: var(--text-secondary);
-  line-height: 1.8;
-  text-align: left;
-  white-space: pre-line;
-  word-wrap: break-word;
-  font-size: var(--font-size-lg);
-  min-height: 200px;
-}
+/* 统一内容卡片样式现已移至全局CSS - components.css */
 
 /* 引文篇目名样式 - 居中加粗 */
 .citation-text {
@@ -235,30 +217,5 @@ const hasAnyContent = computed(() => {
   }
 }
 
-/* 内容渐入动画增强 */
-.unified-content-card {
-  opacity: 0;
-  animation: fadeIn 0.8s var(--ease-out) 0.3s forwards;
-}
-
-/* 悬浮效果 - 更加细腻 */
-.unified-content-card:hover {
-  transform: translateY(-2px);
-  transition: all var(--duration-normal) var(--ease-out);
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.15),
-    0 4px 12px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-/* 移动端取消悬浮效果 */
-@media (max-width: 768px) {
-  .unified-content-card:hover {
-    transform: none;
-    box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.1),
-      0 2px 8px rgba(0, 0, 0, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  }
-}
+/* 动画和悬浮效果现已移至全局CSS - components.css */
 </style>

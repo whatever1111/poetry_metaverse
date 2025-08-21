@@ -1,6 +1,6 @@
 <template>
   <div class="poem-viewer">
-    <div class="poem-content card-base animate-fadeInUp" :style="{ animationDelay: animationDelay }">
+    <div class="poem-content unified-content-card animate-fadeInUp" :style="{ animationDelay: animationDelay }">
       <h2 class="poem-title">
         {{ cleanTitle(poemTitle) }}
       </h2>

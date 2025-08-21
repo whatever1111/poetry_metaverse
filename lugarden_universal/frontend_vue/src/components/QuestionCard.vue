@@ -1,6 +1,6 @@
 <template>
   <div class="question-card">
-    <div class="card-question animate-fadeInUp">
+    <div class="unified-content-card animate-fadeInUp">
       <div 
         class="question-text animate-textChange" 
         :key="questionIndex"
