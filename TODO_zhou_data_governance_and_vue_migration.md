@@ -835,6 +835,71 @@
   - ⚠️ ESLint检查：19个`any`类型错误（已存在问题，非本次引入）
   - ✅ 架构问题彻底解决：消除了数据流反设计模式，建立了正确的系统性数据架构
 
+#### - [ ] 任务D.3：诗歌展示页面数据解析优化
+
+- **核心思想**: 消除诗歌展示页面的数据解析反模式，在保持现有视觉效果的前提下，采用结构化数据传递方式，彻底优化前端数据流架构
+- **问题识别**:
+  1. **前端数据解析反模式**: `PoemViewer.vue`组件承担了数据解析职责，手动拼接`quote_text`、`quote_citation`、`main_text`
+  2. **Store层重复拼接**: `zhou.ts`中AI服务调用时再次进行字符串拼接，违反DRY原则
+  3. **架构不一致**: Vue版本前端解析vs古典回响页面直接使用结构化数据，同一项目内存在不一致的数据处理模式
+- **当前问题代码**:
+  ```javascript
+  // PoemViewer.vue (第123-138行) - 问题：前端承担数据解析职责
+  if (typeof props.poemBody === 'object' && props.poemBody !== null) {
+    const parts: string[] = []
+    if (body.quote_text) parts.push(enhanceTextFormatting(body.quote_text))
+    if (body.quote_citation) parts.push(`——${body.quote_citation}`)
+    if (body.main_text) parts.push(enhanceTextFormatting(body.main_text))
+    return parts.join('\n\n') // ❌ 前端拼接字符串
+  }
+  
+  // zhou.ts (第500-502行) - 问题：Store层重复拼接逻辑  
+  const poemBody = typeof result.selectedPoem.body === 'string' 
+    ? result.selectedPoem.body 
+    : `${result.selectedPoem.body.quote_text || ''}\n\n${result.selectedPoem.body.main_text || ''}`.trim()
+  ```
+- **解决方案**: 采用结构化数据传递，保持单一卡片视觉效果
+  ```html
+  <!-- 目标架构：保持同一卡片，垂直展示三部分 -->
+  <div class="poem-content card-base">
+    <h2 class="poem-title">{{ cleanTitle(poemTitle) }}</h2>
+    <div v-if="quoteText" class="poem-quote">{{ formattedQuoteText }}</div>
+    <div v-if="quoteCitation" class="poem-citation">——{{ formattedQuoteCitation }}</div>
+    <div v-if="mainText" class="poem-main">{{ formattedMainText }}</div>
+  </div>
+  ```
+- **架构优势**:
+  - **职责清晰**: PoemViewer成为纯展示组件，不承担数据解析职责
+  - **代码简化**: 移除复杂的类型判断和字符串拼接逻辑
+  - **架构一致**: 与D.2古典回响页面形成统一的结构化数据处理模式
+  - **扩展性增强**: 为引文、出处、原文设置不同样式成为可能
+  - **维护性提升**: 数据格式变更时只需修改后端映射，前端无需调整
+- **交付物**:
+  - 重构后的PoemViewer.vue组件（支持结构化Props）
+  - 优化后的Store AI服务调用逻辑
+  - 更新后的ResultScreen等页面数据传递方式
+  - 完善的TypeScript类型定义
+- **验收标准**:
+  - PoemViewer组件完全移除object类型poemBody的解析逻辑
+  - 诗歌展示视觉效果与当前版本100%一致（标题→引文→出处→原文垂直排列）
+  - Store中AI服务直接使用结构化字段，无需拼接
+  - TypeScript类型检查通过，无类型错误
+  - 所有诗歌展示页面（ResultScreen、ClassicalEchoScreen等）正常工作
+  - 构建成功，无ESLint错误（除已存在的any类型问题）
+- **预期改动文件**:
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 重构Props接口，移除poemBody解析逻辑
+  - `lugarden_universal/frontend_vue/src/stores/zhou.ts` - 优化AI服务调用，使用结构化数据
+  - `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` - 更新PoemViewer组件数据传递
+  - `lugarden_universal/frontend_vue/src/views/ClassicalEchoScreen.vue` - 更新PoemViewer组件数据传递
+  - `lugarden_universal/frontend_vue/src/types/zhou.ts` - 更新组件Props类型定义
+- **完成状态**: 🔄 待开始
+- **执行步骤**:
+  - [ ] **步骤D.3.1 (PoemViewer组件重构)**: 重构Props接口，支持quoteText、quoteCitation、mainText独立传递，移除poemBody的object类型处理逻辑
+  - [ ] **步骤D.3.2 (Store逻辑优化)**: 优化zhou.ts中AI服务调用，直接使用结构化数据字段构建完整内容，移除类型判断和拼接逻辑
+  - [ ] **步骤D.3.3 (数据传递更新)**: 更新ResultScreen、ClassicalEchoScreen等页面，传递结构化数据到PoemViewer组件
+  - [ ] **步骤D.3.4 (类型定义完善)**: 更新TypeScript类型定义，明确区分结构化数据和展示组件的Props接口
+  - [ ] **步骤D.3.5 (功能验证)**: 验证所有诗歌展示页面功能正常，视觉效果保持一致，构建和类型检查通过
+
 #### - [ ] 任务D.99：诗歌展示页交互体验现代化重构（低优先级）
 
 - **核心思想**: 跳出传统四按钮框架，重新设计诗歌展示页的交互体验，利用现代前端技术创造更优雅的用户体验
