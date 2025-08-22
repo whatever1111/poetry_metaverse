@@ -12,13 +12,34 @@ export default defineConfig({
     vue(),
     vueJsx(),
     vueDevTools(),
-    UnoCSS(),
+    UnoCSS({
+      // UnoCSS插件性能优化配置
+      hmrTopLevelAwait: false, // 提升HMR性能
+      inspector: false, // 生产环境禁用inspector
+    }),
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  // 构建优化配置
+  build: {
+    cssCodeSplit: true, // CSS代码分割
+    cssMinify: 'esbuild', // 使用esbuild压缩CSS
+    rollupOptions: {
+      output: {
+        // CSS文件命名
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'assets/[name].[hash].css'
+          }
+          return 'assets/[name].[hash].[ext]'
+        }
+      }
+    }
+  },
+  
   server: {
     port: 5173,
     proxy: {

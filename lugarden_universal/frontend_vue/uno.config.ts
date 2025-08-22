@@ -7,9 +7,23 @@ export default defineConfig({
     presetWind(), // Tailwind CSS兼容预设
   ],
   
-  // 内容扫描路径
+  // 内容扫描路径 - 性能优化
   content: {
-    filesystem: ['**/*.{html,js,ts,jsx,tsx,vue,svelte,astro}']
+    filesystem: [
+      'src/**/*.{vue,js,ts}',
+      'index.html'
+    ],
+    pipeline: {
+      include: [
+        // 仅扫描源文件，排除node_modules和构建产物
+        /\.(vue|[jt]sx?|html)($|\?)/,
+      ],
+      exclude: [
+        'node_modules/**',
+        'dist/**',
+        '.git/**'
+      ]
+    }
   },
   
   // 自定义主题扩展 - 映射现有CSS变量系统
@@ -136,6 +150,21 @@ export default defineConfig({
   dev: {
     // HMR优化
     hmr: true
-  }
+  },
+  
+  // 性能优化选项
+  shortcuts: [
+    // 常用组合可以定义为shortcuts
+    ['btn-base', 'inline-flex items-center justify-center min-w-30 min-h-11 px-4 py-2 font-semibold rounded-lg cursor-pointer transition-all duration-200 ease-out'],
+    ['card-base', 'bg-white rounded-lg shadow-md p-6 transition-all duration-300 ease-out'],
+    ['text-responsive', 'text-base max-sm:text-sm lg:text-lg']
+  ],
+  
+  // 预加载常用工具类（提升冷启动性能）
+  safelist: [
+    'flex', 'grid', 'hidden', 'block', 
+    'w-full', 'h-full', 'max-w-3xl', 'mx-auto',
+    'text-center', 'items-center', 'justify-center'
+  ]
 })
 
