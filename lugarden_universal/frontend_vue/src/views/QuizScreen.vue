@@ -1,5 +1,5 @@
 <template>
-  <div class="quiz-screen">
+  <div class="min-h-screen" style="background-color: var(--bg-primary);">
     <div class="container mx-auto px-4 py-8">
       <!-- 返回按钮 -->
       <div class="mb-6">
@@ -270,11 +270,6 @@ const startNewQuiz = () => {
 </script>
 
 <style scoped>
-.quiz-screen {
-  min-height: 100vh;
-  background-color: var(--bg-primary);
-}
-
 /* ProgressBar组件样式已迁移到组件内部 */
 /* QuestionCard组件样式已迁移到组件内部 */
 </style>

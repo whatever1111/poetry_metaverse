@@ -1,5 +1,5 @@
 <template>
-  <div class="result-screen">
+  <div class="min-h-screen" style="background-color: var(--bg-primary);">
     <div class="container mx-auto px-4 py-8">
       <div class="max-w-4xl mx-auto">
         <!-- 结果展示 -->
@@ -226,11 +226,6 @@ const retryAiFeatures = () => {
 </script>
 
 <style scoped>
-.result-screen {
-  min-height: 100vh;
-  background-color: var(--bg-primary);
-}
-
 /* 诗歌内容样式已迁移到PoemViewer组件 */
 
 /* 操作按钮样式已迁移到ActionButtons组件 */

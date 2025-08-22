@@ -1,5 +1,5 @@
 <template>
-  <div class="main-project-selection">
+  <div class="min-h-screen" style="background-color: var(--bg-primary);">
     <div class="container mx-auto px-4 py-8">
       <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
         周与春秋
@@ -117,11 +117,6 @@ async function retryLoad(): Promise<void> {
 </script>
 
 <style scoped>
-.main-project-selection {
-  min-height: 100vh;
-  background-color: var(--bg-primary);
-}
-
 /* 组件特有的样式 */
 .loading-spinner {
   animation: spin 1s linear infinite;

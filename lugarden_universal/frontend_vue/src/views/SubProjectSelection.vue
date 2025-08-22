@@ -1,5 +1,5 @@
 <template>
-  <div class="sub-project-selection">
+  <div class="min-h-screen" style="background-color: var(--bg-primary);">
     <div class="container mx-auto px-4 py-8">
       <!-- 返回按钮 -->
       <div class="mb-6">
@@ -133,9 +133,3 @@ const selectChapter = (chapterName: string) => {
 }
 </script>
 
-<style scoped>
-.sub-project-selection {
-  min-height: 100vh;
-  background-color: var(--bg-primary);
-}
-</style>
