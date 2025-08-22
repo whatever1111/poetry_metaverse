@@ -490,11 +490,7 @@ const downloadPoem = () => {
   position: relative;
 }
 
-.poem-body::first-letter {
-  font-size: 1.2em;
-  font-weight: 600;
-  color: var(--color-brand-primary);
-}
+/* 首字母品牌色效果已被UnoCSS覆盖失效，已清理 - A.3任务 */
 
 /* 复制和分享功能样式 */
 .poem-actions {

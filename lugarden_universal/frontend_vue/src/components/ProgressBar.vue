@@ -310,8 +310,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.progress-bar-container {}
-
 /* 标签样式 */
 .progress-label {
   display: flex;

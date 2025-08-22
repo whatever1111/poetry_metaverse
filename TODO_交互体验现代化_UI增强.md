@@ -111,6 +111,66 @@
      - ✅ 品牌色保持：首字母效果(.poem-body::first-letter)仍使用品牌色，品牌识别度未受影响
      - ✅ 用户体验：解决了主人发现的视觉干扰问题，诗歌阅读体验更加纯净
 
+#### - [ ] 任务A.3：UnoCSS覆盖后的CSS残留代码清理
+- **核心思想**: 基于用户发现的问题：在A.2任务中提到"品牌色`#bca09e`仍通过首字母效果(.poem-body::first-letter)和其他UI元素保持存在"，但实际页面中这些效果并未体现，因为它们已被UnoCSS覆盖。清理这些残留的CSS代码以提升代码整洁度。
+- **问题定位**:
+  - **PoemViewer.vue首字母效果残留**: `.poem-body::first-letter`样式定义了品牌色，但被UnoCSS覆盖失效
+  - **ActionButtons.vue按钮样式残留**: 多个按钮的gradient样式定义，可能被全局样式覆盖
+  - **空CSS选择器残留**: `.action-buttons {}`、`.buttons-grid {}`、`.empty-content {}` 等完全空的选择器
+  - **被覆盖的布局样式**: 注释标注"已迁移至UnoCSS"但仍保留CSS定义的样式
+- 交付物：
+  - 被覆盖CSS的详细清单和影响分析
+  - 清理方案（保留必要/删除冗余/合并重复）
+  - 清理后的代码验证和功能测试
+- 验收标准：
+  - 完成所有组件的CSS残留检查
+  - 确保清理后功能和视觉效果无变化
+  - 代码文件体积和可维护性得到改善
+  - 提供清理前后对比报告
+- **风险评估**: 中等风险，需确保不影响现有功能和视觉效果
+- 预期改动文件（预判）：
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 清理首字母效果残留
+  - `lugarden_universal/frontend_vue/src/components/ActionButtons.vue` - 清理网格布局和按钮样式残留
+  - `lugarden_universal/frontend_vue/src/components/EmptyState.vue` - 清理空选择器
+  - `lugarden_universal/frontend_vue/src/components/ErrorState.vue` - 清理空选择器
+- 实际改动文件：
+  - `lugarden_universal/frontend_vue/src/components/ProgressBar.vue` - 删除空选择器`.progress-bar-container {}`
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 删除失效首字母样式，添加清理说明注释
+- **预期vs实际分析**：
+  - **未修改EmptyState.vue**: `.empty-content {}`在媒体查询中有`max-width: none;`，为有效使用
+  - **未修改ErrorState.vue**: 审计后未发现真正的空选择器
+  - **意外发现ProgressBar.vue**: 审计中发现了预期外的真实空选择器
+  - **审计价值**: 避免误删有效CSS，发现预期外的真实问题
+- 完成状态：✅ 已完成
+- 执行步骤：
+  - [x] 步骤A.3.1：全面审计被UnoCSS覆盖的CSS残留代码
+    **审计结果**：
+    - **空选择器残留**: `ProgressBar.vue:313` - `.progress-bar-container {}`
+    - **失效样式残留**: `PoemViewer.vue:493-497` - `.poem-body::first-letter`品牌色被UnoCSS覆盖
+    - **误判保留**: `ActionButtons.vue`的`.action-buttons{}`、`.buttons-grid{}`和`EmptyState.vue`的`.empty-content{}`在后续CSS中有使用
+    - **清理目标**: 2个真实残留
+  - [x] 步骤A.3.2：分类评估残留CSS的清理必要性和风险级别
+    **评估结果**：
+    - **零风险**: `ProgressBar.vue`空选择器 - 无任何样式定义
+    - **低风险**: `PoemViewer.vue`首字母样式 - 已被UnoCSS覆盖失效
+    - **清理策略**: 先零风险后低风险，每项验证  
+  - [x] 步骤A.3.3：制定分批清理策略
+    **清理方案**：
+    - **第一批**: `ProgressBar.vue`空选择器 - 直接删除
+    - **第二批**: `PoemViewer.vue`首字母样式 - 删除伪元素定义
+    - **验证方法**: 每批清理后功能验证
+  - [x] 步骤A.3.4：执行清理操作
+    **实施结果**：
+    - ✅ **第一批**: 删除`ProgressBar.vue:313`空选择器 - 功能无影响，减少1行
+    - ✅ **第二批**: 删除`PoemViewer.vue:493-497`首字母样式 - 页面样式无变化，减少5行代码
+    - **总计**: 删除6行CSS残留，净减少5行
+  - [x] 步骤A.3.5：生成清理报告
+    **验证结果**：
+    - ✅ **审计准确**: 发现2个真实残留，避免误删3个有效选择器
+    - ✅ **清理完成**: 100%完成率，净减少5行CSS代码
+    - ✅ **功能验证**: 无视觉或功能影响，代码更整洁
+    - ✅ **目标达成**: UnoCSS覆盖后的死CSS代码已清理
+
 #### - [ ] 任务A.99：实际使用体验调研
 - **核心思想**: 基于重构后的术语清单，通过实际使用当前系统发现真实的交互体验问题和改进机会。以用户视角进行全流程体验，使用准确的术语描述发现的问题。
 - 交付物：
