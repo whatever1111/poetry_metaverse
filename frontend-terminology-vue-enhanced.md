@@ -1,8 +1,8 @@
-# Vue增强版前端术语清单
+# 前端术语清单 - UnoCSS集成版
 
-> **📋 Vue术语清单说明**
+> **📋 术语清单说明**
 > 
-> 本术语清单建立业务术语与Vue技术实现的精确映射关系，确保沟通效率和开发定位的准确性。服务于D/E阶段的敏捷开发工作，待完成后将定稿至documentation目录。
+> 本术语清单建立业务术语与Vue+UnoCSS技术实现的精确映射关系，确保沟通效率和开发定位的准确性。采用技术栈演进适应性的内部架构，支持CSS混合架构和未来技术栈扩展。服务于UI增强项目和后续开发工作。
 
 ## 🎯 业务页面与Vue组件映射
 
@@ -149,79 +149,134 @@
 - **"播放音频"** = `playPoem()` action
 - **"显示诗人解读"** = `showPoetExplanation()` action
 
-### 4. CSS样式系统术语映射 (CSS Style System Mapping)
+### 4. 样式系统术语映射 (CSS Style System Mapping)
 
-#### 样式文件架构 (Style File Architecture)
+> **🏗️ 混合架构说明**  
+> 项目采用UnoCSS + 传统CSS的混合架构。基础样式使用UnoCSS utility类，复杂动画和特殊效果保留传统CSS。
+
+#### 4.1 UnoCSS术语映射 (UnoCSS Utility Mapping)
+
+##### 布局和间距问题
+- **"元素间距过大/过小"** → HTML class属性中的UnoCSS utility类
+  - 外边距: `m-4` (1rem), `mx-6` (1.5rem), `my-2` (0.5rem)
+  - 内边距: `p-4` (1rem), `px-6` (1.5rem), `py-2` (0.5rem)
+  - 间隙: `gap-4` (1rem), `gap-x-6`, `gap-y-2`
+  - 检查方法: 在浏览器开发者工具中查看元素的class属性
+
+- **"卡片布局问题"** → UnoCSS布局utility类
+  - 网格布局: `grid`, `grid-cols-2`, `grid-cols-md-3`
+  - 弹性布局: `flex`, `items-center`, `justify-between`
+  - 最大宽度: `max-w-sm`, `max-w-md`, `max-w-3xl`
+  - 居中对齐: `mx-auto`, `text-center`
+
+##### 响应式适配问题
+- **"移动端布局异常"** → UnoCSS响应式utility类
+  - 断点前缀: `sm:`, `md:`, `lg:`, `xl:`
+  - 移动优先: `gap-2 sm:gap-4 md:gap-6`
+  - 隐藏显示: `hidden md:block`, `block md:hidden`
+  - 响应式网格: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
+
+- **"桌面端卡片过宽"** → UnoCSS宽度utility类
+  - 最大宽度: `max-w-sm`, `max-w-md`, `max-w-3xl`
+  - 响应式宽度: `w-full md:w-1/2 lg:w-1/3`
+  - 容器居中: `container mx-auto`
+
+##### 颜色和视觉效果问题
+- **"按钮颜色不对"** → UnoCSS颜色utility类
+  - 背景色: `bg-blue-500`, `bg-gray-100`, `bg-primary`
+  - 文字色: `text-white`, `text-gray-800`, `text-primary`
+  - 边框色: `border-gray-300`, `border-blue-400`
+  - 悬停状态: `hover:bg-blue-600`, `hover:text-white`
+
+- **"阴影效果问题"** → UnoCSS阴影utility类
+  - 卡片阴影: `shadow-sm`, `shadow-md`, `shadow-lg`
+  - 悬停阴影: `hover:shadow-xl`, `hover:shadow-2xl`
+  - 无阴影: `shadow-none`
+
+##### 字体和文本问题
+- **"字体大小不合适"** → UnoCSS文字utility类
+  - 字体大小: `text-sm`, `text-base`, `text-lg`, `text-xl`
+  - 响应式字体: `text-sm md:text-base lg:text-lg`
+  - 字体粗细: `font-normal`, `font-medium`, `font-bold`
+  - 行高: `leading-relaxed`, `leading-loose`
+
+#### 4.2 传统CSS术语映射 (Traditional CSS Mapping)
+
+> **🎯 适用范围**: 复杂动画、特殊交互效果、高度定制化的视觉效果
+
+##### 样式文件架构
 - **全局样式基础** → `src/assets/styles/globals.css`
   - CSS变量定义 (`--color-*`, `--font-*`, `--spacing-*`)
   - 基础样式重置和全局设置
   - 响应式断点和媒体查询基础
-  
+
 - **组件样式类库** → `src/assets/styles/components.css`
-  - 按钮样式类 (`.btn-base`, `.btn-primary`, `.btn-option` 等)
-  - 卡片样式类 (`.card-base`, `.card-project`, `.card-question`)
-  - 状态样式类 (`.loading-*`, `.error-*`, `.empty-*`)
-  
+  - 复杂按钮样式 (`.btn-interpret`, `.btn-listen`, `.btn-poet`)
+  - 特殊卡片样式 (`.card-question` 的复杂状态)
+  - 特殊状态样式 (`.loading-*`, `.error-*` 的动画)
+
 - **动画效果库** → `src/assets/styles/animations.css`
   - 页面过渡动画 (`@keyframes fadeIn`, `@keyframes fadeInUp`)
   - 交互动画 (`@keyframes pulse`, `@keyframes spin`)
   - 文本变化动画 (`@keyframes textChangeScale`)
 
-#### CSS变量系统映射 (CSS Variables System)
+##### CSS变量系统
+- **"CSS变量覆盖问题"** → `globals.css` → CSS变量定义
+  - 颜色变量: `--color-primary-*`, `--bg-*`
+  - 间距变量: `--spacing-*`
+  - 字体变量: `--font-size-*`
+  - 动画变量: `--duration-*`, `--ease-*`
 
-##### 颜色变量问题
-- **"按钮颜色不对"** → `globals.css` → `--color-*` 变量族
-  - 主色调: `--color-primary-*` (50-900级别)
-  - 品牌色: `--color-brand-primary`, `--color-brand-dark`
-  - 状态色: `--color-success`, `--color-warning`, `--color-error`
-
-- **"背景色问题"** → `globals.css` → `--bg-*` 变量族
-  - 页面背景: `--bg-primary` (#f3f4f6)
-  - 卡片背景: `--bg-card` (#f5f1e8)
-  - 覆盖层背景: `--bg-overlay` (rgba(255, 255, 255, 0.3))
-
-##### 间距变量问题
-- **"元素间距过大/过小"** → `globals.css` → `--spacing-*` 变量族
-  - 基础间距: `--spacing-base` (1rem)
-  - 大间距: `--spacing-lg` (1.5rem), `--spacing-xl` (2rem)
-  - 小间距: `--spacing-sm` (0.5rem), `--spacing-xs` (0.25rem)
-
-##### 字体变量问题
-- **"字体大小不合适"** → `globals.css` → `--font-size-*` 变量族
-  - 响应式字体: `clamp()` 函数实现的动态字体大小
-  - 标题字体: `--font-size-3xl`, `--font-size-4xl`
-  - 正文字体: `--font-size-base`, `--font-size-lg`
-
-#### 动画样式映射 (Animation Style Mapping)
-
-##### 页面动画问题
+##### 复杂动画和交互
 - **"页面切换动画不流畅"** → `animations.css` → 页面过渡动画
   - 淡入动画: `@keyframes fadeIn`, `animation: fadeIn 0.5s`
   - 上滑动画: `@keyframes fadeInUp`, `animation: fadeInUp 0.4s`
   - 缓动函数: `cubic-bezier(0.4, 0, 0.2, 1)`
 
-##### 交互动画问题
-- **"按钮悬停效果"** → `components.css` → 按钮 `:hover` 状态
-  - 位移效果: `transform: translateY(-2px)`
-  - 阴影变化: `box-shadow` 的增强效果
-  - 过渡时间: `transition: all var(--duration-fast)`
-
 - **"诗人解读按钮文本变化"** → `animations.css` → `.text-change-animation`
+  - 多状态文本切换动画
   - 缩放动画: `@keyframes textChangeScale`
   - 动画时长: `animation: textChangeScale 0.4s`
 
-#### 响应式样式映射 (Responsive Style Mapping)
+#### 4.3 样式问题分流指导 (Style Issue Triage Guide)
 
-##### 移动端适配问题
-- **"移动端按钮太小"** → `components.css` → 媒体查询中的移动端样式
-  - 最小触摸目标: `min-height: 48px` (移动端)
-  - 字体放大: `font-size: clamp()` 响应式字体
-  - 间距调整: 移动端专用的 `padding` 和 `margin`
+> **🔧 问题定位决策树**: 根据问题类型选择正确的技术栈进行调试
 
-##### 桌面端优化问题
-- **"桌面端卡片过宽"** → `components.css` → 大屏幕媒体查询
-  - 最大宽度限制: `max-width` 属性
-  - 网格布局调整: `grid-template-columns` 响应式变化
+##### 问题类型判断
+```
+样式问题 → 问题分类：
+│
+├── 基础布局问题 (间距、对齐、大小)
+│   └── → 检查UnoCSS utility类 (HTML class属性)
+│
+├── 响应式适配问题 (移动端、桌面端)  
+│   ├── 简单响应式 → UnoCSS响应式utility类
+│   └── 复杂响应式 → 传统CSS媒体查询
+│
+├── 颜色和视觉效果问题
+│   ├── 基础颜色 → UnoCSS颜色utility类
+│   └── 复杂渐变/特效 → 传统CSS
+│
+├── 动画和交互问题
+│   ├── 简单悬停效果 → UnoCSS hover:前缀
+│   └── 复杂动画序列 → 传统CSS @keyframes
+│
+└── 字体和文本问题
+    ├── 基础字体样式 → UnoCSS文字utility类
+    └── 复杂文本效果 → 传统CSS
+```
+
+##### 调试策略
+- **第一步**: 在浏览器开发者工具中检查元素的class属性
+- **第二步**: 如果是UnoCSS问题，修改HTML中的utility类
+- **第三步**: 如果是传统CSS问题，检查对应的CSS文件
+- **第四步**: 混合问题需要同时检查utility类和CSS文件
+
+##### 常见混合场景
+- **卡片组件**: 基础布局用UnoCSS，悬停动画用传统CSS
+- **按钮组件**: 基础样式用UnoCSS，复杂交互用传统CSS  
+- **响应式布局**: 基础响应式用UnoCSS，复杂适配用传统CSS
+- **页面过渡**: 布局变化用UnoCSS，动画效果用传统CSS
 
 ### 5. Vue技术术语补充 (Vue Technical Terms)
 
@@ -272,7 +327,7 @@
   - Vue实现: QuizScreen.vue + QuestionCard.vue + zhouStore.quiz状态域
   - 原定义保持不变，用户参与诗歌问答的完整交互过程
 
-### 6. 开发调试术语映射 (Development & Debugging)
+### 7. 开发调试术语映射 (Development & Debugging)
 
 #### 常见开发问题术语  
 - **"页面白屏"** = Vue组件渲染错误，检查浏览器Console和Vue DevTools
@@ -373,16 +428,35 @@
 - **高频优化**: 记录最常用的术语，确保映射关系清晰
 - **实用优先**: 保持业务术语的自然使用，技术映射作为补充
 
+## 📋 文档使用指南
+
+### 🎯 快速定位问题的方法
+1. **确定问题类型**：样式问题 vs 功能问题 vs 业务问题
+2. **选择对应章节**：
+   - 样式问题 → 第4章 样式系统术语映射
+   - 功能问题 → 第1-3章 和第5章
+   - 业务问题 → 第6章 项目专用业务术语
+3. **使用分流指导**：样式问题优先查看4.3节的决策树
+4. **查找具体术语**：使用快速查找指南定位到具体文件
+
+### 🔧 样式问题调试建议
+- **优先检查UnoCSS**：大部分基础样式问题都在HTML的class属性中
+- **复杂效果查传统CSS**：动画、特殊交互效果在CSS文件中
+- **混合架构理解**：一个组件可能同时使用两种技术栈
+
 ### 版本记录
-- **v2.1-vue-css**: CSS样式系统集成版本，完善D阶段样式问题定位能力
-- **更新日期**: 2025-01-18
-- **服务阶段**: D阶段BUG修复 + E阶段增强功能  
-- **v2.1核心改进**: 
-  - **新增CSS样式系统术语映射** - 样式文件架构、常见样式问题、CSS变量系统
-  - **增强问题描述模板** - 加入"相关样式"字段，支持样式问题精确定位
-  - **扩展快速查找指南** - 按样式类型、CSS文件、类名多维度查找
+- **v3.0-unocss-integration**: UnoCSS集成版本，技术栈演进适应性架构
+- **更新日期**: 2025-08-22
+- **服务阶段**: UI增强项目 - 交互体验现代化
+- **v3.0核心改进**: 
+  - **架构重构**: 采用技术栈演进适应性的内部章节结构
+  - **新增UnoCSS术语映射** - 完整的utility类术语体系和使用指导
+  - **混合架构支持** - UnoCSS与传统CSS并存的术语映射和分流指导
+  - **样式问题分流指导** - 问题定位决策树，快速确定使用哪种技术栈调试
+  - **扩展性设计** - 支持未来技术栈通过新增子章节方式扩展
+- **v2.1核心改进**: 新增CSS样式系统术语映射，完善样式问题定位能力
 - **v2.0核心改进**: 建立了业务术语与Vue实现的精确映射关系
 
 ---
 
-*本术语清单以业务沟通为导向，建立准确的Vue技术实现映射，服务于D/E阶段敏捷开发*
+*本术语清单采用技术栈演进适应性架构，支持UnoCSS+传统CSS混合架构，为UI增强项目和未来技术栈演进提供准确的术语映射基础*
