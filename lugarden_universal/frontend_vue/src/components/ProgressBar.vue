@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-bar-container" :class="containerClass">
+  <div class="progress-bar-container w-full" :class="containerClass">
     <!-- 可选的标签 -->
     <div v-if="showLabel || $slots.label" class="progress-label">
       <slot name="label">
@@ -310,9 +310,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.progress-bar-container {
-  width: 100%;
-}
+.progress-bar-container {}
 
 /* 标签样式 */
 .progress-label {

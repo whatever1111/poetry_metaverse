@@ -1,6 +1,6 @@
 <template>
-  <div class="action-buttons">
-    <div class="buttons-grid" :class="gridClass">
+  <div class="action-buttons max-w-2xl mx-auto">
+    <div class="buttons-grid grid gap-4 mb-6" :class="gridClass">
       <!-- 解诗按钮 -->
       <button 
         @click="handleInterpretation" 
@@ -138,16 +138,11 @@ const handleRestart = () => {
 </script>
 
 <style scoped>
-.action-buttons {
-  max-width: 600px;
-  margin: 0 auto;
-}
+/* 基础布局样式已迁移至UnoCSS: max-w-2xl mx-auto */
+.action-buttons {}
 
-.buttons-grid {
-  display: grid;
-  gap: var(--spacing-base);
-  margin-bottom: var(--spacing-lg);
-}
+/* 基础网格样式已迁移至UnoCSS: grid gap-4 mb-6 */
+.buttons-grid {}
 
 /* 网格布局选项 */
 .grid-cols-2 {

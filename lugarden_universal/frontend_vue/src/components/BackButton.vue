@@ -1,6 +1,6 @@
 <template>
   <button
-    class="back-button"
+    class="back-button inline-flex items-center justify-center"
     :class="buttonClass"
     :style="buttonStyle"
     :disabled="disabled"
@@ -184,10 +184,8 @@ defineExpose({
 </script>
 
 <style scoped>
+/* 基础布局样式已迁移至UnoCSS: inline-flex items-center justify-center */
 .back-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: var(--spacing-sm);
   
   font-family: var(--font-family-serif);

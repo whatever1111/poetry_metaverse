@@ -1,7 +1,7 @@
 <template>
-  <div class="loading-spinner-container" :class="containerClass">
+  <div class="loading-spinner-container relative flex flex-col items-center justify-center" :class="containerClass">
     <!-- 加载动画 -->
-    <div class="loading-content">
+          <div class="loading-content flex flex-col items-center justify-center relative z-2">
       <!-- 主加载动画 -->
       <div class="spinner-wrapper">
         <div 
@@ -120,13 +120,8 @@ const handleOverlayClick = () => {
 </script>
 
 <style scoped>
-.loading-spinner-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+/* 基础布局样式已迁移至UnoCSS: relative flex flex-col items-center justify-center */
+.loading-spinner-container {}
 
 .loading-fullscreen {
   position: fixed;
@@ -143,14 +138,8 @@ const handleOverlayClick = () => {
   min-height: 200px;
 }
 
-.loading-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 2;
-}
+/* 基础布局样式已迁移至UnoCSS: flex flex-col items-center justify-center relative z-2 */
+.loading-content {}
 
 /* 动画器包装 */
 .spinner-wrapper {

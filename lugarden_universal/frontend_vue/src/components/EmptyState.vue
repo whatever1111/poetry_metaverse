@@ -1,6 +1,6 @@
 <template>
-  <div class="empty-state" :class="containerClass">
-    <div class="empty-content animate-fadeIn">
+  <div class="empty-state flex items-center justify-center text-center" :class="containerClass">
+          <div class="empty-content animate-fadeIn max-w-sm w-full">
       <!-- 图标或插图 -->
       <div class="empty-icon">
         <div v-if="!$slots.icon" class="default-icon">
@@ -91,12 +91,9 @@ const handleAction = () => {
 </script>
 
 <style scoped>
+/* 基础布局样式已迁移至UnoCSS: flex items-center justify-center text-center */
 .empty-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: var(--spacing-2xl) var(--spacing-base);
-  text-align: center;
   color: var(--text-tertiary);
 }
 
@@ -104,10 +101,8 @@ const handleAction = () => {
   min-height: 300px;
 }
 
-.empty-content {
-  max-width: 400px;
-  width: 100%;
-}
+/* 基础尺寸样式已迁移至UnoCSS: max-w-sm w-full */
+.empty-content {}
 
 /* 图标样式 */
 .empty-icon {

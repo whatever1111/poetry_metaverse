@@ -1,6 +1,6 @@
 <template>
-  <div class="error-state" :class="containerClass">
-    <div class="error-content animate-fadeIn">
+  <div class="error-state flex items-center justify-center text-center" :class="containerClass">
+          <div class="error-content animate-fadeIn max-w-lg w-full">
       <!-- 错误图标 -->
       <div class="error-icon">
         <div v-if="!$slots.icon" class="default-icon">
@@ -191,21 +191,17 @@ const handleReport = () => {
 </script>
 
 <style scoped>
+/* 基础布局样式已迁移至UnoCSS: flex items-center justify-center text-center */
 .error-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: var(--spacing-2xl) var(--spacing-base);
-  text-align: center;
 }
 
 .error-centered {
   min-height: 300px;
 }
 
+/* 基础尺寸样式已迁移至UnoCSS: max-w-lg w-full */
 .error-content {
-  max-width: 500px;
-  width: 100%;
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
   border-radius: var(--radius-lg);
   padding: var(--spacing-2xl);

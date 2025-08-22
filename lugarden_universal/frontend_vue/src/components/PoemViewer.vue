@@ -1,5 +1,5 @@
 <template>
-  <div class="poem-viewer">
+  <div class="poem-viewer max-w-3xl mx-auto">
     <div class="poem-content unified-content-card animate-fadeInUp" :style="{ animationDelay: animationDelay }">
       <h2 class="poem-title">
         {{ cleanTitle(poemTitle) }}
@@ -345,10 +345,8 @@ const downloadPoem = () => {
 </script>
 
 <style scoped>
-.poem-viewer {
-  max-width: 800px;
-  margin: 0 auto;
-}
+/* 基础容器样式已迁移至UnoCSS: max-w-3xl mx-auto */
+.poem-viewer {}
 
 .poem-content {
   text-align: center;
