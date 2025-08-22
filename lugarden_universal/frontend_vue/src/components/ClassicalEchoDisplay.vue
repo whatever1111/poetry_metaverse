@@ -1,5 +1,5 @@
 <template>
-  <div class="classical-echo-display">
+  <div class="max-w-3xl mx-auto">
     <!-- 核心引导语 - 来自原版zhou.html -->
     <div class="text-center animate-fadeInUp">
       <h2 class="guidance-title">
@@ -66,10 +66,7 @@ const hasAnyContent = computed(() => {
 </script>
 
 <style scoped>
-.classical-echo-display {
-  max-width: 800px;
-  margin: 0 auto;
-}
+/* 基础容器样式已迁移至UnoCSS utility类 */
 
 /* 核心引导语样式 - 对齐原版zhou.html */
 .guidance-title {

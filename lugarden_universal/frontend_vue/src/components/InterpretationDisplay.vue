@@ -1,5 +1,5 @@
 <template>
-  <div class="interpretation-display">
+  <div class="max-w-3xl mx-auto">
     <!-- AI解读 -->
     <div 
       v-if="aiInterpretation" 
@@ -162,10 +162,7 @@ const handleRetryAi = () => {
 </script>
 
 <style scoped>
-.interpretation-display {
-  max-width: 800px;
-  margin: 0 auto;
-}
+/* 基础容器样式已迁移至UnoCSS utility类 */
 
 .interpretation-content,
 .poet-explanation,
