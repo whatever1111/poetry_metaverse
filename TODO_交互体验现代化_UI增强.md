@@ -171,6 +171,45 @@
     - ✅ **功能验证**: 无视觉或功能影响，代码更整洁
     - ✅ **目标达成**: UnoCSS覆盖后的死CSS代码已清理
 
+#### - [ ] 任务A.4：按钮系统统一化重构 - UnoCSS优先策略
+- **核心思想**: 基于按钮系统审计报告发现的问题，采用渐进式重构策略，优先统一高频使用的按钮，推广UnoCSS系统，建立一致的交互体验。重构期间的视觉差异可以容忍，目标是统一化，具体视觉优化留到后续阶段。
+- **问题背景**:
+  - **样式系统碎片化**: 23种按钮分散在5个不同文件中定义
+  - **UnoCSS利用不足**: 仅9%的按钮使用UnoCSS，大量配置闲置
+  - **重复定义**: 相似功能按钮在不同组件中样式不同
+  - **维护困难**: 缺乏统一的按钮设计系统
+- **目标**:
+  - 减少按钮类型从23种优化到8-10种核心类型
+  - 提升UnoCSS利用率从9%到60%以上
+  - 统一按钮交互状态和响应式行为
+  - 建立可维护的按钮使用规范
+- 交付物：
+  - 统一的按钮系统实现（UnoCSS为主）
+  - 重复按钮定义清理完成
+  - 按钮使用规范文档
+  - 功能验证测试报告
+- 验收标准：
+  - 按钮类型数量减少至10种以下
+  - UnoCSS按钮使用比例提升至50%以上
+  - 消除重复的按钮样式定义
+  - 所有按钮状态行为统一一致
+  - 功能测试100%通过，无回归问题
+- **风险评估**: 中等风险，重构期间可能出现视觉差异但功能不受影响
+- 预期改动文件（预判）：
+  - `lugarden_universal/frontend_vue/src/assets/styles/components.css` - 清理重复按钮定义
+  - `lugarden_universal/frontend_vue/uno.config.ts` - 优化按钮相关配置
+  - `lugarden_universal/frontend_vue/src/components/ActionButtons.vue` - 按钮类迁移
+  - `lugarden_universal/frontend_vue/src/components/ErrorState.vue` - 重复定义清理
+  - `lugarden_universal/frontend_vue/src/components/InterpretationDisplay.vue` - 重复定义清理
+  - `lugarden_universal/frontend_vue/src/views/QuizScreen.vue` - 内联样式标准化
+- 完成状态：⏳ 待开始
+- 执行步骤：
+  - [ ] 步骤A.4.1：全局按钮基础类UnoCSS化
+  - [ ] 步骤A.4.2：重复按钮定义清理统一
+  - [ ] 步骤A.4.3：QuizScreen按钮标准化集成
+  - [ ] 步骤A.4.4：按钮状态标准化处理
+  - [ ] 步骤A.4.5：响应式行为优化验证
+
 #### - [ ] 任务A.99：实际使用体验调研
 - **核心思想**: 基于重构后的术语清单，通过实际使用当前系统发现真实的交互体验问题和改进机会。以用户视角进行全流程体验，使用准确的术语描述发现的问题。
 - 交付物：
