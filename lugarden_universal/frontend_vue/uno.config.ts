@@ -154,8 +154,19 @@ export default defineConfig({
   
   // 性能优化选项
   shortcuts: [
-    // 常用组合可以定义为shortcuts
-    ['btn-base', 'inline-flex items-center justify-center min-w-30 min-h-11 px-4 py-2 font-semibold rounded-lg cursor-pointer transition-all duration-200 ease-out'],
+    // 按钮系统 - 基于传统CSS的UnoCSS化
+    ['btn-base', 'inline-flex items-center justify-center min-h-[44px] min-w-[120px] px-lg py-base text-base font-semibold leading-6 rounded-lg border border-transparent cursor-pointer transition-all duration-fast ease-out no-underline whitespace-nowrap select-none focus-visible:outline-2 focus-visible:outline-info focus-visible:outline-offset-2 disabled:opacity-60 disabled:cursor-not-allowed'],
+    ['btn-primary', 'btn-base bg-gradient-to-br from-primary-600 to-primary-700 text-light border-primary-700 shadow-base hover:from-primary-700 hover:to-primary-800 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:shadow-sm disabled:hover:translate-y-0'],
+    ['btn-secondary', 'btn-base bg-secondary text-primary border-primary-300 shadow-base hover:bg-primary-50 hover:border-primary-400 hover:-translate-y-0.25 hover:shadow-md'],
+    ['btn-option', 'btn-base bg-white/30 backdrop-blur-[20px] text-primary border-white/40 shadow-md hover:bg-white/50 hover:border-brand-primary'],
+    // 功能按钮统一定义
+    ['btn-retry-warning', 'btn-base bg-gradient-to-br from-warning to-orange-600 text-white border-none shadow-[0_4px_12px_rgba(245,158,11,0.3)] hover:from-orange-600 hover:to-orange-700 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(245,158,11,0.4)]'],
+    ['btn-retry-error', 'btn-base bg-red-500 text-white border-none hover:bg-red-600 hover:-translate-y-0.25'],
+    ['btn-regenerate', 'btn-base bg-info text-white border-none hover:bg-blue-600 hover:-translate-y-0.25'],
+    // 小尺寸按钮变体 - QuizScreen使用
+    ['btn-primary-sm', 'px-3 py-1 bg-blue-600 text-white text-sm rounded cursor-pointer transition-colors hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed'],
+    ['btn-secondary-sm', 'px-3 py-1 border border-blue-300 text-blue-600 text-sm rounded cursor-pointer transition-colors hover:bg-blue-50 dark:hover:bg-blue-900/30 disabled:opacity-60 disabled:cursor-not-allowed'],
+    // 保留原有的shortcuts
     ['card-base', 'bg-white rounded-lg shadow-md p-6 transition-all duration-300 ease-out'],
     ['text-responsive', 'text-base max-sm:text-sm lg:text-lg']
   ],

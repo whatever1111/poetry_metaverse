@@ -41,7 +41,7 @@
           <button 
             v-if="showRetry"
             @click="handleRetry"
-            class="btn-retry"
+            class="btn-retry-warning"
             :disabled="retrying"
           >
             <svg v-if="retrying" class="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
@@ -288,7 +288,8 @@ const handleReport = () => {
   margin-bottom: var(--spacing-base);
 }
 
-.btn-retry,
+/* btn-retry-warning现在使用统一的UnoCSS定义 */
+
 .btn-back,
 .btn-report {
   display: flex;
@@ -301,25 +302,6 @@ const handleReport = () => {
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
   min-width: 80px;
-}
-
-.btn-retry {
-  background: linear-gradient(135deg, var(--color-warning) 0%, #d97706 100%);
-  color: white;
-  border: none;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-}
-
-.btn-retry:hover:not(:disabled) {
-  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
-}
-
-.btn-retry:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
 }
 
 .btn-back {
@@ -494,7 +476,7 @@ const handleReport = () => {
     align-items: stretch;
   }
   
-  .btn-retry,
+  .btn-retry-warning,
   .btn-back,
   .btn-report {
     min-width: auto;

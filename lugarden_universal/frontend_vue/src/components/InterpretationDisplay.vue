@@ -260,27 +260,7 @@ const handleRetryAi = () => {
   justify-content: flex-end;
 }
 
-.btn-regenerate {
-  font-size: var(--font-size-sm);
-  padding: var(--spacing-sm) var(--spacing-base);
-  background: var(--color-info);
-  color: white;
-  border: none;
-  border-radius: var(--radius-base);
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-out);
-}
-
-.btn-regenerate:hover:not(:disabled) {
-  background: #2563eb;
-  transform: translateY(-1px);
-}
-
-.btn-regenerate:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
+/* btn-regenerate现在使用统一的UnoCSS定义 */
 
 /* AI错误状态 */
 .ai-error {
@@ -316,27 +296,7 @@ const handleRetryAi = () => {
   justify-content: center;
 }
 
-.btn-retry {
-  font-size: var(--font-size-sm);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: var(--radius-base);
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-out);
-}
-
-.btn-retry:hover:not(:disabled) {
-  background: #dc2626;
-  transform: translateY(-1px);
-}
-
-.btn-retry:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
+/* btn-retry-error现在使用统一的UnoCSS定义 */
 
 /* 空状态 */
 .empty-interpretation {

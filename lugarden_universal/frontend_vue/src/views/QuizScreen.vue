@@ -27,13 +27,13 @@
               <div class="flex gap-2">
                 <button 
                   @click="restorePreviousProgress"
-                  class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                  class="btn-primary-sm"
                 >
                   继续上次进度
                 </button>
                 <button 
                   @click="startNewQuiz"
-                  class="px-3 py-1 border border-blue-300 text-blue-600 text-sm rounded hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+                  class="btn-secondary-sm"
                 >
                   重新开始
                 </button>
