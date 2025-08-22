@@ -483,30 +483,7 @@ const downloadPoem = () => {
   }
 }
 
-/* 特殊的诗歌样式效果 */
-.poem-content::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--color-brand-primary), transparent);
-  opacity: 0.6;
-}
-
-.poem-content::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-primary-300), transparent);
-  opacity: 0.4;
-}
+/* 装饰横条已移除 - 基于用户体验反馈和"内容为王"设计哲学 */
 
 /* 诗意的文字效果 */
 .poem-body {
