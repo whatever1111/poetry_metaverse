@@ -53,7 +53,7 @@
           :show-percentage="true"
           label-text="问答进度"
           variant="rounded"
-          color="info"
+          color="primary"
           size="medium"
           :animated="true"
           :smooth="true"
