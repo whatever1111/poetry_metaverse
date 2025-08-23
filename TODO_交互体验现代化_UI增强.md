@@ -461,6 +461,52 @@
   - [x] 步骤B.3.7：调优阴影参数确保最佳视觉层次感
   - [x] 步骤B.3.8：修复进度计算逻辑错误 - 基于已回答数量而非当前题目位置
 
+#### - [ ] 任务B.4：A.4 UnoCSS优先策略修复 - 完成按钮系统真正UnoCSS化
+
+- **核心思想**: 基于0822 A.4任务分析，完成按钮系统UnoCSS优先策略的剩余工作。A.4正确添加了UnoCSS shortcuts定义，但未移除传统CSS冗余定义，导致@layer保护机制使传统CSS优先生效。需要审慎完成真正的UnoCSS化。
+- **A.4执行情况客观分析**:
+  - **✅ 正确部分**: 在`uno.config.ts`中添加了8个完整的按钮shortcuts定义（btn-base, btn-primary, btn-secondary等）
+  - **✅ 正确部分**: UnoCSS定义功能完整，包含hover、active、disabled状态
+  - **❌ 不完整部分**: 未移除`components.css`中的冗余传统定义（.btn-primary等）
+  - **❌ 不完整部分**: 未调整`uno.css`中的@layer保护机制，导致传统CSS继续优先生效
+  - **❌ 不完整部分**: 未处理`responsive.css`中的按钮响应式定义冗余
+  - **🔍 影响评估**: 当前传统CSS覆盖UnoCSS，造成代码冗余但功能正常
+- **问题定位** (基于构建产物分析):
+  - **代码冗余**: 两套btn-primary定义并存，传统CSS因层级保护优先生效
+  - **策略不彻底**: A.4声称"UnoCSS优先"但实际仍是"传统CSS优先"
+  - **维护成本**: 双重定义增加维护复杂度，违背A.4统一化目标
+  - **架构不一致**: 部分按钮使用UnoCSS shortcuts，部分仍用传统CSS
+- **技术方案** (审慎渐进策略):
+  - **阶段1**: 验证UnoCSS定义完整性，确保无功能回归风险
+  - **阶段2**: 移除传统CSS中的核心按钮定义（.btn-primary, .btn-secondary, .btn-option, .btn-base）
+  - **阶段3**: 调整@layer保护机制，移除已迁移按钮的保护
+  - **阶段4**: 清理响应式定义中的冗余部分
+  - **阶段5**: 全面验证10个使用位置的功能和视觉效果
+- **验收标准**:
+  - UnoCSS shortcuts成功覆盖传统CSS，按钮样式无视觉差异
+  - 移除components.css中4个核心按钮类定义
+  - 调整uno.css保护机制，仅保护未迁移按钮
+  - 清理responsive.css中对应的冗余定义
+  - 10个使用位置功能测试100%通过
+  - 构建产物中仅包含UnoCSS定义，无传统CSS冗余
+- **风险评估**: 中等风险 - 涉及样式系统重构，需要细致验证每个使用位置
+- **预期改动文件（预判）**:
+  - `lugarden_universal/frontend_vue/uno.config.ts` - 验证和优化shortcuts定义
+  - `lugarden_universal/frontend_vue/src/assets/styles/components.css` - 移除传统按钮定义
+  - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - 调整保护机制
+  - `lugarden_universal/frontend_vue/src/assets/styles/responsive.css` - 清理响应式冗余
+- **完成状态**: 🔄 待开始
+- **执行步骤** (细化风险控制):
+  - [ ] 步骤B.4.1：全面审计UnoCSS shortcuts定义完整性，对比传统CSS功能
+  - [ ] 步骤B.4.2：在测试环境验证UnoCSS定义的视觉和功能正确性
+  - [ ] 步骤B.4.3：移除components.css中4个核心按钮类定义
+  - [ ] 步骤B.4.4：调整uno.css中的@layer保护机制配置
+  - [ ] 步骤B.4.5：清理responsive.css中对应按钮的冗余定义
+  - [ ] 步骤B.4.6：构建验证，确认产物中传统CSS冗余完全移除
+  - [ ] 步骤B.4.7：功能验证 - 测试6个文件10个使用位置的按钮功能
+  - [ ] 步骤B.4.8：视觉验证 - 确保移除前后按钮外观完全一致
+  - [ ] 步骤B.4.9：完成A.4任务的真正UnoCSS优先策略目标
+
 #### - [ ] 任务B.99：进度条卡片集成与视觉平衡优化
 
 - **核心思想**: 将进度条整合到问题卡片内部，保持当前合理的空间分配，在选项按钮下方以合适的间距和宽度集成进度条，提升整体视觉层次感。
