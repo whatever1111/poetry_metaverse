@@ -50,14 +50,16 @@
         <div 
           v-for="(project, index) in zhouStore.universeData.projects" 
           :key="project.id"
-          class="unified-content-card animate-fadeInUp"
+          class="unified-content-card animate-fadeInUp flex flex-col h-full"
           :style="{ animationDelay: `${0.1 * index}s` }"
           @click="selectProject(project)"
         >
-          <h2 class="text-2xl font-bold mb-2 text-gray-800">{{ project.name }}</h2>
-          <div class="text-gray-600 mb-4 whitespace-pre-line">{{ project.description }}</div>
-          <div class="flex justify-between items-center mt-4">
+          <div class="flex-1">
+            <h2 class="text-2xl font-bold mb-2 text-gray-800">{{ project.name }}</h2>
+            <div class="text-gray-600 mb-4 whitespace-pre-line">{{ project.description }}</div>
             <p class="text-sm text-gray-500">导游: {{ project.poet || '未指定' }}</p>
+          </div>
+          <div class="flex justify-end mt-4">
             <button class="btn-primary">
               进入
             </button>

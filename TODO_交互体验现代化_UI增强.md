@@ -512,7 +512,10 @@
   - [x] 步骤B.4.8：视觉验证 - 构建产物确认传统CSS完全移除，UnoCSS生成完整
   - [x] 步骤B.4.9：完成A.4任务的真正UnoCSS优先策略目标
 
-#### - [x] 任务B.5：btn-primary按钮尺寸与视觉协调性优化
+#### - [x
+
+
+] 任务B.5：btn-primary按钮尺寸与视觉协调性优化
 
 - **核心思想**: 优化"进入"和"开始问答"等btn-primary按钮的尺寸和字体，提升视觉协调性和现代化程度。基于主流前端设计标准，调整按钮尺寸使其符合更好的字体-容器比例和信息密度。
 - **问题定位**:
@@ -557,7 +560,7 @@
   - [x] 步骤B.5.6：桌面端和移动端响应式测试
   - [x] 步骤B.5.7：构建验证，确认样式正确生成
 
-#### - [ ] 任务B.6：卡片按钮布局优化 - 修复间距过大和位置不一致问题
+#### - [x] 任务B.6：卡片按钮布局优化 - 修复间距过大和位置不一致问题
 
 - **核心思想**: 修复用户反馈的两个关键问题：1）按钮和卡片右边及下边间距过大；2）按钮在不同卡片中位置不一致（当前相对于文字而非卡片底部定位）
 - **问题定位**:
@@ -579,16 +582,18 @@
   - `lugarden_universal/frontend_vue/src/views/SubProjectSelection.vue` - 改为flex flex-col布局，按钮底部对齐
   - `lugarden_universal/frontend_vue/src/views/MainProjectSelection.vue` - 统一为flex flex-col布局结构
 - **实际改动文件**:
-  - 
-- **完成状态**: 🔄 待开始
+  - `lugarden_universal/frontend_vue/src/assets/styles/components.css` - 调整unified-content-card内边距从48px到24px
+  - `lugarden_universal/frontend_vue/src/views/MainProjectSelection.vue` - 统一为flex flex-col布局，按钮底部对齐
+  - `lugarden_universal/frontend_vue/src/views/SubProjectSelection.vue` - 统一为flex flex-col布局，按钮底部对齐
+- **完成状态**: ✅ 已完成
 - **执行步骤**:
-  - [ ] 步骤B.6.1：分析unified-content-card当前48px内边距，确认减少到24px的安全性
-  - [ ] 步骤B.6.2：调整unified-content-card内边距从--spacing-2xl改为--spacing-lg
-  - [ ] 步骤B.6.3：统一MainProjectSelection.vue布局为flex flex-col结构
-  - [ ] 步骤B.6.4：统一SubProjectSelection.vue布局为flex flex-col结构，实现按钮底部对齐
-  - [ ] 步骤B.6.5：测试主项目和子项目选择页面的视觉效果和布局一致性
-  - [ ] 步骤B.6.6：验证其他使用unified-content-card的组件(PoemViewer等)未受负面影响
-  - [ ] 步骤B.6.7：桌面端3列和移动端1列响应式测试，确认间距协调和高度一致
+  - [x] 步骤B.6.1：分析unified-content-card当前48px内边距，确认减少到24px的安全性
+  - [x] 步骤B.6.2：调整unified-content-card内边距从--spacing-2xl改为--spacing-lg
+  - [x] 步骤B.6.3：统一MainProjectSelection.vue布局为flex flex-col结构
+  - [x] 步骤B.6.4：统一SubProjectSelection.vue布局为flex flex-col结构，实现按钮底部对齐
+  - [x] 步骤B.6.5：测试主项目和子项目选择页面的视觉效果和布局一致性
+  - [x] 步骤B.6.6：验证其他使用unified-content-card的组件(PoemViewer等)未受负面影响
+  - [x] 步骤B.6.7：桌面端3列和移动端1列响应式测试，确认间距协调和高度一致
 
 #### - [ ] 任务B.99：进度条卡片集成与视觉平衡优化
 

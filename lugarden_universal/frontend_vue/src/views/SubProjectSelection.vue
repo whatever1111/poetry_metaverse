@@ -30,13 +30,15 @@
         <div 
           v-for="(subProject, index) in zhouStore.navigation.currentMainProject.subProjects" 
           :key="`${subProject.name}-${index}`"
-          class="unified-content-card animate-fadeInUp cursor-pointer"
+          class="unified-content-card animate-fadeInUp cursor-pointer flex flex-col h-full"
           :style="{ animationDelay: `${0.3 + 0.1 * index}s` }"
           @click="selectChapter(subProject.name)"
         >
-          <h2 class="text-2xl font-bold mb-4 text-gray-800">{{ subProject.name }}</h2>
-          <div class="text-gray-600 mb-4 whitespace-pre-line">{{ subProject.description }}</div>
-          <div class="flex justify-end">
+          <div class="flex-1">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">{{ subProject.name }}</h2>
+            <div class="text-gray-600 mb-4 whitespace-pre-line">{{ subProject.description }}</div>
+          </div>
+          <div class="flex justify-end mt-4">
             <button class="btn-primary">
               开始问答
             </button>
