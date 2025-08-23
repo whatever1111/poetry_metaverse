@@ -158,10 +158,9 @@
 
 /* 现有CSS系统保护层 - 确保不被UnoCSS意外覆盖 */
 @layer legacy-components {
-  /* 保护现有组件类的优先级 */
-  .btn-base, .btn-primary, .btn-secondary, .btn-option,
+  /* 保护现有组件类的优先级 - 已迁移至UnoCSS的按钮不再需要保护 */
   .btn-interpret, .btn-listen, .btn-poet, .btn-restart, .btn-continue {
-    /* 现有按钮样式优先级保护 */
+    /* 功能按钮样式优先级保护 */
   }
   
   .card-base, .card-project, .card-question, .unified-content-card {

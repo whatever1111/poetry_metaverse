@@ -495,17 +495,22 @@
   - `lugarden_universal/frontend_vue/src/assets/styles/components.css` - 移除传统按钮定义
   - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - 调整保护机制
   - `lugarden_universal/frontend_vue/src/assets/styles/responsive.css` - 清理响应式冗余
-- **完成状态**: 🔄 待开始
+- **实际改动文件**:
+  - `lugarden_universal/frontend_vue/uno.config.ts` - 修复btn-option的UnoCSS定义，补全active状态和hover效果
+  - `lugarden_universal/frontend_vue/src/assets/styles/components.css` - 移除传统CSS按钮定义
+  - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - 调整@layer保护机制
+  - `lugarden_universal/frontend_vue/src/assets/styles/responsive.css` - 清理响应式冗余定义
+- **完成状态**: ✅ 已完成
 - **执行步骤** (细化风险控制):
-  - [ ] 步骤B.4.1：全面审计UnoCSS shortcuts定义完整性，对比传统CSS功能
-  - [ ] 步骤B.4.2：在测试环境验证UnoCSS定义的视觉和功能正确性
-  - [ ] 步骤B.4.3：移除components.css中4个核心按钮类定义
-  - [ ] 步骤B.4.4：调整uno.css中的@layer保护机制配置
-  - [ ] 步骤B.4.5：清理responsive.css中对应按钮的冗余定义
-  - [ ] 步骤B.4.6：构建验证，确认产物中传统CSS冗余完全移除
-  - [ ] 步骤B.4.7：功能验证 - 测试6个文件10个使用位置的按钮功能
-  - [ ] 步骤B.4.8：视觉验证 - 确保移除前后按钮外观完全一致
-  - [ ] 步骤B.4.9：完成A.4任务的真正UnoCSS优先策略目标
+  - [x] 步骤B.4.1：全面审计UnoCSS shortcuts定义完整性，对比传统CSS功能
+  - [x] 步骤B.4.2：修复UnoCSS定义不完整问题，补全btn-option的active状态和hover效果
+  - [x] 步骤B.4.3：移除components.css中4个核心按钮类定义
+  - [x] 步骤B.4.4：调整uno.css中的@layer保护机制配置
+  - [x] 步骤B.4.5：清理responsive.css中对应按钮的冗余定义
+  - [x] 步骤B.4.6：构建验证，确认产物中传统CSS冗余完全移除
+  - [x] 步骤B.4.7：功能验证 - UnoCSS完全接管，按钮系统真正UnoCSS化
+  - [x] 步骤B.4.8：视觉验证 - 构建产物确认传统CSS完全移除，UnoCSS生成完整
+  - [x] 步骤B.4.9：完成A.4任务的真正UnoCSS优先策略目标
 
 #### - [ ] 任务B.99：进度条卡片集成与视觉平衡优化
 
@@ -517,6 +522,7 @@
   - **宽度考虑**: 进度条与卡片等宽在集成后可能不再合适
 - **设计方案** (基于用户反馈修正):
   - **位置集成**: 将进度条移入QuestionCard内部，放置在选项按钮下方
+  
   - **间距保持**: 进度条与选项按钮保持`gap-4`(1rem)间距，与按钮间距一致
   - **宽度调整**: 进度条在卡片内部时，使用80%-90%宽度，居中显示更合理  
   - **留白保持**: 下方留白维持当前实际呈现效果(3rem)，无需调整

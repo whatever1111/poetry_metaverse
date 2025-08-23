@@ -74,18 +74,7 @@
     font-size: var(--font-size-xl);
   }
   
-  /* 按钮调整 */
-  .btn-base {
-    font-size: var(--font-size-base);
-    padding: 0.75rem 1rem;
-    min-height: 48px;
-  }
-  
-  .btn-option {
-    font-size: var(--font-size-base);
-    padding: 0.75rem 1rem;
-    min-height: 48px;
-  }
+  /* 按钮调整 - 已迁移至UnoCSS的按钮不再需要响应式定义 */
   
   /* 网格布局调整 */
   .grid-cols-2 {
