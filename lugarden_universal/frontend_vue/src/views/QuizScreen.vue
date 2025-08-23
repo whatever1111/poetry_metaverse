@@ -57,16 +57,15 @@
             :model-value="zhouStore.quizProgress"
             :min="0"
             :max="100"
-            :show-label="true"
-            :show-percentage="true"
-            label-text="问答进度"
+            :show-label="false"
+            :show-percentage="false"
             variant="rounded"
             color="primary"
             size="medium"
             :animated="true"
             :smooth="true"
-            :inner-text="`${zhouStore.quiz.currentQuestionIndex + 1} / ${zhouStore.quiz.totalQuestions}`"
             :show-inner-text="true"
+            :inner-text="`${Math.round(zhouStore.quizProgress)}%`"
           />
         </div>
       </div>

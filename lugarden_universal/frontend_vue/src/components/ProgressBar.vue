@@ -351,7 +351,7 @@ onMounted(() => {
 }
 
 .progress-track--rounded {
-  border-radius: var(--border-radius-full);
+  border-radius: 8px;
 }
 
 .progress-track--square {
