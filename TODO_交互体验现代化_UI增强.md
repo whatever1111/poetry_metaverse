@@ -414,7 +414,7 @@
   - [x] 步骤B.2.4：视觉效果验证 - 确保信息简化和视觉一致性达成目标
     **执行结果**: 进度条显示修复，实现预期的百分比居中效果
 - **实际改动文件**:
-  - `lugarden_universal/frontend_vue/src/views/QuizScreen.vue`
+  - `lugarden_universal/frontend_vue/uno.config.ts` - btn-primary独立定义，优化尺寸和字体`lugarden_universal/frontend_vue/src/views/QuizScreen.vue`
   - `lugarden_universal/frontend_vue/src/components/ProgressBar.vue`
 
 #### - [x] 任务B.3：进度条嵌入式阴影效果实现
@@ -496,7 +496,7 @@
   - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - 调整保护机制
   - `lugarden_universal/frontend_vue/src/assets/styles/responsive.css` - 清理响应式冗余
 - **实际改动文件**:
-  - `lugarden_universal/frontend_vue/uno.config.ts` - 修复btn-option的UnoCSS定义，补全active状态和hover效果
+  - `lugarden_universal/frontend_vue/uno.config.ts` - btn-primary独立定义，优化尺寸和字体`lugarden_universal/frontend_vue/uno.config.ts` - 修复btn-option的UnoCSS定义，补全active状态和hover效果
   - `lugarden_universal/frontend_vue/src/assets/styles/components.css` - 移除传统CSS按钮定义
   - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` - 调整@layer保护机制
   - `lugarden_universal/frontend_vue/src/assets/styles/responsive.css` - 清理响应式冗余定义
@@ -546,16 +546,16 @@
 - **预期改动文件（预判）**:
   - `lugarden_universal/frontend_vue/uno.config.ts` - 调整btn-primary的shortcuts定义
 - **实际改动文件**:
-  - 
-- **完成状态**: 🔄 待开始
+  - `lugarden_universal/frontend_vue/uno.config.ts` - btn-primary独立定义，优化尺寸和字体
+- **完成状态**: ✅ 已完成
 - **执行步骤**:
-  - [ ] 步骤B.5.1：分析btn-primary当前定义，确认不影响其他按钮的修改方案
-  - [ ] 步骤B.5.2：调整btn-primary的尺寸参数(min-h, padding)
-  - [ ] 步骤B.5.3：配合调整btn-primary的字体大小(text-base → text-sm)
-  - [ ] 步骤B.5.4：测试3个使用位置的视觉效果(MainProjectSelection、SubProjectSelection、EmptyState)
-  - [ ] 步骤B.5.5：验证其他按钮类型(btn-option等)未受影响
-  - [ ] 步骤B.5.6：桌面端和移动端响应式测试
-  - [ ] 步骤B.5.7：构建验证，确认样式正确生成
+  - [x] 步骤B.5.1：分析btn-primary当前定义，确认不影响其他按钮的修改方案
+  - [x] 步骤B.5.2：调整btn-primary的尺寸参数(min-h, padding)
+  - [x] 步骤B.5.3：配合调整btn-primary的字体大小(text-base → text-sm)
+  - [x] 步骤B.5.4：测试3个使用位置的视觉效果(MainProjectSelection、SubProjectSelection、EmptyState)
+  - [x] 步骤B.5.5：验证其他按钮类型(btn-option等)未受影响
+  - [x] 步骤B.5.6：桌面端和移动端响应式测试
+  - [x] 步骤B.5.7：构建验证，确认样式正确生成
 
 #### - [ ] 任务B.99：进度条卡片集成与视觉平衡优化
 
