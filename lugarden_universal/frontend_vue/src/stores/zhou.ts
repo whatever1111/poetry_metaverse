@@ -143,7 +143,7 @@ export const useZhouStore = defineStore('zhou', () => {
   // 问答进度百分比
   const quizProgress = computed(() => {
     if (quiz.totalQuestions === 0) return 0
-    return ((quiz.currentQuestionIndex + 1) / quiz.totalQuestions) * 100
+    return (quiz.userAnswers.length / quiz.totalQuestions) * 100
   })
 
   // 是否可以继续下一步

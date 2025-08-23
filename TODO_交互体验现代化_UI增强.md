@@ -447,15 +447,19 @@
 - **风险评估**: 中低风险 - 主要涉及CSS阴影调试，不影响功能逻辑
 - 预期改动文件（预判）：
   - `lugarden_universal/frontend_vue/src/components/ProgressBar.vue` - 轨道和填充阴影样式
-- 完成状态：🔄 待开始
+- 实际改动文件：
+  - `lugarden_universal/frontend_vue/src/components/ProgressBar.vue` - 轨道和填充阴影样式实现
+  - `lugarden_universal/frontend_vue/src/stores/zhou.ts` - 修复进度计算逻辑
+- 完成状态：✅ 已完成
 - 执行步骤：
-  - [ ] 步骤B.3.1：分析当前ProgressBar组件的阴影和毛玻璃效果现状
-  - [ ] 步骤B.3.2：设计嵌入式阴影的具体CSS样式方案
-  - [ ] 步骤B.3.3：实现轨道(.progress-track)的嵌入式阴影效果
-  - [ ] 步骤B.3.4：调整填充(.progress-fill)阴影以配合轨道效果
-  - [ ] 步骤B.3.5：验证毛玻璃效果与新阴影的整合效果
-  - [ ] 步骤B.3.6：测试不同进度百分比下的视觉表现
-  - [ ] 步骤B.3.7：调优阴影参数确保最佳视觉层次感
+  - [x] 步骤B.3.1：分析当前ProgressBar组件的阴影和毛玻璃效果现状
+  - [x] 步骤B.3.2：设计嵌入式阴影的具体CSS样式方案
+  - [x] 步骤B.3.3：实现轨道(.progress-track)的嵌入式阴影效果
+  - [x] 步骤B.3.4：调整填充(.progress-fill)阴影以配合轨道效果
+  - [x] 步骤B.3.5：验证毛玻璃效果与新阴影的整合效果
+  - [x] 步骤B.3.6：测试不同进度百分比下的视觉表现
+  - [x] 步骤B.3.7：调优阴影参数确保最佳视觉层次感
+  - [x] 步骤B.3.8：修复进度计算逻辑错误 - 基于已回答数量而非当前题目位置
 
 #### - [ ] 任务B.99：进度条卡片集成与视觉平衡优化
 

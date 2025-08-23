@@ -360,7 +360,11 @@ onMounted(() => {
 
 /* 轨道颜色 */
 .progress-track--primary {
-  background-color: rgba(107, 114, 128, 0.1);
+  background-color: rgba(107, 114, 128, 0.12);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.12),
+    inset 0 1px 2px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .progress-track--success {
@@ -406,6 +410,9 @@ onMounted(() => {
 /* 填充颜色 */
 .progress-fill--primary {
   background: linear-gradient(90deg, #6b7280, #9ca3af);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .progress-fill--success {
