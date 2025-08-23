@@ -43,25 +43,6 @@
         </div>
       </div>
 
-      <!-- 进度指示器 -->
-      <div class="progress-indicator mb-8 animate-fadeIn">
-        <ProgressBar 
-          :model-value="zhouStore.quizProgress"
-          :min="0"
-          :max="100"
-          :show-label="true"
-          :show-percentage="true"
-          label-text="问答进度"
-          variant="rounded"
-          color="primary"
-          size="medium"
-          :animated="true"
-          :smooth="true"
-          :inner-text="`${zhouStore.quiz.currentQuestionIndex + 1} / ${zhouStore.quiz.totalQuestions}`"
-          :show-inner-text="true"
-        />
-      </div>
-      
       <!-- 问题卡片 -->
       <div v-if="zhouStore.currentQuestion" class="max-w-2xl mx-auto">
         <QuestionCard 
@@ -69,6 +50,25 @@
           :question-index="zhouStore.quiz.currentQuestionIndex"
           @answer="handleAnswer"
         />
+        
+        <!-- 进度指示器 - 移至问题卡片内部，保持条件链完整 -->
+        <div class="progress-indicator mt-8 mb-4 animate-fadeIn opacity-75">
+          <ProgressBar 
+            :model-value="zhouStore.quizProgress"
+            :min="0"
+            :max="100"
+            :show-label="true"
+            :show-percentage="true"
+            label-text="问答进度"
+            variant="rounded"
+            color="primary"
+            size="medium"
+            :animated="true"
+            :smooth="true"
+            :inner-text="`${zhouStore.quiz.currentQuestionIndex + 1} / ${zhouStore.quiz.totalQuestions}`"
+            :show-inner-text="true"
+          />
+        </div>
       </div>
 
       <!-- 加载状态 -->
