@@ -290,6 +290,32 @@
   - [x] 步骤B.0.3：替换为正确的工具类名称
   - [x] 步骤B.0.4：验证修复后构建清洁度
 
+#### - [x] 任务B.0.1：esbuild依赖明确化 *补充*
+- **完成状态：✅ 已完成**
+- **核心思想**: 将esbuild从peerDependency改为明确的devDependency，确保新环境下100%可用性
+- **问题定位**: rolldown-vite将esbuild定义为peerDependency，新环境下可能不自动安装，导致CSS压缩失败
+- **技术执行**:
+  - vite.config.ts中明确使用`cssMinify: 'esbuild'`
+  - rolldown-vite要求esbuild作为peerDependency `^0.25.0`
+  - 添加esbuild为明确的devDependency确保可用性
+- 交付物：
+  - package.json中明确声明esbuild依赖
+  - package-lock.json锁定版本
+  - 消除新环境下构建失败风险
+- 验收标准：
+  - esbuild出现在顶级devDependencies中
+  - 新环境下npm install后esbuild可用
+  - CSS压缩功能正常工作
+- **风险评估**: 无风险，纯粹增强稳定性
+- 实际改动文件：
+  - `lugarden_universal/frontend_vue/package.json` - 添加esbuild@^0.25.9
+  - `lugarden_universal/frontend_vue/package-lock.json` - 更新依赖锁定
+- **执行步骤**:
+  - [x] 步骤B.0.1.1：分析rolldown-vite的peerDependency要求
+  - [x] 步骤B.0.1.2：确认vite.config.ts中的esbuild使用
+  - [x] 步骤B.0.1.3：安装esbuild为明确devDependency
+  - [x] 步骤B.0.1.4：验证新依赖在顶级可见
+
 #### - [ ] 任务B.1：问答页面进度条配色与位置优化 *重新定义*
 - **核心思想**: 解决问答页面进度条的两个核心问题：1) 蓝色配色与项目整体灰色调风格不协调；2) 进度条在问答页面上方的位置布局是否合理。
 - **问题重新定位**:
