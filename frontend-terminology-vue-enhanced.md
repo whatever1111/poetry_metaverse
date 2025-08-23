@@ -16,7 +16,7 @@
   - **页面头部** → `<header>` 区域和标题显示
   - **加载状态** → `LoadingSpinner` 组件
 - **常见问题术语**:
-  - "宇宙卡片间距问题" = MainProjectSelection.vue中的卡片布局CSS
+  - "宇宙卡片间距问题" = MainProjectSelection.vue中的卡片布局CSS (已优化为统一24px内边距)
   - "宇宙卡片悬停效果" = 卡片组件的hover样式
 
 #### 章节选择页 (Chapter Selection)
@@ -27,7 +27,7 @@
   - **章节标题** → 页面主标题显示区域
   - **章节列表** → 章节选项的渲染区域
 - **常见问题术语**:
-  - "章节选择按钮太小" = SubProjectSelection.vue中的选择按钮样式
+  - "章节选择按钮太小" = SubProjectSelection.vue中的btn-primary按钮样式 (已优化至44px标准)
   - "返回按钮位置" = BackButton组件的定位
 
 #### 问答页面 (Quiz Page)
@@ -39,7 +39,7 @@
   - **进度显示** → 页面底部的进度提示
   - **状态恢复提示** → 恢复问答进度的提示区域
 - **常见问题术语**:
-  - "问答选项按钮过小" = QuizScreen.vue中的选项按钮样式
+  - "问答选项按钮过小" = QuizScreen.vue中的btn-option按钮样式 (已完善UnoCSS实现)
   - "问题文字显示问题" = QuestionCard组件的文本样式
   - "进度提示不明显" = 页面底部进度区域样式
 
@@ -52,7 +52,7 @@
   - **继续按钮** → 进入结果页的操作按钮
 - **常见问题术语**:
   - "古典内容格式问题" = ClassicalEchoScreen.vue中的内容样式
-  - "继续按钮样式" = 页面底部的继续操作按钮
+  - "继续按钮样式" = 页面底部的btn-primary按钮 
 
 #### 诗歌展示页 (Poetry Display / Result Page)
 - **业务描述**: 显示问答结果诗歌和各种功能的最终页面
@@ -122,6 +122,27 @@
   - "问题文字太小" = QuestionCard中的问题文本样式
   - "选项按钮点击区域小" = 选项按钮的触摸目标大小
 
+#### 进度条组件 (ProgressBar) ✨ 
+- **功能描述**: 问答页面中显示答题进度的可复用组件
+- **Vue实现**: `ProgressBar.vue`
+- **使用页面**: QuizScreen.vue（通过QuestionCard组件引用）
+- **技术特性**:
+  - **现代化布局** 移至问题卡片下方，符合"内容优先"UX原则
+  - **信息显示优化** 仅显示百分比，去除冗余标签，圆角设计统一
+  - **嵌入式阴影效果** inset阴影营造凹槽感，与卡片悬浮效果形成对比
+  - **精确进度计算** 基于userAnswers.length而非currentQuestionIndex
+- **主要功能区域**:
+  - **进度轨道** → `.progress-track--primary` 带inset阴影的凹槽底色
+  - **进度填充** → `.progress-fill--primary` 带浮动阴影的渐变填充
+  - **百分比显示** → 居中显示在填充区域的百分比文本
+  - **步骤标记** → 25%、50%、75%、100%的视觉标记点
+- **常见问题术语**:
+  - "进度条位置不合理" = QuizScreen.vue中的ProgressBar位置布局
+  - "进度条显示太早" = zhou.ts中的quizProgress计算逻辑问题
+  - "进度条阴影效果" = ProgressBar.vue中的CSS阴影样式
+  - "进度条信息过多" = ProgressBar组件的Props配置(showLabel vs innerText)
+  - "进度条圆角不一致" = ProgressBar样式与卡片设计系统的协调性
+
 ### 3. 状态管理术语映射 (State Management Mapping)
 
 #### 周春秋状态管理 (ZhouStore)
@@ -163,7 +184,8 @@
   - 间隙: `gap-4` (1rem), `gap-x-6`, `gap-y-2`
   - 检查方法: 在浏览器开发者工具中查看元素的class属性
 
-- **"卡片布局问题"** → UnoCSS布局utility类
+- **"卡片布局问题"** → UnoCSS布局utility类 ✨ 
+  - **统一卡片布局模式** : `flex flex-col h-full` + 内容区`flex-1` + 按钮区`mt-4 flex justify-end`
   - 网格布局: `grid`, `grid-cols-2`, `grid-cols-md-3`
   - 弹性布局: `flex`, `items-center`, `justify-between`
   - 最大宽度: `max-w-sm`, `max-w-md`, `max-w-3xl`
@@ -181,11 +203,19 @@
   - 响应式宽度: `w-full md:w-1/2 lg:w-1/3`
   - 容器居中: `container mx-auto`
 
+##### 尺寸和间距问题 ✨ *B.5技术成果*
+- **"按钮太小"** → UnoCSS尺寸utility类
+  - **btn-primary标准尺寸** (B: `min-h-[36px]` (44px总高度), `min-w-[100px]`, `px-4 py-2`, `text-sm` (字体与按钮比例32%)
+  - 通用高度: `h-8`, `h-10`, `h-12`
+  - 通用宽度: `w-20`, `w-32`, `w-full`  
+  - 通用内边距: `px-4`, `py-2`, `p-6`
+- **"按钮字体比例不协调"** → B.5设计理论: 字体高度应占按钮总高度的30-35%，符合主流UI/UX标准
+
 ##### 颜色和视觉效果问题
-- **"按钮颜色不对"** → UnoCSS颜色utility类
-  - 背景色: `bg-blue-500`, `bg-gray-100`, `bg-primary`
-  - 文字色: `text-white`, `text-gray-800`, `text-primary`
-  - 边框色: `border-gray-300`, `border-blue-400`
+- **"按钮颜色不对"** → UnoCSS颜色utility类 (B.4技术成果)
+  - 背景色: `bg-blue-500`, `bg-gray-100`, `bg-primary-600` (btn-primary用)
+  - 文字色: `text-white`, `text-gray-800`, `text-light` (btn-primary用)
+  - 边框色: `border-gray-300`, `border-blue-400`, `border-brand-primary` (btn-option用)
   - 悬停状态: `hover:bg-blue-600`, `hover:text-white`
 
 - **"阴影效果问题"** → UnoCSS阴影utility类
@@ -210,8 +240,10 @@
   - 基础样式重置和全局设置
   - 响应式断点和媒体查询基础
 
-- **组件样式类库** → `src/assets/styles/components.css`
-  - 复杂按钮样式 (`.btn-interpret`, `.btn-listen`, `.btn-poet`)
+- **组件样式类库** → `src/assets/styles/components.css` ✨ 
+  - 复杂按钮样式 (`.btn-interpret`, `.btn-listen`, `.btn-poet` - 保留传统CSS)
+  - ~~基础按钮样式~~ (`.btn-base`, `.btn-primary`, `.btn-option` - 已迁移至UnoCSS)
+  - 统一卡片样式 (`.unified-content-card` 24px内边距，flex布局)
   - 特殊卡片样式 (`.card-question` 的复杂状态)
   - 特殊状态样式 (`.loading-*`, `.error-*` 的动画)
 
@@ -272,9 +304,11 @@
 - **第三步**: 如果是传统CSS问题，检查对应的CSS文件
 - **第四步**: 混合问题需要同时检查utility类和CSS文件
 
-##### 常见混合场景
+##### 常见混合场景 ✨ 
 - **卡片组件**: 基础布局用UnoCSS，悬停动画用传统CSS
-- **按钮组件**: 基础样式用UnoCSS，复杂交互用传统CSS  
+- **按钮组件**: 
+  - **基础按钮**(btn-primary, btn-option): 完全UnoCSS化，包括尺寸、交互、响应式
+  - **复杂按钮**(功能按钮): 基础样式用UnoCSS，复杂交互用传统CSS
 - **响应式布局**: 基础响应式用UnoCSS，复杂适配用传统CSS
 - **页面过渡**: 布局变化用UnoCSS，动画效果用传统CSS
 
@@ -402,8 +436,8 @@
 - **状态管理问题** → src/stores/zhou.ts
 
 #### 样式视觉问题
-- **按钮样式问题** → components.css → .btn-* 类族
-- **卡片布局问题** → components.css → .card-* 类族
+- **按钮样式问题** → UnoCSS shortcuts (btn-primary, btn-option) 或 components.css → .btn-* 类族 (功能按钮)
+- **卡片布局问题** → unified-content-card 或 components.css → .card-* 类族
 - **文字显示问题** → components.css → .question-text, .poem-*, .content-*
 - **颜色配色问题** → globals.css → --color-* 变量
 - **间距布局问题** → globals.css → --spacing-* 变量
@@ -416,8 +450,8 @@
 - **动画效果** → `src/assets/styles/animations.css`
 
 ### 按CSS类名查找
-- **按钮相关**: `.btn-base`, `.btn-primary`, `.btn-option`, `.btn-interpret`, `.btn-listen`, `.btn-poet`, `.btn-restart`
-- **卡片相关**: `.card-base`, `.card-project`, `.card-question`
+- **按钮相关**: `.btn-primary` (UnoCSS), `.btn-option` (UnoCSS), `.btn-interpret`, `.btn-listen`, `.btn-poet`, `.btn-restart` (传统CSS)
+- **卡片相关**: `.unified-content-card`, `.card-base`, `.card-project`, `.card-question`
 - **状态相关**: `.loading-*`, `.error-*`, `.empty-*`
 - **文本相关**: `.content-title`, `.question-text`, `.poem-title`, `.poem-body`
 
