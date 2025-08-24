@@ -227,6 +227,33 @@
   - [x] 步骤C.5.6：全项目构建验证和视觉一致性检查
 - **验收标准**: ShareTools实现纯图标极简模式，全项目emoji完全替换为SVG，建立统一现代图标系统，功能无损
 
+#### - [ ] 任务C.6：ShareTools响应式体验完善与兼容性修复
+- **核心思想**: 解决移动端ShareTools的视觉层次和功能兼容性问题，实现主流移动UI标准的轻量分享工具体验
+- **技术背景**: 
+  - 移动端ShareTools当前使用flex-col竖排，视觉占比过大且未居中，违反移动端辅助功能最小化原则
+  - 分割线border-t视觉权重过高，产生喧宾夺主效应，干扰用户对内容的关注
+  - 分享按钮disabled逻辑错误：当浏览器不支持Web Share API时被误禁用，但实际有完整降级方案
+  - 需要对齐Instagram/Twitter等主流应用的移动端分享工具设计标准
+- **问题识别**:
+  1. 响应式布局问题：`max-sm:flex-col max-sm:gap-1 max-sm:items-stretch`导致移动端垂直排列不合理
+  2. 视觉层次问题：`border-t border-primary-100 pt-6`分割线过于突出
+  3. 功能兼容性问题：`disabled: isActionLoading.value || !canShare.value`错误逻辑导致降级失效
+- **技术方案**:
+  - 移动端保持水平布局，采用更紧凑的gap和居中对齐
+  - 移除或弱化分割线，避免视觉干扰
+  - 修复disabled逻辑，确保降级方案正常工作
+- **预期改动文件**:
+  - `lugarden_universal/frontend_vue/src/components/ShareTools.vue` - 响应式布局优化和分割线调整
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 修复分享按钮disabled逻辑
+  - `lugarden_universal/frontend_vue/uno.config.ts` - 可能需要调整btn-share-tools响应式shortcuts
+- **执行步骤**:
+  - [ ] 步骤C.6.1：分析移动端分享工具主流设计模式，确定最优布局方案
+  - [ ] 步骤C.6.2：优化ShareTools移动端响应式布局（水平居中，紧凑间距）
+  - [ ] 步骤C.6.3：处理分割线视觉层次问题（移除或弱化）
+  - [ ] 步骤C.6.4：修复PoemViewer分享按钮disabled逻辑，确保降级兼容性
+  - [ ] 步骤C.6.5：移动端真机测试验证（分享功能+视觉效果）
+- **验收标准**: 移动端ShareTools视觉轻量化，分享功能全设备兼容，符合主流移动应用分享工具设计标准
+
 ### **阶段2025-08-24_D：探索性功能完善与优化（待规划）**
 
 #### 🔄 **敏捷迭代原则**
