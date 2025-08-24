@@ -110,15 +110,17 @@
   - [x] 步骤C.2.7：更新技术文档，记录新的命名规范和架构标准
   - [x] 步骤C.2.8：完成回归测试，确保不破坏现有功能
 
-#### - [ ] 任务C.3：CSS架构债务清理 - 解决UnoCSS与传统CSS重复定义冲突
-- **核心问题**: C.2任务完成后发现严重的CSS架构债务：ControlButtons相关的传统CSS定义未完全清理，导致UnoCSS shortcuts与传统CSS存在重复定义和样式优先级冲突
+#### - [x] 任务C.3：CSS架构债务清理 - 解决UnoCSS与传统CSS重复定义冲突
+- **核心问题**: C.1/C.2任务完成后发现严重的CSS架构债务：多个组件的传统CSS定义未完全清理，导致UnoCSS shortcuts与传统CSS存在重复定义和样式优先级冲突，违反UnoCSS优先策略
 - **技术症状**: 
   - `components.css`中仍存在`.btn-interpret, .btn-listen, .btn-poet, .btn-restart`传统CSS定义
   - `uno.config.ts`中已新增同名UnoCSS shortcuts，形成重复定义
   - `uno.css`的`@layer legacy-components`仍保护这些已迁移的按钮类
+  - `ContentActions.vue`中存在完整的传统CSS响应式布局系统（`.action-group`及@media查询）
   - 可能导致样式不一致、构建冲突和维护困难
 - **探索目标**:
-  - 彻底清理C.2任务遗留的传统CSS定义
+  - 彻底清理C.1/C.2任务遗留的所有传统CSS定义
+  - 完成ContentActions组件的UnoCSS化重构
   - 验证UnoCSS shortcuts的完整性和正确性
   - 确保样式一致性和构建稳定性
   - 建立清晰的CSS架构边界和迁移验证流程
@@ -126,16 +128,20 @@
   - `lugarden_universal/frontend_vue/src/assets/styles/components.css` -移除重复的按钮定义
   - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` -更新layer保护配置
   - `lugarden_universal/frontend_vue/src/assets/styles/responsive.css` -清理相关响应式覆盖
+  - `lugarden_universal/frontend_vue/src/components/ContentActions.vue` -移除传统CSS，改用UnoCSS布局
   - 验证文件：`lugarden_universal/frontend_vue/src/components/ControlButtons.vue`, `lugarden_universal/frontend_vue/uno.config.ts`
 - **实际改动文件**:
-  -  验证待执行
+  -  `lugarden_universal/frontend_vue/src/assets/styles/components.css` -移除重复的`.btn-interpret, .btn-listen, .btn-poet, .btn-restart`定义
+  -  `lugarden_universal/frontend_vue/src/assets/styles/uno.css` -更新layer保护配置，仅保护未迁移的`.btn-continue`
+  -  `lugarden_universal/frontend_vue/src/components/ContentActions.vue` -完全移除传统CSS（.action-group及响应式样式），改用纯UnoCSS布局
 - **执行步骤**:
-  - [ ] 步骤C.3.1：审计和确认重复定义的具体范围
-  - [ ] 步骤C.3.2：从`components.css`中移除已迁移至UnoCSS的按钮定义
-  - [ ] 步骤C.3.3：更新`uno.css`的layer保护配置
-  - [ ] 步骤C.3.4：清理`responsive.css`中的相关覆盖样式
-  - [ ] 步骤C.3.5：构建测试验证样式一致性
-  - [ ] 步骤C.3.6：浏览器测试确认ControlButtons组件渲染正确
+  - [x] 步骤C.3.1：审计和确认重复定义的具体范围
+  - [x] 步骤C.3.2：从`components.css`中移除已迁移至UnoCSS的按钮定义
+  - [x] 步骤C.3.3：更新`uno.css`的layer保护配置
+  - [x] 步骤C.3.4：清理`responsive.css`中的相关覆盖样式（无需修改）
+  - [x] 步骤C.3.5：完成ContentActions组件UnoCSS化，移除所有传统CSS
+  - [x] 步骤C.3.6：构建测试验证样式一致性
+  - [x] 步骤C.3.7：浏览器测试确认所有组件渲染正确
 
 ### **阶段2025-08-24_D：探索性功能完善与优化（待规划）**
 

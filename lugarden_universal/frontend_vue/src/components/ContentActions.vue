@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showActions" class="action-group animate-fadeInUp" :style="{ animationDelay: animationDelay }">
+  <div v-if="showActions" class="flex justify-center items-center gap-4 mt-8 pt-6 border-t border-primary-100 animate-fadeInUp max-md:gap-2 max-md:pt-4 max-sm:flex-col max-sm:gap-1 max-sm:items-stretch" :style="{ animationDelay: animationDelay }" :class="layoutClasses">
     <button
       v-for="action in visibleActions"
       :key="action.key"
@@ -7,7 +7,9 @@
       :class="[
         'btn-action',
         action.variant && `btn-action-${action.variant}`,
-        action.additionalClasses
+        action.additionalClasses,
+        'max-sm:w-full max-sm:max-w-[200px] max-sm:mx-auto',
+        props.layout === 'vertical' && 'w-full max-w-[200px] mx-auto'
       ]"
       :disabled="action.disabled"
       :title="action.title"
@@ -56,56 +58,12 @@ const props = withDefaults(defineProps<Props>(), {
 const visibleActions = computed(() => 
   props.actions.filter(action => action.visible !== false)
 )
+
+// 布局样式计算
+const layoutClasses = computed(() => ({
+  'flex-col items-stretch': props.layout === 'vertical',
+  'flex-row flex-wrap': props.layout === 'horizontal'
+}))
 </script>
 
-<style scoped>
-.action-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-base);
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--color-primary-100);
-}
-
-/* 响应式布局 */
-@media (max-width: 768px) {
-  .action-group {
-    gap: var(--spacing-sm);
-    padding-top: var(--spacing-base);
-  }
-}
-
-@media (max-width: 480px) {
-  .action-group {
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    align-items: stretch;
-  }
-  
-  .action-group .btn-action {
-    width: 100%;
-    max-width: 200px;
-    margin: 0 auto;
-  }
-}
-
-/* 垂直布局变体 */
-.action-group[data-layout="vertical"] {
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.action-group[data-layout="vertical"] .btn-action {
-  width: 100%;
-  max-width: 200px;
-  margin: 0 auto;
-}
-
-/* 水平布局变体 */
-.action-group[data-layout="horizontal"] {
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-</style>
+<!-- ContentActions组件样式已完全迁移至UnoCSS -->

@@ -15,30 +15,7 @@
 
 /* 选项按钮已迁移至UnoCSS shortcuts */
 
-/* 功能按钮样式 */
-.btn-interpret {
-  background: linear-gradient(145deg, #789a9a, #527a7a);
-  color: var(--text-light);
-  border-color: #4a6869;
-}
-
-.btn-listen {
-  background: linear-gradient(145deg, #9d6b53, #804d39);
-  color: var(--text-light);
-  border-color: #6a3e2f;
-}
-
-.btn-poet {
-  background: linear-gradient(145deg, #8b5a96, #6a4c7a);
-  color: var(--text-light);
-  border-color: #5a3d6a;
-}
-
-.btn-restart {
-  background: linear-gradient(145deg, #6c757d, #495057);
-  color: var(--text-light);
-  border-color: #343a40;
-}
+/* 功能按钮样式 - 已迁移至UnoCSS (uno.config.ts) */
 
 /* 继续按钮 */
 .btn-continue {
