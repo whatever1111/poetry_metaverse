@@ -113,7 +113,7 @@
 #### - [x] 任务C.3：CSS架构债务清理 - 解决UnoCSS与传统CSS重复定义冲突
 - **核心问题**: C.1/C.2任务完成后发现严重的CSS架构债务：多个组件的传统CSS定义未完全清理，导致UnoCSS shortcuts与传统CSS存在重复定义和样式优先级冲突，违反UnoCSS优先策略
 - **技术症状**: 
-  - `components.css`中仍存在`.btn-interpret, .btn-listen, .btn-poet, .btn-restart`传统CSS定义
+  - `components.css`中仍存在`.btn-interpret, .btn-listen, .btn-poet, .btn-restart`传统CSS定义commit
   - `uno.config.ts`中已新增同名UnoCSS shortcuts，形成重复定义
   - `uno.css`的`@layer legacy-components`仍保护这些已迁移的按钮类
   - `ContentActions.vue`中存在完整的传统CSS响应式布局系统（`.action-group`及@media查询）
@@ -143,7 +143,7 @@
   - [x] 步骤C.3.6：构建测试验证样式一致性
   - [x] 步骤C.3.7：浏览器测试确认所有组件渲染正确
 
-#### - [ ] 任务C.4：ShareTools组件重构 - 分享工具按钮轻量化与命名规范化
+#### - [x] 任务C.4：ShareTools组件重构 - 分享工具按钮轻量化与命名规范化
 - **核心思想**: 基于btn-primary封版设计为基准，将ContentActions组件重构为ShareTools组件，采用btn-share-tools轻量化设计。统一分享工具的命名规范（复制/分享/下载都是分享类功能），符合主流实践的辅助按钮设计，建立主要操作与分享工具的清晰层次关系
 - **技术背景**: 
   - 当前btn-action设计(44px)比btn-primary(36px)还大，违反主流UI/UX视觉层次原则
@@ -166,17 +166,20 @@
   - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 更新import路径和组件引用
   - `frontend-terminology-vue-enhanced.md` - 更新组件名称和术语映射
 - **实际改动文件**:
-  - 
+  - `lugarden_universal/frontend_vue/uno.config.ts` - 新增btn-share-tools系列shortcuts，替换btn-action
+  - `lugarden_universal/frontend_vue/src/components/ContentActions.vue` → `ShareTools.vue` - 组件重命名与轻量化重构
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 更新import和组件引用路径
+  - `frontend-terminology-vue-enhanced.md` - 新增C.4轻量化设计原则和术语映射更新
 - **执行步骤**:
-  - [ ] 步骤C.4.1：设计btn-share-tools的UnoCSS shortcuts定义(28px高度，透明背景，轻量设计)
-  - [ ] 步骤C.4.2：重命名ContentActions.vue为ShareTools.vue，统一分享工具命名规范
-  - [ ] 步骤C.4.3：更新uno.config.ts，新增btn-share-tools系列shortcuts，替换btn-action
-  - [ ] 步骤C.4.4：重构ShareTools.vue，应用新的轻量化按钮样式
-  - [ ] 步骤C.4.5：更新PoemViewer.vue中的import路径和组件引用
-  - [ ] 步骤C.4.6：优化移动端响应式设计(纯图标模式，更紧凑布局)
-  - [ ] 步骤C.4.7：验证视觉层次: btn-primary(36px) > btn-share-tools(28px)
-  - [ ] 步骤C.4.8：功能完整性测试，确保复制/分享/下载功能正常
-  - [ ] 步骤C.4.9：更新技术文档，记录命名规范统一和轻量化设计原则
+  - [x] 步骤C.4.1：设计btn-share-tools的UnoCSS shortcuts定义(28px高度，透明背景，轻量设计)
+  - [x] 步骤C.4.2：重命名ContentActions.vue为ShareTools.vue，统一分享工具命名规范
+  - [x] 步骤C.4.3：更新uno.config.ts，新增btn-share-tools系列shortcuts，替换btn-action
+  - [x] 步骤C.4.4：重构ShareTools.vue，应用新的轻量化按钮样式
+  - [x] 步骤C.4.5：更新PoemViewer.vue中的import路径和组件引用
+  - [x] 步骤C.4.6：优化移动端响应式设计(纯图标模式，更紧凑布局)
+  - [x] 步骤C.4.7：验证视觉层次: btn-primary(36px) > btn-share-tools(28px)
+  - [x] 步骤C.4.8：功能完整性测试，确保复制/分享/下载功能正常
+  - [x] 步骤C.4.9：更新技术文档，记录命名规范统一和轻量化设计原则
 - **验收标准**:
   - 组件重命名: ContentActions.vue → ShareTools.vue，命名规范统一
   - 样式重构: btn-action → btn-share-tools，语义更明确

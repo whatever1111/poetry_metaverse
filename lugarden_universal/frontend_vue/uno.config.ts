@@ -166,13 +166,12 @@ export default defineConfig({
     // 小尺寸按钮变体 - QuizScreen使用
     ['btn-primary-sm', 'px-3 py-1 bg-blue-600 text-white text-sm rounded cursor-pointer transition-colors hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed'],
     ['btn-secondary-sm', 'px-3 py-1 border border-blue-300 text-blue-600 text-sm rounded cursor-pointer transition-colors hover:bg-blue-50 dark:hover:bg-blue-900/30 disabled:opacity-60 disabled:cursor-not-allowed'],
-    // 操作按钮系统 - C.1 现代化实现
-    ['btn-action-base', 'inline-flex items-center justify-center gap-2 min-h-[44px] min-w-20 px-4 py-2 text-sm font-medium rounded-lg border border-primary-300 bg-white text-gray-600 transition-all duration-200 ease-out cursor-pointer select-none'],
-    ['btn-action-hover', 'hover:bg-primary-50 hover:border-primary-400 hover:text-gray-800 hover:-translate-y-0.5 hover:shadow-md'],
-    ['btn-action-active', 'active:translate-y-0 active:shadow-sm'],
-    ['btn-action-disabled', 'disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none'],
-    ['btn-action-success', 'bg-green-50 border-green-300 text-green-700 hover:bg-green-100 hover:border-green-400'],
-    ['btn-action', 'btn-action-base btn-action-hover btn-action-active btn-action-disabled'],
+    // 分享工具按钮系统 - C.4 轻量化实现 (28px, 透明背景, 主流实践对标)
+    ['btn-share-tools-base', 'inline-flex items-center justify-center gap-1 min-h-[28px] min-w-[60px] px-2 py-1 text-xs font-medium rounded border-0 bg-transparent text-gray-500 transition-all duration-150 cursor-pointer select-none'],
+    ['btn-share-tools-hover', 'hover:text-gray-700 hover:bg-gray-50 active:bg-gray-100'],
+    ['btn-share-tools-disabled', 'disabled:opacity-50 disabled:cursor-not-allowed'],
+    ['btn-share-tools-success', 'text-green-600 hover:text-green-700 hover:bg-green-50'],
+    ['btn-share-tools', 'btn-share-tools-base btn-share-tools-hover btn-share-tools-disabled'],
     
     // 控制按钮系统 - C.2 现代化实现
     ['btn-control-base', 'inline-flex items-center justify-center min-h-[48px] min-w-24 px-4 py-3 text-sm font-semibold rounded-lg border transition-all duration-200 ease-out cursor-pointer select-none text-white shadow-base'],

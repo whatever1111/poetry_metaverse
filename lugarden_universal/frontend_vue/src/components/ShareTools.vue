@@ -5,19 +5,19 @@
       :key="action.key"
       @click="action.handler"
       :class="[
-        'btn-action',
-        action.variant && `btn-action-${action.variant}`,
+        'btn-share-tools',
+        action.variant && `btn-share-tools-${action.variant}`,
         action.additionalClasses,
-        'max-sm:w-full max-sm:max-w-[200px] max-sm:mx-auto',
-        props.layout === 'vertical' && 'w-full max-w-[200px] mx-auto'
+        'max-sm:w-full max-sm:max-w-[150px] max-sm:mx-auto',
+        props.layout === 'vertical' && 'w-full max-w-[150px] mx-auto'
       ]"
       :disabled="action.disabled"
       :title="action.title"
     >
-      <span class="action-icon text-base leading-none shrink-0">
+      <span class="share-icon text-sm leading-none shrink-0">
         {{ action.icon }}
       </span>
-      <span class="action-text whitespace-nowrap font-medium">
+      <span class="share-text whitespace-nowrap font-medium">
         {{ action.text }}
       </span>
     </button>
@@ -27,8 +27,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-// 操作按钮配置接口
-interface ActionButton {
+// 分享工具按钮配置接口
+interface ShareToolButton {
   key: string
   icon: string
   text: string
@@ -42,7 +42,7 @@ interface ActionButton {
 
 // 组件Props
 interface Props {
-  actions: ActionButton[]
+  actions: ShareToolButton[]
   showActions?: boolean
   animationDelay?: string
   layout?: 'horizontal' | 'vertical' | 'auto'
@@ -66,4 +66,4 @@ const layoutClasses = computed(() => ({
 }))
 </script>
 
-<!-- ContentActions组件样式已完全迁移至UnoCSS -->
+<!-- ShareTools组件样式已完全迁移至UnoCSS (C.4轻量化重构) -->

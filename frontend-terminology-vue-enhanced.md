@@ -426,29 +426,29 @@
 - **问答功能相关** → QuizScreen.vue + QuestionCard.vue
 - **诗歌展示相关** → ResultScreen.vue + PoemViewer.vue
 - **功能按钮相关** → ControlButtons.vue
-- **操作按钮相关** → ContentActions.vue (C.1-C.2现代化)
+- **分享工具相关** → ShareTools.vue (C.4轻量化重构)
 - **解读内容相关** → InterpretationDisplay.vue
 
-### C.1-C.2现代化实现 - 按钮组件架构统一
+### C.1-C.4现代化实现 - 按钮组件架构统一与轻量化重构
 
-#### ContentActions组件 (C.1-C.2现代化)
+#### ShareTools组件 (C.4轻量化重构)
 ```
-Vue实现: src/components/ContentActions.vue (已从ActionButtonGroup.vue重命名)
+Vue实现: src/components/ShareTools.vue (已从ContentActions.vue重命名+重构)
 使用页面: PoemViewer.vue (诗歌展示页面)
-技术特性: UnoCSS化、组件化、响应式设计、状态管理、主流命名实践
-功能边界: 专注内容操作（复制、分享、下载），与控制按钮形成清晰分工
-主要功能区域: 复制、分享、下载操作按钮组
-常见问题术语: "操作按钮不显示" → ContentActions.vue :actions配置，"按钮样式异常" → btn-action系列shortcuts
+技术特性: UnoCSS轻量化、命名规范统一、主流实践对齐、28px轻量设计
+功能边界: 专注分享工具（复制、分享、下载都是分享类功能），与控制按钮形成清晰分工
+主要功能区域: 分享工具按钮组（复制/分享/下载）
+常见问题术语: "分享按钮不显示" → ShareTools.vue :actions配置，"按钮样式异常" → btn-share-tools系列shortcuts
 ```
 
-#### 操作按钮术语映射
+#### 分享工具术语映射 (C.4重构后)
 ```
-业务术语        | Vue组件          | UnoCSS Class        | 主要功能
-复制按钮        | ContentActions   | btn-action         | 复制诗歌到剪贴板  
-分享按钮        | ContentActions   | btn-action         | Web Share API分享
-下载按钮        | ContentActions   | btn-action         | 下载诗歌文本文件
-已复制状态      | ContentActions   | btn-action-success | 复制成功视觉反馈
-按钮禁用状态    | ContentActions   | btn-action-disabled| 操作进行中状态
+业务术语        | Vue组件          | UnoCSS Class            | 主要功能
+复制按钮        | ShareTools       | btn-share-tools        | 复制诗歌到剪贴板  
+分享按钮        | ShareTools       | btn-share-tools        | Web Share API分享
+下载按钮        | ShareTools       | btn-share-tools        | 下载诗歌文本文件
+已复制状态      | ShareTools       | btn-share-tools-success| 复制成功视觉反馈
+按钮禁用状态    | ShareTools       | btn-share-tools-disabled| 操作进行中状态
 ```
 
 #### 控制按钮UnoCSS Shortcuts标准 (C.2建立)
@@ -461,14 +461,14 @@ btn-control-restart: 重启按钮主题 (灰色渐变 #6c757d → #495057)
 btn-interpret/listen/poet/restart: 完整组合shortcuts，包含所有交互状态
 ```
 
-#### 操作按钮UnoCSS Shortcuts标准 (C.1建立)
+#### 分享工具UnoCSS Shortcuts标准 (C.4轻量化)
 ```
-btn-action-base: 基础操作按钮样式，44px触摸目标，符合B阶段标准
-btn-action-hover: 悬浮效果，-translate-y-0.5悬浮感
-btn-action-active: 点击效果，translate-y-0按下感  
-btn-action-disabled: 禁用状态，opacity-60灰化效果
-btn-action-success: 成功状态，绿色主题视觉反馈
-btn-action: 完整操作按钮，组合所有交互状态
+btn-share-tools-base: 轻量分享工具基础样式，28px高度，透明背景，主流实践对标
+btn-share-tools-hover: 轻量悬浮效果，hover:bg-gray-50轻微背景提示
+btn-share-tools-disabled: 禁用状态，opacity-50更轻的灰化效果
+btn-share-tools-success: 成功状态，绿色主题视觉反馈（复制成功等）
+btn-share-tools: 完整分享工具按钮，组合所有交互状态
+设计原则: 辅助操作按钮应比主要CTA更轻量，符合视觉层次 (28px < 36px btn-primary)
 ```
 
 ### 按问题类型查找
@@ -534,6 +534,35 @@ btn-action: 完整操作按钮，组合所有交互状态
   - **扩展性设计** - 支持未来技术栈通过新增子章节方式扩展
 - **v2.1核心改进**: 新增CSS样式系统术语映射，完善样式问题定位能力
 - **v2.0核心改进**: 建立了业务术语与Vue实现的精确映射关系
+
+### C.4轻量化设计原则 - 主流实践对齐指南
+
+#### 视觉层次设计标准
+```
+主要操作 (btn-primary): 36px高度，渐变背景，font-semibold
+分享工具 (btn-share-tools): 28px高度，透明背景，font-medium
+功能控制 (btn-control): 48px高度，专用渐变，font-semibold
+
+设计原则: 重要性 = 视觉重量
+- 主要CTA操作 > 功能控制 > 分享工具（辅助操作）
+- 36px ≥ 48px > 28px (功能控制特殊性高于分享工具重要性)
+```
+
+#### 主流实践对标
+```
+GitHub代码复制: 24px高度，纯图标，悬停显示
+Medium文章分享: 28px高度，ghost样式，图标+文字
+CodePen操作按钮: 20-24px高度，纯图标+tooltip
+项目实现对标: 28px高度，透明背景，图标+文字，符合Medium模式
+```
+
+#### 命名规范统一原则
+```
+UnoCSS层面: btn-share-tools (语义明确，功能特征清晰)
+组件层面: ShareTools.vue (与UnoCSS语义保持一致)
+接口层面: ShareToolButton (类型定义与组件名匹配)
+统一思想: 复制/分享/下载都是分享类工具，命名应体现功能归属
+```
 
 ---
 

@@ -36,8 +36,8 @@
         {{ additionalInfo }}
       </div>
       
-      <!-- 操作按钮组 - 使用现代化ContentActions组件 -->
-              <ContentActions
+      <!-- 分享工具组 - 使用轻量化ShareTools组件 -->
+              <ShareTools
         :actions="actionButtons"
         :show-actions="showActions"
         :animation-delay="`${parseFloat(animationDelay) + 0.3}s`"
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { PoemViewerProps } from '../types/zhou'
-import ContentActions from './ContentActions.vue'
+import ShareTools from './ShareTools.vue'
 
 // 使用统一的类型定义
 type Props = PoemViewerProps
