@@ -86,20 +86,20 @@
   - GitHub/GitLab的ContentActions、MediaControls命名规范
   - Vue生态ControlButtons、ContentActions标准模式
 - **预期改动文件**: 
-  - `lugarden_universal/frontend_vue/src/components/ActionButtons.vue` → `lugarden_universal/frontend_vue/src/components/ControlButtons.vue` (重构+重命名)
-  - `lugarden_universal/frontend_vue/src/components/ActionButtonGroup.vue` → `lugarden_universal/frontend_vue/src/components/ContentActions.vue` (重命名)
-  - `lugarden_universal/frontend_vue/uno.config.ts` (新增控制按钮相关UnoCSS shortcuts)
-  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` (import路径更新)
-  - `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` (import路径更新)
-  - `frontend-terminology-vue-enhanced.md` (更新组件映射和技术标准文档)
+  - `lugarden_universal/frontend_vue/src/components/ActionButtons.vue` → `lugarden_universal/frontend_vue/src/components/ControlButtons.vue` -重构+重命名
+  - `lugarden_universal/frontend_vue/src/components/ActionButtonGroup.vue` → `lugarden_universal/frontend_vue/src/components/ContentActions.vue` -重命名
+  - `lugarden_universal/frontend_vue/uno.config.ts` -新增控制按钮相关UnoCSS shortcuts
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` -import路径更新
+  - `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` -import路径更新
+  - `frontend-terminology-vue-enhanced.md` -更新组件映射和技术标准文档
 - **实际改动文件**:
-  - ✅ `lugarden_universal/frontend_vue/src/components/ControlButtons.vue` (新建，147行纯UnoCSS重构实现)
-  - ✅ `lugarden_universal/frontend_vue/src/components/ContentActions.vue` (从ActionButtonGroup.vue重命名)
-  - ✅ `lugarden_universal/frontend_vue/uno.config.ts` (新增btn-control-*系列UnoCSS shortcuts)
-  - ✅ `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` (更新import ActionButtonGroup→ContentActions)
-  - ✅ `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` (更新import ActionButtons→ControlButtons)
-  - ✅ `frontend-terminology-vue-enhanced.md` (组件映射全面更新，新增C.2技术标准文档)
-  - ✅ 删除：`lugarden_universal/frontend_vue/src/components/ActionButtons.vue` (339行传统CSS文件已移除)
+  -  `lugarden_universal/frontend_vue/src/components/ControlButtons.vue` -新建，147行纯UnoCSS重构实现
+  -  `lugarden_universal/frontend_vue/src/components/ContentActions.vue` -从ActionButtonGroup.vue重命名
+  -  `lugarden_universal/frontend_vue/uno.config.ts` -新增btn-control-*系列UnoCSS shortcuts
+  -  `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` -更新import ActionButtonGroup→ContentActions
+  -  `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` -更新import ActionButtons→ControlButtons
+  -  `frontend-terminology-vue-enhanced.md` -组件映射全面更新，新增C.2技术标准文档
+  -  删除：`lugarden_universal/frontend_vue/src/components/ActionButtons.vue` -339行传统CSS文件已移除
 - **执行步骤**:
   - [x] 步骤C.2.1：分析ActionButtons.vue的传统CSS实现和功能边界
   - [x] 步骤C.2.2：设计ControlButtons的UnoCSS shortcuts体系
@@ -109,6 +109,33 @@
   - [x] 步骤C.2.6：验证功能完整性，确保解读、播放、诗人、重启、继续功能正常
   - [x] 步骤C.2.7：更新技术文档，记录新的命名规范和架构标准
   - [x] 步骤C.2.8：完成回归测试，确保不破坏现有功能
+
+#### - [ ] 任务C.3：CSS架构债务清理 - 解决UnoCSS与传统CSS重复定义冲突
+- **核心问题**: C.2任务完成后发现严重的CSS架构债务：ControlButtons相关的传统CSS定义未完全清理，导致UnoCSS shortcuts与传统CSS存在重复定义和样式优先级冲突
+- **技术症状**: 
+  - `components.css`中仍存在`.btn-interpret, .btn-listen, .btn-poet, .btn-restart`传统CSS定义
+  - `uno.config.ts`中已新增同名UnoCSS shortcuts，形成重复定义
+  - `uno.css`的`@layer legacy-components`仍保护这些已迁移的按钮类
+  - 可能导致样式不一致、构建冲突和维护困难
+- **探索目标**:
+  - 彻底清理C.2任务遗留的传统CSS定义
+  - 验证UnoCSS shortcuts的完整性和正确性
+  - 确保样式一致性和构建稳定性
+  - 建立清晰的CSS架构边界和迁移验证流程
+- **预期改动文件**: 
+  - `lugarden_universal/frontend_vue/src/assets/styles/components.css` -移除重复的按钮定义
+  - `lugarden_universal/frontend_vue/src/assets/styles/uno.css` -更新layer保护配置
+  - `lugarden_universal/frontend_vue/src/assets/styles/responsive.css` -清理相关响应式覆盖
+  - 验证文件：`lugarden_universal/frontend_vue/src/components/ControlButtons.vue`, `lugarden_universal/frontend_vue/uno.config.ts`
+- **实际改动文件**:
+  -  验证待执行
+- **执行步骤**:
+  - [ ] 步骤C.3.1：审计和确认重复定义的具体范围
+  - [ ] 步骤C.3.2：从`components.css`中移除已迁移至UnoCSS的按钮定义
+  - [ ] 步骤C.3.3：更新`uno.css`的layer保护配置
+  - [ ] 步骤C.3.4：清理`responsive.css`中的相关覆盖样式
+  - [ ] 步骤C.3.5：构建测试验证样式一致性
+  - [ ] 步骤C.3.6：浏览器测试确认ControlButtons组件渲染正确
 
 ### **阶段2025-08-24_D：探索性功能完善与优化（待规划）**
 
