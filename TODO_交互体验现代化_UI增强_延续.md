@@ -143,6 +143,50 @@
   - [x] 步骤C.3.6：构建测试验证样式一致性
   - [x] 步骤C.3.7：浏览器测试确认所有组件渲染正确
 
+#### - [ ] 任务C.4：ShareTools组件重构 - 分享工具按钮轻量化与命名规范化
+- **核心思想**: 基于btn-primary封版设计为基准，将ContentActions组件重构为ShareTools组件，采用btn-share-tools轻量化设计。统一分享工具的命名规范（复制/分享/下载都是分享类功能），符合主流实践的辅助按钮设计，建立主要操作与分享工具的清晰层次关系
+- **技术背景**: 
+  - 当前btn-action设计(44px)比btn-primary(36px)还大，违反主流UI/UX视觉层次原则
+  - 辅助功能按钮(复制/分享/下载)使用了与主要CTA相同甚至更重的视觉重量
+  - 对标GitHub、Medium、CodePen等主流平台，辅助操作按钮普遍采用轻量化设计
+- **设计基准**: 
+  - **封版标准**: btn-primary(36px, font-semibold, 渐变背景) - 主要CTA操作，不做改动
+  - **新目标**: btn-share-tools(28px, font-medium, 透明背景) - 分享工具，符合主流实践
+- **命名规范统一**:
+  - 组件层面: ContentActions.vue → ShareTools.vue (语义更精确)
+  - 样式层面: btn-action → btn-share-tools (功能更明确)
+  - 功能统一: 复制/分享/下载都是分享类工具，命名应体现一致性
+- **主流实践对标**:
+  - GitHub代码复制按钮: 24px高度，轻量图标设计
+  - Medium文章分享: 28px高度，ghost样式，图标+文字
+  - CodePen操作按钮: 20-24px高度，纯图标+tooltip
+- **预期改动文件**:
+  - `lugarden_universal/frontend_vue/uno.config.ts` - 新增btn-share-tools系列shortcuts，替换现有btn-action
+  - `lugarden_universal/frontend_vue/src/components/ContentActions.vue` → `ShareTools.vue` - 组件重命名与样式更新
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 更新import路径和组件引用
+  - `frontend-terminology-vue-enhanced.md` - 更新组件名称和术语映射
+- **实际改动文件**:
+  - 
+- **执行步骤**:
+  - [ ] 步骤C.4.1：设计btn-share-tools的UnoCSS shortcuts定义(28px高度，透明背景，轻量设计)
+  - [ ] 步骤C.4.2：重命名ContentActions.vue为ShareTools.vue，统一分享工具命名规范
+  - [ ] 步骤C.4.3：更新uno.config.ts，新增btn-share-tools系列shortcuts，替换btn-action
+  - [ ] 步骤C.4.4：重构ShareTools.vue，应用新的轻量化按钮样式
+  - [ ] 步骤C.4.5：更新PoemViewer.vue中的import路径和组件引用
+  - [ ] 步骤C.4.6：优化移动端响应式设计(纯图标模式，更紧凑布局)
+  - [ ] 步骤C.4.7：验证视觉层次: btn-primary(36px) > btn-share-tools(28px)
+  - [ ] 步骤C.4.8：功能完整性测试，确保复制/分享/下载功能正常
+  - [ ] 步骤C.4.9：更新技术文档，记录命名规范统一和轻量化设计原则
+- **验收标准**:
+  - 组件重命名: ContentActions.vue → ShareTools.vue，命名规范统一
+  - 样式重构: btn-action → btn-share-tools，语义更明确
+  - 视觉层次: 分享工具按钮高度从44px减少到28px，建立正确的主次关系
+  - 轻量设计: 采用透明背景+hover效果，符合主流辅助按钮实践
+  - 功能兼容: 保持100%功能兼容性，复制/分享/下载功能不变
+  - 响应式优化: 移动端图标识别度良好，布局更紧凑
+  - 层次清晰: 与btn-primary形成明确的主要操作vs分享工具的视觉关系
+- **风险评估**: 低风险 - 仅样式调整，功能逻辑不变
+
 ### **阶段2025-08-24_D：探索性功能完善与优化（待规划）**
 
 #### 🔄 **敏捷迭代原则**
