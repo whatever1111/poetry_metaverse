@@ -59,14 +59,14 @@
 - **Vue实现**: `ResultScreen.vue` 
 - **主要功能区域**:
   - **诗歌内容展示** → `PoemViewer` 组件
-  - **功能操作按钮** → `ActionButtons` 组件
+  - **功能操作按钮** → `ControlButtons` 组件
   - **解读内容展示** → `InterpretationDisplay` 组件
   - **诗歌操作功能** → 复制、分享、下载功能
 - **常见问题术语**:
-  - "诗歌展示页的按钮不好" = ActionButtons组件的样式和布局
+  - "诗歌展示页的按钮不好" = ControlButtons组件的样式和布局
   - "诗歌内容格式问题" = PoemViewer组件的文本渲染
   - "解读内容显示异常" = InterpretationDisplay组件的内容区域
-  - "诗人解读按钮文本" = ActionButtons中的诗人解读按钮状态
+  - "诗人解读按钮文本" = ControlButtons中的诗人解读按钮状态
 
 ### 2. 功能组件术语映射 (Component-Function Mapping)
 
@@ -82,19 +82,20 @@
   - "诗歌格式显示问题" = PoemViewer组件的文本处理逻辑
   - "诗歌操作按钮" = PoemViewer中的action按钮区域
 
-#### 功能操作按钮组件 (ActionButtons)  
-- **功能描述**: 诗歌展示页的主要功能操作按钮集合
-- **Vue实现**: `ActionButtons.vue`
+#### 功能操作按钮组件 (ControlButtons)  
+- **功能描述**: 诗歌展示页的主要功能操作按钮集合 - C.2现代化架构
+- **Vue实现**: `ControlButtons.vue` (从339行传统CSS → 147行纯UnoCSS重构)
 - **使用页面**: ResultScreen.vue
+- **技术特性**: UnoCSS shortcuts体系、响应式grid布局、功能完整性保持
 - **主要功能**:
-  - **解诗按钮** → AI解诗功能触发
-  - **读诗按钮** → 音频播放功能触发  
-  - **诗人解读按钮** → 吴任几解读功能（多级状态文本）
-  - **重新开始按钮** → 返回章节选择功能
+  - **解诗按钮** → AI解诗功能触发 (`btn-interpret`)
+  - **读诗按钮** → 音频播放功能触发 (`btn-listen`)
+  - **诗人解读按钮** → 吴任几解读功能 (`btn-poet`)
+  - **重新开始按钮** → 返回章节选择功能 (`btn-restart`)
 - **常见问题术语**:
-  - "诗人解读按钮文本变化" = ActionButtons中的getPoetButtonText逻辑
-  - "功能按钮布局问题" = ActionButtons的grid布局样式
-  - "按钮点击没反应" = ActionButtons的事件emit问题
+  - "诗人解读按钮文本变化" = ControlButtons中的poetButtonText逻辑
+  - "功能按钮布局问题" = ControlButtons的grid响应式布局
+  - "按钮点击没反应" = ControlButtons的事件emit问题
 
 #### 解读展示组件 (InterpretationDisplay)
 - **功能描述**: 显示AI解读和诗人解读内容的组件
@@ -346,15 +347,15 @@
 
 #### 周春秋系统术语  
 - **诗歌朗读 (Poetry Reading)**
-  - Vue实现: ActionButtons.vue的读诗按钮 + zhouStore.playPoem()
+  - Vue实现: ControlButtons.vue的读诗按钮 + zhouStore.playPoem()
   - 原定义保持不变，"听陆家明读诗"功能
 
 - **诗歌解读 (Poetry Interpretation)**
-  - Vue实现: ActionButtons.vue的解诗按钮 + zhouStore.getInterpretation()
+  - Vue实现: ControlButtons.vue的解诗按钮 + zhouStore.getInterpretation()
   - 原定义保持不变，"听陆家明解诗"功能
 
 - **诗人解读 (Poet Interpretation)**
-  - Vue实现: ActionButtons.vue的诗人解读按钮 + zhouStore.showPoetExplanation()
+  - Vue实现: ControlButtons.vue的诗人解读按钮 + zhouStore.showPoetExplanation()
   - 增强定义: "最好不要点"按钮，5级状态文本变化，吴任几解读内容展示
 
 - **问答流程 (Q&A Flow)**  
@@ -400,7 +401,7 @@
 问题页面: 诗歌展示页
 对应文件: ResultScreen.vue  
 问题区域: 诗人解读按钮
-对应组件: ActionButtons.vue
+对应组件: ControlButtons.vue
 相关样式: N/A (逻辑问题)
 问题描述: 按钮文本不会根据点击次数变化
 影响程度: 中优先级
@@ -411,8 +412,8 @@
 问题页面: 诗歌展示页
 对应文件: ResultScreen.vue
 问题区域: 功能操作按钮
-对应组件: ActionButtons.vue
-相关样式: components.css → .btn-interpret, .btn-listen, .btn-poet, .btn-restart
+对应组件: ControlButtons.vue
+相关样式: uno.config.ts → btn-interpret, btn-listen, btn-poet, btn-restart shortcuts
 问题描述: 按钮缺少文本阴影和立体盒子阴影效果，与原始zhou.html不一致
 影响程度: 中优先级
 ```
@@ -424,29 +425,40 @@
 - **章节选择相关** → SubProjectSelection.vue
 - **问答功能相关** → QuizScreen.vue + QuestionCard.vue
 - **诗歌展示相关** → ResultScreen.vue + PoemViewer.vue
-- **功能按钮相关** → ActionButtons.vue
-- **操作按钮相关** → ActionButtonGroup.vue (C.1现代化)
+- **功能按钮相关** → ControlButtons.vue
+- **操作按钮相关** → ContentActions.vue (C.1-C.2现代化)
 - **解读内容相关** → InterpretationDisplay.vue
 
-### C.1现代化实现 - 操作按钮组件化模式
+### C.1-C.2现代化实现 - 按钮组件架构统一
 
-#### ActionButtonGroup组件
+#### ContentActions组件 (C.1-C.2现代化)
 ```
-Vue实现: src/components/ActionButtonGroup.vue
+Vue实现: src/components/ContentActions.vue (已从ActionButtonGroup.vue重命名)
 使用页面: PoemViewer.vue (诗歌展示页面)
-技术特性: UnoCSS化、组件化、响应式设计、状态管理
+技术特性: UnoCSS化、组件化、响应式设计、状态管理、主流命名实践
+功能边界: 专注内容操作（复制、分享、下载），与控制按钮形成清晰分工
 主要功能区域: 复制、分享、下载操作按钮组
-常见问题术语: "操作按钮不显示" → ActionButtonGroup.vue :actions配置，"按钮样式异常" → btn-action系列shortcuts
+常见问题术语: "操作按钮不显示" → ContentActions.vue :actions配置，"按钮样式异常" → btn-action系列shortcuts
 ```
 
 #### 操作按钮术语映射
 ```
 业务术语        | Vue组件          | UnoCSS Class        | 主要功能
-复制按钮        | ActionButtonGroup | btn-action         | 复制诗歌到剪贴板  
-分享按钮        | ActionButtonGroup | btn-action         | Web Share API分享
-下载按钮        | ActionButtonGroup | btn-action         | 下载诗歌文本文件
-已复制状态      | ActionButtonGroup | btn-action-success | 复制成功视觉反馈
-按钮禁用状态    | ActionButtonGroup | btn-action-disabled| 操作进行中状态
+复制按钮        | ContentActions   | btn-action         | 复制诗歌到剪贴板  
+分享按钮        | ContentActions   | btn-action         | Web Share API分享
+下载按钮        | ContentActions   | btn-action         | 下载诗歌文本文件
+已复制状态      | ContentActions   | btn-action-success | 复制成功视觉反馈
+按钮禁用状态    | ContentActions   | btn-action-disabled| 操作进行中状态
+```
+
+#### 控制按钮UnoCSS Shortcuts标准 (C.2建立)
+```
+btn-control-base: 基础控制按钮样式，48px触摸目标，统一渐变背景架构
+btn-control-interpret: 解诗按钮主题 (青绿色渐变 #789a9a → #527a7a)
+btn-control-listen: 读诗按钮主题 (橙褐色渐变 #9d6b53 → #804d39) 
+btn-control-poet: 诗人按钮主题 (紫色渐变 #8b5a96 → #6a4c7a)
+btn-control-restart: 重启按钮主题 (灰色渐变 #6c757d → #495057)
+btn-interpret/listen/poet/restart: 完整组合shortcuts，包含所有交互状态
 ```
 
 #### 操作按钮UnoCSS Shortcuts标准 (C.1建立)
@@ -462,7 +474,7 @@ btn-action: 完整操作按钮，组合所有交互状态
 ### 按问题类型查找
 
 #### 功能逻辑问题
-- **交互功能问题** → ActionButtons.vue或相关事件处理
+- **交互功能问题** → ControlButtons.vue或相关事件处理
 - **数据显示问题** → zhouStore状态管理或组件Props
 - **页面跳转问题** → Vue Router配置或导航逻辑
 - **状态管理问题** → src/stores/zhou.ts

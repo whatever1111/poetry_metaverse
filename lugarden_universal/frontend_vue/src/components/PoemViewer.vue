@@ -36,8 +36,8 @@
         {{ additionalInfo }}
       </div>
       
-      <!-- 操作按钮组 - 使用现代化ActionButtonGroup组件 -->
-      <ActionButtonGroup
+      <!-- 操作按钮组 - 使用现代化ContentActions组件 -->
+              <ContentActions
         :actions="actionButtons"
         :show-actions="showActions"
         :animation-delay="`${parseFloat(animationDelay) + 0.3}s`"
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { PoemViewerProps } from '../types/zhou'
-import ActionButtonGroup from './ActionButtonGroup.vue'
+import ContentActions from './ContentActions.vue'
 
 // 使用统一的类型定义
 type Props = PoemViewerProps

@@ -75,7 +75,7 @@
    - [x] 步骤C.1.7：完善动画效果，符合B.3建立的动画标准
    - [x] 步骤C.1.8：更新技术文档，记录新的组件化模式
 
-#### - [ ] 任务C.2：按钮组件架构统一 - ControlButtons现代化重构与命名规范化
+#### - [x] 任务C.2：按钮组件架构统一 - ControlButtons现代化重构与命名规范化
 - **核心思想**: 基于主流前端开发实践，统一按钮组件架构和命名规范。将ActionButtons.vue现代化为UnoCSS实现，并按功能特征重命名组件，消除技术债务，建立一致的按钮组件生态系统
 - **技术背景**: 
   - ActionButtons.vue使用传统CSS架构，违反阶段2025-08-24_B.4确立的UnoCSS优先策略
@@ -85,26 +85,30 @@
   - 主流UI库命名实践（Ant Design、Element UI的Button.Group、ControlPanel模式）
   - GitHub/GitLab的ContentActions、MediaControls命名规范
   - Vue生态ControlButtons、ContentActions标准模式
-- **预期成果**: 
-  - ActionButtons.vue → ControlButtons.vue，完全UnoCSS化实现
-  - ActionButtonGroup.vue → ContentActions.vue，命名规范化
-  - 统一的按钮组件架构，消除CSS架构冲突
-  - 符合主流实践的清晰命名体系
-- **实际改动文件**: 
+- **预期改动文件**: 
   - `lugarden_universal/frontend_vue/src/components/ActionButtons.vue` → `lugarden_universal/frontend_vue/src/components/ControlButtons.vue` (重构+重命名)
   - `lugarden_universal/frontend_vue/src/components/ActionButtonGroup.vue` → `lugarden_universal/frontend_vue/src/components/ContentActions.vue` (重命名)
   - `lugarden_universal/frontend_vue/uno.config.ts` (新增控制按钮相关UnoCSS shortcuts)
-  - 相关引用文件的import路径更新
-  - `frontend-terminology-vue-enhanced.md` (更新组件映射)
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` (import路径更新)
+  - `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` (import路径更新)
+  - `frontend-terminology-vue-enhanced.md` (更新组件映射和技术标准文档)
+- **实际改动文件**:
+  - ✅ `lugarden_universal/frontend_vue/src/components/ControlButtons.vue` (新建，147行纯UnoCSS重构实现)
+  - ✅ `lugarden_universal/frontend_vue/src/components/ContentActions.vue` (从ActionButtonGroup.vue重命名)
+  - ✅ `lugarden_universal/frontend_vue/uno.config.ts` (新增btn-control-*系列UnoCSS shortcuts)
+  - ✅ `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` (更新import ActionButtonGroup→ContentActions)
+  - ✅ `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` (更新import ActionButtons→ControlButtons)
+  - ✅ `frontend-terminology-vue-enhanced.md` (组件映射全面更新，新增C.2技术标准文档)
+  - ✅ 删除：`lugarden_universal/frontend_vue/src/components/ActionButtons.vue` (339行传统CSS文件已移除)
 - **执行步骤**:
-  - [ ] 步骤C.2.1：分析ActionButtons.vue的传统CSS实现和功能边界
-  - [ ] 步骤C.2.2：设计ControlButtons的UnoCSS shortcuts体系
-  - [ ] 步骤C.2.3：重构ActionButtons.vue为ControlButtons.vue，采用纯UnoCSS实现
-  - [ ] 步骤C.2.4：重命名ActionButtonGroup.vue为ContentActions.vue
-  - [ ] 步骤C.2.5：更新所有组件引用和import路径
-  - [ ] 步骤C.2.6：验证功能完整性，确保解读、播放、诗人、重启、继续功能正常
-  - [ ] 步骤C.2.7：更新技术文档，记录新的命名规范和架构标准
-  - [ ] 步骤C.2.8：完成回归测试，确保不破坏现有功能
+  - [x] 步骤C.2.1：分析ActionButtons.vue的传统CSS实现和功能边界
+  - [x] 步骤C.2.2：设计ControlButtons的UnoCSS shortcuts体系
+  - [x] 步骤C.2.3：重构ActionButtons.vue为ControlButtons.vue，采用纯UnoCSS实现
+  - [x] 步骤C.2.4：重命名ActionButtonGroup.vue为ContentActions.vue
+  - [x] 步骤C.2.5：更新所有组件引用和import路径
+  - [x] 步骤C.2.6：验证功能完整性，确保解读、播放、诗人、重启、继续功能正常
+  - [x] 步骤C.2.7：更新技术文档，记录新的命名规范和架构标准
+  - [x] 步骤C.2.8：完成回归测试，确保不破坏现有功能
 
 ### **阶段2025-08-24_D：探索性功能完善与优化（待规划）**
 

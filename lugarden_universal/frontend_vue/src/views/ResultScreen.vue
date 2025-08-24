@@ -22,7 +22,7 @@
           
           <!-- 操作按钮 -->
           <div class="mb-8 animate-fadeInUp" style="animation-delay: 0.4s;">
-            <ActionButtons 
+            <ControlButtons 
               :interpretation-loading="zhouStore.result.interpretationLoading"
               :audio-loading="zhouStore.result.audioLoading"
               :audio-playing="zhouStore.result.audioPlaying"
@@ -88,7 +88,7 @@ import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import PoemViewer from '../components/PoemViewer.vue'
-import ActionButtons from '../components/ActionButtons.vue'
+import ControlButtons from '../components/ControlButtons.vue'
 import InterpretationDisplay from '../components/InterpretationDisplay.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 import ErrorState from '../components/ErrorState.vue'
@@ -228,7 +228,7 @@ const retryAiFeatures = () => {
 <style scoped>
 /* 诗歌内容样式已迁移到PoemViewer组件 */
 
-/* 操作按钮样式已迁移到ActionButtons组件 */
+/* 操作按钮样式已迁移到ControlButtons组件 */
 
 /* 解读内容样式已迁移到InterpretationDisplay组件 */
 
@@ -250,5 +250,5 @@ const retryAiFeatures = () => {
   }
 }
 
-/* 按钮样式已迁移到ActionButtons组件 */
+/* 按钮样式已迁移到ControlButtons组件 */
 </style>

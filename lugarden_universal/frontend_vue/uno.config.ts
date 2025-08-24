@@ -173,6 +173,28 @@ export default defineConfig({
     ['btn-action-disabled', 'disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none'],
     ['btn-action-success', 'bg-green-50 border-green-300 text-green-700 hover:bg-green-100 hover:border-green-400'],
     ['btn-action', 'btn-action-base btn-action-hover btn-action-active btn-action-disabled'],
+    
+    // 控制按钮系统 - C.2 现代化实现
+    ['btn-control-base', 'inline-flex items-center justify-center min-h-[48px] min-w-24 px-4 py-3 text-sm font-semibold rounded-lg border transition-all duration-200 ease-out cursor-pointer select-none text-white shadow-base'],
+    ['btn-control-hover', 'hover:-translate-y-0.5 hover:shadow-md disabled:hover:translate-y-0 disabled:hover:shadow-base'],
+    ['btn-control-active', 'active:translate-y-0 active:shadow-sm'],
+    ['btn-control-disabled', 'disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none'],
+    
+    // 控制按钮主题变体
+    ['btn-control-interpret', 'bg-gradient-to-br from-[#789a9a] to-[#527a7a] border-[#4a6869] hover:from-[#527a7a] hover:to-[#3d6667]'],
+    ['btn-control-listen', 'bg-gradient-to-br from-[#9d6b53] to-[#804d39] border-[#6a3e2f] hover:from-[#804d39] hover:to-[#6b3f2a]'],
+    ['btn-control-poet', 'bg-gradient-to-br from-[#8b5a96] to-[#6a4c7a] border-[#5a3d6a] hover:from-[#6a4c7a] hover:to-[#583d66]'],
+    ['btn-control-restart', 'bg-gradient-to-br from-[#6c757d] to-[#495057] border-[#343a40] hover:from-[#495057] hover:to-[#343a40]'],
+    
+    // 控制按钮特殊状态
+    ['btn-control-playing', 'animate-pulse from-[#b8744e] to-[#9a5530]'],
+    ['btn-control-poet-clicked', 'from-[#a67ba7] to-[#7d5f8b] opacity-90'],
+    
+    // 控制按钮组合shortcuts
+    ['btn-interpret', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-interpret'],
+    ['btn-listen', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-listen'],
+    ['btn-poet', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-poet'],
+    ['btn-restart', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-restart'],
     // 保留原有的shortcuts
     ['card-base', 'bg-white rounded-lg shadow-md p-6 transition-all duration-300 ease-out'],
     ['text-responsive', 'text-base max-sm:text-sm lg:text-lg']
