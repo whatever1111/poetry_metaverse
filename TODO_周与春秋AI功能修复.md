@@ -78,6 +78,30 @@
 - **技术债务**：无新增技术债务，实际上是清理现有混乱状态
 - **维护成本**：修复后维护成本显著降低，架构更清晰
 
+#### - [ ] 任务A.2：AI接口连接问题诊断修复
+- **核心思想**: 修复A.1调研发现的参数格式不匹配问题，使前端发送的{poem, title}格式能被server.js正确接收和处理，确保Gemini API和Google TTS API调用成功
+- 交付物：
+  - 修复后的server.js AI接口参数处理逻辑
+  - 清理public.js中的冗余AI路由代码
+  - 端到端功能验证测试结果
+- 验收标准：
+  - 解诗功能：前端点击解诗按钮能成功调用Gemini API并显示解读结果
+  - 读诗功能：前端点击读诗按钮能成功调用Google TTS API并播放音频
+  - 错误处理：API调用失败时显示用户友好的错误信息
+  - 参数传递：前端{poem, title}格式被后端正确接收和处理
+- **风险评估**: 低风险 - 仅修改参数处理逻辑，不涉及API密钥或核心架构变更
+- 预期改动文件（预判）：
+  - `lugarden_universal/application/server.js` - 修改/api/interpret和/api/listen的参数处理
+  - `lugarden_universal/application/src/routes/public.js` - 移除冗余AI路由
+- 实际改动文件: [待记录]
+- 完成状态：🔄 进行中
+- 执行步骤：
+   - [ ] 步骤A.2.1：修改server.js中/api/interpret端点，接收{poem, title}并构建prompt
+   - [ ] 步骤A.2.2：修改server.js中/api/listen端点，接收{poem, title}并提取text内容  
+   - [ ] 步骤A.2.3：清理public.js中的模拟AI路由，避免路由冲突和混淆
+   - [ ] 步骤A.2.4：测试前端解诗功能，验证Gemini API调用成功
+   - [ ] 步骤A.2.5：测试前端读诗功能，验证Google TTS API调用成功
+   - [ ] 步骤A.2.6：验证错误处理机制，确保API异常时用户体验良好
 
 ---
 
@@ -119,7 +143,7 @@
 - ✅ A.1: AI功能现状调研与问题识别 - 核心问题已识别，修复策略已制定
 
 **下一步任务**:
-- 🎯 A.2: AI接口连接问题诊断修复 - 重点解决参数格式不匹配问题
+- 🔄 A.2: AI接口连接问题诊断修复 - 正在执行参数格式修复
 
 ---
 *本TODO基于陆家花园项目Git开发指南创建，专注于AI功能修复和用户体验恢复*
