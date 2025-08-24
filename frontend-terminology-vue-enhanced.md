@@ -129,7 +129,7 @@
 - **使用页面**: QuizScreen.vue（通过QuestionCard组件引用）
 - **技术特性**:
   - **现代化布局** 移至问题卡片下方，符合"内容优先"UX原则
-  - **信息显示优化** 仅显示百分比，去除冗余标签，圆角设计统一
+  - **信息显示优化** 仅显示百分比，去除冗余标签，使用UnoCSS圆角系统统一
   - **嵌入式阴影效果** inset阴影营造凹槽感，与卡片悬浮效果形成对比
   - **精确进度计算** 基于userAnswers.length而非currentQuestionIndex
 - **主要功能区域**:
@@ -142,7 +142,7 @@
   - "进度条显示太早" = zhou.ts中的quizProgress计算逻辑问题
   - "进度条阴影效果" = ProgressBar.vue中的CSS阴影样式
   - "进度条信息过多" = ProgressBar组件的Props配置(showLabel vs innerText)
-  - "进度条圆角不一致" = ProgressBar样式与卡片设计系统的协调性
+  - "进度条圆角问题" = ProgressBar组件已迁移至UnoCSS圆角系统，与卡片设计token完全统一
 
 ### 3. 状态管理术语映射 (State Management Mapping)
 
