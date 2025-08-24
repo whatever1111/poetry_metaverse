@@ -190,6 +190,33 @@
   - 层次清晰: 与btn-primary形成明确的主要操作vs分享工具的视觉关系
 - **风险评估**: 低风险 - 仅样式调整，功能逻辑不变
 
+#### - [ ] 任务C.5：SVG图标系统引入 - 现代化简约图标升级
+- **核心思想**: 用Heroicons替换emoji图标，同时实现纯图标模式，去掉"图标+文字"冗余，建立极简现代化图标系统
+- **技术背景**: 
+  - 当前ShareTools使用"图标+文字"模式不够简约，需要改为纯图标模式
+  - 发现多组件使用emoji: ShareTools(📋🔗💾), QuizScreen(💾), ErrorState(⚠️🔍), InterpretationDisplay(⚠️💭), EmptyState(📝), SubProjectSelection(📝)
+  - emoji与项目极简风格不符，SVG图标更现代化专业
+  - 纯图标+hover tooltip是主流极简交互模式
+- **Heroicons选择理由**: 与UnoCSS同源，维护活跃，Vue3原生支持
+- **图标映射方案**: 
+  - 📋→DocumentDuplicateIcon, 🔗→ShareIcon, 💾→ArrowDownTrayIcon, ⚠️→ExclamationTriangleIcon, 🔍→MagnifyingGlassIcon, 💭→ChatBubbleLeftEllipsisIcon, 📝→PencilIcon, ✓→CheckIcon
+- **预期改动文件**:
+  - `lugarden_universal/frontend_vue/package.json` - 新增@heroicons/vue依赖
+  - `lugarden_universal/frontend_vue/src/components/ShareTools.vue` - 替换📋🔗💾为SVG，去掉文字变成纯图标+title属性
+  - `lugarden_universal/frontend_vue/src/views/QuizScreen.vue` - 替换💾
+  - `lugarden_universal/frontend_vue/src/components/ErrorState.vue` - 替换⚠️🔍
+  - `lugarden_universal/frontend_vue/src/components/InterpretationDisplay.vue` - 替换⚠️💭
+  - `lugarden_universal/frontend_vue/src/components/EmptyState.vue` - 替换📝
+  - `lugarden_universal/frontend_vue/src/views/SubProjectSelection.vue` - 替换📝
+- **执行步骤**:
+  - [ ] 步骤C.5.1：安装@heroicons/vue依赖
+  - [ ] 步骤C.5.2：重构ShareTools.vue为纯图标模式(去掉文字，emoji→SVG，添加title属性)
+  - [ ] 步骤C.5.3：更新其他组件emoji→SVG图标替换
+  - [ ] 步骤C.5.4：统一图标尺寸规范(w-4 h-4适配28px按钮)
+  - [ ] 步骤C.5.5：验证hover tooltip和无障碍体验
+  - [ ] 步骤C.5.6：全项目构建验证和视觉一致性检查
+- **验收标准**: ShareTools实现纯图标极简模式，全项目emoji完全替换为SVG，建立统一现代图标系统，功能无损
+
 ### **阶段2025-08-24_D：探索性功能完善与优化（待规划）**
 
 #### 🔄 **敏捷迭代原则**
