@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showActions" class="flex justify-center items-center gap-4 mt-8 pt-6 border-t border-primary-100 animate-fadeInUp max-md:gap-2 max-md:pt-4 max-sm:flex-col max-sm:gap-1 max-sm:items-stretch" :style="{ animationDelay: animationDelay }" :class="layoutClasses">
+  <div v-if="showActions" class="flex justify-center items-center gap-4 mt-8 pt-6 animate-fadeInUp max-md:gap-2 max-md:pt-4 max-sm:gap-3 max-sm:justify-center" :style="{ animationDelay: animationDelay }" :class="layoutClasses">
     <button
       v-for="action in visibleActions"
       :key="action.key"

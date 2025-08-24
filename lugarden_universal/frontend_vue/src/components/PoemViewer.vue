@@ -189,7 +189,7 @@ const actionButtons = computed(() => [
     key: 'share',
     iconComponent: ShareIcon,
     handler: sharePoem,
-    disabled: isActionLoading.value || !canShare.value,
+    disabled: isActionLoading.value,
     title: '分享诗歌',
     visible: true
   },
