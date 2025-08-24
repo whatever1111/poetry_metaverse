@@ -36,44 +36,13 @@
         {{ additionalInfo }}
       </div>
       
-      <!-- 复制和分享功能 -->
-      <div v-if="showActions" class="poem-actions animate-fadeInUp" :style="{ animationDelay: `${parseFloat(animationDelay) + 0.3}s` }">
-        <button
-          @click="copyPoem"
-          class="action-button"
-          :class="{ 'copied': isCopied }"
-          :disabled="isActionLoading"
-          title="复制诗歌内容"
-        >
-          <span class="action-icon">
-            {{ isCopied ? '✓' : '📋' }}
-          </span>
-          <span class="action-text">
-            {{ isCopied ? '已复制' : '复制' }}
-          </span>
-        </button>
-        
-        <button
-          @click="sharePoem"
-          class="action-button"
-          :disabled="isActionLoading || !canShare"
-          title="分享诗歌"
-        >
-          <span class="action-icon">🔗</span>
-          <span class="action-text">分享</span>
-        </button>
-        
-        <button
-          v-if="showDownload"
-          @click="downloadPoem"
-          class="action-button"
-          :disabled="isActionLoading"
-          title="下载诗歌文本"
-        >
-          <span class="action-icon">💾</span>
-          <span class="action-text">下载</span>
-        </button>
-      </div>
+      <!-- 操作按钮组 - 使用现代化ActionButtonGroup组件 -->
+      <ActionButtonGroup
+        :actions="actionButtons"
+        :show-actions="showActions"
+        :animation-delay="`${parseFloat(animationDelay) + 0.3}s`"
+        layout="auto"
+      />
     </div>
   </div>
 </template>
@@ -81,6 +50,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { PoemViewerProps } from '../types/zhou'
+import ActionButtonGroup from './ActionButtonGroup.vue'
 
 // 使用统一的类型定义
 type Props = PoemViewerProps
@@ -197,6 +167,38 @@ const plainTextContent = computed(() => {
 const canShare = computed(() => {
   return typeof navigator !== 'undefined' && 'share' in navigator
 })
+
+// 操作按钮配置 - 现代化组件化实现
+const actionButtons = computed(() => [
+  {
+    key: 'copy',
+    icon: isCopied.value ? '✓' : '📋',
+    text: isCopied.value ? '已复制' : '复制',
+    handler: copyPoem,
+    disabled: isActionLoading.value,
+    title: '复制诗歌内容',
+    variant: isCopied.value ? ('success' as const) : undefined,
+    visible: true
+  },
+  {
+    key: 'share',
+    icon: '🔗',
+    text: '分享',
+    handler: sharePoem,
+    disabled: isActionLoading.value || !canShare.value,
+    title: '分享诗歌',
+    visible: true
+  },
+  {
+    key: 'download',
+    icon: '💾',
+    text: '下载',
+    handler: downloadPoem,
+    disabled: isActionLoading.value,
+    title: '下载诗歌文本',
+    visible: props.showDownload
+  }
+])
 
 // 复制诗歌到剪贴板
 const copyPoem = async () => {
@@ -492,104 +494,7 @@ const downloadPoem = () => {
 
 /* 首字母品牌色效果已被UnoCSS覆盖失效，已清理 - A.3任务 */
 
-/* 复制和分享功能样式 */
-.poem-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-base);
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--color-primary-100);
-}
-
-.action-button {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-base);
-  border: 1px solid var(--color-primary-300);
-  border-radius: var(--radius-md);
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-out);
-  user-select: none;
-  min-width: 80px;
-  justify-content: center;
-}
-
-.action-button:hover:not(:disabled) {
-  background: var(--color-primary-50);
-  border-color: var(--color-primary-400);
-  color: var(--text-primary);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.action-button:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
-
-.action-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-.action-button.copied {
-  background: var(--color-success-50);
-  border-color: var(--color-success-300);
-  color: var(--color-success-700);
-}
-
-.action-button.copied:hover {
-  background: var(--color-success-100);
-  border-color: var(--color-success-400);
-}
-
-.action-icon {
-  font-size: 1em;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.action-text {
-  white-space: nowrap;
-  font-weight: 500;
-}
-
-/* 响应式设计 - 操作按钮 */
-@media (max-width: 768px) {
-  .poem-actions {
-    gap: var(--spacing-sm);
-    padding-top: var(--spacing-base);
-  }
-  
-  .action-button {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: var(--font-size-xs);
-    min-width: 70px;
-  }
-}
-
-@media (max-width: 480px) {
-  .poem-actions {
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    align-items: stretch;
-  }
-  
-  .action-button {
-    width: 100%;
-    max-width: 200px;
-    margin: 0 auto;
-  }
-}
+/* 操作按钮样式已迁移至UnoCSS - C.1 现代化实现 */
 
 /* 改善缩进显示效果 */
 .poem-body {
@@ -612,24 +517,5 @@ const downloadPoem = () => {
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }
 
-/* 深色模式适配 */
-@media (prefers-color-scheme: dark) {
-  .action-button {
-    background: var(--bg-tertiary, #374151);
-    border-color: var(--color-primary-600, #6366f1);
-    color: var(--text-secondary, #d1d5db);
-  }
-  
-  .action-button:hover:not(:disabled) {
-    background: var(--color-primary-900, #312e81);
-    border-color: var(--color-primary-500, #8b5cf6);
-    color: var(--text-primary, #f3f4f6);
-  }
-  
-  .action-button.copied {
-    background: var(--color-success-900, #064e3b);
-    border-color: var(--color-success-600, #059669);
-    color: var(--color-success-300, #6ee7b7);
-  }
-}
+/* 深色模式适配已迁移至UnoCSS - C.1 现代化实现 */
 </style>

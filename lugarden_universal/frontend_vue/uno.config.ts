@@ -166,6 +166,13 @@ export default defineConfig({
     // 小尺寸按钮变体 - QuizScreen使用
     ['btn-primary-sm', 'px-3 py-1 bg-blue-600 text-white text-sm rounded cursor-pointer transition-colors hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed'],
     ['btn-secondary-sm', 'px-3 py-1 border border-blue-300 text-blue-600 text-sm rounded cursor-pointer transition-colors hover:bg-blue-50 dark:hover:bg-blue-900/30 disabled:opacity-60 disabled:cursor-not-allowed'],
+    // 操作按钮系统 - C.1 现代化实现
+    ['btn-action-base', 'inline-flex items-center justify-center gap-2 min-h-[44px] min-w-20 px-4 py-2 text-sm font-medium rounded-lg border border-primary-300 bg-white text-gray-600 transition-all duration-200 ease-out cursor-pointer select-none'],
+    ['btn-action-hover', 'hover:bg-primary-50 hover:border-primary-400 hover:text-gray-800 hover:-translate-y-0.5 hover:shadow-md'],
+    ['btn-action-active', 'active:translate-y-0 active:shadow-sm'],
+    ['btn-action-disabled', 'disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none'],
+    ['btn-action-success', 'bg-green-50 border-green-300 text-green-700 hover:bg-green-100 hover:border-green-400'],
+    ['btn-action', 'btn-action-base btn-action-hover btn-action-active btn-action-disabled'],
     // 保留原有的shortcuts
     ['card-base', 'bg-white rounded-lg shadow-md p-6 transition-all duration-300 ease-out'],
     ['text-responsive', 'text-base max-sm:text-sm lg:text-lg']

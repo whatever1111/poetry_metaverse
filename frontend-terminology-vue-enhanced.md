@@ -425,7 +425,39 @@
 - **问答功能相关** → QuizScreen.vue + QuestionCard.vue
 - **诗歌展示相关** → ResultScreen.vue + PoemViewer.vue
 - **功能按钮相关** → ActionButtons.vue
+- **操作按钮相关** → ActionButtonGroup.vue (C.1现代化)
 - **解读内容相关** → InterpretationDisplay.vue
+
+### C.1现代化实现 - 操作按钮组件化模式
+
+#### ActionButtonGroup组件
+```
+Vue实现: src/components/ActionButtonGroup.vue
+使用页面: PoemViewer.vue (诗歌展示页面)
+技术特性: UnoCSS化、组件化、响应式设计、状态管理
+主要功能区域: 复制、分享、下载操作按钮组
+常见问题术语: "操作按钮不显示" → ActionButtonGroup.vue :actions配置，"按钮样式异常" → btn-action系列shortcuts
+```
+
+#### 操作按钮术语映射
+```
+业务术语        | Vue组件          | UnoCSS Class        | 主要功能
+复制按钮        | ActionButtonGroup | btn-action         | 复制诗歌到剪贴板  
+分享按钮        | ActionButtonGroup | btn-action         | Web Share API分享
+下载按钮        | ActionButtonGroup | btn-action         | 下载诗歌文本文件
+已复制状态      | ActionButtonGroup | btn-action-success | 复制成功视觉反馈
+按钮禁用状态    | ActionButtonGroup | btn-action-disabled| 操作进行中状态
+```
+
+#### 操作按钮UnoCSS Shortcuts标准 (C.1建立)
+```
+btn-action-base: 基础操作按钮样式，44px触摸目标，符合B阶段标准
+btn-action-hover: 悬浮效果，-translate-y-0.5悬浮感
+btn-action-active: 点击效果，translate-y-0按下感  
+btn-action-disabled: 禁用状态，opacity-60灰化效果
+btn-action-success: 成功状态，绿色主题视觉反馈
+btn-action: 完整操作按钮，组合所有交互状态
+```
 
 ### 按问题类型查找
 
@@ -436,7 +468,7 @@
 - **状态管理问题** → src/stores/zhou.ts
 
 #### 样式视觉问题
-- **按钮样式问题** → UnoCSS shortcuts (btn-primary, btn-option) 或 components.css → .btn-* 类族 (功能按钮)
+- **按钮样式问题** → UnoCSS shortcuts (btn-primary, btn-option, btn-action) 或 components.css → .btn-* 类族 (功能按钮)
 - **卡片布局问题** → unified-content-card 或 components.css → .card-* 类族
 - **文字显示问题** → components.css → .question-text, .poem-*, .content-*
 - **颜色配色问题** → globals.css → --color-* 变量
