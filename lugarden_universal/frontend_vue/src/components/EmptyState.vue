@@ -4,7 +4,8 @@
       <!-- 图标或插图 -->
       <div class="empty-icon">
         <div v-if="!$slots.icon" class="default-icon">
-          {{ icon }}
+          <component v-if="iconComponent" :is="iconComponent" class="w-6 h-6 mx-auto" aria-hidden="true" />
+          <span v-else>{{ icon }}</span>
         </div>
         <slot name="icon"></slot>
       </div>
@@ -40,10 +41,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { PencilIcon } from '@heroicons/vue/24/outline'
 
 // 组件Props
 interface Props {
   icon?: string
+  iconComponent?: any  // SVG组件支持 - C.5重构
   title?: string
   description?: string
   actionText?: string
@@ -61,7 +64,8 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  icon: '📝',
+  icon: '',
+  iconComponent: PencilIcon,  // C.5默认使用SVG图标
   title: '暂无内容',
   description: '',
   actionText: '',

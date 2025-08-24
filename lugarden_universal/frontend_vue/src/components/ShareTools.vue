@@ -8,33 +8,37 @@
         'btn-share-tools',
         action.variant && `btn-share-tools-${action.variant}`,
         action.additionalClasses,
-        'max-sm:w-full max-sm:max-w-[150px] max-sm:mx-auto',
-        props.layout === 'vertical' && 'w-full max-w-[150px] mx-auto'
+        'max-sm:w-8 max-sm:h-8',
+        props.layout === 'vertical' && 'w-8 h-8'
       ]"
       :disabled="action.disabled"
       :title="action.title"
     >
-      <span class="share-icon text-sm leading-none shrink-0">
-        {{ action.icon }}
-      </span>
-      <span class="share-text whitespace-nowrap font-medium">
-        {{ action.text }}
-      </span>
+      <component 
+        :is="action.iconComponent" 
+        class="w-4 h-4" 
+        aria-hidden="true"
+      />
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { 
+  DocumentDuplicateIcon, 
+  ShareIcon, 
+  ArrowDownTrayIcon,
+  CheckIcon
+} from '@heroicons/vue/24/outline'
 
-// 分享工具按钮配置接口
+// 分享工具按钮配置接口 (C.5重构: 纯图标模式)
 interface ShareToolButton {
   key: string
-  icon: string
-  text: string
+  iconComponent: any  // Heroicons组件
   handler: () => void
   disabled?: boolean
-  title?: string
+  title: string  // hover tooltip必需
   variant?: 'success' | 'warning' | 'error'
   visible?: boolean
   additionalClasses?: string

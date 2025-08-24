@@ -16,7 +16,9 @@
       <div v-if="showRestorePrompt" class="restore-prompt mb-6 animate-fadeInUp">
         <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
           <div class="flex items-start gap-3">
-            <div class="text-blue-500 text-xl">💾</div>
+            <div class="text-blue-500">
+              <ArrowDownTrayIcon class="w-5 h-5" aria-hidden="true" />
+            </div>
             <div class="flex-1">
               <h3 class="font-medium text-blue-800 dark:text-blue-200 mb-2">
                 发现未完成的问答进度
@@ -117,6 +119,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import QuestionCard from '../components/QuestionCard.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
+import { ArrowDownTrayIcon } from '@heroicons/vue/24/outline'
 import ErrorState from '../components/ErrorState.vue'
 import EmptyState from '../components/EmptyState.vue'
 import BackButton from '../components/BackButton.vue'

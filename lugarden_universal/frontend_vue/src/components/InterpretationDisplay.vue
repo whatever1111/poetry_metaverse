@@ -72,7 +72,9 @@
     <!-- AI功能错误状态 -->
     <div v-if="showAiError && aiError" class="ai-error unified-content-card animate-fadeInUp">
       <div class="error-content">
-        <div class="error-icon">⚠️</div>
+        <div class="error-icon">
+          <ExclamationTriangleIcon class="w-5 h-5 mx-auto" aria-hidden="true" />
+        </div>
         <h3 class="error-title">AI功能暂时无法使用</h3>
         <p class="error-message">{{ aiError }}</p>
         <div v-if="showRetryAction" class="error-actions">
@@ -86,13 +88,17 @@
 
     <!-- 空状态 -->
     <div v-if="!aiInterpretation && !poetExplanation && !$slots.custom && !showAiError" class="empty-interpretation">
-      <div class="empty-icon">💭</div>
+      <div class="empty-icon">
+        <ChatBubbleLeftEllipsisIcon class="w-6 h-6 mx-auto" aria-hidden="true" />
+      </div>
       <p class="empty-text">{{ emptyMessage }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ExclamationTriangleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/vue/24/outline'
+
 // 组件Props
 interface Props {
   aiInterpretation?: string | null

@@ -4,7 +4,7 @@
       <!-- 错误图标 -->
       <div class="error-icon">
         <div v-if="!$slots.icon" class="default-icon">
-          {{ errorIcon }}
+          <component :is="errorIconComponent" class="w-6 h-6 mx-auto" aria-hidden="true" />
         </div>
         <slot name="icon"></slot>
       </div>
@@ -89,6 +89,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { ExclamationTriangleIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 
 // 组件Props
 interface Props {
@@ -151,21 +152,21 @@ const containerClass = computed(() => ({
   'error-centered': props.centered
 }))
 
-// 根据错误类型获取图标
-const errorIcon = computed(() => {
+// 根据错误类型返回对应SVG图标组件 - C.5重构
+const errorIconComponent = computed(() => {
   switch (props.errorType) {
     case 'network':
-      return '🌐'
+      return ExclamationTriangleIcon  // 🌐 → 警告
     case 'server':
-      return '🔧'
+      return ExclamationTriangleIcon  // 🔧 → 警告  
     case 'client':
-      return '💻'
+      return ExclamationTriangleIcon  // 💻 → 警告
     case 'permission':
-      return '🔒'
+      return ExclamationTriangleIcon  // 🔒 → 警告
     case 'notfound':
-      return '🔍'
+      return MagnifyingGlassIcon      // 🔍 → 搜索
     default:
-      return '⚠️'
+      return ExclamationTriangleIcon  // ⚠️ → 警告
   }
 })
 

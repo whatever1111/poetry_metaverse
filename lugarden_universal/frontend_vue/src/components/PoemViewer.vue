@@ -51,6 +51,12 @@
 import { computed, ref } from 'vue'
 import type { PoemViewerProps } from '../types/zhou'
 import ShareTools from './ShareTools.vue'
+import { 
+  DocumentDuplicateIcon, 
+  ShareIcon, 
+  ArrowDownTrayIcon,
+  CheckIcon
+} from '@heroicons/vue/24/outline'
 
 // 使用统一的类型定义
 type Props = PoemViewerProps
@@ -168,22 +174,20 @@ const canShare = computed(() => {
   return typeof navigator !== 'undefined' && 'share' in navigator
 })
 
-// 操作按钮配置 - 现代化组件化实现
+// 分享工具配置 - C.5纯图标模式重构
 const actionButtons = computed(() => [
   {
     key: 'copy',
-    icon: isCopied.value ? '✓' : '📋',
-    text: isCopied.value ? '已复制' : '复制',
+    iconComponent: isCopied.value ? CheckIcon : DocumentDuplicateIcon,
     handler: copyPoem,
     disabled: isActionLoading.value,
-    title: '复制诗歌内容',
+    title: isCopied.value ? '已复制' : '复制诗歌内容',
     variant: isCopied.value ? ('success' as const) : undefined,
     visible: true
   },
   {
     key: 'share',
-    icon: '🔗',
-    text: '分享',
+    iconComponent: ShareIcon,
     handler: sharePoem,
     disabled: isActionLoading.value || !canShare.value,
     title: '分享诗歌',
@@ -191,11 +195,10 @@ const actionButtons = computed(() => [
   },
   {
     key: 'download',
-    icon: '💾',
-    text: '下载',
+    iconComponent: ArrowDownTrayIcon,
     handler: downloadPoem,
     disabled: isActionLoading.value,
-    title: '下载诗歌文本',
+    title: '下载TXT文件',
     visible: props.showDownload
   }
 ])

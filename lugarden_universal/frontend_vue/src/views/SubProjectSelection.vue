@@ -49,7 +49,7 @@
       <!-- 空状态 -->
       <div v-else-if="!zhouStore.universeData.loading">
         <EmptyState 
-          icon="📝"
+          :icon-component="PencilIcon"
           title="暂无子项目"
           description="当前项目没有可用的子项目"
           size="medium"
@@ -77,6 +77,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import BackButton from '../components/BackButton.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
+import { PencilIcon } from '@heroicons/vue/24/outline'
 import EmptyState from '../components/EmptyState.vue'
 
 const router = useRouter()

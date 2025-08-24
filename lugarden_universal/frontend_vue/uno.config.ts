@@ -166,8 +166,8 @@ export default defineConfig({
     // 小尺寸按钮变体 - QuizScreen使用
     ['btn-primary-sm', 'px-3 py-1 bg-blue-600 text-white text-sm rounded cursor-pointer transition-colors hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed'],
     ['btn-secondary-sm', 'px-3 py-1 border border-blue-300 text-blue-600 text-sm rounded cursor-pointer transition-colors hover:bg-blue-50 dark:hover:bg-blue-900/30 disabled:opacity-60 disabled:cursor-not-allowed'],
-    // 分享工具按钮系统 - C.4 轻量化实现 (28px, 透明背景, 主流实践对标)
-    ['btn-share-tools-base', 'inline-flex items-center justify-center gap-1 min-h-[28px] min-w-[60px] px-2 py-1 text-xs font-medium rounded border-0 bg-transparent text-gray-500 transition-all duration-150 cursor-pointer select-none'],
+    // 分享工具按钮系统 - C.5 纯图标模式重构 (从C.4轻量化进化为极简图标模式)
+    ['btn-share-tools-base', 'inline-flex items-center justify-center w-8 h-8 p-1 text-xs font-medium rounded border-0 bg-transparent text-gray-500 transition-all duration-150 cursor-pointer select-none'],
     ['btn-share-tools-hover', 'hover:text-gray-700 hover:bg-gray-50 active:bg-gray-100'],
     ['btn-share-tools-disabled', 'disabled:opacity-50 disabled:cursor-not-allowed'],
     ['btn-share-tools-success', 'text-green-600 hover:text-green-700 hover:bg-green-50'],
