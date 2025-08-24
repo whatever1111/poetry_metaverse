@@ -1,6 +1,6 @@
 <template>
   <div class="poem-viewer max-w-3xl mx-auto">
-    <div class="poem-content unified-content-card animate-fadeInUp" :style="{ animationDelay: animationDelay }">
+    <div class="poem-content unified-content-card animate-fadeInUp relative" :style="{ animationDelay: animationDelay }">
       <h2 class="poem-title">
         {{ cleanTitle(poemTitle) }}
       </h2>
@@ -42,7 +42,62 @@
         :show-actions="showActions"
         :animation-delay="`${parseFloat(animationDelay) + 0.3}s`"
         layout="auto"
+        :class="showFallbackMenu ? 'share-tools-active' : ''"
       />
+      
+      <!-- 兜底分享菜单 - 毛玻璃蒙版 + 从分享按钮展开 -->
+      <div 
+        v-if="showFallbackMenu"
+        class="absolute inset-0 z-30 backdrop-blur-sm bg-black bg-opacity-10"
+        style="border-radius: var(--radius-base)"
+        @click="showFallbackMenu = false"
+      >
+        <!-- 菜单定位容器 - 计算相对于分享按钮的位置 -->
+        <div 
+          class="absolute z-50"
+          :style="menuPosition"
+          @click.stop
+        >
+          <div 
+            class="bg-white rounded-lg shadow-2xl border border-gray-100 py-2 min-w-64 transform origin-top-right animate-fadeInUp"
+          >
+            <div class="px-3 py-2 text-xs text-gray-500 border-b border-gray-100">
+              选择分享平台
+            </div>
+            
+            <button 
+              @click="shareToWeibo"
+              class="w-full flex items-center px-3 py-2.5 hover:bg-gray-50 transition-colors duration-200 text-left"
+            >
+              <GlobeAltIcon class="w-4 h-4 text-orange-500 mr-3" />
+              <div class="flex-1">
+                <div class="text-sm font-medium">微博</div>
+                <div class="text-xs text-gray-500">打开分享页面</div>
+              </div>
+            </button>
+            
+            <button 
+              @click="copyShareContent"
+              class="w-full flex items-center px-3 py-2.5 hover:bg-gray-50 transition-colors duration-200 text-left"
+            >
+              <DocumentDuplicateIcon class="w-4 h-4 text-blue-500 mr-3" />
+              <div class="flex-1">
+                <div class="text-sm font-medium">复制分享内容</div>
+                <div class="text-xs text-gray-500">适用于微信/QQ/小红书等</div>
+              </div>
+            </button>
+            
+            <div class="border-t border-gray-100 mt-1 pt-1">
+              <button 
+                @click="showFallbackMenu = false"
+                class="w-full px-3 py-2 text-xs text-gray-500 hover:text-gray-700 transition-colors duration-200"
+              >
+                取消
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -55,7 +110,8 @@ import {
   DocumentDuplicateIcon, 
   ShareIcon, 
   ArrowDownTrayIcon,
-  CheckIcon
+  CheckIcon,
+  GlobeAltIcon
 } from '@heroicons/vue/24/outline'
 
 // 使用统一的类型定义
@@ -92,6 +148,33 @@ const emit = defineEmits<Emits>()
 // 组件状态
 const isCopied = ref(false)
 const isActionLoading = ref(false)
+const showFallbackMenu = ref(false)
+
+// 计算菜单位置 - 从底部ShareTools分享按钮展开
+const menuPosition = computed(() => {
+  // ShareTools组件在诗歌卡片底部，菜单应该从底部区域展开
+  const isMobile = window.innerWidth < 768
+  
+  if (isMobile) {
+    // 移动端：菜单从屏幕底部向上展开，水平居中
+    return {
+      bottom: '20%', 
+      left: '50%',
+      right: 'auto',
+      transform: 'translateX(-50%)', // 水平居中
+      maxWidth: 'calc(100vw - 2rem)'
+    }
+  } else {
+    // 桌面端：菜单从底部区域展开，水平居中
+    return {
+      bottom: '15%', // 从底部展开，不是垂直居中
+      left: '50%',
+      right: 'auto', 
+      transform: 'translateX(-50%)', // 水平居中
+      maxWidth: '20rem'
+    }
+  }
+})
 
 // 清理标题（移除书名号）
 const cleanTitle = (title: string | null): string => {
@@ -252,59 +335,94 @@ const copyPoem = async () => {
   }
 }
 
-// 分享诗歌
+// 获取标准分享数据
+const getShareData = (): ShareData => ({
+  title: cleanTitle(props.poemTitle),
+  text: plainTextContent.value,
+  url: window.location.href
+})
+
+// 通用分享内容格式化（适用于微信/QQ/小红书等）
+const getGeneralShareContent = (shareData: ShareData): string => {
+  const author = props.author || '佚名'
+  return `🌸 ${shareData.title} 🌸\n\n${shareData.text}\n\n————————————\n✍️ 作者：${author}\n📖 来源：陆家花园诗歌元宇宙\n🔗 ${shareData.url}\n\n#诗歌分享 #文学 #诗歌元宇宙`
+}
+
+// 微博格式化分享内容
+const getWeiboContent = (shareData: ShareData): string => {
+  const weiboText = shareData.text.length > 100 ? shareData.text.substring(0, 100) + '...' : shareData.text
+  return `🌸 ${shareData.title} 🌸\n\n${weiboText}\n\n@陆家花园诗歌元宇宙 ${shareData.url}`
+}
+
+// 复制到剪贴板
+const copyToClipboard = async (content: string) => {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(content)
+  } else {
+    // 旧浏览器兜底方案
+    const textArea = document.createElement('textarea')
+    textArea.value = content
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+  }
+}
+
+// 分享诗歌 - Web Share API优先策略
 const sharePoem = async () => {
   if (isActionLoading.value) return
   
   isActionLoading.value = true
   
   try {
-    const shareData: ShareData = {
-      title: cleanTitle(props.poemTitle),
-      text: plainTextContent.value,
-      url: window.location.href
-    }
+    const shareData = getShareData()
     
     if (canShare.value) {
-      // 使用 Web Share API
+      // 优先使用 Web Share API（系统原生分享面板，包含微信/QQ/小红书等）
       await navigator.share(shareData)
+      emit('shared', shareData)
     } else {
-      // 降级到复制链接
-      const shareUrl = `${window.location.origin}${window.location.pathname}#poem-${encodeURIComponent(cleanTitle(props.poemTitle))}`
-      
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(`${shareData.title}\n\n${shareData.text}\n\n分享链接: ${shareUrl}`)
-        // 可以显示 "分享链接已复制到剪贴板" 的提示
-      } else {
-        // 打开新窗口显示分享内容
-        const shareWindow = window.open('', '_blank', 'width=500,height=400')
-        if (shareWindow) {
-          shareWindow.document.write(`
-            <html>
-              <head><title>分享诗歌</title></head>
-              <body style="font-family: sans-serif; padding: 20px;">
-                <h2>${shareData.title}</h2>
-                <pre style="white-space: pre-wrap; line-height: 1.6;">${shareData.text}</pre>
-                <p><a href="${shareUrl}">查看原文</a></p>
-                <button onclick="navigator.clipboard?.writeText('${shareData.text}')">复制文本</button>
-              </body>
-            </html>
-          `)
-        }
-      }
+      // 兜底方案：显示轻量中国平台选择菜单
+      showFallbackMenu.value = true
     }
-    
-    emit('shared', shareData)
     
   } catch (error) {
     console.error('分享诗歌失败:', error)
     // 如果用户取消分享，不显示错误
     if (error instanceof Error && !error.message.includes('cancel')) {
-      // 可以在这里显示错误提示
+      // Web Share API失败，显示兜底菜单
+      showFallbackMenu.value = true
     }
   } finally {
     isActionLoading.value = false
   }
+}
+
+// 兜底方案：微博分享
+const shareToWeibo = async () => {
+  const shareData = getShareData()
+  const content = getWeiboContent(shareData)
+  
+  // 尝试微博URL scheme，失败则复制
+  try {
+    const weiboUrl = `https://service.weibo.com/share/share.php?url=${encodeURIComponent(shareData.url || window.location.href)}&title=${encodeURIComponent(content)}`
+    window.open(weiboUrl, '_blank')
+  } catch {
+    await copyToClipboard(content)
+  }
+  
+  showFallbackMenu.value = false
+  emit('shared', shareData)
+}
+
+// 兜底方案：复制通用分享内容（适用于微信/QQ/小红书等）
+const copyShareContent = async () => {
+  const shareData = getShareData()
+  const content = getGeneralShareContent(shareData)
+  await copyToClipboard(content)
+  showFallbackMenu.value = false
+  emit('shared', shareData)
 }
 
 // 下载诗歌为文本文件
@@ -521,4 +639,12 @@ const downloadPoem = () => {
 }
 
 /* 深色模式适配已迁移至UnoCSS - C.1 现代化实现 */
+
+/* 分享菜单激活时的按钮层级控制 */
+.share-tools-active {
+  position: relative;
+  z-index: 35; /* 高于毛玻璃z-30，确保所有按钮都在上方 */
+}
+
+/* 清理：已不需要单独的分享按钮层级控制 */
 </style>
