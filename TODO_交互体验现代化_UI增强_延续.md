@@ -254,7 +254,7 @@
   - [x] 步骤C.6.5：移动端真机测试验证（分享功能+视觉效果）
 - **验收标准**: 移动端ShareTools视觉轻量化，分享功能全设备兼容，符合主流移动应用分享工具设计标准
 
-#### - [ ] **任务C.7**: 中国社交平台分享功能本土化实现 - Web Share API优先策略
+#### - [x] **任务C.7**: 中国社交平台分享功能本土化实现 - Web Share API优先策略
 - **技术背景**: 
   - 经过深度调研发现：Web Share API在支持的移动浏览器中，**微信/QQ/小红书等中国应用实际会出现在系统分享列表中**
   - 之前的设计错误假设了这些平台不支持Web Share API，导致过度复杂化
@@ -273,14 +273,72 @@
 - **预期改动文件**:
   - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 优化sharePoem函数，优先Web Share API，添加轻量兜底方案
 - **实际改动文件**: 
-  - 待执行
+  - ✅ `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - sharePoem函数重构：优先Web Share API，添加中国平台兜底方案，毛玻璃蒙版UI
+  - ✅ `lugarden_universal/frontend_vue/src/components/ShareTools.vue` - 分享按钮z-index修复，确保在毛玻璃蒙版上方显示
 - **执行步骤**:
-  - [ ] 步骤C.7.1：调研验证Web Share API在中国移动端的实际平台支持情况
-  - [ ] 步骤C.7.2：优化现有sharePoem函数，优先调用Web Share API
-  - [ ] 步骤C.7.3：设计轻量化兜底方案，仅在Web Share API不支持时显示
-  - [ ] 步骤C.7.4：为兜底方案添加中国平台的格式化分享内容
-  - [ ] 步骤C.7.5：移动端真机测试验证Web Share API的平台覆盖效果
+  - [x] 步骤C.7.1：调研验证Web Share API在中国移动端的实际平台支持情况 ✅
+  - [x] 步骤C.7.2：优化现有sharePoem函数，优先调用Web Share API ✅
+  - [x] 步骤C.7.3：设计轻量化兜底方案，仅在Web Share API不支持时显示 ✅
+  - [x] 步骤C.7.4：为兜底方案添加中国平台的格式化分享内容 ✅
+  - [x] 步骤C.7.5：移动端真机测试验证Web Share API的平台覆盖效果 ✅
 - **验收标准**: 优先展示系统原生分享面板（含微信/QQ/小红书等中国应用），兜底方案界面轻量美观，整体分享体验统一流畅
+
+#### - [x] **任务C.8**: 项目圆角设计统一化 - UnoCSS圆角系统全面迁移
+- **核心思想**: 确认项目所有圆角采用UnoCSS统一设计系统，消除CSS变量和内联样式的圆角定义，建立一致性设计token体系
+- **技术背景**:
+  - 项目当前同时存在UnoCSS圆角类(`rounded-lg`)、CSS变量(`var(--radius-base)`)、内联样式(`border-radius: 8px`)三套圆角定义
+  - UnoCSS圆角配置已完善(`rounded-sm/base/lg/xl/full`)且与现有设计token完全对齐(6px/8px/12px/16px/50%)
+  - 52个圆角匹配分布在15个文件中，包含legacy样式系统和现代组件混用
+- **问题识别**:
+  - CSS变量和UnoCSS类重复定义导致样式不一致风险
+  - 内联样式破坏设计系统的token统一性
+  - Legacy组件圆角定义未迁移至现代UnoCSS系统
+- **技术方案**:
+  - **全面审计**: 识别所有圆角定义的类型和位置，建立完整迁移映射
+  - **标准迁移**: 将CSS变量(`var(--radius-*)`)和直接数值全部替换为UnoCSS类(`rounded-*`)
+  - **设计token对齐**: 确保迁移后的圆角值与设计系统完全一致
+  - **迁移映射表**:
+    ```
+    var(--radius-sm)   → rounded-sm    (6px)
+    var(--radius-base) → rounded-base  (8px)  
+    var(--radius-lg)   → rounded-lg    (12px)
+    var(--radius-xl)   → rounded-xl    (16px)
+    var(--radius-full) → rounded-full  (50%)
+    border-radius: 2px → rounded-sm    (6px 或自定义)
+    border-radius: 8px → rounded-base  (8px)
+    border-radius: 50% → rounded-full  (50%)
+    style="border-radius: var(--radius-base)" → class="rounded-base"
+    ```
+- **预期改动文件**:
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 毛玻璃内联圆角→rounded-base
+  - `lugarden_universal/frontend_vue/src/components/EmptyState.vue` - CSS变量→UnoCSS类
+  - `lugarden_universal/frontend_vue/src/components/ErrorState.vue` - CSS变量→UnoCSS类
+  - `lugarden_universal/frontend_vue/src/assets/styles/components.css` - Legacy圆角定义迁移
+  - `frontend-terminology-vue-enhanced.md` - 更新圆角相关术语定义，反映UnoCSS统一系统
+  - 其他10个包含圆角定义的组件文件
+- **实际改动文件**: 
+  - ✅ `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 毛玻璃backdrop的border-radius迁移至rounded-base
+  - ✅ `lugarden_universal/frontend_vue/src/components/EmptyState.vue` - containerClass添加rounded-lg，移除CSS圆角
+  - ✅ `lugarden_universal/frontend_vue/src/components/ErrorState.vue` - 所有元素添加UnoCSS圆角类，移除CSS圆角
+  - ✅ `lugarden_universal/frontend_vue/src/components/ClassicalEchoDisplay.vue` - unified-content-card添加rounded-base
+  - ✅ `lugarden_universal/frontend_vue/src/components/InterpretationDisplay.vue` - 所有卡片添加rounded-base，移除滚动条圆角
+  - ✅ `lugarden_universal/frontend_vue/src/components/ProgressBar.vue` - trackClass和fillClass添加rounded-base，移除CSS圆角
+  - ✅ `lugarden_universal/frontend_vue/src/components/LoadingSpinner.vue` - 所有圆形元素rounded-full，进度条rounded-sm
+  - ✅ `lugarden_universal/frontend_vue/src/views/ClassicalEchoScreen.vue` - 按钮rounded-full
+  - ✅ `lugarden_universal/frontend_vue/src/components/BackButton.vue` - 动态UnoCSS圆角类，移除CSS圆角
+  - ✅ `lugarden_universal/frontend_vue/src/views/SubProjectSelection.vue` - unified-content-card添加rounded-base
+  - ✅ `lugarden_universal/frontend_vue/src/views/MainProjectSelection.vue` - unified-content-card添加rounded-base  
+  - ✅ `lugarden_universal/frontend_vue/src/components/QuestionCard.vue` - unified-content-card添加rounded-base
+  - ✅ `lugarden_universal/frontend_vue/src/assets/styles/components.css` - 移除所有border-radius定义
+  - ✅ `lugarden_universal/frontend_vue/src/assets/styles/globals.css` - 移除滚动条border-radius定义
+  - ✅ `frontend-terminology-vue-enhanced.md` - 更新"进度条圆角问题"描述，反映UnoCSS迁移完成
+- **执行步骤**:
+  - [x] 步骤C.8.1：圆角使用情况全面审计，建立详细迁移映射表 ✅
+  - [x] 步骤C.8.2：验证UnoCSS圆角配置完整性，补充缺失的圆角值 ✅ 
+  - [x] 步骤C.8.3：组件样式逐个迁移(PoemViewer毛玻璃优先) ✅
+  - [x] 步骤C.8.4：Legacy样式系统(components.css)圆角定义清理 ✅
+  - [x] 步骤C.8.5：全项目视觉验证和构建测试 ✅
+- **验收标准**: 项目中无CSS变量圆角、无内联圆角样式，所有圆角使用标准UnoCSS类，视觉效果与迁移前完全一致
 
 ### **阶段2025-08-24_D：探索性功能完善与优化（待规划）**
 
@@ -367,27 +425,43 @@
   - `frontend-terminology-vue-enhanced.md` - 更新圆角相关术语定义，反映UnoCSS统一系统
   - 其他8个包含圆角定义的组件文件
 - **实际改动文件**: 
-  - 待执行
+  - ✅ `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` - 毛玻璃backdrop的border-radius迁移至rounded-base
+  - ✅ `lugarden_universal/frontend_vue/src/components/EmptyState.vue` - containerClass添加rounded-lg，移除CSS圆角
+  - ✅ `lugarden_universal/frontend_vue/src/components/ErrorState.vue` - 所有元素添加UnoCSS圆角类，移除CSS圆角
+  - ✅ `lugarden_universal/frontend_vue/src/components/ClassicalEchoDisplay.vue` - unified-content-card添加rounded-base
+  - ✅ `lugarden_universal/frontend_vue/src/components/InterpretationDisplay.vue` - 所有卡片添加rounded-base，移除滚动条圆角
+  - ✅ `lugarden_universal/frontend_vue/src/components/ProgressBar.vue` - trackClass和fillClass添加rounded-base，移除CSS圆角
+  - ✅ `lugarden_universal/frontend_vue/src/components/LoadingSpinner.vue` - 所有圆形元素rounded-full，进度条rounded-sm
+  - ✅ `lugarden_universal/frontend_vue/src/views/ClassicalEchoScreen.vue` - 按钮rounded-full
+  - ✅ `lugarden_universal/frontend_vue/src/components/BackButton.vue` - 动态UnoCSS圆角类，移除CSS圆角
+  - ✅ `lugarden_universal/frontend_vue/src/views/SubProjectSelection.vue` - unified-content-card添加rounded-base
+  - ✅ `lugarden_universal/frontend_vue/src/views/MainProjectSelection.vue` - unified-content-card添加rounded-base  
+  - ✅ `lugarden_universal/frontend_vue/src/components/QuestionCard.vue` - unified-content-card添加rounded-base
+  - ✅ `lugarden_universal/frontend_vue/src/assets/styles/components.css` - 移除所有border-radius定义
+  - ✅ `lugarden_universal/frontend_vue/src/assets/styles/globals.css` - 移除滚动条border-radius定义
+  - ✅ `frontend-terminology-vue-enhanced.md` - 更新"进度条圆角问题"描述，反映UnoCSS迁移完成
 - **执行步骤**:
-  - [ ] 步骤C.8.1：圆角使用情况全面审计，建立详细迁移映射表
-  - [ ] 步骤C.8.2：验证UnoCSS圆角配置完整性，补充缺失的圆角值
-  - [ ] 步骤C.8.3：组件样式逐个迁移(PoemViewer毛玻璃优先)
-  - [ ] 步骤C.8.4：Legacy样式系统(components.css)圆角定义清理
-  - [ ] 步骤C.8.5：全项目视觉验证和构建测试
+  - [x] 步骤C.8.1：圆角使用情况全面审计，建立详细迁移映射表 ✅
+  - [x] 步骤C.8.2：验证UnoCSS圆角配置完整性，补充缺失的圆角值 ✅ 
+  - [x] 步骤C.8.3：组件样式逐个迁移(PoemViewer毛玻璃优先) ✅
+  - [x] 步骤C.8.4：Legacy样式系统(components.css)圆角定义清理 ✅
+  - [x] 步骤C.8.5：全项目视觉验证和构建测试 ✅
 - **验收标准**: 项目中无CSS变量圆角、无内联圆角样式，所有圆角使用标准UnoCSS类，视觉效果与迁移前完全一致
 
 ## 当前状态
-🔄 进行中 - C.1~C.7已完成，C.8待开始
+✅ **阶段C全部完成** - C.1~C.8已完成，圆角系统UnoCSS迁移完成
 
 **基础状况**: 
 - 阶段2025-08-24_B技术成果完整：进度条系统现代化、按钮系统UnoCSS化、卡片布局统一、技术文档完善
 - 现代UX设计原则已建立：内容优先、视觉层次、交互一致性
 - 技术架构稳固：UnoCSS优先策略、44px触摸目标标准、统一布局模式
 
-**当前重点**: 
-- 阶段C最后一项：圆角设计系统的统一化
-- 确保所有UI元素使用一致的设计token
-- 完成从传统CSS到UnoCSS的全面迁移
+**完成成果**: 
+- ✅ 阶段C圆角设计系统统一化完成
+- ✅ 所有UI元素使用一致的UnoCSS设计token
+- ✅ 从传统CSS到UnoCSS的全面迁移完成
+- ✅ ProgressBar和unified-content-card圆角缺失问题修复
+- ✅ 15个文件迁移完成，52个圆角定义统一
 
 ---
 
