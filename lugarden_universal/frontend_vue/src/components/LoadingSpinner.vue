@@ -5,13 +5,13 @@
       <!-- 主加载动画 -->
       <div class="spinner-wrapper">
         <div 
-          class="loading-spinner" 
+          class="loading-spinner rounded-full" 
           :class="spinnerClass"
           :style="spinnerStyle"
         ></div>
         
         <!-- 可选的内部装饰 -->
-        <div v-if="showInnerRing" class="inner-ring"></div>
+        <div v-if="showInnerRing" class="inner-ring rounded-full"></div>
       </div>
       
       <!-- 加载文本 -->
@@ -21,9 +21,9 @@
         
         <!-- 可选的进度指示 -->
         <div v-if="showProgress && typeof progress === 'number'" class="loading-progress">
-          <div class="progress-bar">
+          <div class="progress-bar rounded-sm">
             <div 
-              class="progress-fill" 
+              class="progress-fill rounded-sm" 
               :style="{ width: `${Math.min(100, Math.max(0, progress))}%` }"
             ></div>
           </div>
@@ -149,7 +149,6 @@ const handleOverlayClick = () => {
 
 /* 基础动画器样式 */
 .loading-spinner {
-  border-radius: 50%;
   animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
@@ -174,7 +173,6 @@ const handleOverlayClick = () => {
   content: '';
   position: absolute;
   background: var(--color-info);
-  border-radius: 50%;
   animation: pulse 1s infinite;
 }
 
@@ -261,7 +259,6 @@ const handleOverlayClick = () => {
   width: 60%;
   height: 60%;
   border: 2px solid var(--color-primary-300);
-  border-radius: 50%;
   animation: spin 2s linear infinite reverse;
 }
 
@@ -295,7 +292,6 @@ const handleOverlayClick = () => {
   width: 100%;
   height: 4px;
   background-color: var(--color-primary-200);
-  border-radius: 2px;
   overflow: hidden;
   margin-bottom: var(--spacing-xs);
 }
@@ -303,7 +299,6 @@ const handleOverlayClick = () => {
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--color-info), #60a5fa);
-  border-radius: 2px;
   transition: width 0.3s ease;
 }
 

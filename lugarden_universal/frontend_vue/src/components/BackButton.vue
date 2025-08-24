@@ -113,6 +113,10 @@ const buttonClass = computed(() => ({
   'back-button--shadow': props.shadow,
   'back-button--disabled': props.disabled,
   
+  // UnoCSS圆角类
+  'rounded-full': props.rounded && !props.showText, // 仅图标时为圆形
+  'rounded-base': props.rounded && props.showText,  // 有文字时为普通圆角
+  
   // 图标位置
   [`back-button--icon-${props.iconPosition}`]: props.showText,
   'back-button--icon-only': !props.showText,
@@ -323,7 +327,6 @@ defineExpose({
 }
 
 .back-button--rounded {
-  border-radius: var(--border-radius-full);
 }
 
 .back-button--shadow {
@@ -337,7 +340,6 @@ defineExpose({
 /* 图标位置 */
 .back-button--icon-only {
   padding: var(--spacing-sm);
-  border-radius: 50%;
   aspect-ratio: 1;
 }
 
@@ -413,7 +415,6 @@ defineExpose({
   left: 50%;
   width: 0;
   height: 0;
-  border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   transform: translate(-50%, -50%);
   transition: width 0.3s ease, height 0.3s ease;

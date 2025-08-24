@@ -20,7 +20,7 @@
             <!-- 箭头按钮 -->
             <button 
               @click="continueToResult"
-              class="btn-continue-arrow"
+              class="btn-continue-arrow rounded-full"
               :class="{ 'animate-pulse': isTransitioning }"
               :disabled="isTransitioning"
             >
@@ -193,7 +193,6 @@ const continueToResult = async () => {
   width: 40px;
   height: 40px;
   border: none;
-  border-radius: 50%;
   background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-600) 100%);
   color: white;
   cursor: pointer;

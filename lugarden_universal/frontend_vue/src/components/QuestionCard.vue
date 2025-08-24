@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-4xl mx-auto">
-    <div class="unified-content-card animate-fadeInUp">
+    <div class="unified-content-card rounded-base animate-fadeInUp">
       <div 
         class="question-text animate-textChange" 
         :key="questionIndex"

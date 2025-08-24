@@ -22,7 +22,6 @@
   background: linear-gradient(145deg, var(--color-brand-dark), #1a2e2e);
   color: var(--text-light);
   border-color: #1a2e2e;
-  border-radius: var(--radius-full);
   min-width: 2.25em;
   width: 2.25em;
   height: 1.5em;
@@ -45,7 +44,6 @@
   background-image: 
     radial-gradient(ellipse at top left, rgba(228, 222, 210, 0.6) 0%, transparent 70%),
     repeating-linear-gradient(88deg, transparent, transparent 40px, rgba(188, 177, 158, 0.07) 40px, rgba(188, 177, 158, 0.07) 41px);
-  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   padding: var(--spacing-xl);
   transition: all var(--duration-normal) var(--ease-out);
@@ -59,7 +57,6 @@
 /* 项目卡片 */
 .card-project {
   background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   padding: var(--spacing-lg);
   transition: all var(--duration-normal) var(--ease-out);
@@ -79,7 +76,6 @@
   background-image: 
     radial-gradient(ellipse at top left, rgba(228, 222, 210, 0.6) 0%, transparent 70%),
     repeating-linear-gradient(88deg, transparent, transparent 40px, rgba(188, 177, 158, 0.07) 40px, rgba(188, 177, 158, 0.07) 41px);
-  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   padding: var(--spacing-xl);
 }
@@ -94,7 +90,6 @@
     0 8px 32px rgba(0, 0, 0, 0.1),
     0 2px 8px rgba(0, 0, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  border-radius: var(--radius-base);
   padding: var(--spacing-lg);
   color: var(--text-secondary);
   line-height: 1.8;
@@ -134,7 +129,6 @@
   height: 40px;
   border: 3px solid var(--color-primary-200);
   border-top: 3px solid var(--color-info);
-  border-radius: var(--radius-full);
   margin: 0 auto var(--spacing-base);
 }
 
@@ -155,7 +149,6 @@
   text-align: center;
   padding: var(--spacing-2xl) var(--spacing-base);
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-radius: var(--radius-lg);
   margin: var(--spacing-base);
   border: 1px solid var(--color-warning);
 }
@@ -185,7 +178,6 @@
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-base);
   font-weight: 600;
   cursor: pointer;
   transition: all var(--duration-normal) var(--ease-out);

@@ -11,7 +11,7 @@
     <div class="classical-content-area animate-fadeInUp" :style="{ animationDelay: contentAnimationDelay }">
       
       <!-- 统一内容卡片 -->
-      <div v-if="hasAnyContent" class="unified-content-card">
+      <div v-if="hasAnyContent" class="unified-content-card rounded-base">
         
         <!-- 引文篇目名 - 居中加粗 -->
         <div v-if="quoteCitation" class="citation-text">
@@ -31,7 +31,7 @@
       </div>
       
       <!-- 无内容时的默认展示 -->
-      <div v-if="!hasAnyContent" class="default-content">
+      <div v-if="!hasAnyContent" class="default-content rounded-base">
         <div class="default-icon">🏮</div>
         <p class="default-text">{{ emptyMessage }}</p>
       </div>
@@ -130,7 +130,6 @@ const hasAnyContent = computed(() => {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(248, 250, 252, 0.6) 100%);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--radius-base);
   color: var(--text-tertiary);
 }
 

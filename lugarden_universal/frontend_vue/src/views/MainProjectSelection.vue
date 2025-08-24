@@ -50,7 +50,7 @@
         <div 
           v-for="(project, index) in zhouStore.universeData.projects" 
           :key="project.id"
-          class="unified-content-card animate-fadeInUp flex flex-col h-full"
+          class="unified-content-card rounded-base animate-fadeInUp flex flex-col h-full"
           :style="{ animationDelay: `${0.1 * index}s` }"
           @click="selectProject(project)"
         >

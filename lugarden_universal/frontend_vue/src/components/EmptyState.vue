@@ -83,7 +83,8 @@ const emit = defineEmits<Emits>()
 const containerClass = computed(() => ({
   [`empty-${props.size}`]: true,
   [`empty-${props.variant}`]: true,
-  'empty-centered': props.centered
+  'empty-centered': props.centered,
+  'rounded-lg': true
 }))
 
 // 处理操作
@@ -197,13 +198,11 @@ const handleAction = () => {
 /* 变体样式 */
 .empty-default {
   background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.9) 100%);
-  border-radius: var(--radius-lg);
 }
 
 .empty-search {
   background: linear-gradient(135deg, rgba(240, 249, 255, 0.8) 0%, rgba(224, 242, 254, 0.9) 100%);
   border: 1px solid rgba(14, 165, 233, 0.2);
-  border-radius: var(--radius-lg);
 }
 
 .empty-search .empty-title {
@@ -217,7 +216,6 @@ const handleAction = () => {
 .empty-error {
   background: linear-gradient(135deg, rgba(254, 242, 242, 0.8) 0%, rgba(254, 226, 226, 0.9) 100%);
   border: 1px solid rgba(239, 68, 68, 0.2);
-  border-radius: var(--radius-lg);
 }
 
 .empty-error .empty-title {
@@ -231,7 +229,6 @@ const handleAction = () => {
 .empty-success {
   background: linear-gradient(135deg, rgba(240, 253, 244, 0.8) 0%, rgba(220, 252, 231, 0.9) 100%);
   border: 1px solid rgba(34, 197, 94, 0.2);
-  border-radius: var(--radius-lg);
 }
 
 .empty-success .empty-title {
@@ -245,7 +242,6 @@ const handleAction = () => {
 .empty-loading {
   background: linear-gradient(135deg, rgba(255, 251, 235, 0.8) 0%, rgba(254, 243, 199, 0.9) 100%);
   border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: var(--radius-lg);
 }
 
 .empty-loading .empty-title {

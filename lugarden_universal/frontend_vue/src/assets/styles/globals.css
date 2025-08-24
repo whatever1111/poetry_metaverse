@@ -195,12 +195,10 @@ img {
 
 ::-webkit-scrollbar-track {
   background: var(--color-primary-100);
-  border-radius: var(--radius-base);
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-primary-300);
-  border-radius: var(--radius-base);
   transition: background var(--duration-fast) var(--ease-out);
 }
 

@@ -46,7 +46,7 @@
           :style="stepStyle(index)"
           @click="handleStepClick(index)"
         >
-          <div class="step-marker"></div>
+          <div class="step-marker rounded-full"></div>
           <div v-if="step.label" class="step-label">{{ step.label }}</div>
         </div>
       </div>
@@ -182,7 +182,9 @@ const trackClass = computed(() => ({
   [`progress-track--${props.variant}`]: true,
   [`progress-track--${props.color}`]: props.color !== 'custom',
   'progress-track--striped': props.striped,
-  'progress-track--indeterminate': props.indeterminate
+  'progress-track--indeterminate': props.indeterminate,
+  // UnoCSS圆角类 - 所有进度条都有基础圆角，除非明确设置为square
+  'rounded-base': props.variant !== 'square'
 }))
 
 // 计算轨道样式
@@ -201,7 +203,9 @@ const fillClass = computed(() => ({
   [`progress-fill--${props.color}`]: props.color !== 'custom',
   'progress-fill--animated': props.animated,
   'progress-fill--smooth': props.smooth,
-  'progress-fill--striped': props.striped
+  'progress-fill--striped': props.striped,
+  // UnoCSS圆角类 - 填充需要继承轨道的圆角，所有进度条都有基础圆角除非设为square
+  'rounded-base': props.variant !== 'square'
 }))
 
 // 计算填充样式
@@ -333,7 +337,6 @@ onMounted(() => {
 .progress-track {
   position: relative;
   background-color: var(--color-primary-100);
-  border-radius: var(--border-radius-base);
   overflow: hidden;
 }
 
@@ -351,7 +354,6 @@ onMounted(() => {
 }
 
 .progress-track--rounded {
-  border-radius: 8px;
 }
 
 .progress-track--square {
@@ -501,7 +503,6 @@ onMounted(() => {
   height: 12px;
   background-color: var(--color-primary-200);
   border: 2px solid white;
-  border-radius: 50%;
   transition: all var(--transition-duration-fast) var(--transition-ease);
 }
 

@@ -3,7 +3,7 @@
     <!-- AI解读 -->
     <div 
       v-if="aiInterpretation" 
-      class="interpretation-content unified-content-card animate-fadeInUp"
+      class="interpretation-content unified-content-card rounded-base animate-fadeInUp"
       :style="{ animationDelay: aiAnimationDelay }"
     >
       <div class="interpretation-header">
@@ -36,7 +36,7 @@
     <!-- 诗人解读 -->
     <div 
       v-if="poetExplanation" 
-      class="poet-explanation unified-content-card animate-fadeInUp"
+      class="poet-explanation unified-content-card rounded-base animate-fadeInUp"
       :style="{ animationDelay: poetAnimationDelay }"
     >
       <div class="interpretation-header">
@@ -65,12 +65,12 @@
     </div>
 
     <!-- 自定义解读内容插槽 -->
-    <div v-if="$slots.custom" class="custom-interpretation unified-content-card animate-fadeInUp">
+    <div v-if="$slots.custom" class="custom-interpretation unified-content-card rounded-base animate-fadeInUp">
       <slot name="custom"></slot>
     </div>
     
     <!-- AI功能错误状态 -->
-    <div v-if="showAiError && aiError" class="ai-error unified-content-card animate-fadeInUp">
+    <div v-if="showAiError && aiError" class="ai-error unified-content-card rounded-base animate-fadeInUp">
       <div class="error-content">
         <div class="error-icon">
           <ExclamationTriangleIcon class="w-5 h-5 mx-auto" aria-hidden="true" />
@@ -413,6 +413,5 @@ const handleRetryAi = () => {
 
 .interpretation-text::-webkit-scrollbar-thumb {
   background: var(--color-primary-300);
-  border-radius: 2px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="error-state flex items-center justify-center text-center" :class="containerClass">
-          <div class="error-content animate-fadeIn max-w-lg w-full">
+          <div class="error-content animate-fadeIn max-w-lg w-full rounded-lg">
       <!-- 错误图标 -->
       <div class="error-icon">
         <div v-if="!$slots.icon" class="default-icon">
@@ -30,7 +30,7 @@
           </svg>
         </button>
         
-        <div v-show="detailsVisible" class="details-content">
+        <div v-show="detailsVisible" class="details-content rounded-base">
           <pre class="details-text">{{ errorDetails }}</pre>
         </div>
       </div>
@@ -54,7 +54,7 @@
           <button 
             v-if="showBack"
             @click="handleBack"
-            class="btn-back"
+            class="btn-back rounded-base"
           >
             {{ backText }}
           </button>
@@ -62,7 +62,7 @@
           <button 
             v-if="showReport"
             @click="handleReport"
-            class="btn-report"
+            class="btn-report rounded-base"
           >
             {{ reportText }}
           </button>
@@ -204,7 +204,6 @@ const handleReport = () => {
 /* 基础尺寸样式已迁移至UnoCSS: max-w-lg w-full */
 .error-content {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-radius: var(--radius-lg);
   padding: var(--spacing-2xl);
   border: 1px solid var(--color-warning);
   box-shadow: var(--shadow-lg);
@@ -264,7 +263,6 @@ const handleReport = () => {
 .details-content {
   margin-top: var(--spacing-base);
   background: rgba(255, 255, 255, 0.5);
-  border-radius: var(--radius-base);
   padding: var(--spacing-base);
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
@@ -297,7 +295,6 @@ const handleReport = () => {
   align-items: center;
   justify-content: center;
   padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--radius-base);
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;

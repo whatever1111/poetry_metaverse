@@ -1,6 +1,6 @@
 <template>
   <div class="poem-viewer max-w-3xl mx-auto">
-    <div class="poem-content unified-content-card animate-fadeInUp relative" :style="{ animationDelay: animationDelay }">
+    <div class="poem-content unified-content-card rounded-base animate-fadeInUp relative" :style="{ animationDelay: animationDelay }">
       <h2 class="poem-title">
         {{ cleanTitle(poemTitle) }}
       </h2>
@@ -48,8 +48,7 @@
       <!-- 兜底分享菜单 - 毛玻璃蒙版 + 从分享按钮展开 -->
       <div 
         v-if="showFallbackMenu"
-        class="absolute inset-0 z-30 backdrop-blur-sm bg-black bg-opacity-10"
-        style="border-radius: var(--radius-base)"
+        class="absolute inset-0 z-30 backdrop-blur-sm bg-black bg-opacity-10 rounded-base"
         @click="showFallbackMenu = false"
       >
         <!-- 菜单定位容器 - 计算相对于分享按钮的位置 -->

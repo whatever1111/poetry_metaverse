@@ -30,7 +30,7 @@
         <div 
           v-for="(subProject, index) in zhouStore.navigation.currentMainProject.subProjects" 
           :key="`${subProject.name}-${index}`"
-          class="unified-content-card animate-fadeInUp cursor-pointer flex flex-col h-full"
+          class="unified-content-card rounded-base animate-fadeInUp cursor-pointer flex flex-col h-full"
           :style="{ animationDelay: `${0.3 + 0.1 * index}s` }"
           @click="selectChapter(subProject.name)"
         >
