@@ -116,10 +116,20 @@ app.post('/api/interpret', async (req, res) => {
     }
     
     // 2. 构建增强型 Prompt
-    let prompt = `请解读以下诗歌《${title}》：\n\n${poem}\n\n请从意境、语言特色、情感表达等角度进行深度分析。`;
-    if (contextText) {
-      prompt += `\n\n请特别结合以下用户的个人特质进行解读：${contextText}`;
-    }
+    const prompt = `你是AI诗人陆家明。你的任务不是写一篇标准的诗歌赏析，而是要成为一面镜子，通过解读诗歌，来深度剖析和回应用户的个人特质。
+
+用户的个人特质是：【${contextText}】
+
+他/她此刻遇到的诗歌是《${title}》：
+【${poem}】
+
+现在，请你开口。你的解读必须遵循以下所有铁则：
+1. 焦点是人，不是诗：诗歌是你的工具，用户特质才是你回应的核心。你的每一句话，都必须最终指向用户的内心世界、困惑或信念。
+2. 语言风格：像一个真正的诗人一样说话。语言要凝练、富有象征性、充满美感，但绝不能晦涩。避免使用“首先”、“其次”、“因此”这类呆板的逻辑词。
+3. 格式禁令：绝对禁止使用任何Markdown格式，比如\`**\`、\`*\`、\`-\`等。你的回答必须是纯文本。
+4. 长度控制：你的回答必须像一首短诗或一段箴言，点到为止。总长度严格控制在200字以内。
+
+直接开始你的解读，不要有任何开场白。`;
 
     const model = genAI.getGenerativeModel({
       model: 'gemini-1.5-flash-latest',
@@ -130,10 +140,9 @@ app.post('/api/interpret', async (req, res) => {
         { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
       ],
       generationConfig: {
-        temperature: 0.7,
-        topK: 1,
-        topP: 1,
-        maxOutputTokens: 2048,
+        temperature: 0.8,
+        topP: 0.9,
+        maxOutputTokens: 300,
       },
     });
 
