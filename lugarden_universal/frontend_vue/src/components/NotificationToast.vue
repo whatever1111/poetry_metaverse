@@ -9,7 +9,7 @@
       >
         <div
           v-if="showToast"
-          class="toast"
+          class="toast flex items-start gap-sm leading-6"
           :class="toastClass"
           :style="toastStyle"
           @click="handleToastClick"
@@ -30,20 +30,20 @@
           <!-- 内容区域 -->
           <div class="toast-content">
             <!-- 标题 -->
-            <div v-if="title" class="toast-title">{{ title }}</div>
+            <div v-if="title" class="toast-title font-semibold mb-xs">{{ title }}</div>
             
             <!-- 消息内容 -->
-            <div class="toast-message">
+            <div class="toast-message opacity-90 break-words">
               <slot>{{ message }}</slot>
             </div>
             
             <!-- 可选的操作按钮 -->
-            <div v-if="showActions || $slots.actions" class="toast-actions">
+            <div v-if="showActions || $slots.actions" class="toast-actions flex gap-sm mt-sm">
               <slot name="actions">
                 <button 
                   v-for="action in actions"
                   :key="action.key"
-                  class="toast-action-button"
+                  class="toast-action-button text-xs font-medium px-sm py-xs border rounded-sm bg-transparent transition-all cursor-pointer"
                   :class="action.class"
                   @click="handleActionClick(action)"
                 >
@@ -191,6 +191,12 @@ const toastClass = computed(() => ({
   [`toast--${props.type}`]: props.type !== 'custom',
   [`toast--${props.variant}`]: true,
   [`toast--${props.size}`]: true,
+  
+  // Typography shortcuts - D.1.12 字体大小标准化 + 响应式处理
+  'text-xs max-sm:text-xs': props.size === 'small',
+  'text-sm max-md:text-xs': props.size === 'medium',
+  'text-base max-md:text-sm': props.size === 'large',
+  
   'toast--clickable': props.clickToClose,
   'toast--persistent': props.persistent,
   [props.customClass]: props.customClass
@@ -463,12 +469,13 @@ defineExpose({
   transform: translate(-50%, -50%);
 }
 
-/* Toast主体样式 */
+/* NotificationToast基础样式已迁移至UnoCSS utility类 - D.1.12 标准化 */
+/* Typography迁移: text-xs/text-sm/text-base (尺寸变体), font-semibold (标题), font-medium (按钮) */
+/* 布局迁移: flex items-start gap-sm, leading-6, mb-xs, mt-sm */
+/* 文本迁移: opacity-90 break-words (消息样式), px-sm py-xs (按钮间距) */
+/* 保留传统CSS: 复杂类型样式, 动画效果, 定位系统 */
+
 .toast {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-sm);
-  
   min-width: 300px;
   max-width: 500px;
   padding: var(--spacing-base);
@@ -477,8 +484,6 @@ defineExpose({
   box-shadow: var(--shadow-xl);
   
   font-family: var(--font-family-serif);
-  font-size: var(--font-size-sm);
-  line-height: 1.5;
   
   pointer-events: auto;
   position: relative;
@@ -489,26 +494,23 @@ defineExpose({
   transition: all var(--transition-duration-normal) var(--transition-ease);
 }
 
-/* Toast尺寸 */
+/* Toast尺寸 - 字体大小已迁移至Typography shortcuts */
 .toast--small {
   min-width: 240px;
   max-width: 360px;
   padding: var(--spacing-sm);
-  font-size: var(--font-size-xs);
 }
 
 .toast--medium {
   min-width: 300px;
   max-width: 500px;
   padding: var(--spacing-base);
-  font-size: var(--font-size-sm);
 }
 
 .toast--large {
   min-width: 360px;
   max-width: 600px;
   padding: var(--spacing-lg);
-  font-size: var(--font-size-base);
 }
 
 /* Toast类型样式 - 填充变体 */
@@ -589,35 +591,21 @@ defineExpose({
   min-width: 0;
 }
 
-.toast-title {
-  font-weight: 600;
-  margin-bottom: var(--spacing-xs);
-  color: inherit;
-}
-
+/* 标题和消息样式已迁移至UnoCSS shortcuts */
+/* font-semibold mb-xs: 标题样式 */
+/* opacity-90 break-words: 消息样式 */
+.toast-title,
 .toast-message {
   color: inherit;
-  opacity: 0.9;
-  word-wrap: break-word;
 }
 
-/* 操作按钮 */
-.toast-actions {
-  display: flex;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-sm);
-}
-
+/* 操作按钮样式已迁移至UnoCSS shortcuts */
+/* flex gap-sm mt-sm: 操作按钮容器 */
+/* text-xs font-medium px-sm py-xs: 按钮基础样式 */
+/* border rounded-sm bg-transparent transition-all cursor-pointer: 按钮交互样式 */
 .toast-action-button {
-  padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid currentColor;
-  border-radius: var(--border-radius-sm);
-  background: transparent;
   color: inherit;
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-duration-fast) var(--transition-ease);
 }
 
 .toast-action-button:hover {
@@ -821,7 +809,6 @@ defineExpose({
   
   .toast--large {
     padding: var(--spacing-base);
-    font-size: var(--font-size-sm);
   }
 }
 
@@ -836,7 +823,6 @@ defineExpose({
   
   .toast {
     padding: var(--spacing-sm);
-    font-size: var(--font-size-xs);
   }
   
   .toast-actions {
