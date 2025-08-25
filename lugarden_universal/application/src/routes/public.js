@@ -193,61 +193,8 @@ router.get('/projects', async (req, res, next) => {
   }
 });
 
-// ============ AI功能API（Phase 3 - New） ============
-
-// POST /api/interpret - 诗歌解读服务
-router.post('/interpret', async (req, res, next) => {
-  try {
-    const { poem, title } = req.body;
-    
-    if (!poem || !title) {
-      return res.status(400).json({ 
-        error: '请求参数错误',
-        message: '需要提供poem和title参数' 
-      });
-    }
-    
-    // 模拟解诗处理（实际应调用AI服务）
-    const interpretation = `这首《${title}》诗歌蕴含深刻的人生智慧。诗句"${poem.substring(0, 20)}..."展现了诗人对生活的深刻思考，体现了中华文化的博大精深。通过细腻的笔触，诗人表达了对人生境遇的感悟，引导读者思考生命的意义与价值。`;
-    
-    return res.json({ 
-      interpretation,
-      processed_at: new Date().toISOString(),
-      poem_title: title
-    });
-  } catch (error) {
-    console.error('解诗服务错误:', error);
-    return next(error);
-  }
-});
-
-// POST /api/listen - 诗歌朗读服务
-router.post('/listen', async (req, res, next) => {
-  try {
-    const { poem, title } = req.body;
-    
-    if (!poem || !title) {
-      return res.status(400).json({ 
-        error: '请求参数错误',
-        message: '需要提供poem和title参数' 
-      });
-    }
-    
-    // 模拟音频生成（实际应调用TTS服务）
-    // 这里返回一个模拟的音频URL
-    const audioUrl = `/api/audio/generated/${Date.now()}_${encodeURIComponent(title)}.mp3`;
-    
-    return res.json({ 
-      audioUrl,
-      duration: 30, // 模拟音频时长(秒)
-      generated_at: new Date().toISOString(),
-      poem_title: title
-    });
-  } catch (error) {
-    console.error('读诗服务错误:', error);
-    return next(error);
-  }
-});
+// ============ AI功能API路由已移至server.js实现 ============
+// 注：/api/interpret 和 /api/listen 现在由server.js处理，使用真实的Gemini和Google TTS API
 
 // GET /api/questions - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
 router.get('/questions', async (req, res, next) => {

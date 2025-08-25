@@ -80,7 +80,9 @@ app.get('/admin', requireAuth, (_req, res) => {
 // 第三方代理
 app.post('/api/interpret', async (req, res) => {
   try {
-    const { prompt } = req.body || {};
+    const { poem, title } = req.body || {};
+    // 构建适合AI解读的prompt
+    const prompt = `请解读以下诗歌《${title}》：\n\n${poem}\n\n请从意境、语言特色、情感表达等角度进行深度分析。`;
     const payload = { contents: [{ role: 'user', parts: [{ text: prompt }] }] };
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.API_KEY}`,
@@ -96,7 +98,9 @@ app.post('/api/interpret', async (req, res) => {
 
 app.post('/api/listen', async (req, res) => {
   try {
-    const { text } = req.body || {};
+    const { poem, title } = req.body || {};
+    // 使用诗歌内容作为朗读文本
+    const text = poem || '';
     const payload = {
       input: { text },
       voice: { languageCode: 'cmn-CN', name: 'cmn-CN-Wavenet-B' },
