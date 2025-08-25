@@ -218,24 +218,14 @@ const handleRetryAi = () => {
   word-wrap: break-word;
 }
 
-/* AI解读特殊样式 */
+/* AI解读特殊样式 - 仅保留图标颜色差异 */
 .interpretation-content .interpretation-title svg {
   color: var(--color-info);
 }
 
-.interpretation-content {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 197, 253, 0.08) 100%);
-  border-left: 4px solid var(--color-info);
-}
-
-/* 诗人解读特殊样式 */
+/* 诗人解读特殊样式 - 仅保留图标颜色差异 */
 .poet-explanation .interpretation-title svg {
   color: #8b5a96;
-}
-
-.poet-explanation {
-  background: linear-gradient(135deg, rgba(139, 90, 150, 0.05) 0%, rgba(196, 145, 210, 0.08) 100%);
-  border-left: 4px solid #8b5a96;
 }
 
 .poet-info {
@@ -268,11 +258,14 @@ const handleRetryAi = () => {
 
 /* btn-regenerate现在使用统一的UnoCSS定义 */
 
-/* AI错误状态 */
+/* AI错误状态 - 统一玻璃态风格 */
 .ai-error {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(248, 113, 113, 0.08) 100%);
-  border-left: 4px solid #ef4444;
   text-align: center;
+}
+
+/* 错误状态图标保持红色 */
+.ai-error .error-title {
+  color: #dc2626;
 }
 
 .error-content {
