@@ -1,38 +1,38 @@
 <template>
   <div class="poem-viewer max-w-3xl mx-auto">
-    <div class="poem-content unified-content-card rounded-base animate-fadeInUp relative" :style="{ animationDelay: animationDelay }">
-      <h2 class="poem-title">
+    <div class="poem-content unified-content-card card-padding-poem content-spacing-normal rounded-base animate-fadeInUp relative" :style="{ animationDelay: animationDelay }">
+      <h2 class="text-display-spaced text-center">
         {{ cleanTitle(poemTitle) }}
       </h2>
       
       <!-- 引文内容 -->
-      <div v-if="quoteText" class="poem-quote">
+      <div v-if="quoteText" class="text-body-spaced text-center italic whitespace-pre-line max-w-[600px] mx-auto">
         {{ formattedQuoteText }}
       </div>
       
       <!-- 引文出处 -->
-      <div v-if="quoteCitation" class="poem-citation">
+      <div v-if="quoteCitation" class="text-caption-spaced text-right text-gray-600 font-medium max-w-[600px] mx-auto">
         ——{{ formattedQuoteCitation }}
       </div>
       
       <!-- 诗歌原文 -->
-      <div v-if="mainText" class="poem-main">
+      <div v-if="mainText" class="text-body-spaced text-center font-semibold whitespace-pre-line max-w-[600px] mx-auto">
         {{ formattedMainText }}
       </div>
       
       <!-- 兼容原有poemBody格式（仅支持string类型） -->
-      <div v-if="poemBody && !quoteText && !mainText" class="poem-body">
+      <div v-if="poemBody && !quoteText && !mainText" class="text-body-spaced text-center whitespace-pre-line max-w-[600px] mx-auto">
         {{ formattedLegacyBody }}
       </div>
       
       <!-- 可选的作者信息 -->
-      <div v-if="author" class="poem-author">
-        <span class="author-label">作者:</span>
-        <span class="author-name">{{ author }}</span>
+      <div v-if="author" class="mt-xl pt-base border-t border-primary-200 flex justify-center items-center gap-sm">
+        <span class="text-caption text-gray-600 font-medium">作者:</span>
+        <span class="text-caption text-gray-700 font-semibold">{{ author }}</span>
       </div>
       
       <!-- 可选的附加信息 -->
-      <div v-if="additionalInfo" class="poem-info">
+      <div v-if="additionalInfo" class="text-caption-spaced text-center text-gray-600 italic">
         {{ additionalInfo }}
       </div>
       
@@ -468,170 +468,29 @@ const downloadPoem = () => {
 
 <style scoped>
 /* 基础容器样式已迁移至UnoCSS: max-w-3xl mx-auto */
-.poem-viewer {}
-
 .poem-content {
   text-align: center;
   position: relative;
 }
 
-.poem-title {
-  font-size: var(--font-size-3xl);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-xl);
-  line-height: 1.3;
-  text-align: center;
-}
+/* 所有Typography样式已迁移至UnoCSS shortcuts - D.1.2 标准化 */
 
-.poem-body {
-  font-size: var(--font-size-base);
-  line-height: 1.8;
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-lg);
-  text-align: center;
-  white-space: pre-line;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* 结构化诗歌内容样式 */
-.poem-quote {
-  font-size: var(--font-size-base);
-  line-height: 1.8;
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-base);
-  text-align: center;
-  white-space: pre-line;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  font-style: italic;
-}
-
-.poem-citation {
-  font-size: var(--font-size-sm);
-  line-height: 1.6;
-  color: var(--text-tertiary);
-  margin-bottom: var(--spacing-lg);
-  text-align: right;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  font-weight: 500;
-}
-
-.poem-main {
-  font-size: var(--font-size-base);
-  line-height: 1.8;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-lg);
-  text-align: center;
-  white-space: pre-line;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  font-weight: 600;
-}
-
-.poem-author {
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-base);
-  border-top: 1px solid var(--color-primary-200);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.author-label {
-  font-size: var(--font-size-sm);
-  color: var(--text-tertiary);
-  font-weight: 500;
-}
-
-.author-name {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-.poem-info {
-  margin-top: var(--spacing-base);
-  font-size: var(--font-size-sm);
-  color: var(--text-tertiary);
-  font-style: italic;
-  text-align: center;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .poem-title {
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  .poem-body {
-    font-size: var(--font-size-base);
-    line-height: 1.7;
-    padding: 0 var(--spacing-sm);
-  }
-  
-  .poem-content {
-    padding: var(--spacing-lg);
-  }
-}
-
-@media (max-width: 480px) {
-  .poem-title {
-    font-size: var(--font-size-xl);
-    margin-bottom: var(--spacing-base);
-  }
-  
-  .poem-body {
-    font-size: var(--font-size-sm);
-    line-height: 1.6;
-    padding: 0;
-  }
-  
-  .poem-content {
-    padding: var(--spacing-base);
-  }
-  
-  .poem-author {
-    flex-direction: column;
-    gap: var(--spacing-xs);
-  }
-}
+/* 响应式Typography已通过clamp()内置，无需媒体查询重复定义 - D.1.2 标准化 */
 
 /* 装饰横条已移除 - 基于用户体验反馈和"内容为王"设计哲学 */
 
-/* 诗意的文字效果 */
+/* 保留必要的诗歌排版增强效果（无法通过shortcuts实现的特殊样式） */
 .poem-body {
-  position: relative;
-}
-
-/* 首字母品牌色效果已被UnoCSS覆盖失效，已清理 - A.3任务 */
-
-/* 操作按钮样式已迁移至UnoCSS - C.1 现代化实现 */
-
-/* 改善缩进显示效果 */
-.poem-body {
-  white-space: pre-line;
   tab-size: 2;
   font-variant-numeric: proportional-nums;
-  text-align: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
-/* 特殊的诗歌行样式 */
 .poem-body br + br {
   line-height: 0.5;
 }
 
-/* 引用样式增强 */
 .poem-body {
   font-family: var(--font-family-serif, serif);
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
