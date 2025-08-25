@@ -1,10 +1,10 @@
 <template>
   <div class="progress-bar-container w-full" :class="containerClass">
     <!-- 可选的标签 -->
-    <div v-if="showLabel || $slots.label" class="progress-label">
+    <div v-if="showLabel || $slots.label" class="flex justify-between items-center mb-sm">
       <slot name="label">
-        <span class="label-text">{{ labelText }}</span>
-        <span v-if="showPercentage" class="label-percentage">
+        <span class="text-caption font-medium text-gray-700">{{ labelText }}</span>
+        <span v-if="showPercentage" class="text-caption font-semibold text-gray-900">
           {{ displayPercentage }}%
         </span>
       </slot>
@@ -31,7 +31,7 @@
         <div v-if="animated" class="progress-shine"></div>
         
         <!-- 可选的进度文本（在填充内部） -->
-        <div v-if="showInnerText" class="progress-inner-text">
+        <div v-if="showInnerText" class="text-white text-label font-semibold text-shadow whitespace-nowrap overflow-hidden text-ellipsis">
           <slot name="inner-text">{{ innerText }}</slot>
         </div>
       </div>
@@ -47,18 +47,18 @@
           @click="handleStepClick(index)"
         >
           <div class="step-marker rounded-full"></div>
-          <div v-if="step.label" class="step-label">{{ step.label }}</div>
+          <div v-if="step.label" class="absolute top-full left-1/2 transform -translate-x-1/2 mt-xs text-label text-gray-600 whitespace-nowrap">{{ step.label }}</div>
         </div>
       </div>
     </div>
     
     <!-- 可选的详细信息 -->
-    <div v-if="showDetails || $slots.details" class="progress-details">
+    <div v-if="showDetails || $slots.details" class="flex justify-between items-center mt-sm">
       <slot name="details">
-        <div v-if="showTimeEstimate && timeEstimate" class="time-estimate">
+        <div v-if="showTimeEstimate && timeEstimate" class="text-label text-gray-600">
           预计剩余时间: {{ timeEstimate }}
         </div>
-        <div v-if="showCurrentStep && currentStepInfo" class="current-step">
+        <div v-if="showCurrentStep && currentStepInfo" class="text-label text-gray-600">
           {{ currentStepInfo }}
         </div>
       </slot>
@@ -314,24 +314,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 标签样式 */
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-sm);
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-}
-
-.label-text {
-  font-weight: 500;
-}
-
-.label-percentage {
-  font-weight: 600;
-  color: var(--text-primary);
-}
+/* 标签样式已迁移至UnoCSS shortcuts - D.1.8 标准化 */
 
 /* 轨道样式 */
 .progress-track {
@@ -470,16 +453,7 @@ onMounted(() => {
   animation: progress-shine 2s ease-in-out infinite;
 }
 
-/* 内部文本 */
-.progress-inner-text {
-  color: white;
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+/* 内部文本样式已迁移至UnoCSS shortcuts - D.1.8 标准化 */
 
 /* 步骤指示器 */
 .progress-steps {
@@ -525,26 +499,7 @@ onMounted(() => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.step-label {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: var(--spacing-xs);
-  font-size: var(--font-size-xs);
-  color: var(--text-tertiary);
-  white-space: nowrap;
-}
-
-/* 详细信息 */
-.progress-details {
-  margin-top: var(--spacing-sm);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: var(--font-size-xs);
-  color: var(--text-tertiary);
-}
+/* 步骤标签和详细信息样式已迁移至UnoCSS shortcuts - D.1.8 标准化 */
 
 /* 尺寸变体 */
 .progress-container--small .progress-track--default {
@@ -604,20 +559,13 @@ onMounted(() => {
   }
 }
 
-/* 响应式设计 */
+/* 响应式Typography已通过clamp()内置 - D.1.8 标准化 */
 @media (max-width: 768px) {
-  .progress-label {
-    font-size: var(--font-size-xs);
-  }
-  
+  /* 保留必要的布局调整，Typography已通过shortcuts管理 */
   .progress-details {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-xs);
-  }
-  
-  .step-label {
-    font-size: 10px;
   }
 }
 
