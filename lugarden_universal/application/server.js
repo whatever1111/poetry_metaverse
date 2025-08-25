@@ -12,6 +12,24 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { getPrismaClient } from './src/persistence/prismaClient.js';
 
+// ================================
+// 日志时间戳增强
+// @description 覆盖console.log和console.error，为所有后端日志添加ISO 8601格式的时间戳
+// @author
+// @date 2025-08-26
+// ================================
+const originalLog = console.log;
+console.log = (...args) => {
+  const timestamp = new Date().toISOString();
+  originalLog(`[${timestamp}]`, ...args);
+};
+const originalError = console.error;
+console.error = (...args) => {
+  const timestamp = new Date().toISOString();
+  originalError(`[${timestamp}]`, ...args);
+};
+// ================================
+
 // 环境变量（优先 .env.local，其次 .env）
 dotenv.config({ path: '.env.local' });
 dotenv.config();
