@@ -1,23 +1,23 @@
 <template>
   <div class="error-state flex items-center justify-center text-center" :class="containerClass">
-          <div class="error-content animate-fadeIn max-w-lg w-full rounded-lg">
+          <div class="error-content animate-fadeIn max-w-lg w-full card-padding-normal content-spacing-normal rounded-lg">
       <!-- 错误图标 -->
-      <div class="error-icon">
-        <div v-if="!$slots.icon" class="default-icon">
+      <div class="mb-lg">
+        <div v-if="!$slots.icon" class="text-5xl mb-base opacity-80">
           <component :is="errorIconComponent" class="w-6 h-6 mx-auto" aria-hidden="true" />
         </div>
         <slot name="icon"></slot>
       </div>
       
       <!-- 错误标题 -->
-      <h3 class="error-title">{{ errorTitle }}</h3>
+      <h3 class="text-heading-spaced text-amber-800">{{ errorTitle }}</h3>
       
       <!-- 错误描述 -->
-      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="text-body-spaced text-amber-700">{{ errorMessage }}</p>
       
       <!-- 错误详情（可折叠） -->
-      <div v-if="errorDetails && showDetails" class="error-details">
-        <button @click="toggleDetails" class="details-toggle">
+      <div v-if="errorDetails && showDetails" class="mb-lg text-left">
+        <button @click="toggleDetails" class="flex items-center justify-center bg-transparent border-0 text-amber-800 text-caption cursor-pointer px-xs py-0 transition-colors duration-200 hover:text-amber-900">
           <span>{{ detailsVisible ? '隐藏详情' : '显示详情' }}</span>
           <svg 
             class="w-4 h-4 ml-1 transition-transform duration-200"
@@ -30,8 +30,8 @@
           </svg>
         </button>
         
-        <div v-show="detailsVisible" class="details-content rounded-base">
-          <pre class="details-text">{{ errorDetails }}</pre>
+        <div v-show="detailsVisible" class="mt-base bg-white/50 border border-amber-300/30 p-base rounded-base">
+          <pre class="text-label text-amber-700 whitespace-pre-wrap break-words max-h-[200px] overflow-y-auto m-0 font-mono">{{ errorDetails }}</pre>
         </div>
       </div>
       
@@ -70,17 +70,18 @@
       </div>
       
       <!-- 额外建议 -->
-      <div v-if="suggestions.length > 0" class="error-suggestions">
-        <h4 class="suggestions-title">建议尝试：</h4>
-        <ul class="suggestions-list">
-          <li v-for="(suggestion, index) in suggestions" :key="index" class="suggestion-item">
+      <div v-if="suggestions.length > 0" class="text-left mb-base">
+        <h4 class="text-caption-spaced font-semibold text-amber-800">建议尝试：</h4>
+        <ul class="list-none p-0 m-0">
+          <li v-for="(suggestion, index) in suggestions" :key="index" class="text-caption text-amber-700 mb-xs pl-base relative leading-relaxed">
+            <span class="absolute left-0 text-amber-400 font-bold">•</span>
             {{ suggestion }}
           </li>
         </ul>
       </div>
       
       <!-- 额外内容插槽 -->
-      <div v-if="$slots.extra" class="error-extra">
+      <div v-if="$slots.extra" class="mt-base">
         <slot name="extra"></slot>
       </div>
     </div>
@@ -209,74 +210,7 @@ const handleReport = () => {
   box-shadow: var(--shadow-lg);
 }
 
-/* 错误图标 */
-.error-icon {
-  margin-bottom: var(--spacing-lg);
-}
-
-.default-icon {
-  font-size: 3rem;
-  margin-bottom: var(--spacing-base);
-  opacity: 0.8;
-}
-
-/* 错误标题 */
-.error-title {
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-  color: #92400e;
-  margin-bottom: var(--spacing-sm);
-  line-height: 1.4;
-}
-
-/* 错误消息 */
-.error-message {
-  font-size: var(--font-size-base);
-  color: #a16207;
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.6;
-}
-
-/* 错误详情 */
-.error-details {
-  margin-bottom: var(--spacing-lg);
-  text-align: left;
-}
-
-.details-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  color: #92400e;
-  font-size: var(--font-size-sm);
-  cursor: pointer;
-  padding: var(--spacing-xs) 0;
-  transition: color var(--duration-fast) var(--ease-out);
-}
-
-.details-toggle:hover {
-  color: #78350f;
-}
-
-.details-content {
-  margin-top: var(--spacing-base);
-  background: rgba(255, 255, 255, 0.5);
-  padding: var(--spacing-base);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.details-text {
-  font-size: var(--font-size-xs);
-  color: #a16207;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-height: 200px;
-  overflow-y: auto;
-  margin: 0;
-  font-family: 'Courier New', monospace;
-}
+/* 错误图标、标题、消息、详情样式已迁移至UnoCSS shortcuts - D.1.5 标准化 */
 
 /* 操作按钮区域 */
 .error-actions {
@@ -325,48 +259,9 @@ const handleReport = () => {
   transform: translateY(-1px);
 }
 
-/* 建议列表 */
-.error-suggestions {
-  text-align: left;
-  margin-bottom: var(--spacing-base);
-}
+/* 建议列表和额外内容样式已迁移至UnoCSS shortcuts - D.1.5 标准化 */
 
-.suggestions-title {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: #92400e;
-  margin-bottom: var(--spacing-sm);
-}
-
-.suggestions-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.suggestion-item {
-  font-size: var(--font-size-sm);
-  color: #a16207;
-  margin-bottom: var(--spacing-xs);
-  padding-left: var(--spacing-base);
-  position: relative;
-  line-height: 1.5;
-}
-
-.suggestion-item::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: #fbbf24;
-  font-weight: bold;
-}
-
-/* 额外内容 */
-.error-extra {
-  margin-top: var(--spacing-base);
-}
-
-/* 尺寸变体 */
+/* 尺寸变体布局样式保留，Typography已迁移至shortcuts - D.1.5 标准化 */
 .error-small {
   padding: var(--spacing-lg) var(--spacing-base);
   min-height: 200px;
@@ -374,18 +269,6 @@ const handleReport = () => {
 
 .error-small .error-content {
   padding: var(--spacing-lg);
-}
-
-.error-small .default-icon {
-  font-size: 2rem;
-}
-
-.error-small .error-title {
-  font-size: var(--font-size-lg);
-}
-
-.error-small .error-message {
-  font-size: var(--font-size-sm);
 }
 
 .error-medium {
@@ -403,30 +286,10 @@ const handleReport = () => {
   padding: var(--spacing-3xl);
 }
 
-.error-large .default-icon {
-  font-size: 4rem;
-}
-
-.error-large .error-title {
-  font-size: var(--font-size-2xl);
-}
-
-.error-large .error-message {
-  font-size: var(--font-size-lg);
-}
-
-/* 错误类型变体 */
+/* 错误类型变体保留背景和边框颜色，Typography已统一至shortcuts - D.1.5 标准化 */
 .error-network .error-content {
   background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
   border-color: #3b82f6;
-}
-
-.error-network .error-title {
-  color: #1d4ed8;
-}
-
-.error-network .error-message {
-  color: #2563eb;
 }
 
 .error-server .error-content {
@@ -434,28 +297,12 @@ const handleReport = () => {
   border-color: #ef4444;
 }
 
-.error-server .error-title {
-  color: #dc2626;
-}
-
-.error-server .error-message {
-  color: #ef4444;
-}
-
 .error-permission .error-content {
   background: linear-gradient(135deg, #fdf4ff 0%, #f3e8ff 100%);
   border-color: #8b5cf6;
 }
 
-.error-permission .error-title {
-  color: #7c3aed;
-}
-
-.error-permission .error-message {
-  color: #8b5cf6;
-}
-
-/* 响应式设计 */
+/* 响应式Typography已通过clamp()内置，卡片填充已通过shortcuts管理 - D.1.5 标准化 */
 @media (max-width: 768px) {
   .error-state {
     padding: var(--spacing-xl) var(--spacing-base);
@@ -489,32 +336,20 @@ const handleReport = () => {
   .error-content {
     padding: var(--spacing-base);
   }
-  
-  .error-title {
-    font-size: var(--font-size-lg);
-  }
-  
-  .error-message {
-    font-size: var(--font-size-sm);
-  }
-  
-  .default-icon {
-    font-size: 2.5rem;
-  }
 }
 
-/* 动画效果 */
-.error-icon {
+/* 动画效果 - 适配新的HTML结构 - D.1.5 标准化 */
+.error-content > div:first-child {
   opacity: 0;
   animation: bounceIn 0.8s var(--ease-out) 0.2s forwards;
 }
 
-.error-title {
+.error-content h3 {
   opacity: 0;
   animation: fadeInUp 0.6s var(--ease-out) 0.4s forwards;
 }
 
-.error-message {
+.error-content p {
   opacity: 0;
   animation: fadeInUp 0.6s var(--ease-out) 0.6s forwards;
 }
@@ -552,11 +387,11 @@ const handleReport = () => {
   }
 }
 
-/* 可访问性 */
+/* 可访问性 - 适配新的HTML结构 - D.1.5 标准化 */
 @media (prefers-reduced-motion: reduce) {
-  .error-icon,
-  .error-title,
-  .error-message,
+  .error-content > div:first-child,
+  .error-content h3,
+  .error-content p,
   .error-actions {
     opacity: 1;
     animation: none;
