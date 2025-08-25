@@ -3,21 +3,21 @@
     <!-- AI解读 -->
     <div 
       v-if="aiInterpretation" 
-      class="interpretation-content unified-content-card rounded-base animate-fadeInUp"
+      class="interpretation-content unified-content-card card-padding-interpret content-spacing-normal rounded-base animate-fadeInUp"
       :style="{ animationDelay: aiAnimationDelay }"
     >
       <div class="interpretation-header">
-        <h3 class="interpretation-title">
+        <h3 class="text-heading flex items-center">
           <SparklesIcon class="w-5 h-5 mr-2 text-gray-500" aria-hidden="true" />
           陆家明
         </h3>
-        <div v-if="showTimestamp && aiTimestamp" class="interpretation-timestamp">
+        <div v-if="showTimestamp && aiTimestamp" class="text-label absolute right-0 italic text-gray-600">
           {{ formatTimestamp(aiTimestamp) }}
         </div>
       </div>
       
       <div class="interpretation-body">
-        <div class="interpretation-text">
+        <div class="text-body-spaced whitespace-pre-line break-words text-justify">
           {{ aiInterpretation }}
         </div>
         
@@ -34,46 +34,46 @@
     <!-- 诗人解读 -->
     <div 
       v-if="poetExplanation" 
-      class="poet-explanation unified-content-card rounded-base animate-fadeInUp"
+      class="poet-explanation unified-content-card card-padding-interpret content-spacing-normal rounded-base animate-fadeInUp"
       :style="{ animationDelay: poetAnimationDelay }"
     >
       <div class="interpretation-header">
-        <h3 class="interpretation-title">
+        <h3 class="text-heading flex items-center">
           <AcademicCapIcon class="w-5 h-5 mr-2 text-gray-500" aria-hidden="true" />
           吴任几
         </h3>
-        <div v-if="showTimestamp && poetTimestamp" class="interpretation-timestamp">
+        <div v-if="showTimestamp && poetTimestamp" class="text-label absolute right-0 italic text-gray-600">
           {{ formatTimestamp(poetTimestamp) }}
         </div>
       </div>
       
       <div class="interpretation-body">
-        <div class="interpretation-text">
+        <div class="text-body-spaced whitespace-pre-line break-words text-justify">
           {{ poetExplanation }}
         </div>
         
         <!-- 诗人信息 -->
-        <div v-if="poetName" class="poet-info">
-          <span class="poet-label">诗人:</span>
-          <span class="poet-name">{{ poetName }}</span>
+        <div v-if="poetName" class="mt-xl pt-lg relative flex items-center gap-sm">
+          <span class="text-caption text-gray-600 font-medium">诗人:</span>
+          <span class="text-caption text-gray-500 font-semibold">{{ poetName }}</span>
         </div>
       </div>
     </div>
 
     <!-- 自定义解读内容插槽 -->
-    <div v-if="$slots.custom" class="custom-interpretation unified-content-card rounded-base animate-fadeInUp">
+    <div v-if="$slots.custom" class="custom-interpretation unified-content-card card-padding-normal content-spacing-normal rounded-base animate-fadeInUp">
       <slot name="custom"></slot>
     </div>
     
     <!-- AI功能错误状态 -->
-    <div v-if="showAiError && aiError" class="ai-error unified-content-card rounded-base animate-fadeInUp">
-      <div class="error-content">
-        <div class="error-icon">
+    <div v-if="showAiError && aiError" class="ai-error unified-content-card card-padding-normal text-center rounded-base animate-fadeInUp">
+      <div class="content-spacing-normal">
+        <div class="text-4xl mb-base">
           <ExclamationTriangleIcon class="w-5 h-5 mx-auto" aria-hidden="true" />
         </div>
-        <h3 class="error-title">AI功能暂时无法使用</h3>
-        <p class="error-message">{{ aiError }}</p>
-        <div v-if="showRetryAction" class="error-actions">
+        <h3 class="text-heading-spaced text-red-600">AI功能暂时无法使用</h3>
+        <p class="text-body-spaced text-gray-700">{{ aiError }}</p>
+        <div v-if="showRetryAction" class="flex justify-center">
           <button @click="handleRetryAi" class="btn-retry" :disabled="retrying">
             <span v-if="retrying">重试中...</span>
             <span v-else>重试</span>
@@ -83,11 +83,11 @@
     </div>
 
     <!-- 空状态 -->
-    <div v-if="!aiInterpretation && !poetExplanation && !$slots.custom && !showAiError" class="empty-interpretation">
-      <div class="empty-icon">
+    <div v-if="!aiInterpretation && !poetExplanation && !$slots.custom && !showAiError" class="text-center card-padding-normal content-spacing-normal text-gray-600">
+      <div class="text-5xl mb-base opacity-60">
         <ChatBubbleLeftEllipsisIcon class="w-6 h-6 mx-auto" aria-hidden="true" />
       </div>
-      <p class="empty-text">{{ emptyMessage }}</p>
+      <p class="text-body italic">{{ emptyMessage }}</p>
     </div>
   </div>
 </template>
@@ -184,80 +184,9 @@ const handleRetryAi = () => {
   justify-content: center;
   align-items: center;
   position: relative;
-  /* 优雅的渐变分隔线，替代生硬的solid边框 */
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(var(--color-primary-rgb), 0.15) 20%, 
-    rgba(var(--color-primary-rgb), 0.25) 50%, 
-    rgba(var(--color-primary-rgb), 0.15) 80%, 
-    transparent 100%
-  );
-  background-size: 100% 1px;
-  background-repeat: no-repeat;
-  background-position: bottom;
-  padding-bottom: var(--spacing-base);
-  margin-bottom: var(--spacing-xl);
-  position: relative;
-  
-  /* 微妙的阴影效果增强层次感 */
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 1px;
-    background: linear-gradient(90deg, 
-      transparent 0%, 
-      rgba(var(--color-primary-rgb), 0.08) 50%, 
-      transparent 100%
-    );
-    filter: blur(0.5px);
-  }
 }
 
-.interpretation-title {
-  display: flex;
-  align-items: center;
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.interpretation-timestamp {
-  position: absolute;
-  right: 0;
-  font-size: var(--font-size-xs);
-  color: var(--text-tertiary);
-  font-style: italic;
-}
-
-.interpretation-body {
-  line-height: 1.8;
-  /* 增加阅读区域的呼吸感和左右间距 */
-  padding: var(--spacing-base) var(--spacing-lg);
-}
-
-.interpretation-text {
-  font-size: var(--font-size-base);
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-lg);
-  white-space: pre-line;
-  word-wrap: break-word;
-  line-height: 1.8;
-  text-align: justify;
-  text-justify: inter-ideograph;
-  /* 段落间距优化 */
-  p {
-    margin-bottom: 1.2em;
-    line-height: inherit;
-  }
-  /* 长文本阅读优化 */
-  letter-spacing: 0.02em;
-  text-indent: 0;
-}
+/* Typography样式已迁移至UnoCSS shortcuts - D.1.3 标准化 */
 
 /* 图标统一样式 - 与分享按钮颜色保持一致 */
 .interpretation-content .interpretation-title svg,
@@ -271,44 +200,7 @@ const handleRetryAi = () => {
   color: rgb(55 65 81); /* text-gray-700 的实际值 */
 }
 
-.poet-info {
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-lg);
-  /* 用空间留白和微妙阴影替代实线边框 */
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  
-  /* 微妙的顶部阴影分隔 */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 30%;
-    height: 1px;
-    background: linear-gradient(90deg, 
-      transparent 0%, 
-      rgba(var(--color-primary-rgb), 0.12) 50%, 
-      transparent 100%
-    );
-    filter: blur(0.8px);
-  }
-}
-
-.poet-label {
-  font-size: var(--font-size-sm);
-  color: var(--text-tertiary);
-  font-weight: 500;
-}
-
-.poet-name {
-  font-size: var(--font-size-sm);
-  color: rgb(107 114 128); /* 与图标颜色保持一致 - text-gray-500 */
-  font-weight: 600;
-}
+/* .poet-info样式已迁移至UnoCSS shortcuts - D.1.3 标准化 */
 
 /* 操作按钮 */
 .interpretation-actions {
@@ -317,81 +209,14 @@ const handleRetryAi = () => {
   justify-content: flex-end;
 }
 
-/* btn-regenerate现在使用统一的UnoCSS定义 */
+/* 所有错误状态和空状态Typography已迁移至UnoCSS shortcuts - D.1.3 标准化 */
 
-/* AI错误状态 - 统一玻璃态风格 */
-.ai-error {
-  text-align: center;
-}
-
-/* 错误状态图标保持红色 */
-.ai-error .error-title {
-  color: #dc2626;
-}
-
-.error-content {
-  padding: var(--spacing-lg);
-}
-
-.error-icon {
-  font-size: 2.5rem;
-  margin-bottom: var(--spacing-base);
-}
-
-.error-title {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: #dc2626;
-  margin-bottom: var(--spacing-sm);
-}
-
-.error-message {
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.6;
-}
-
-.error-actions {
-  display: flex;
-  justify-content: center;
-}
-
-/* btn-retry-error现在使用统一的UnoCSS定义 */
-
-/* 空状态 */
-.empty-interpretation {
-  text-align: center;
-  padding: var(--spacing-2xl);
-  color: var(--text-tertiary);
-}
-
-.empty-icon {
-  font-size: 3rem;
-  margin-bottom: var(--spacing-base);
-  opacity: 0.6;
-}
-
-.empty-text {
-  font-size: var(--font-size-base);
-  font-style: italic;
-}
-
-/* 响应式设计 */
+/* 响应式Typography已通过clamp()内置，卡片填充已通过shortcuts管理 - D.1.3 标准化 */
 @media (max-width: 768px) {
   .interpretation-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-xs);
-  }
-  
-  .interpretation-title {
-    font-size: var(--font-size-lg);
-  }
-  
-  .interpretation-content,
-  .poet-explanation,
-  .custom-interpretation {
-    padding: var(--spacing-lg);
   }
   
   .poet-info {
@@ -401,64 +226,37 @@ const handleRetryAi = () => {
   }
 }
 
-@media (max-width: 480px) {
-  .interpretation-content,
-  .poet-explanation,
-  .custom-interpretation {
-    padding: var(--spacing-base);
-  }
-  
-  .interpretation-title {
-    font-size: var(--font-size-base);
-  }
-  
-  .interpretation-text {
-    font-size: var(--font-size-sm);
-  }
-  
-  .empty-interpretation {
-    padding: var(--spacing-xl);
-  }
-}
+/* 保留必要的阅读体验增强效果（无法通过shortcuts实现的特殊样式） */
 
-/* 内容渐入动画增强 - 优化动画时序 */
-.interpretation-text {
+/* 内容渐入动画增强 - 针对shortcuts迁移后的选择器 */
+.interpretation-body > div {
   opacity: 0;
   animation: fadeIn 0.8s var(--ease-out) 0.3s forwards;
-  /* 确保动画过程中排版不变形 */
   transform: translateY(0);
 }
 
-.poet-explanation .interpretation-text {
+.poet-explanation .interpretation-body > div {
   animation-delay: 0.5s;
 }
 
-/* 面向不同内容长度的适应性优化 */
-.interpretation-text {
-  /* 短文本(小于100字)的紧凑样式 */
-  &[data-length="short"] {
-    line-height: 1.7;
-    letter-spacing: 0.01em;
-    margin-bottom: var(--spacing-base);
-  }
-  
-  /* 中等文本(100-200字)的平衡样式 */
-  &[data-length="medium"] {
-    line-height: 1.8;
-    letter-spacing: 0.02em;
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  /* 长文本(大于200字)的舒展样式 */
-  &[data-length="long"] {
-    line-height: 1.9;
-    letter-spacing: 0.03em;
-    margin-bottom: var(--spacing-xl);
-  }
+/* 面向不同内容长度的适应性优化 - 基于data属性 */
+[data-length="short"] {
+  line-height: 1.7 !important;
+  letter-spacing: 0.01em !important;
+}
+
+[data-length="medium"] {
+  line-height: 1.8 !important;
+  letter-spacing: 0.02em !important;
+}
+
+[data-length="long"] {
+  line-height: 1.9 !important;
+  letter-spacing: 0.03em !important;
 }
 
 /* 文字打字机效果（可选） */
-.interpretation-text.typewriter {
+.typewriter {
   overflow: hidden;
   border-right: 2px solid var(--color-primary-400);
   white-space: nowrap;
@@ -476,30 +274,22 @@ const handleRetryAi = () => {
 }
 
 /* 阅读体验统一优化 */
-.interpretation-text {
-  /* 确保所有统一样式在上方已定义 */
-  font-size: inherit;
-  max-height: none;
-  overflow: visible;
-  
-  /* 滑动阅读体验优化 */
+.interpretation-body > div {
   scroll-behavior: smooth;
-  
-  /* 防止孤立标点符号 */
   orphans: 2;
   widows: 2;
 }
 
 /* 滚动条样式 */
-.interpretation-text::-webkit-scrollbar {
+.interpretation-body > div::-webkit-scrollbar {
   width: 4px;
 }
 
-.interpretation-text::-webkit-scrollbar-track {
+.interpretation-body > div::-webkit-scrollbar-track {
   background: var(--color-primary-100);
 }
 
-.interpretation-text::-webkit-scrollbar-thumb {
+.interpretation-body > div::-webkit-scrollbar-thumb {
   background: var(--color-primary-300);
 }
 </style>
