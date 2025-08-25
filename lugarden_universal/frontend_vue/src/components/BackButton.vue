@@ -1,6 +1,6 @@
 <template>
   <button
-    class="back-button inline-flex items-center justify-center"
+    class="back-button inline-flex items-center justify-center gap-sm font-medium"
     :class="buttonClass"
     :style="buttonStyle"
     :disabled="disabled"
@@ -30,7 +30,7 @@
     </span>
     
     <!-- 文本内容 -->
-    <span v-if="showText" class="back-text" :class="textClass">
+    <span v-if="showText" class="back-text whitespace-nowrap leading-none" :class="textClass">
       <slot>{{ text }}</slot>
     </span>
   </button>
@@ -106,6 +106,12 @@ const buttonClass = computed(() => ({
   [`back-button--${props.variant}`]: true,
   [`back-button--${props.size}`]: true,
   [`back-button--${props.color}`]: props.color !== 'custom',
+  
+  // Typography shortcuts - D.1.11 字体大小标准化 + 响应式处理
+  'text-sm': props.size === 'small',
+  'text-base': props.size === 'medium',
+  'text-lg max-md:text-base': props.size === 'large',
+  'max-md:text-sm': props.size === 'medium',
   
   // 布局选项
   'back-button--block': props.block,
@@ -188,12 +194,14 @@ defineExpose({
 </script>
 
 <style scoped>
-/* 基础布局样式已迁移至UnoCSS: inline-flex items-center justify-center */
+/* BackButton基础样式已迁移至UnoCSS utility类 - D.1.11 标准化 */
+/* Typography迁移: font-medium (基础字体权重), text-sm/text-base/text-lg (尺寸变体) */
+/* 布局迁移: inline-flex items-center justify-center gap-sm */
+/* 文本迁移: whitespace-nowrap leading-none (文本样式) */
+/* 保留传统CSS: 复杂样式变体, 交互状态, 动画效果 */
+
 .back-button {
-  gap: var(--spacing-sm);
-  
   font-family: var(--font-family-serif);
-  font-weight: 500;
   text-decoration: none;
   
   border: 1px solid transparent;
@@ -215,22 +223,19 @@ defineExpose({
   overflow: hidden;
 }
 
-/* 尺寸变体 */
+/* 尺寸变体 - 字体大小已迁移至Typography shortcuts */
 .back-button--small {
   padding: var(--spacing-xs) var(--spacing-sm);
-  font-size: var(--font-size-sm);
   min-height: 36px;
   min-width: 36px;
 }
 
 .back-button--medium {
   padding: var(--spacing-sm) var(--spacing-base);
-  font-size: var(--font-size-base);
 }
 
 .back-button--large {
   padding: var(--spacing-base) var(--spacing-lg);
-  font-size: var(--font-size-lg);
   min-height: 52px;
   min-width: 52px;
 }
@@ -326,8 +331,7 @@ defineExpose({
   width: 100%;
 }
 
-.back-button--rounded {
-}
+/* .back-button--rounded 样式已迁移至UnoCSS shortcuts (rounded-full, rounded-base) */
 
 .back-button--shadow {
   box-shadow: var(--shadow-sm);
@@ -367,11 +371,8 @@ defineExpose({
   transition: transform var(--transition-duration-fast) var(--transition-ease);
 }
 
-/* 文本样式 */
-.back-text {
-  line-height: 1;
-  white-space: nowrap;
-}
+/* 文本样式已迁移至UnoCSS shortcuts */
+/* whitespace-nowrap leading-none: 文本不换行, 行高为1 */
 
 /* 禁用状态 */
 .back-button--disabled {
@@ -435,17 +436,15 @@ defineExpose({
   box-shadow: none;
 }
 
-/* 响应式设计 */
+/* 响应式设计 - 字体大小已迁移至UnoCSS响应式shortcuts */
 @media (max-width: 768px) {
   .back-button--large {
     padding: var(--spacing-sm) var(--spacing-base);
-    font-size: var(--font-size-base);
     min-height: 48px;
   }
   
   .back-button--medium {
     padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: var(--font-size-sm);
     min-height: 44px;
   }
 }
