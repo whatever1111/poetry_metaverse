@@ -78,7 +78,7 @@
 - **技术债务**：无新增技术债务，实际上是清理现有混乱状态
 - **维护成本**：修复后维护成本显著降低，架构更清晰
 
-#### - [ ] 任务A.2：AI接口连接问题诊断修复
+#### - [x] 任务A.2：AI接口连接问题诊断修复
 - **核心思想**: 修复A.1调研发现的参数格式不匹配问题，使前端发送的{poem, title}格式能被server.js正确接收和处理，确保Gemini API和Google TTS API调用成功
 - 交付物：
   - 修复后的server.js AI接口参数处理逻辑
@@ -93,15 +93,43 @@
 - 预期改动文件（预判）：
   - `lugarden_universal/application/server.js` - 修改/api/interpret和/api/listen的参数处理
   - `lugarden_universal/application/src/routes/public.js` - 移除冗余AI路由
+- 实际改动文件:
+  - `lugarden_universal/application/server.js`
+  - `lugarden_universal/application/src/routes/public.js`
+- 完成状态：✅ 已完成
+- 执行步骤：
+   - [x] 步骤A.2.1：修改server.js中/api/interpret端点，接收{poem, title}并构建prompt ✅
+   - [x] 步骤A.2.2：修改server.js中/api/listen端点，接收{poem, title}并提取text内容 ✅
+   - [x] 步骤A.2.3：清理public.js中的模拟AI路由，避免路由冲突和混淆 ✅
+   - [x] 步骤A.2.4：测试前端解诗功能，验证Gemini API调用成功 ✅
+   - [x] 步骤A.2.5：测试前端读诗功能，验证Google TTS API调用成功 ✅
+   - [x] 步骤A.2.6：验证错误处理机制，确保API异常时用户体验良好 ✅
+
+#### - [ ] 任务A.3：AI API调用现代化重构 - 集成官方SDK并增强Prompt
+- **核心思想**: 彻底重构AI解诗的API调用，以完全符合Google官方最佳实践。这包括：1) 迁移到官方的`@google/generative-ai` SDK；2) 实施明确的`safetySettings`和`generationConfig`以确保调用的可靠性；3) 将用户选择的上下文(`meaning`)融入Prompt，实现体验的质变。
+- 交付物：
+  - `package.json` 更新，包含`@google/generative-ai`依赖。
+  - `server.js` 被重构，使用新的SDK来处理`/api/interpret`请求。
+  - 一个全新的、包含用户上下文、安全配置和生成配置的API调用逻辑。
+- 验收标准：
+  - `/api/interpret`的实现不再直接使用`node-fetch`。
+  - 对Gemini的API调用中，明确包含了`safetySettings`和`generationConfig`参数。
+  - 后端逻辑能根据前端传递的`combination`参数，正确查询到`meaning`并构建增强型Prompt。
+  - AI解诗功能经过端到-端测试，稳定、可靠、可用。
+- **风险评估**: **高风险** - 涉及引入新依赖、修改核心API、变更前后端契约，需要极其谨慎的实现和充分的测试。
+- 预期改动文件（预判）：
+  - `lugarden_universal/application/package.json`
+  - `lugarden_universal/application/server.js`
+  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` (或调用AI接口的相关组件)
 - 实际改动文件: [待记录]
 - 完成状态：🔄 进行中
 - 执行步骤：
-   - [ ] 步骤A.2.1：修改server.js中/api/interpret端点，接收{poem, title}并构建prompt
-   - [ ] 步骤A.2.2：修改server.js中/api/listen端点，接收{poem, title}并提取text内容  
-   - [ ] 步骤A.2.3：清理public.js中的模拟AI路由，避免路由冲突和混淆
-   - [ ] 步骤A.2.4：测试前端解诗功能，验证Gemini API调用成功
-   - [ ] 步骤A.2.5：测试前端读诗功能，验证Google TTS API调用成功
-   - [ ] 步骤A.2.6：验证错误处理机制，确保API异常时用户体验良好
+  - [ ] 步骤A.3.1：**依赖集成 (SDK)** - 在`application`目录下，执行`npm install @google/generative-ai`并验证`package.json`更新。
+  - [ ] 步骤A.3.2：**前端契约改造** - 识别前端调用AI接口的组件，修改其API调用逻辑，增加传递用户的`combination`字符串。
+  - [ ] 步骤A.3.3：**后端接口重构 (SDK)** - 在`server.js`中，引入`@google/generative-ai` SDK，并使用SDK重写`/api/interpret`的基础逻辑。
+  - [ ] 步骤A.3.4：**安全与生成配置集成** - 在使用SDK发起请求时，明确配置`safetySettings`和`generationConfig`参数。
+  - [ ] 步骤A.3.5：**上下文逻辑实现 (Prompt)** - 在`/api/interpret`的新逻辑中，接收前端传来的`combination`，查询数据库获取`meaning`，并构建最终的增强型Prompt。
+  - [ ] 步骤A.3.6：**端到端完整性测试** - 启动前后端服务，完整验证从用户在前端做出选择，到看到包含个性化上下文的AI解读的全过程。
 
 ---
 
