@@ -528,10 +528,13 @@ export const useZhouStore = defineStore('zhou', () => {
       
       // 使用统一的内容构建函数
       const poemContent = buildFullPoemContent(result.selectedPoem)
+      const combination = quiz.userAnswers.map(answer => answer.selectedOption === 'A' ? '0' : '1').join('')
       
       const data = await aiService.interpretPoem(
         poemContent,
-        result.selectedPoem.title
+        result.selectedPoem.title,
+        combination,
+        navigation.currentChapterName || ''
       )
       
       result.interpretationContent = data.interpretation

@@ -209,13 +209,14 @@ export class AIService {
 
   /**
    * 请求诗歌解读
+   * @returns 包含解读内容的Promise
    */
-  async interpretPoem(poem: string, title: string): Promise<{ 
+  async interpretPoem(poem: string, title: string, combination: string, chapter: string): Promise<{ 
     interpretation: string
-    processed_at: string
     poem_title: string
+    processed_at: string
   }> {
-    return this.apiClient.post('/interpret', { poem, title })
+    return this.apiClient.post('/interpret', { poem, title, combination, chapter })
   }
 
   /**

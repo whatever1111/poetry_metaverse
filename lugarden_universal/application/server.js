@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import fetch from 'node-fetch';
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import session from 'express-session';
+import { ProxyAgent, setGlobalDispatcher } from 'undici';
 import publicRouter from './src/routes/public.js';
 import adminRouter from './src/routes/admin.js';
 import { errorHandler } from './src/middlewares/errorHandler.js';
@@ -13,6 +15,16 @@ import { getPrismaClient } from './src/persistence/prismaClient.js';
 // 环境变量（优先 .env.local，其次 .env）
 dotenv.config({ path: '.env.local' });
 dotenv.config();
+
+// 全局代理设置
+if (process.env.HTTPS_PROXY) {
+  const proxyAgent = new ProxyAgent(process.env.HTTPS_PROXY);
+  setGlobalDispatcher(proxyAgent);
+  console.log(`[Proxy] 已启用全局代理: ${process.env.HTTPS_PROXY}`);
+}
+
+// API 客户端初始化
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
 // 基础初始化
 const app = express();
@@ -79,19 +91,61 @@ app.get('/admin', requireAuth, (_req, res) => {
 
 // 第三方代理
 app.post('/api/interpret', async (req, res) => {
+  console.log('[/api/interpret] 接到请求:', req.body);
   try {
-    const { poem, title } = req.body || {};
-    // 构建适合AI解读的prompt
-    const prompt = `请解读以下诗歌《${title}》：\n\n${poem}\n\n请从意境、语言特色、情感表达等角度进行深度分析。`;
-    const payload = { contents: [{ role: 'user', parts: [{ text: prompt }] }] };
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.API_KEY}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
-    );
-    if (!response.ok) throw new Error(`Gemini API call failed: ${response.statusText}`);
-    const data = await response.json();
-    return res.json(data);
+    const { poem, title, combination, chapter } = req.body || {}; // 假设前端也会传递 chapter
+    const prisma = getPrismaClient();
+
+    // 1. 根据 combination 和 chapter 从数据库查询 meaning
+    let contextText = '';
+    if (combination && chapter) {
+      console.log(`[/api/interpret] 正在查询数据库: chapter="${chapter}", combination="${combination}"`);
+      const mapping = await prisma.zhouMapping.findUnique({
+        where: {
+          universeId_chapter_combination: {
+            universeId: 'universe_zhou_spring_autumn', // 硬编码或从配置中获取
+            chapter: chapter,
+            combination: combination,
+          }
+        }
+      });
+      console.log('[/api/interpret] 数据库查询结果:', mapping);
+      if (mapping && mapping.meaning) {
+        contextText = mapping.meaning;
+      }
+    }
+    
+    // 2. 构建增强型 Prompt
+    let prompt = `请解读以下诗歌《${title}》：\n\n${poem}\n\n请从意境、语言特色、情感表达等角度进行深度分析。`;
+    if (contextText) {
+      prompt += `\n\n请特别结合以下用户的个人特质进行解读：${contextText}`;
+    }
+
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash-latest',
+      safetySettings: [
+        { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+        { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+        { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+        { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        topK: 1,
+        topP: 1,
+        maxOutputTokens: 2048,
+      },
+    });
+
+    console.log('[/api/interpret] 正在调用 Gemini API...');
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = await response.text();
+    console.log('[/api/interpret] 已收到 Gemini API 的响应');
+
+    return res.json({ interpretation: text });
   } catch (e) {
+    console.error('[/api/interpret] 发生错误:', e);
     return res.status(500).json({ message: '解读失败', error: String(e?.message || e) });
   }
 });

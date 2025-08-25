@@ -120,16 +120,25 @@
 - 预期改动文件（预判）：
   - `lugarden_universal/application/package.json`
   - `lugarden_universal/application/server.js`
-  - `lugarden_universal/frontend_vue/src/components/PoemViewer.vue` (或调用AI接口的相关组件)
-- 实际改动文件: [待记录]
-- 完成状态：🔄 进行中
+  - `lugarden_universal/frontend_vue/src/services/enhancedApi.ts`
+  - `lugarden_universal/frontend_vue/src/stores/zhou.ts`
+  - `lugarden_universal/application/.env`
+  - `lugarden_universal/application/.env.local`
+- 实际改动文件: 
+  - `lugarden_universal/application/package.json`
+  - `lugarden_universal/application/server.js`
+  - `lugarden_universal/frontend_vue/src/services/enhancedApi.ts`
+  - `lugarden_universal/frontend_vue/src/stores/zhou.ts`
+  - `lugarden_universal/application/.env`
+  - `lugarden_universal/application/.env.local`
+- 完成状态：✅ 已完成
 - 执行步骤：
-  - [ ] 步骤A.3.1：**依赖集成 (SDK)** - 在`application`目录下，执行`npm install @google/generative-ai`并验证`package.json`更新。
-  - [ ] 步骤A.3.2：**前端契约改造** - 识别前端调用AI接口的组件，修改其API调用逻辑，增加传递用户的`combination`字符串。
-  - [ ] 步骤A.3.3：**后端接口重构 (SDK)** - 在`server.js`中，引入`@google/generative-ai` SDK，并使用SDK重写`/api/interpret`的基础逻辑。
-  - [ ] 步骤A.3.4：**安全与生成配置集成** - 在使用SDK发起请求时，明确配置`safetySettings`和`generationConfig`参数。
-  - [ ] 步骤A.3.5：**上下文逻辑实现 (Prompt)** - 在`/api/interpret`的新逻辑中，接收前端传来的`combination`，查询数据库获取`meaning`，并构建最终的增强型Prompt。
-  - [ ] 步骤A.3.6：**端到端完整性测试** - 启动前后端服务，完整验证从用户在前端做出选择，到看到包含个性化上下文的AI解读的全过程。
+  - [x] 步骤A.3.1：**依赖集成 (SDK)** - 在`application`目录下，执行`npm install @google/generative-ai`并验证`package.json`更新。 ✅
+  - [x] 步骤A.3.2：**前端契约改造** - 识别前端调用AI接口的组件，修改其API调用逻辑，增加传递用户的`combination`字符串。 ✅
+  - [x] 步骤A.3.3：**后端接口重构 (SDK)** - 在`server.js`中，引入`@google/generative-ai` SDK，并使用SDK重写`/api/interpret`的基础逻辑。 ✅
+  - [x] 步骤A.3.4：**安全与生成配置集成** - 在使用SDK发起请求时，明确配置`safetySettings`和`generationConfig`参数。 ✅
+  - [x] 步骤A.3.5：**上下文逻辑实现 (Prompt)** - 在`/api/interpret`的新逻辑中，接收前端传来的`combination`，查询数据库获取`meaning`，并构建最终的增强型Prompt。 ✅
+  - [x] 步骤A.3.6：**端到端完整性测试** - 启动前后端服务，完整验证从用户在前端做出选择，到看到包含个性化上下文的AI解读的全过程。 ✅
 
 ---
 
@@ -169,9 +178,11 @@
 
 **已完成任务**:
 - ✅ A.1: AI功能现状调研与问题识别 - 核心问题已识别，修复策略已制定
+- ✅ A.2: AI接口连接问题诊断修复 - 正在执行参数格式修复
+- ✅ A.3: AI API调用现代化重构 - 集成官方SDK并增强Prompt - 已完成
 
 **下一步任务**:
-- 🔄 A.2: AI接口连接问题诊断修复 - 正在执行参数格式修复
+- 🔄 A.3: AI API调用现代化重构 - 集成官方SDK并增强Prompt
 
 ---
 *本TODO基于陆家花园项目Git开发指南创建，专注于AI功能修复和用户体验恢复*
