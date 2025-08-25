@@ -4,7 +4,7 @@
       <!-- 解诗按钮 -->
       <button 
         @click="handleInterpretation" 
-        class="btn-interpret text-change-animation"
+        class="btn-interpret text-change-animation text-body font-medium"
         :class="{ 'animate-pulse': interpretationLoading }"
         :disabled="interpretationLoading || disabled"
       >
@@ -15,7 +15,7 @@
       <!-- 读诗按钮 -->
       <button 
         @click="handlePlayPoem" 
-        class="btn-listen text-change-animation"
+        class="btn-listen text-change-animation text-body font-medium"
         :class="{ 
           'btn-control-playing': audioPlaying,
           'animate-pulse': audioLoading 
@@ -30,7 +30,7 @@
       <!-- 诗人解读按钮 -->
       <button 
         @click="handlePoetExplanation" 
-        class="btn-poet text-change-animation"
+        class="btn-poet text-change-animation text-body font-medium"
         :class="{ 
           'btn-control-poet-clicked': poetButtonClicked, 
           'scale-95': textChanging 
@@ -43,7 +43,7 @@
       <!-- 重新开始按钮 -->
       <button 
         @click="handleRestart" 
-        class="btn-restart"
+        class="btn-restart text-body font-medium"
         :disabled="disabled"
       >
         <span>重新开始</span>
@@ -54,8 +54,8 @@
     </div>
     
     <!-- 操作提示 -->
-    <div v-if="showHints" class="text-center mt-4">
-      <p class="text-sm text-gray-500 italic opacity-80">
+    <div v-if="showHints" class="text-center mt-lg">
+      <p class="text-caption italic text-gray-500 opacity-80">
         点击上方按钮探索诗歌的不同维度
       </p>
     </div>
@@ -146,6 +146,13 @@ const handleRestart = () => {
 </script>
 
 <style scoped>
+/* ControlButtons基础样式已迁移至UnoCSS utility类 - D.1.10 标准化 */
+/* Typography迁移: text-body font-medium (所有按钮文本), text-caption italic (提示文本) */
+/* 布局迁移: text-center mt-lg (提示区域) */
+/* 按钮系统: 使用shortcuts (btn-interpret, btn-listen, btn-poet, btn-restart) */
+/* 响应式迁移: max-sm:text-sm max-sm:px-4 max-sm:py-3 max-sm:min-h-12 (集成至shortcuts) */
+/* 保留传统CSS: 文本变化动画, 按钮组渐入动画, 特殊交互效果 */
+
 /* 文本变化动画 - 保留特殊动画效果 */
 .text-change-animation.scale-95 {
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -173,15 +180,7 @@ const handleRestart = () => {
   }
 }
 
-/* 移动端优化 - 使用CSS变量与UnoCSS配合 */
-@media (max-width: 480px) {
-  .btn-interpret,
-  .btn-listen,
-  .btn-poet,
-  .btn-restart {
-    font-size: 0.875rem;
-    padding: 0.75rem 1rem;
-    min-height: 48px;
-  }
-}
+/* 移动端优化已迁移至UnoCSS响应式shortcuts */
+/* max-sm:text-sm max-sm:px-4 max-sm:py-3 max-sm:min-h-12 */
+/* 移动端按钮优化通过UnoCSS响应式系统处理 */
 </style>

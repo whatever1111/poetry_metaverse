@@ -173,8 +173,8 @@ export default defineConfig({
     ['btn-share-tools-success', 'text-green-600 hover:text-green-700 hover:bg-green-50'],
     ['btn-share-tools', 'btn-share-tools-base btn-share-tools-hover btn-share-tools-disabled'],
     
-    // 控制按钮系统 - C.2 现代化实现
-    ['btn-control-base', 'inline-flex items-center justify-center min-h-[48px] min-w-24 px-4 py-3 text-sm font-semibold rounded-lg border transition-all duration-200 ease-out cursor-pointer select-none text-white shadow-base'],
+    // 控制按钮系统 - C.2 现代化实现 + D.1.10 移动端响应式优化
+    ['btn-control-base', 'inline-flex items-center justify-center min-h-[48px] min-w-24 px-4 py-3 text-sm font-semibold rounded-lg border transition-all duration-200 ease-out cursor-pointer select-none text-white shadow-base max-sm:text-sm max-sm:px-4 max-sm:py-3 max-sm:min-h-12'],
     ['btn-control-hover', 'hover:-translate-y-0.5 hover:shadow-md disabled:hover:translate-y-0 disabled:hover:shadow-base'],
     ['btn-control-active', 'active:translate-y-0 active:shadow-sm'],
     ['btn-control-disabled', 'disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none'],
