@@ -71,17 +71,17 @@ export default defineConfig({
     },
     // 字体系统映射
     fontFamily: {
-      primary: ['Noto Serif SC', 'serif']
+      primary: ['Noto Serif SC', 'serif'] as string[]
     },
     fontSize: {
-      xs: ['clamp(0.75rem, 2vw, 0.875rem)', { lineHeight: '1.4' }],
-      sm: ['clamp(0.875rem, 2.5vw, 1rem)', { lineHeight: '1.5' }],
-      base: ['clamp(1rem, 3vw, 1.125rem)', { lineHeight: '1.6' }],
-      lg: ['clamp(1.125rem, 3.5vw, 1.25rem)', { lineHeight: '1.5' }],
-      xl: ['clamp(1.25rem, 4vw, 1.5rem)', { lineHeight: '1.4' }],
-      '2xl': ['clamp(1.375rem, 4vw, 1.75rem)', { lineHeight: '1.3' }],
-      '3xl': ['clamp(1.5rem, 4.5vw, 2rem)', { lineHeight: '1.3' }],
-      '4xl': ['clamp(1.75rem, 5vw, 2.5rem)', { lineHeight: '1.2' }]
+      xs: ['clamp(0.75rem, 2vw, 0.875rem)', { lineHeight: '1.33' }],      // D1: Label级标准
+      sm: ['clamp(0.875rem, 2.5vw, 1rem)', { lineHeight: '1.43' }],       // D1: Caption级标准  
+      base: ['clamp(1rem, 3vw, 1.125rem)', { lineHeight: '1.625' }],      // D1: Body级标准 ⭐
+      lg: ['clamp(1.125rem, 3.5vw, 1.25rem)', { lineHeight: '1.5' }],     // 保持原有
+      xl: ['clamp(1.25rem, 4vw, 1.5rem)', { lineHeight: '1.3' }],         // D1: Heading级标准
+      '2xl': ['clamp(1.375rem, 4vw, 1.75rem)', { lineHeight: '1.3' }],    // 保持原有
+      '3xl': ['clamp(1.5rem, 4.5vw, 2rem)', { lineHeight: '1.2' }],       // D1: Display级标准
+      '4xl': ['clamp(1.75rem, 5vw, 2.5rem)', { lineHeight: '1.2' }]       // 保持原有
     },
     // 间距系统映射
     spacing: {
@@ -194,6 +194,61 @@ export default defineConfig({
     ['btn-listen', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-listen'],
     ['btn-poet', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-poet'],
     ['btn-restart', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-restart'],
+    
+    // Typography Design System - D.1 基于主流实践的统一排版规范
+    // 5级Typography层级系统（引用修正后的fontSize配置，实现真正统一）
+    
+    // Display级 - 页面主标题 (24px-32px, 1.2行高, bold)
+    ['text-display', 'text-3xl font-bold tracking-tight'],
+    
+    // Heading级 - 卡片标题 (20px-24px, 1.3行高, semibold) 
+    ['text-heading', 'text-xl font-semibold tracking-tight'],
+    
+    // Body级 - 主要内容 (16px-18px, 1.625行高, normal) ⭐核心标准
+    ['text-body', 'text-base font-normal tracking-normal'],
+    
+    // Caption级 - 辅助信息 (14px-16px, 1.43行高, medium)
+    ['text-caption', 'text-sm font-medium tracking-normal'],
+    
+    // Label级 - 标签文字 (12px-14px, 1.33行高, medium)
+    ['text-label', 'text-xs font-medium tracking-wide'],
+    
+    // 响应式Typography已通过clamp内置，无需额外变体
+    
+    // Spacing Design System - D.1 基于8px体系的统一空间管理规范
+    // 三层空间管理体系：卡片填充(Padding) → 内容间距(Content Spacing) → 文字边距(Text Spacing)
+    
+    // 【第1层】卡片填充系统 - 卡片边框到内容区域的内部留白（Padding）
+    // 作用：解决用户反馈的"标题和卡片上端距离太少"问题，控制整个卡片的内部空间
+    ['card-padding-poem', 'pt-3xl px-lg pb-lg'],              // 诗歌展示卡片：上64px 左右24px 下24px
+    ['card-padding-interpret', 'pt-2xl px-lg pb-lg'],         // 解读展示卡片：上48px 左右24px 下24px  
+    ['card-padding-normal', 'pt-lg px-lg pb-lg'],             // 标准功能卡片：上24px 左右24px 下24px
+    ['card-padding-compact', 'pt-sm px-base pb-base'],        // 紧凑辅助卡片：上8px 左右16px 下16px
+    
+    // 响应式卡片填充（移动端适配）
+    ['card-padding-poem-responsive', 'pt-xl md:pt-3xl px-base md:px-lg pb-base md:pb-lg'],
+    ['card-padding-interpret-responsive', 'pt-lg md:pt-2xl px-base md:px-lg pb-base md:pb-lg'], 
+    ['card-padding-normal-responsive', 'pt-base md:pt-lg px-base md:px-lg pb-base md:pb-lg'],
+    
+    // 【第2层】内容间距系统 - 不同内容块之间的垂直分隔距离（Margin Between Elements）
+    // 作用：控制标题、段落、按钮等不同功能区块之间的垂直间距，使用space-y实现统一的margin-top
+    ['content-spacing-tight', 'space-y-sm'],                  // 紧凑内容布局：块间距8px（适用于信息密集区域）
+    ['content-spacing-normal', 'space-y-base'],               // 标准内容布局：块间距16px ⭐（主要内容区域推荐）
+    ['content-spacing-comfortable', 'space-y-lg'],            // 舒适内容布局：块间距24px（重要内容突出显示）
+    ['content-spacing-spacious', 'space-y-xl'],               // 宽松内容布局：块间距32px（视觉层次分明）
+    
+    // 【第3层】文字边距系统 - 文本段落底部的独立留白（Text Margin Bottom）
+    // 作用：为文字段落提供底部留白，与其他元素保持适当距离，专门处理文本流的视觉节奏
+    ['text-spacing-tight', 'mb-sm'],                          // 紧凑文字间距：段落底部8px（密集文本环境）
+    ['text-spacing-normal', 'mb-base'],                       // 标准文字间距：段落底部16px ⭐（主要文本内容）
+    ['text-spacing-comfortable', 'mb-lg'],                    // 舒适文字间距：段落底部24px（重要文字突出）
+    
+    // 组合Typography + Spacing快捷方式（引用现有spacing配置）
+    ['text-display-spaced', 'text-display mb-lg'],                        // Display + 24px底边距（引用lg）
+    ['text-heading-spaced', 'text-heading mb-base'],                      // Heading + 16px底边距（引用base）
+    ['text-body-spaced', 'text-body mb-base'],                            // Body + 16px底边距（引用base）
+    ['text-caption-spaced', 'text-caption mb-sm'],                        // Caption + 8px底边距（引用sm）
+    
     // 保留原有的shortcuts
     ['card-base', 'bg-white rounded-lg shadow-md p-6 transition-all duration-300 ease-out'],
     ['text-responsive', 'text-base max-sm:text-sm lg:text-lg']
