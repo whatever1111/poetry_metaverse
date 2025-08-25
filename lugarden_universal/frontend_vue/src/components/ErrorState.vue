@@ -54,7 +54,7 @@
           <button 
             v-if="showBack"
             @click="handleBack"
-            class="btn-back rounded-base"
+            class="btn-back rounded-base text-sm font-semibold"
           >
             {{ backText }}
           </button>
@@ -62,7 +62,7 @@
           <button 
             v-if="showReport"
             @click="handleReport"
-            class="btn-report rounded-base"
+            class="btn-report rounded-base text-sm font-semibold"
           >
             {{ reportText }}
           </button>
@@ -229,8 +229,6 @@ const handleReport = () => {
   align-items: center;
   justify-content: center;
   padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
   min-width: 80px;
