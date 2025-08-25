@@ -8,10 +8,8 @@
     >
       <div class="interpretation-header">
         <h3 class="interpretation-title">
-          <svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-          </svg>
-          AI解读
+          <SparklesIcon class="w-5 h-5 mr-2 text-gray-500" aria-hidden="true" />
+          陆家明
         </h3>
         <div v-if="showTimestamp && aiTimestamp" class="interpretation-timestamp">
           {{ formatTimestamp(aiTimestamp) }}
@@ -41,10 +39,8 @@
     >
       <div class="interpretation-header">
         <h3 class="interpretation-title">
-          <svg class="w-5 h-5 mr-2 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-          </svg>
-          诗人解读
+          <AcademicCapIcon class="w-5 h-5 mr-2 text-gray-500" aria-hidden="true" />
+          吴任几
         </h3>
         <div v-if="showTimestamp && poetTimestamp" class="interpretation-timestamp">
           {{ formatTimestamp(poetTimestamp) }}
@@ -97,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { ExclamationTriangleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/vue/24/outline'
+import { ExclamationTriangleIcon, ChatBubbleLeftEllipsisIcon, UserIcon, AcademicCapIcon, SparklesIcon, LightBulbIcon, BeakerIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
 
 // 组件Props
 interface Props {
@@ -185,11 +181,40 @@ const handleRetryAi = () => {
 
 .interpretation-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  border-bottom: 2px solid var(--color-primary-200);
-  padding-bottom: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
+  position: relative;
+  /* 优雅的渐变分隔线，替代生硬的solid边框 */
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(var(--color-primary-rgb), 0.15) 20%, 
+    rgba(var(--color-primary-rgb), 0.25) 50%, 
+    rgba(var(--color-primary-rgb), 0.15) 80%, 
+    transparent 100%
+  );
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  padding-bottom: var(--spacing-base);
+  margin-bottom: var(--spacing-xl);
+  position: relative;
+  
+  /* 微妙的阴影效果增强层次感 */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(var(--color-primary-rgb), 0.08) 50%, 
+      transparent 100%
+    );
+    filter: blur(0.5px);
+  }
 }
 
 .interpretation-title {
@@ -202,39 +227,75 @@ const handleRetryAi = () => {
 }
 
 .interpretation-timestamp {
+  position: absolute;
+  right: 0;
   font-size: var(--font-size-xs);
   color: var(--text-tertiary);
   font-style: italic;
 }
 
 .interpretation-body {
-  line-height: 1.7;
+  line-height: 1.8;
+  /* 增加阅读区域的呼吸感和左右间距 */
+  padding: var(--spacing-base) var(--spacing-lg);
 }
 
 .interpretation-text {
+  font-size: var(--font-size-base);
   color: var(--text-secondary);
-  margin-bottom: var(--spacing-base);
+  margin-bottom: var(--spacing-lg);
   white-space: pre-line;
   word-wrap: break-word;
+  line-height: 1.8;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  /* 段落间距优化 */
+  p {
+    margin-bottom: 1.2em;
+    line-height: inherit;
+  }
+  /* 长文本阅读优化 */
+  letter-spacing: 0.02em;
+  text-indent: 0;
 }
 
-/* AI解读特殊样式 - 仅保留图标颜色差异 */
-.interpretation-content .interpretation-title svg {
-  color: var(--color-info);
-}
-
-/* 诗人解读特殊样式 - 仅保留图标颜色差异 */
+/* 图标统一样式 - 与分享按钮颜色保持一致 */
+.interpretation-content .interpretation-title svg,
 .poet-explanation .interpretation-title svg {
-  color: #8b5a96;
+  color: rgb(107 114 128); /* text-gray-500 的实际值 */
+  transition: color 0.15s ease-out;
+}
+
+/* 悬停效果 - 与分享按钮一致 */
+.interpretation-header:hover .interpretation-title svg {
+  color: rgb(55 65 81); /* text-gray-700 的实际值 */
 }
 
 .poet-info {
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-base);
-  border-top: 1px solid var(--color-primary-200);
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  /* 用空间留白和微妙阴影替代实线边框 */
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  
+  /* 微妙的顶部阴影分隔 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(var(--color-primary-rgb), 0.12) 50%, 
+      transparent 100%
+    );
+    filter: blur(0.8px);
+  }
 }
 
 .poet-label {
@@ -245,7 +306,7 @@ const handleRetryAi = () => {
 
 .poet-name {
   font-size: var(--font-size-sm);
-  color: #8b5a96;
+  color: rgb(107 114 128); /* 与图标颜色保持一致 - text-gray-500 */
   font-weight: 600;
 }
 
@@ -360,14 +421,40 @@ const handleRetryAi = () => {
   }
 }
 
-/* 内容渐入动画增强 */
+/* 内容渐入动画增强 - 优化动画时序 */
 .interpretation-text {
   opacity: 0;
   animation: fadeIn 0.8s var(--ease-out) 0.3s forwards;
+  /* 确保动画过程中排版不变形 */
+  transform: translateY(0);
 }
 
 .poet-explanation .interpretation-text {
   animation-delay: 0.5s;
+}
+
+/* 面向不同内容长度的适应性优化 */
+.interpretation-text {
+  /* 短文本(小于100字)的紧凑样式 */
+  &[data-length="short"] {
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+    margin-bottom: var(--spacing-base);
+  }
+  
+  /* 中等文本(100-200字)的平衡样式 */
+  &[data-length="medium"] {
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  /* 长文本(大于200字)的舒展样式 */
+  &[data-length="long"] {
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    margin-bottom: var(--spacing-xl);
+  }
 }
 
 /* 文字打字机效果（可选） */
@@ -388,11 +475,19 @@ const handleRetryAi = () => {
   50% { border-color: var(--color-primary-400); }
 }
 
-/* 长文本优化 */
+/* 阅读体验统一优化 */
 .interpretation-text {
-  line-height: 1.8;
-  text-align: justify;
-  text-justify: inter-ideograph;
+  /* 确保所有统一样式在上方已定义 */
+  font-size: inherit;
+  max-height: none;
+  overflow: visible;
+  
+  /* 滑动阅读体验优化 */
+  scroll-behavior: smooth;
+  
+  /* 防止孤立标点符号 */
+  orphans: 2;
+  widows: 2;
 }
 
 /* 滚动条样式 */
