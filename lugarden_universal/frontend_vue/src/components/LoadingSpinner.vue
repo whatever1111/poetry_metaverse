@@ -3,7 +3,7 @@
     <!-- 加载动画 -->
           <div class="loading-content flex flex-col items-center justify-center relative z-2">
       <!-- 主加载动画 -->
-      <div class="spinner-wrapper">
+      <div class="spinner-wrapper mb-lg">
         <div 
           class="loading-spinner rounded-full" 
           :class="spinnerClass"
@@ -15,9 +15,9 @@
       </div>
       
       <!-- 加载文本 -->
-      <div v-if="showText" class="loading-text-section">
-        <div class="loading-text">{{ loadingText }}</div>
-        <div v-if="subtitle" class="loading-subtitle">{{ subtitle }}</div>
+      <div v-if="showText" class="loading-text-section text-center max-w-sm max-sm:max-w-xs max-sm:px-base">
+        <div class="text-body font-medium text-gray-600 mb-sm max-sm:text-base">{{ loadingText }}</div>
+        <div v-if="subtitle" class="text-caption italic text-gray-500 mb-base max-sm:text-xs">{{ subtitle }}</div>
         
         <!-- 可选的进度指示 -->
         <div v-if="showProgress && typeof progress === 'number'" class="loading-progress">
@@ -27,12 +27,12 @@
               :style="{ width: `${Math.min(100, Math.max(0, progress))}%` }"
             ></div>
           </div>
-          <div class="progress-text">{{ Math.round(progress) }}%</div>
+          <div class="text-caption text-gray-500 text-center">{{ Math.round(progress) }}%</div>
         </div>
       </div>
       
       <!-- 可选的额外内容插槽 -->
-      <div v-if="$slots.extra" class="loading-extra">
+      <div v-if="$slots.extra" class="mt-lg text-center">
         <slot name="extra"></slot>
       </div>
     </div>
@@ -120,6 +120,13 @@ const handleOverlayClick = () => {
 </script>
 
 <style scoped>
+/* LoadingSpinner基础样式已迁移至UnoCSS utility类 - D.1.9 标准化 */
+/* Typography迁移: text-body font-medium (加载文本), text-caption italic (副标题), text-caption (进度文本) */
+/* 布局迁移: text-center max-w-sm, mb-lg, mt-lg */
+/* 响应式迁移: max-sm:text-base, max-sm:text-xs, max-sm:max-w-xs, max-sm:px-base */
+/* 间距迁移: mb-sm, mb-base (文本间距), mb-lg (动画器间距) */
+/* 保留传统CSS: 动画关键帧, 复杂视觉效果, 位置定位, 媒体查询特殊处理 */
+
 /* 基础布局样式已迁移至UnoCSS: relative flex flex-col items-center justify-center */
 .loading-spinner-container {}
 
@@ -144,7 +151,6 @@ const handleOverlayClick = () => {
 /* 动画器包装 */
 .spinner-wrapper {
   position: relative;
-  margin-bottom: var(--spacing-lg);
 }
 
 /* 基础动画器样式 */
@@ -262,25 +268,10 @@ const handleOverlayClick = () => {
   animation: spin 2s linear infinite reverse;
 }
 
-/* 文本区域 */
-.loading-text-section {
-  text-align: center;
-  max-width: 300px;
-}
-
-.loading-text {
-  font-size: var(--font-size-lg);
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-sm);
-  font-weight: 500;
-}
-
-.loading-subtitle {
-  font-size: var(--font-size-sm);
-  color: var(--text-tertiary);
-  font-style: italic;
-  margin-bottom: var(--spacing-base);
-}
+/* 文本区域样式已迁移至UnoCSS shortcuts */
+/* text-center max-w-sm: 文本居中, 最大宽度 */
+/* text-body font-medium text-gray-600 mb-sm: 加载文本 */
+/* text-caption italic text-gray-500 mb-base: 副标题文本 */
 
 /* 进度条 */
 .loading-progress {
@@ -302,17 +293,11 @@ const handleOverlayClick = () => {
   transition: width 0.3s ease;
 }
 
-.progress-text {
-  font-size: var(--font-size-xs);
-  color: var(--text-tertiary);
-  text-align: center;
-}
+/* 进度文本样式已迁移至UnoCSS shortcuts */
+/* text-caption text-gray-500 text-center: 进度百分比文本 */
 
-/* 额外内容 */
-.loading-extra {
-  margin-top: var(--spacing-lg);
-  text-align: center;
-}
+/* 额外内容样式已迁移至UnoCSS shortcuts */
+/* mt-lg text-center: 额外内容区域 */
 
 /* 背景遮罩 */
 .loading-overlay {
@@ -369,13 +354,7 @@ const handleOverlayClick = () => {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .loading-text {
-    font-size: var(--font-size-base);
-  }
-  
-  .loading-subtitle {
-    font-size: var(--font-size-xs);
-  }
+  /* 文本字体大小已迁移至UnoCSS shortcuts的自动响应式 */
   
   .loading-xlarge {
     width: 60px;
@@ -389,13 +368,8 @@ const handleOverlayClick = () => {
 }
 
 @media (max-width: 480px) {
-  .loading-content {
-    padding: var(--spacing-base);
-  }
-  
-  .loading-text-section {
-    max-width: 250px;
-  }
+  /* 内容填充和文本区域宽度已迁移至UnoCSS shortcuts */
+  /* padding: content-spacing, max-width: max-w-xs */
   
   .loading-xlarge {
     width: 50px;
