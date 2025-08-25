@@ -100,7 +100,7 @@
   - [x] 步骤D.1.12：**NotificationToast.vue组件标准化** - 通知提示完全迁移至Typography shortcuts
   - [x] 步骤D.1.13：**全局视觉一致性验证与CSS清理** - 验证所有改动符合用户期望，清理废弃的传统CSS定义（含ErrorState.vue遗漏修复）
 
-#### - [ ] 任务D.2：古典回响显示逻辑修复 - 数据架构完整性重构
+#### - [x] 任务D.2：古典回响显示逻辑修复 - 数据架构完整性重构
 - **核心思想**: 修复是折枝和雨木冰子项目中古典回响页面无法显示`classicalEcho`内容的架构性BUG。问题根源在于`mapPoemArchetypesForFrontend`函数中错误的`poetExplanation`过滤逻辑，导致有古典回响内容但没有诗人解读的诗歌被完全过滤掉。通过移除错误的数据层过滤，恢复数据完整性，让前端组件的空值处理逻辑正确工作，实现"数据层保持完整，业务层处理逻辑"的清晰架构分层。
 - **技术背景**:
   - 当前状态：`mapPoemArchetypesForFrontend`函数强制过滤`poetExplanation`为空的诗歌
@@ -130,14 +130,14 @@
 - 预期改动文件（预判）：
   - `lugarden_universal/application/src/services/mappers.js` - 移除错误的poetExplanation过滤逻辑
 - 实际改动文件: 
-  - [待执行]
-- 完成状态：⏳ 待开始
+  - `lugarden_universal/application/src/services/mappers.js`
+- 完成状态：✅ 已完成
 - 执行步骤：
-  - [ ] 步骤D.2.1：**架构问题确认** - 详细分析当前过滤逻辑的架构缺陷和影响范围
-  - [ ] 步骤D.2.2：**数据映射逻辑修复** - 移除`mapPoemArchetypesForFrontend`中的`poetExplanation`过滤条件
-  - [ ] 步骤D.2.3：**功能验证测试** - 测试是折枝和雨木冰古典回响页面是否能正常显示内容
-  - [ ] 步骤D.2.4：**回归测试验证** - 确保观我生等其他章节的功能不受影响
-  - [ ] 步骤D.2.5：**前端空值处理验证** - 验证各种null/undefined组合下前端组件的表现
+  - [x] 步骤D.2.1：**架构问题确认** - 详细分析当前过滤逻辑的架构缺陷和影响范围 ✅
+  - [x] 步骤D.2.2：**数据映射逻辑修复** - 移除`mapPoemArchetypesForFrontend`中的`poetExplanation`过滤条件 ✅
+  - [x] 步骤D.2.3：**功能验证测试** - 测试是折枝和雨木冰古典回响页面是否能正常显示内容 ✅
+  - [x] 步骤D.2.4：**回归测试验证** - 确保观我生等其他章节的功能不受影响 ✅
+  - [x] 步骤D.2.5：**前端空值处理验证** - 验证各种null/undefined组合下前端组件的表现 ✅
 
 
 ---
@@ -195,7 +195,7 @@
 - ✅ **Typography + Spacing Design System建立完成（D.1新增）**
 
 **后续阶段规划**:
-- [ ] D.2: 古典回响显示逻辑修复 - 数据架构完整性重构 - 待开始
+- ✅ D.2: 古典回响显示逻辑修复 - 数据架构完整性重构 - 已完成
 - [ ] D.3及后续UI细节优化任务待定义
 - [ ] 基于D.1-D.2成果的深度视觉优化方向
 

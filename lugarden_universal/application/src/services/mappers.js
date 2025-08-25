@@ -128,7 +128,6 @@ export function mapPoemArchetypesForFrontend(poems) {
   // 输出：{ poems: [{ title, poet_explanation, classicalEcho, coreTheme, problemSolved, spiritualConsolation, chapter, body }] }
   return {
     poems: (poems || [])
-      .filter((p) => (p.poetExplanation ?? '').length > 0)
       .map((p) => {
         // 处理新的JSON格式body字段
         let bodyContent = '';
