@@ -2,8 +2,105 @@
   <div class="min-h-screen" style="background-color: var(--bg-primary);">
     <div class="container mx-auto px-4 py-8">
       <div class="max-w-4xl mx-auto">
-        <!-- 结果展示 -->
-        <div class="result-content">
+        <!-- ================================ -->
+        <!-- D.6移动端解读卡片布局优化 (2025-08-26) -->
+        <!-- ================================ -->
+        <!-- 响应式双布局：移动端插入式布局，PC端保持原有布局 -->
+        <!-- 技术方案：基于断点768px，移动端(<768px)使用新布局，PC端(>=768px)保持现状 -->
+        <!-- ================================ -->
+        
+        <!-- 移动端布局 (< 768px) -->
+        <div class="result-content-mobile md:hidden">
+          <!-- 诗歌内容 -->
+          <div v-if="zhouStore.result.selectedPoem" class="mb-8">
+            <PoemViewer 
+              :poem-title="zhouStore.result.poemTitle || zhouStore.result.selectedPoem.title"
+              :quote-text="selectedPoemQuoteText"
+              :quote-citation="selectedPoemQuoteCitation"
+              :main-text="selectedPoemMainText"
+              animation-delay="0.2s"
+              :show-actions="true"
+              :show-download="true"
+              @copied="handlePoemCopied"
+              @shared="handlePoemShared"
+              @downloaded="handlePoemDownloaded"
+            />
+          </div>
+          
+          <!-- 解诗按钮组 -->
+          <div class="action-group animate-fadeInUp" style="animation-delay: 0.1s;">
+            <div class="max-w-2xl mx-auto">
+              <button 
+                @click="getInterpretation"
+                class="w-full btn-interpret text-change-animation text-body font-medium"
+                :class="{ 'animate-pulse': zhouStore.result.interpretationLoading }"
+                :disabled="zhouStore.result.interpretationLoading"
+              >
+                <span v-if="zhouStore.result.interpretationLoading">解读中...</span>
+                <span v-else>解诗</span>
+              </button>
+              
+              <!-- 解诗卡片 - 紧跟在解诗按钮下方 -->
+              <div v-if="zhouStore.result.interpretationContent" class="animate-fadeInUp" style="animation-delay: 0.2s;">
+                <InterpretationDisplay 
+                  :ai-interpretation="zhouStore.result.interpretationContent"
+                  :poet-explanation="null"
+                  :ai-error="zhouStore.ui.errorMessage"
+                  :show-ai-error="!!zhouStore.ui.errorMessage"
+                  :show-retry-action="true"
+                  :retrying="zhouStore.result.interpretationLoading"
+                  ai-animation-delay="0s"
+                  empty-message=""
+                  @retry-ai="retryAiFeatures"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <!-- 诗人解读按钮组 -->
+          <div class="action-group animate-fadeInUp" style="animation-delay: 0.2s;">
+            <div class="max-w-2xl mx-auto">
+              <button 
+                @click="showPoetExplanation"
+                class="w-full btn-poet text-change-animation text-body font-medium"
+                :class="{ 
+                  'btn-control-poet-clicked': zhouStore.result.poetButtonClicked, 
+                  'scale-95': textChanging 
+                }"
+              >
+                <span>{{ zhouStore.getPoetButtonText() }}</span>
+              </button>
+              
+              <!-- 诗人解读卡片 - 紧跟在诗人解读按钮下方 -->
+              <div v-if="zhouStore.result.poetExplanation" class="animate-fadeInUp" style="animation-delay: 0.2s;">
+                <InterpretationDisplay 
+                  :ai-interpretation="null"
+                  :poet-explanation="zhouStore.result.poetExplanation"
+                  :ai-error="null"
+                  :show-ai-error="false"
+                  :show-retry-action="false"
+                  poet-animation-delay="0s"
+                  empty-message=""
+                />
+              </div>
+            </div>
+          </div>
+          
+          <!-- 重新开始按钮 -->
+          <div class="action-group action-group-last animate-fadeInUp" style="animation-delay: 0.3s;">
+            <div class="max-w-2xl mx-auto">
+              <button 
+                @click="startOver"
+                class="w-full btn-restart text-body font-medium"
+              >
+                <span>重新开始</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- PC端布局 (>= 768px) - 完全保持原有布局结构 -->
+        <div class="result-content hidden md:block">
           <!-- 诗歌内容 -->
           <div v-if="zhouStore.result.selectedPoem" class="mb-8">
             <PoemViewer 
@@ -21,14 +118,6 @@
           </div>
           
           <!-- 操作按钮 -->
-          <!-- ================================ -->
-          <!-- 读诗功能移除记录 (2025-08-26) -->
-          <!-- ================================ -->
-          <!-- 移除内容: ControlButtons组件中的音频相关props和事件 -->
-          <!-- 删除的props: :audio-loading, :audio-playing -->
-          <!-- 删除的事件: @play-poem -->
-          <!-- 恢复说明: 如需恢复读诗功能，需要恢复上述props和事件绑定 -->
-          <!-- ================================ -->
           <div class="mb-8 animate-fadeInUp" style="animation-delay: 0.4s;">
             <ControlButtons 
               :interpretation-loading="zhouStore.result.interpretationLoading"
@@ -43,13 +132,6 @@
           
           <!-- 解读内容区域 -->
           <div class="interpretation-area">
-            <!-- ================================ -->
-            <!-- 读诗功能移除记录 (2025-08-26) -->
-            <!-- ================================ -->
-            <!-- 简化说明: ai-error和show-ai-error现在只依赖zhouStore.ui.errorMessage -->
-            <!-- 原来的逻辑: 同时考虑解读错误和音频错误 -->
-            <!-- 恢复说明: 如需恢复读诗功能，需要重新考虑音频错误的显示逻辑 -->
-            <!-- ================================ -->
             <InterpretationDisplay 
               :ai-interpretation="zhouStore.result.interpretationContent"
               :poet-explanation="zhouStore.result.poetExplanation"
@@ -96,7 +178,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
 import PoemViewer from '../components/PoemViewer.vue'
@@ -107,6 +189,14 @@ import ErrorState from '../components/ErrorState.vue'
 
 const router = useRouter()
 const zhouStore = useZhouStore()
+
+// ================================
+// D.6移动端解读卡片布局优化 (2025-08-26)
+// ================================
+// 移动端按钮交互状态管理
+// 用于支持诗人解读按钮的文本变化动画效果
+// ================================
+const textChanging = ref(false)
 
 // 结果页面
 // 对应原 zhou.html 中的 #result-screen
@@ -178,6 +268,19 @@ const getInterpretation = async () => {
 
 // 显示诗人解读
 const showPoetExplanation = () => {
+  // ================================
+  // D.6移动端解读卡片布局优化 (2025-08-26)
+  // ================================
+  // 添加移动端诗人解读按钮的文本变化动画支持
+  // 与ControlButtons组件保持一致的交互体验
+  // ================================
+  
+  // 触发文本变化动画（移动端）
+  textChanging.value = true
+  setTimeout(() => {
+    textChanging.value = false
+  }, 400) // 与ControlButtons组件动画时间一致
+  
   zhouStore.showPoetExplanation()
 }
 
@@ -242,7 +345,55 @@ const retryAiFeatures = () => {
 
 /* 解读内容样式已迁移到InterpretationDisplay组件 */
 
-/* 响应式设计 */
+/* ================================
+   D.6移动端解读卡片布局优化 - 响应式CSS (2025-08-26)
+   - D.6.6功能回归测试: 优化移动端按钮间距
+   - D.6.6问题修复: 解决解读卡片上下间距不对称问题
+   - D.6.8间距统一优化: 一次性修复间距逻辑，基于用户反馈优化体验
+     移动端&小屏端统一: 按钮16px + 卡片16px = 32px舒适间距
+     与PC端mb-8 (32px)完全对齐，实现全设备间距一致性
+================================ */
+
+/* 移动端布局专用样式 */
+.result-content-mobile {
+  /* 确保移动端布局的流畅性 */
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.action-group {
+  /* 每个按钮组的微调间距 */
+  position: relative;
+}
+
+/* 移动端按钮优化 */
+@media (max-width: 767px) {
+  .result-content-mobile .action-group button {
+    /* 确保按钮在移动端有足够的触摸区域 - 遵循WCAG 2.1 AA无障碍标准 */
+    min-height: 48px; /* 移动端最小触摸目标 44px+ */
+    touch-action: manipulation;
+    margin-bottom: var(--spacing-base); /* 16px - 按钮到卡片或下一个按钮组的间距 */
+  }
+  
+  /* 最后一个按钮组的按钮不需要下边距 */
+  .result-content-mobile .action-group-last button {
+    margin-bottom: 0;
+  }
+  
+  /* 移动端卡片间距微调 - 卡片到下一个按钮组的间距 */
+  .result-content-mobile .action-group .animate-fadeInUp {
+    margin-bottom: var(--spacing-base); /* 16px - 卡片到下一个按钮组的间距 */
+  }
+}
+
+/* 确保PC端布局不受影响 */
+@media (min-width: 768px) {
+  .result-content-desktop {
+    /* PC端保持原有样式，无需额外调整 */
+    position: relative;
+  }
+}
+
+/* 响应式设计 - 保持原有样式 */
 @media (max-width: 768px) {
   .card-base {
     padding: var(--spacing-lg);
@@ -257,6 +408,20 @@ const retryAiFeatures = () => {
   .content-title {
     font-size: var(--font-size-3xl);
     margin-bottom: var(--spacing-lg);
+  }
+  
+  /* 移动端小屏优化 - 适度舒适的布局 */
+  .result-content-mobile .action-group button {
+    margin-bottom: var(--spacing-base); /* 16px - 小屏幕按钮到卡片/下一个按钮的舒适间距 */
+  }
+  
+  .result-content-mobile .action-group-last button {
+    margin-bottom: 0; /* 最后一个按钮不需要下边距 */
+  }
+  
+  /* 小屏幕卡片间距调整 */
+  .result-content-mobile .action-group .animate-fadeInUp {
+    margin-bottom: var(--spacing-base); /* 16px - 卡片到下一个按钮组的间距 */
   }
 }
 

@@ -3,7 +3,7 @@
     <!-- AI解读 -->
     <div 
       v-if="aiInterpretation" 
-      class="interpretation-content unified-content-card card-padding-interpret content-spacing-normal rounded-base animate-fadeInUp"
+      class="interpretation-content unified-content-card card-padding-interpret content-spacing-normal rounded-base animate-fadeInUp" 
       :style="{ animationDelay: aiAnimationDelay }"
     >
       <div class="interpretation-header">
@@ -34,7 +34,7 @@
     <!-- 诗人解读 -->
     <div 
       v-if="poetExplanation" 
-      class="poet-explanation unified-content-card card-padding-interpret content-spacing-normal rounded-base animate-fadeInUp"
+      class="poet-explanation unified-content-card card-padding-interpret content-spacing-normal rounded-base animate-fadeInUp" 
       :style="{ animationDelay: poetAnimationDelay }"
     >
       <div class="interpretation-header">

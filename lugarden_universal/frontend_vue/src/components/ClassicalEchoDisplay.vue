@@ -11,7 +11,7 @@
     <div class="mt-3xl mb-3xl animate-fadeInUp" :style="{ animationDelay: contentAnimationDelay }">
       
       <!-- 统一内容卡片 -->
-      <div v-if="hasAnyContent" class="unified-content-card card-padding-normal content-spacing-normal rounded-base">
+      <div v-if="hasAnyContent" class="unified-content-card card-padding-normal content-spacing-normal rounded-base" >
         
         <!-- 引文篇目名 - 居中加粗 -->
         <div v-if="quoteCitation" class="text-heading-spaced text-center font-bold italic tracking-wide">
