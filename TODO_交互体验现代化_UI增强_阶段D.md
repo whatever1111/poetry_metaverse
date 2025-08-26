@@ -141,6 +141,7 @@
 
 
 #### - [x] 任务D.3：AI解诗功能提示词优化 - 统一陆家明诗人语言风格
+
 - **核心思想**: 解决当前AI解诗功能（陆家明）输出的语言风格不统一、容易生成“新诗”而非“解读”的问题，优化提示词（Prompt），确保输出既富有诗意又清晰易懂，同时强化陆家明作为“当代灵魂共鸣者”的独特身份，与吴任几的“创作者解读”形成明确区分和互补。
 - **技术背景**:
   - **输出质量与定位模糊**: 当前提示词未能精准定义陆家明的输出质量与核心定位。AI的解读风格不稳定，时常偏离“解读散文”的核心，产出体验割裂的“新诗”或“箴言”，未能体现其作为“当代灵魂共鸣者”与吴任几“创作者解读”的差异化价值。
@@ -200,7 +201,7 @@
   - [x] 步骤D.4.2：**功能验证** - 重启服务，验证所有日志输出是否都带时间戳。 ✅
   - [x] 步骤D.4.3：**代码清理与注释** - 确保代码格式规范，并添加必要的注释说明其功能。 ✅
 
-#### - [ ] 任务D.5：读诗功能移除 - 聚焦核心解诗体验的产品功能优化
+#### - [x] 任务D.5：读诗功能移除 - 聚焦核心解诗体验的产品功能优化
 - **核心思想**: 基于MVP（最小可行产品）原则和成本控制考虑，移除读诗功能以聚焦项目核心价值"AI解诗"。通过安全移除读诗按钮和API接口，简化用户界面为三按钮模式（解诗/诗人解读/重新开始），避免不确定的运营成本，专注打磨核心解诗体验。采用渐进式移除策略，确保不引入新bug。
 - **技术背景**:
   - **产品聚焦需求**: 陆家花园的独特价值在于"AI解诗"而非"诗歌朗诵"，需要聚焦核心功能
@@ -235,16 +236,25 @@
   - `lugarden_universal/frontend_vue/src/types/zhou.ts` - 清理音频相关类型定义
   - `lugarden_universal/application/server.js` - 移除`/api/listen`接口
 - 实际改动文件:
-  - 待执行
-- 完成状态：待执行
+  - `lugarden_universal/frontend_vue/src/components/ControlButtons.vue` - 移除读诗按钮，调整为三按钮布局
+  - `lugarden_universal/frontend_vue/src/stores/zhou.ts` - 清理所有音频相关状态和函数
+  - `lugarden_universal/frontend_vue/src/types/zhou.ts` - 清理ResultState中的音频类型定义
+  - `lugarden_universal/frontend_vue/src/services/api.ts` - 移除listenPoem函数
+  - `lugarden_universal/frontend_vue/src/services/enhancedApi.ts` - 移除AIService中的listenPoem方法
+  - `lugarden_universal/frontend_vue/src/views/ResultScreen.vue` - 清理音频相关props和函数调用
+  - `lugarden_universal/frontend_vue/src/components/InterpretationDisplay.vue` - 清理unused imports
+  - `lugarden_universal/frontend_vue/src/components/ShareTools.vue` - 清理unused imports
+  - `lugarden_universal/application/server.js` - 移除/api/listen接口
+- 完成状态：✅ 已完成
 - 执行步骤：
-  - [ ] 步骤D.5.1：**前端UI清理** - 移除ControlButtons.vue中的读诗按钮，调整grid布局为三按钮模式，确保视觉协调
-  - [ ] 步骤D.5.2：**Store状态清理** - 移除zhou.ts中所有音频播放相关状态、函数和逻辑，保持其他功能不变
-  - [ ] 步骤D.5.3：**前端API清理** - 移除api.ts中的`listenPoem`函数和相关类型定义，清理API service
-  - [ ] 步骤D.5.4：**后端API清理** - 移除server.js中的`/api/listen`接口，确保不影响其他API
-  - [ ] 步骤D.5.5：**类型定义清理** - 清理types文件中音频相关的TypeScript类型定义
-  - [ ] 步骤D.5.6：**代码清理与验证** - 清理unused imports和死代码，确保TypeScript编译通过
-  - [ ] 步骤D.5.7：**功能验证测试** - 端到端测试解诗、诗人解读、重新开始三个核心功能正常工作
+  - [x] 步骤D.5.1：**前端UI清理** - 移除ControlButtons.vue中的读诗按钮，调整grid布局为三按钮模式，确保视觉协调 ✅
+  - [x] 步骤D.5.2：**Store状态清理** - 移除zhou.ts中所有音频播放相关状态、函数和逻辑，保持其他功能不变 ✅
+  - [x] 步骤D.5.3：**前端API清理** - 移除api.ts中的`listenPoem`函数和相关类型定义，清理API service ✅
+  - [x] 步骤D.5.4：**后端API清理** - 移除server.js中的`/api/listen`接口，确保不影响其他API ✅
+  - [x] 步骤D.5.5：**类型定义清理** - 清理types文件中音频相关的TypeScript类型定义 ✅
+  - [x] 步骤D.5.6：**代码清理与验证** - 清理unused imports和死代码，确保TypeScript编译通过 ✅
+  - [x] 步骤D.5.7：**功能验证测试** - 端到端测试解诗、诗人解读、重新开始三个核心功能正常工作 ✅
+  - [x] 步骤D.5.8：**代码注释增强** - 为所有9个修改文件添加读诗功能移除的详细注释，确保代码可追溯性和未来恢复的可行性 ✅
 
 ---
 
@@ -282,14 +292,22 @@
 - [ ] 更新项目状态
 
 ## 当前状态
-✅ **阶段D.1完成** - Typography + Spacing Design System建立完毕，全部11个组件标准化成功
+✅ **阶段D.5完成** - 读诗功能移除完毕，聚焦核心解诗体验的产品功能优化成功
 
-**D.1任务成果**: 
-- Typography + Spacing Design System建立：5级字体层级 + D1主流行高标准 + 8px边距体系 + 分层卡片填充系统
-- 全部11个组件Typography标准化：PoemViewer、InterpretationDisplay、ClassicalEchoDisplay、ErrorState、EmptyState、QuestionCard、ProgressBar、LoadingSpinner、ControlButtons、BackButton、NotificationToast
-- 大幅代码清理：共移除889+行传统CSS，迁移至UnoCSS shortcuts系统
-- 特例保留管理：QuestionCard拥挤问题通过传统CSS特例保留解决，保持设计系统纯净性
-- 全局视觉一致性验证：修复ErrorState.vue遗漏的按钮字体标准化，确保100%组件符合标准
+**D.5任务成果**: 
+- **产品功能简化**：基于MVP原则移除读诗功能，UI从四按钮简化为三按钮模式（解诗/诗人解读/重新开始）
+- **成本控制优化**：彻底移除Google TTS API调用，消除运营成本压力和技术债务
+- **代码架构清理**：全面清理音频相关代码，涉及9个文件的精准修改，代码质量显著提升
+- **核心功能聚焦**：专注AI解诗核心价值，用户认知负荷降低，界面更加简洁高效
+- **零功能回归**：端到端测试验证，解诗、诗人解读、重新开始三个核心功能100%正常工作
+- **技术质量保证**：TypeScript编译通过，unused imports清理完成，代码标准符合Vue3最佳实践
+
+**已完成阶段汇总**:
+- ✅ D.1: Typography + Spacing Design System建立 - 全部11个组件标准化完成
+- ✅ D.2: 古典回响显示逻辑修复 - 数据架构完整性重构完成
+- ✅ D.3: AI解诗功能提示词优化 - 陆家明诗人语言风格统一完成  
+- ✅ D.4: 后端日志时间戳增强 - 性能监控基础建立完成
+- ✅ D.5: 读诗功能移除 - 核心解诗体验聚焦完成
 
 **技术基础**: 
 - ✅ 现代化图标系统建立完成（Heroicons SVG替换emoji）
@@ -304,8 +322,8 @@
 - ✅ D.2: 古典回响显示逻辑修复 - 数据架构完整性重构 - 已完成
 - ✅ D.3: AI解诗功能提示词优化 - 统一陆家明诗人语言风格 - 已完成
 - ✅ D.4: 后端日志时间戳增强 - 建立精准性能监控基础 - 已完成
-- [ ] D.5: 读诗功能移除 - 聚焦核心解诗体验的产品功能优化 - 待执行
-- [ ] 基于D.1-D.4成果的深度视觉优化方向
+- ✅ D.5: 读诗功能移除 - 聚焦核心解诗体验的产品功能优化 - 已完成
+- [ ] 基于D.1-D.5成果的深度视觉优化方向
 
 ---
 

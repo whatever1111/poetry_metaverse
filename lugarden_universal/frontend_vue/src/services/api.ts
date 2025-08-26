@@ -227,12 +227,17 @@ export async function interpretPoem(poem: string, title: string): Promise<{ inte
   return apiClient.post('/interpret', { poem, title })
 }
 
-/**
- * 请求读诗服务
- */
-export async function listenPoem(poem: string, title: string): Promise<{ audioUrl: string }> {
-  return apiClient.post('/listen', { poem, title })
-}
+// ================================
+// 读诗功能移除记录 (2025-08-26)
+// ================================
+// 移除内容: listenPoem函数
+// 删除的函数:
+// export async function listenPoem(poem: string, title: string): Promise<{ audioContent: string }>
+// 函数功能: 调用后端/api/listen接口，获取Google TTS音频内容
+// 恢复说明: 如需恢复读诗功能，需要恢复listenPoem函数，调用/api/listen接口
+// ================================
+
+
 
 // ================================
 // 错误处理辅助函数

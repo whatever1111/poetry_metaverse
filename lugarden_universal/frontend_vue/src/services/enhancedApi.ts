@@ -219,17 +219,16 @@ export class AIService {
     return this.apiClient.post('/interpret', { poem, title, combination, chapter })
   }
 
-  /**
-   * 请求诗歌朗读
-   */
-  async listenPoem(poem: string, title: string): Promise<{
-    audioUrl: string
-    duration: number
-    generated_at: string
-    poem_title: string
-  }> {
-    return this.apiClient.post('/listen', { poem, title })
-  }
+  // ================================
+  // 读诗功能移除记录 (2025-08-26)
+  // ================================
+  // 移除内容: AIService类中的listenPoem方法
+  // 删除的方法:
+  // async listenPoem(poem: string, title: string): Promise<{ audioContent: string }>
+  // 方法功能: 调用后端/api/listen接口，获取Google TTS音频内容
+  // 恢复说明: 如需恢复读诗功能，需要在AIService类中恢复listenPoem方法
+  // ================================
+
 }
 
 // ================================

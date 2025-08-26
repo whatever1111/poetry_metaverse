@@ -164,16 +164,24 @@ export interface QuizState {
   quizEndTime: number | null
 }
 
+// ================================
+// 读诗功能移除记录 (2025-08-26)
+// ================================
+// 移除内容: ResultState接口中的音频相关类型定义
+// 删除的属性类型:
+// - audioUrl: string | null
+// - audioPlaying: boolean
+// - audioLoading: boolean
+// - audioElement: HTMLAudioElement | null
+// - audioError: string | null
+// 恢复说明: 如需恢复读诗功能，需要在ResultState接口中恢复上述属性类型定义
+// ================================
+
 export interface ResultState {
   selectedPoem: ZhouPoem | null
   poemTitle: string | null
   interpretationContent: string | null
   interpretationLoading: boolean
-  audioUrl: string | null
-  audioPlaying: boolean
-  audioLoading: boolean
-  audioElement: HTMLAudioElement | null
-  audioError: string | null
   poetExplanation: string | null
   poetButtonClicked: boolean
   poetButtonClickCount: number

@@ -21,16 +21,21 @@
           </div>
           
           <!-- 操作按钮 -->
+          <!-- ================================ -->
+          <!-- 读诗功能移除记录 (2025-08-26) -->
+          <!-- ================================ -->
+          <!-- 移除内容: ControlButtons组件中的音频相关props和事件 -->
+          <!-- 删除的props: :audio-loading, :audio-playing -->
+          <!-- 删除的事件: @play-poem -->
+          <!-- 恢复说明: 如需恢复读诗功能，需要恢复上述props和事件绑定 -->
+          <!-- ================================ -->
           <div class="mb-8 animate-fadeInUp" style="animation-delay: 0.4s;">
             <ControlButtons 
               :interpretation-loading="zhouStore.result.interpretationLoading"
-              :audio-loading="zhouStore.result.audioLoading"
-              :audio-playing="zhouStore.result.audioPlaying"
               :poet-button-clicked="zhouStore.result.poetButtonClicked"
               :poet-button-click-count="zhouStore.result.poetButtonClickCount"
               :poet-button-text="zhouStore.getPoetButtonText()"
               @interpret="getInterpretation"
-              @play-poem="playPoem"
               @poet-explanation="showPoetExplanation"
               @restart="startOver"
             />
@@ -38,13 +43,20 @@
           
           <!-- 解读内容区域 -->
           <div class="interpretation-area">
+            <!-- ================================ -->
+            <!-- 读诗功能移除记录 (2025-08-26) -->
+            <!-- ================================ -->
+            <!-- 简化说明: ai-error和show-ai-error现在只依赖zhouStore.ui.errorMessage -->
+            <!-- 原来的逻辑: 同时考虑解读错误和音频错误 -->
+            <!-- 恢复说明: 如需恢复读诗功能，需要重新考虑音频错误的显示逻辑 -->
+            <!-- ================================ -->
             <InterpretationDisplay 
               :ai-interpretation="zhouStore.result.interpretationContent"
               :poet-explanation="zhouStore.result.poetExplanation"
-              :ai-error="zhouStore.result.audioError || zhouStore.ui.errorMessage"
-              :show-ai-error="!!zhouStore.result.audioError || !!zhouStore.ui.errorMessage"
+              :ai-error="zhouStore.ui.errorMessage"
+              :show-ai-error="!!zhouStore.ui.errorMessage"
               :show-retry-action="true"
-              :retrying="zhouStore.result.audioLoading || zhouStore.result.interpretationLoading"
+              :retrying="zhouStore.result.interpretationLoading"
               ai-animation-delay="0.6s"
               poet-animation-delay="0.8s"
               empty-message="点击上方按钮获取诗歌解读"
@@ -162,14 +174,7 @@ const getInterpretation = async () => {
   }
 }
 
-// 播放诗歌
-const playPoem = async () => {
-  try {
-    await zhouStore.playPoem()
-  } catch (error) {
-    console.error('播放诗歌失败:', error)
-  }
-}
+
 
 // 显示诗人解读
 const showPoetExplanation = () => {
@@ -206,19 +211,24 @@ const handlePoemDownloaded = (fileName: string) => {
   // 可以在这里显示下载成功提示
 }
 
+// ================================
+// 读诗功能移除记录 (2025-08-26)
+// ================================
+// 移除内容: retryAiFeatures函数中的音频功能重试逻辑
+// 删除的功能: playPoem函数调用
+// 原有逻辑: 同时重试解读和读诗功能
+// 恢复说明: 如需恢复读诗功能，需要在retryAiFeatures中添加playPoem函数调用
+// ================================
+
 // 重试AI功能
 const retryAiFeatures = () => {
   // 清除错误状态
   zhouStore.clearError()
   
-  // 可以选择重新获取解读或音频
+  // 重试解读功能
   console.log('重试AI功能')
   
-  // 如果有具体的错误类型，可以根据错误类型决定重试什么
-  if (zhouStore.result.audioError) {
-    // 重试音频功能
-    playPoem()
-  } else if (!zhouStore.result.interpretationContent) {
+  if (!zhouStore.result.interpretationContent) {
     // 重试解读功能
     getInterpretation()
   }

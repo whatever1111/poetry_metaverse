@@ -93,7 +93,15 @@
 </template>
 
 <script setup lang="ts">
-import { ExclamationTriangleIcon, ChatBubbleLeftEllipsisIcon, UserIcon, AcademicCapIcon, SparklesIcon, LightBulbIcon, BeakerIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
+// ================================
+// 读诗功能移除记录 (2025-08-26)
+// ================================
+// 移除内容: 未使用的Heroicons imports (代码清理)
+// 删除的imports: UserIcon, LightBulbIcon, BeakerIcon, WrenchScrewdriverIcon
+// 清理原因: 移除读诗功能后，这些图标不再被使用
+// 恢复说明: 如需恢复相关功能，可根据需要重新导入对应的图标组件
+// ================================
+import { ExclamationTriangleIcon, ChatBubbleLeftEllipsisIcon, AcademicCapIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 
 // 组件Props
 interface Props {

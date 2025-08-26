@@ -12,21 +12,7 @@
         <span v-else>解诗</span>
       </button>
       
-      <!-- 读诗按钮 -->
-      <button 
-        @click="handlePlayPoem" 
-        class="btn-listen text-change-animation text-body font-medium"
-        :class="{ 
-          'btn-control-playing': audioPlaying,
-          'animate-pulse': audioLoading 
-        }"
-        :disabled="audioLoading || disabled"
-      >
-        <span v-if="audioLoading">播放中...</span>
-        <span v-else-if="audioPlaying">暂停</span>
-        <span v-else>读诗</span>
-      </button>
-      
+
       <!-- 诗人解读按钮 -->
       <button 
         @click="handlePoetExplanation" 
@@ -65,31 +51,41 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+// ================================
+// 读诗功能移除记录 (2025-08-26)
+// ================================
+// 移除内容: 读诗按钮相关的Props和Emits
+// 删除的Props: audioLoading?: boolean, audioPlaying?: boolean
+// 删除的Emits: playPoem: []
+// 删除的按钮: 读诗按钮及其点击处理函数 handlePlayPoem
+// 布局调整: 从4按钮网格调整为3按钮网格 (grid-1x4 -> grid-1x3, grid-cols-4 -> grid-cols-3)
+// 恢复说明: 如需恢复读诗功能，需要:
+// 1. 恢复audioLoading, audioPlaying props和playPoem emit
+// 2. 恢复读诗按钮模板和handlePlayPoem函数
+// 3. 调整gridLayout类型定义和gridClass计算逻辑
+// 4. 恢复第4个子元素的动画延迟 (animation-delay: 0.4s)
+// ================================
+
 // 组件Props
 interface Props {
   interpretationLoading?: boolean
-  audioLoading?: boolean
-  audioPlaying?: boolean
   poetButtonClicked?: boolean
   poetButtonClickCount?: number
   disabled?: boolean
   showHints?: boolean
-  gridLayout?: 'grid-2x2' | 'grid-1x4' | 'grid-responsive'
+  gridLayout?: 'grid-2x2' | 'grid-1x3' | 'grid-responsive'
   poetButtonText?: string
 }
 
 // 组件Emits
 interface Emits {
   interpret: []
-  playPoem: []
   poetExplanation: []
   restart: []
 }
 
 const props = withDefaults(defineProps<Props>(), {
   interpretationLoading: false,
-  audioLoading: false,
-  audioPlaying: false,
   poetButtonClicked: false,
   poetButtonClickCount: 0,
   disabled: false,
@@ -108,11 +104,11 @@ const gridClass = computed(() => {
   switch (props.gridLayout) {
     case 'grid-2x2':
       return 'grid-cols-2'
-    case 'grid-1x4':
+    case 'grid-1x3':
       return 'grid-cols-1'
     case 'grid-responsive':
     default:
-      return 'grid-cols-2 max-md:grid-cols-1 max-md:gap-3 lg:gap-4'
+      return 'grid-cols-3 max-md:grid-cols-1 max-md:gap-3 lg:gap-4'
   }
 })
 
@@ -122,10 +118,7 @@ const handleInterpretation = () => {
   emit('interpret')
 }
 
-const handlePlayPoem = () => {
-  if (props.disabled || props.audioLoading) return
-  emit('playPoem')
-}
+
 
 const handlePoetExplanation = () => {
   if (props.disabled) return
@@ -167,7 +160,6 @@ const handleRestart = () => {
 .grid > *:nth-child(1) { animation-delay: 0.1s; }
 .grid > *:nth-child(2) { animation-delay: 0.2s; }
 .grid > *:nth-child(3) { animation-delay: 0.3s; }
-.grid > *:nth-child(4) { animation-delay: 0.4s; }
 
 @keyframes fadeInUp {
   from {

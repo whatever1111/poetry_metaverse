@@ -190,27 +190,38 @@ ${poem}
   }
 });
 
-app.post('/api/listen', async (req, res) => {
-  try {
-    const { poem, title } = req.body || {};
-    // 使用诗歌内容作为朗读文本
-    const text = poem || '';
-    const payload = {
-      input: { text },
-      voice: { languageCode: 'cmn-CN', name: 'cmn-CN-Wavenet-B' },
-      audioConfig: { audioEncoding: 'MP3' },
-    };
-    const ttsResponse = await fetch(
-      `https://texttospeech.googleapis.com/v1/text:synthesize?key=${process.env.API_KEY}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
-    );
-    if (!ttsResponse.ok) throw new Error(`Google TTS API call failed: ${ttsResponse.statusText}`);
-    const data = await ttsResponse.json();
-    return res.json(data);
-  } catch (e) {
-    return res.status(500).json({ message: '朗读失败', error: String(e?.message || e) });
-  }
-});
+// ================================
+// 读诗功能移除记录 (2025-08-26)
+// ================================
+// 移除内容: /api/listen 接口 (Google TTS音频合成服务)
+// 删除的接口:
+// app.post('/api/listen', async (req, res) => {
+//   try {
+//     const { poem, title } = req.body || {};
+//     const text = poem || '';
+//     const payload = {
+//       input: { text },
+//       voice: { languageCode: 'cmn-CN', name: 'cmn-CN-Wavenet-B' },
+//       audioConfig: { audioEncoding: 'MP3' },
+//     };
+//     const ttsResponse = await fetch(
+//       `https://texttospeech.googleapis.com/v1/text:synthesize?key=${process.env.API_KEY}`,
+//       { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
+//     );
+//     if (!ttsResponse.ok) throw new Error(`Google TTS API call failed: ${ttsResponse.statusText}`);
+//     const data = await ttsResponse.json();
+//     return res.json(data);
+//   } catch (e) {
+//     return res.status(500).json({ message: '朗读失败', error: String(e?.message || e) });
+//   }
+// });
+// 接口功能: 调用Google Cloud Text-to-Speech API，将诗歌文本转换为音频
+// 移除原因: 基于MVP原则和成本控制考虑，聚焦核心AI解诗功能
+// 恢复说明: 如需恢复读诗功能，需要:
+// 1. 恢复上述/api/listen接口代码
+// 2. 确保Google TTS API密钥配置正确
+// 3. 考虑添加音频缓存机制以优化性能和成本
+// ================================
 
 // 路由挂载（仅 DB）
 app.use('/api', publicRouter);
