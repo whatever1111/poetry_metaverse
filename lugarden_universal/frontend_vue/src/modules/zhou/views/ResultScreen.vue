@@ -180,7 +180,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useZhouStore } from '../stores/zhou'
+import { useZhouStore } from '../../../stores/zhou'
 import PoemViewer from '@/modules/zhou/components/PoemViewer.vue'
 import ControlButtons from '@/modules/zhou/components/ControlButtons.vue'
 import InterpretationDisplay from '@/modules/zhou/components/InterpretationDisplay.vue'

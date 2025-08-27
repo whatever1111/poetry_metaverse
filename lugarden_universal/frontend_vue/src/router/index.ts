@@ -4,7 +4,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'MainProjectSelection',
-    component: () => import('../views/MainProjectSelection.vue'),
+    component: () => import('@/modules/zhou/views/MainProjectSelection.vue'),
     meta: {
       title: '周与春秋 - 主项目选择',
       requiresAuth: false,
@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/project/:projectId?',
     name: 'SubProjectSelection',
-    component: () => import('../views/SubProjectSelection.vue'),
+    component: () => import('@/modules/zhou/views/SubProjectSelection.vue'),
     meta: {
       title: '子项目选择',
       requiresAuth: false,
@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/quiz/:chapter?',
     name: 'QuizScreen',
-    component: () => import('../views/QuizScreen.vue'),
+    component: () => import('@/modules/zhou/views/QuizScreen.vue'),
     meta: {
       title: '问答测试',
       requiresAuth: false,
@@ -37,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/classical-echo',
     name: 'ClassicalEchoScreen',
-    component: () => import('../views/ClassicalEchoScreen.vue'),
+    component: () => import('@/modules/zhou/views/ClassicalEchoScreen.vue'),
     meta: {
       title: '古典回响',
       requiresAuth: false,
@@ -48,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/result',
     name: 'ResultScreen',
-    component: () => import('../views/ResultScreen.vue'),
+    component: () => import('@/modules/zhou/views/ResultScreen.vue'),
     meta: {
       title: '您的诗歌',
       requiresAuth: false,

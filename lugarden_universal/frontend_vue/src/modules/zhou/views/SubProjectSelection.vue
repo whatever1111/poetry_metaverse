@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useZhouStore } from '../stores/zhou'
+import { useZhouStore } from '../../../stores/zhou'
 import BackButton from '@/modules/zhou/components/BackButton.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import { PencilIcon } from '@heroicons/vue/24/outline'
