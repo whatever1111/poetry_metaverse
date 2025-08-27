@@ -357,7 +357,18 @@ graph TB
     - ✅ TypeScript类型检查：0错误  
     - ✅ 构建成功 (1.85s)，开发服务器正常启动 (1241ms)
     - ✅ 路由导航正常，所有视图路径更新成功
-    - [ ] 步骤A.1.2.5：**关键风险点-Store迁移** - zhou.ts (740行) 迁移并更新18个依赖文件的import
+    - [x] 步骤A.1.2.5：**关键风险点-Store迁移** - zhou.ts (740行) 迁移并更新18个依赖文件的import
+      **实际改动文件**：
+      - 移动`stores/zhou.ts`至`modules/zhou/stores/zhou.ts` (740行完整迁移)
+      - 修复zhou.ts内部import路径 (3处：services/enhancedApi, services/api, types/zhou)
+      - 更新5个视图文件的store import路径 (../../../stores/zhou → ../stores/zhou)
+      - 创建`modules/zhou/stores/index.ts`导出文件
+      
+    **验证结果（A.1.2.5）**：
+    - ✅ 740行Store代码100%迁移完成，原stores目录清空
+    - ✅ TypeScript类型检查：0错误
+    - ✅ 构建成功 (1.92s)，开发服务器正常启动 (1245ms)
+    - ✅ Zhou模块Store层架构建立，内部依赖路径清晰
     - [ ] 步骤A.1.2.6：**服务层迁移** - API服务和类型定义到zhou模块
     - [ ] 步骤A.1.2.7：创建zhou模块统一导出文件，验证模块完整性
   - **子任务A.1.3: 共享层建立** (高风险 - 组件分类决策复杂，错误分类导致循环依赖)

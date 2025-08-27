@@ -1,7 +1,7 @@
 import { computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
-import { getApiServices, type ApiServiceFactory } from '../services/enhancedApi'
-import { isApiError, getUserFriendlyErrorMessage } from '../services/api'
+import { getApiServices, type ApiServiceFactory } from '../../../services/enhancedApi'
+import { isApiError, getUserFriendlyErrorMessage } from '../../../services/api'
 import type {
   ZhouProject,
   ZhouPoem,
@@ -12,7 +12,7 @@ import type {
   QuizState,
   ResultState,
   UIState
-} from '../types/zhou'
+} from '../../../types/zhou'
 
 export const useZhouStore = defineStore('zhou', () => {
   // ================================
