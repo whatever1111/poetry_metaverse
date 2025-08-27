@@ -181,11 +181,11 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
-import PoemViewer from '../components/PoemViewer.vue'
-import ControlButtons from '../components/ControlButtons.vue'
-import InterpretationDisplay from '../components/InterpretationDisplay.vue'
-import LoadingSpinner from '../components/LoadingSpinner.vue'
-import ErrorState from '../components/ErrorState.vue'
+import PoemViewer from '@/modules/zhou/components/PoemViewer.vue'
+import ControlButtons from '@/modules/zhou/components/ControlButtons.vue'
+import InterpretationDisplay from '@/modules/zhou/components/InterpretationDisplay.vue'
+import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
+import ErrorState from '@/shared/components/ErrorState.vue'
 
 const router = useRouter()
 const zhouStore = useZhouStore()

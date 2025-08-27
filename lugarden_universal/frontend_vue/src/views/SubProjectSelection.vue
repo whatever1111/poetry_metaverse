@@ -75,10 +75,10 @@
 import { onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
-import BackButton from '../components/BackButton.vue'
-import LoadingSpinner from '../components/LoadingSpinner.vue'
+import BackButton from '@/modules/zhou/components/BackButton.vue'
+import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import { PencilIcon } from '@heroicons/vue/24/outline'
-import EmptyState from '../components/EmptyState.vue'
+import EmptyState from '@/shared/components/EmptyState.vue'
 
 const router = useRouter()
 const route = useRoute()

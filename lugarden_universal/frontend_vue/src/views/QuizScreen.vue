@@ -117,13 +117,13 @@
 import { onMounted, watch, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '../stores/zhou'
-import QuestionCard from '../components/QuestionCard.vue'
-import LoadingSpinner from '../components/LoadingSpinner.vue'
+import QuestionCard from '@/modules/zhou/components/QuestionCard.vue'
+import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import { ArrowDownTrayIcon } from '@heroicons/vue/24/outline'
-import ErrorState from '../components/ErrorState.vue'
-import EmptyState from '../components/EmptyState.vue'
-import BackButton from '../components/BackButton.vue'
-import ProgressBar from '../components/ProgressBar.vue'
+import ErrorState from '@/shared/components/ErrorState.vue'
+import EmptyState from '@/shared/components/EmptyState.vue'
+import BackButton from '@/modules/zhou/components/BackButton.vue'
+import ProgressBar from '@/modules/zhou/components/ProgressBar.vue'
 
 const router = useRouter()
 const route = useRoute()

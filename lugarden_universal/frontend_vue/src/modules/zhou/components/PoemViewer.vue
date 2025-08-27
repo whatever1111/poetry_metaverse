@@ -103,8 +103,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { PoemViewerProps } from '../types/zhou'
-import ShareTools from './ShareTools.vue'
+import type { PoemViewerProps } from '../../../types/zhou'
+import ShareTools from '@/shared/components/ShareTools.vue'
 import { 
   DocumentDuplicateIcon, 
   ShareIcon, 

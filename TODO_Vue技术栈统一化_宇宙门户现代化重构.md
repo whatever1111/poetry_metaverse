@@ -212,7 +212,7 @@ graph TB
   - **Import路径**: 预计50+处import语句需要调整
   - **总计影响**: 60-80个文件，包含重构、新开发、配置调整
 
-- 完成状态：✅ A.1.1已完成 (2025-08-28)
+- 完成状态：✅ A.1.1已完成 (2025-08-28) ✅ A.1.2已完成 (2025-08-28)
 
 - **分类与判断依据说明**：
   
@@ -316,9 +316,34 @@ graph TB
     - ✅ 构建成功完成 (2.22s, 仅CSS警告)
     - ✅ 开发服务器正常启动 (1319ms)
   - **子任务A.1.2: Zhou模块迁移** (高风险 - 影响25-30个文件，Store迁移产生连锁反应)
-    - [ ] 步骤A.1.2.1：**组件迁移第一批** - 基础UI组件 (LoadingSpinner, ErrorState, EmptyState, BackButton, ProgressBar)
-    - [ ] 步骤A.1.2.2：**组件迁移第二批** - 核心业务组件 (QuestionCard, PoemViewer, ClassicalEchoDisplay)
-    - [ ] 步骤A.1.2.3：**组件迁移第三批** - 交互组件 (InterpretationDisplay, ControlButtons, ShareTools等)
+    - [x] 步骤A.1.2.1：**组件迁移第一批** - 基础UI组件 (LoadingSpinner, ErrorState, EmptyState, AnimationWrapper, NotificationToast)
+      **实际改动文件**：
+      - 移动5个组件至`shared/components/`
+      - 更新4个视图文件import路径 (ResultScreen, QuizScreen, SubProjectSelection, MainProjectSelection)
+      - 创建`shared/components/index.ts`导出文件
+
+    - [x] 步骤A.1.2.2：**组件迁移第二批** - 核心业务组件 (QuestionCard, PoemViewer, ClassicalEchoDisplay) 
+      **实际改动文件**：
+      - 移动3个组件至`modules/zhou/components/`
+      - 更新3个视图文件import路径 (QuizScreen, ResultScreen, ClassicalEchoScreen)
+      - 更新组件内部依赖路径 (PoemViewer, QuestionCard)
+      - 创建`modules/zhou/components/index.ts`导出文件
+
+    - [x] 步骤A.1.2.3：**组件迁移第三批** - 交互组件 (InterpretationDisplay, ControlButtons, BackButton, ProgressBar, ShareTools)
+      **实际改动文件**：
+      - 移动4个Zhou专用组件至`modules/zhou/components/`
+      - 移动1个通用组件至`shared/components/` (ShareTools)
+      - 更新3个视图文件import路径 (ResultScreen, QuizScreen, SubProjectSelection)
+      - 更新1个组件内部依赖路径 (PoemViewer)
+      - 更新2个导出文件 (zhou/components/index.ts, shared/components/index.ts)
+    
+    **验证结果（A.1.2.1-A.1.2.3）**：
+    - ✅ 13个组件100%迁移完成，components目录完全清空
+    - ✅ Zhou模块：8个专用组件，Shared层：7个通用组件
+    - ✅ TypeScript类型检查：0错误
+    - ✅ 构建成功 (1.99s)，开发服务器正常启动 (1380ms)
+    - ✅ 模块化路径别名工作正常，无循环依赖
+
     - [ ] 步骤A.1.2.4：**视图迁移** - 所有5个页面视图到`modules/zhou/views/`，逐个修复import
     - [ ] 步骤A.1.2.5：**关键风险点-Store迁移** - zhou.ts (740行) 迁移并更新18个依赖文件的import
     - [ ] 步骤A.1.2.6：**服务层迁移** - API服务和类型定义到zhou模块
