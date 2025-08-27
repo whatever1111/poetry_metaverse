@@ -20,7 +20,10 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@/modules': fileURLToPath(new URL('./src/modules', import.meta.url)),
+      '@/shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
+      '@/core': fileURLToPath(new URL('./src/core', import.meta.url))
     },
   },
   // 构建优化配置
