@@ -19,7 +19,7 @@
       <ErrorState 
         v-else-if="error.hasError"
         :message="error.message"
-        @retry="loadUniverses"
+        @retry="portalStore.retryLoad"
       />
       
       <!-- 宇宙列表 -->
@@ -37,77 +37,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { LoadingSpinner, ErrorState } from '@/shared/components'
 import { UniverseCard } from '../components'
-import type { ErrorState as ErrorStateType } from '@/shared/types'
+import { usePortalStore } from '../stores'
 import type { Universe } from '../types'
 
 // 路由
 const router = useRouter()
 
-// 响应式状态
-const loading = ref(false)
-const error = ref<ErrorStateType>({ hasError: false, message: '' })
+// Portal状态管理
+const portalStore = usePortalStore()
 
-// 临时宇宙数据（MVP阶段硬编码）
-const universes = ref<Universe[]>([
-  {
-    id: 'zhou',
-    name: '周与春秋练习',
-    description: '基于吴任几《周与春秋练习》系列诗歌的互动体验，通过问答与解诗探索古典诗歌的现代意义。',
-    status: 'active',
-    meta: '诗歌问答 · 古典解读'
-  },
-  {
-    id: 'maoxiaodou',
-    name: '毛小豆故事演绎',
-    description: '毛小豆宇宙的奇幻冒险，包含前篇、正篇、番外的完整故事体系。',
-    status: 'developing',
-    meta: '故事世界 · 角色扮演'
-  }
-])
+// 计算属性
+const loading = computed(() => portalStore.isLoading)
+const error = computed(() => ({
+  hasError: portalStore.hasError,
+  message: portalStore.errorMessage
+}))
+const universes = computed(() => portalStore.visibleUniverses)
 
 // 方法
 const loadUniverses = async () => {
-  loading.value = true
-  error.value = { hasError: false, message: '' }
-  
-  try {
-    // TODO: 后续替换为API调用
-    await new Promise(resolve => setTimeout(resolve, 500)) // 模拟加载
-    // const response = await getUniverses()
-    // universes.value = response.data
-  } catch (err) {
-    error.value = {
-      hasError: true,
-      message: '加载宇宙列表失败，请稍后重试'
-    }
-  } finally {
-    loading.value = false
-  }
+  await portalStore.loadUniverses()
 }
 
 const navigateToUniverse = (universe: Universe) => {
-  if (universe.status !== 'active') {
-    // TODO: 可以显示开发中提示
+  // 选择宇宙
+  portalStore.selectUniverse(universe)
+  
+  if (!portalStore.isUniverseAccessible(universe)) {
+    // TODO: 可以显示开发中提示或模态框
     console.log(`${universe.name} 还在开发中，敬请期待！`)
     return
   }
   
-  // 导航到具体宇宙
-  if (universe.id === 'zhou') {
-    router.push('/zhou')
-  }
-  // TODO: 添加其他宇宙的导航（如毛小豆宇宙）
+  // 获取导航路径并跳转
+  const navigationPath = portalStore.getUniverseNavigationPath(universe.id)
+  router.push(navigationPath)
 }
 
-
-
 // 生命周期
-onMounted(() => {
-  loadUniverses()
+onMounted(async () => {
+  // 预加载数据，如果已有缓存则不重新加载
+  await portalStore.preloadUniverseData()
 })
 </script>
 

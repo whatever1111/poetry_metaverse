@@ -1,0 +1,346 @@
+import { computed, reactive } from 'vue'
+import { defineStore } from 'pinia'
+import { getApiServices, type ApiServiceFactory } from '@/shared/services/enhancedApi'
+import { isApiError, getUserFriendlyErrorMessage } from '@/shared/services/api'
+import type {
+  Universe,
+  PortalState,
+  UniverseStatus,
+  UniverseNavigation
+} from '../types/portal'
+import type { ID } from '@/shared/types/common'
+
+export const usePortalStore = defineStore('portal', () => {
+  // ================================
+  // API服务初始化
+  // ================================
+  let apiServices: ApiServiceFactory | null = null
+
+  const initializeApiServices = () => {
+    if (!apiServices) {
+      apiServices = getApiServices({
+        onLoadingChange: (loading: boolean) => {
+          state.loading = loading
+        },
+        onError: (error: unknown) => {
+          console.error('Portal API错误:', error)
+          state.error.hasError = true
+          state.error.message = getUserFriendlyErrorMessage(error)
+        },
+        enableLogging: true,
+        enableCaching: true,
+        cacheDuration: 10 * 60 * 1000 // 10分钟缓存
+      })
+    }
+    return apiServices
+  }
+
+  // ================================
+  // 状态管理
+  // ================================
+  const state = reactive<PortalState>({
+    universes: [],
+    loading: false,
+    error: {
+      hasError: false,
+      message: '',
+      code: undefined
+    },
+    selectedUniverse: undefined
+  })
+
+  // 宇宙导航配置（将来可从API获取）
+  const navigationConfig: UniverseNavigation = {
+    zhou: '/zhou',
+    maoxiaodou: '/maoxiaodou',
+    // 可扩展其他宇宙
+  }
+
+  // ================================
+  // 计算属性 (Getters)
+  // ================================
+
+  // 活跃的宇宙列表
+  const activeUniverses = computed(() => {
+    return state.universes.filter(universe => universe.status === 'active')
+  })
+
+  // 开发中的宇宙列表
+  const developingUniverses = computed(() => {
+    return state.universes.filter(universe => universe.status === 'developing')
+  })
+
+  // 所有可显示的宇宙（排除归档的）
+  const visibleUniverses = computed(() => {
+    return state.universes.filter(universe => universe.status !== 'archived')
+  })
+
+  // 宇宙总数统计
+  const universeStats = computed(() => {
+    const stats = {
+      total: state.universes.length,
+      active: 0,
+      developing: 0,
+      maintenance: 0,
+      archived: 0
+    }
+
+    state.universes.forEach(universe => {
+      stats[universe.status]++
+    })
+
+    return stats
+  })
+
+  // 是否有可用的宇宙
+  const hasActiveUniverses = computed(() => {
+    return activeUniverses.value.length > 0
+  })
+
+  // 是否正在加载或有错误
+  const isLoading = computed(() => state.loading)
+  const hasError = computed(() => state.error.hasError)
+  const errorMessage = computed(() => state.error.message)
+
+  // ================================
+  // Actions - 数据获取
+  // ================================
+
+  // 加载宇宙列表
+  async function loadUniverses(refresh = false): Promise<void> {
+    if (state.loading) return
+
+    try {
+      state.loading = true
+      clearError()
+
+      // 如果有缓存且不需要强制刷新，返回
+      if (!refresh && state.universes.length > 0) {
+        state.loading = false
+        return
+      }
+
+      // TODO: 替换为真实的API调用
+      // const api = initializeApiServices()
+      // const portalService = api.getPortalService()
+      // const response = await portalService.getUniverseList(refresh)
+      // state.universes = response.data
+
+      // 模拟API调用和数据加载
+      await simulateApiCall()
+      
+      // 硬编码数据（MVP阶段）
+      state.universes = [
+        {
+          id: 'zhou',
+          name: '周与春秋练习',
+          description: '基于吴任几《周与春秋练习》系列诗歌的互动体验，通过问答与解诗探索古典诗歌的现代意义。',
+          status: 'active',
+          meta: '诗歌问答 · 古典解读',
+          version: '2.0.0',
+          lastUpdated: '2025-08-28'
+        },
+        {
+          id: 'maoxiaodou',
+          name: '毛小豆故事演绎',
+          description: '毛小豆宇宙的奇幻冒险，包含前篇、正篇、番外的完整故事体系。',
+          status: 'developing',
+          meta: '故事世界 · 角色扮演',
+          version: '0.8.0',
+          lastUpdated: '2025-08-15'
+        },
+        {
+          id: 'poet_universe',
+          name: '诗人宇宙',
+          description: '探索多位诗人的世界观和创作理念，通过AI对话体验不同的诗歌美学。',
+          status: 'developing',
+          meta: '诗人对话 · AI体验',
+          version: '0.3.0',
+          lastUpdated: '2025-08-01'
+        }
+      ]
+
+      console.log('宇宙列表加载成功:', {
+        total: state.universes.length,
+        active: activeUniverses.value.length,
+        developing: developingUniverses.value.length
+      })
+
+    } catch (error) {
+      console.error('加载宇宙列表失败:', error)
+      
+      if (isApiError(error)) {
+        state.error.hasError = true
+        state.error.message = error.message
+        state.error.code = error.code
+      } else {
+        state.error.hasError = true
+        state.error.message = error instanceof Error ? error.message : '加载宇宙列表失败'
+      }
+    } finally {
+      state.loading = false
+    }
+  }
+
+  // 模拟API调用延迟
+  async function simulateApiCall(): Promise<void> {
+    const delay = Math.random() * 1000 + 500 // 500-1500ms随机延迟
+    await new Promise(resolve => setTimeout(resolve, delay))
+  }
+
+  // 刷新宇宙列表
+  async function refreshUniverses(): Promise<void> {
+    return loadUniverses(true)
+  }
+
+  // ================================
+  // Actions - 宇宙操作
+  // ================================
+
+  // 选择宇宙
+  function selectUniverse(universe: Universe): void {
+    state.selectedUniverse = universe
+    console.log('选择宇宙:', universe.name)
+  }
+
+  // 获取宇宙导航路径
+  function getUniverseNavigationPath(universeId: ID): string {
+    const id = String(universeId) // 转换为字符串
+    return navigationConfig[id] || '/'
+  }
+
+  // 检查宇宙是否可访问
+  function isUniverseAccessible(universe: Universe): boolean {
+    return universe.status === 'active'
+  }
+
+  // 获取宇宙状态文本
+  function getUniverseStatusText(status: UniverseStatus): string {
+    const statusMap: Record<UniverseStatus, string> = {
+      active: '已上线',
+      developing: '开发中',
+      maintenance: '维护中',
+      archived: '已归档'
+    }
+    return statusMap[status] || '未知'
+  }
+
+  // 根据ID查找宇宙
+  function findUniverseById(id: ID): Universe | undefined {
+    return state.universes.find(universe => universe.id === id)
+  }
+
+  // ================================
+  // Actions - 错误处理
+  // ================================
+
+  // 清除错误状态
+  function clearError(): void {
+    state.error.hasError = false
+    state.error.message = ''
+    state.error.code = undefined
+  }
+
+  // 设置错误信息
+  function setError(message: string, code?: string): void {
+    state.error.hasError = true
+    state.error.message = message
+    state.error.code = code
+  }
+
+  // 重试加载
+  async function retryLoad(): Promise<void> {
+    clearError()
+    return loadUniverses(true)
+  }
+
+  // ================================
+  // Actions - 状态管理
+  // ================================
+
+  // 重置Portal状态
+  function resetPortalState(): void {
+    state.universes = []
+    state.selectedUniverse = undefined
+    clearError()
+    console.log('Portal状态已重置')
+  }
+
+  // 更新宇宙信息（用于实时更新）
+  function updateUniverse(universeId: ID, updates: Partial<Universe>): void {
+    const index = state.universes.findIndex(u => u.id === universeId)
+    if (index !== -1) {
+      state.universes[index] = { ...state.universes[index], ...updates }
+      console.log('宇宙信息已更新:', universeId, updates)
+    }
+  }
+
+  // 添加新宇宙（用于动态扩展）
+  function addUniverse(universe: Universe): void {
+    const exists = state.universes.some(u => u.id === universe.id)
+    if (!exists) {
+      state.universes.push(universe)
+      console.log('新宇宙已添加:', universe.name)
+    }
+  }
+
+  // ================================
+  // Actions - 缓存管理
+  // ================================
+
+  // 检查数据是否过期
+  function isDataStale(): boolean {
+    // 简单的过期检查，实际项目中可以更复杂
+    return state.universes.length === 0
+  }
+
+  // 预加载宇宙数据
+  async function preloadUniverseData(): Promise<void> {
+    if (isDataStale()) {
+      await loadUniverses()
+    }
+  }
+
+  // ================================
+  // 导出状态和方法
+  // ================================
+  return {
+    // 状态
+    state,
+
+    // 计算属性
+    activeUniverses,
+    developingUniverses,
+    visibleUniverses,
+    universeStats,
+    hasActiveUniverses,
+    isLoading,
+    hasError,
+    errorMessage,
+
+    // 数据获取
+    loadUniverses,
+    refreshUniverses,
+    preloadUniverseData,
+
+    // 宇宙操作
+    selectUniverse,
+    getUniverseNavigationPath,
+    isUniverseAccessible,
+    getUniverseStatusText,
+    findUniverseById,
+
+    // 错误处理
+    clearError,
+    setError,
+    retryLoad,
+
+    // 状态管理
+    resetPortalState,
+    updateUniverse,
+    addUniverse,
+
+    // 工具方法
+    isDataStale
+  }
+})

@@ -27,7 +27,7 @@ export default {
     'UniversePortal'
   ],
   stores: [
-    // 'portal'
+    'portal'
   ],
   types: [
     'portal'
