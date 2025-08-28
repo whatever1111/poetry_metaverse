@@ -21,9 +21,7 @@ export default {
   description: '陆家花园宇宙门户 - 诗歌宇宙项目的统一入口和导航中心',
   version: '1.0.0',
   components: [
-    // 'UniverseCard',
-    // 'PortalHeader',
-    // ... 待开发组件
+    'UniverseCard'
   ],
   views: [
     'UniversePortal'
@@ -32,6 +30,6 @@ export default {
     // 'portal'
   ],
   types: [
-    // 'portal'
+    'portal'
   ]
 }

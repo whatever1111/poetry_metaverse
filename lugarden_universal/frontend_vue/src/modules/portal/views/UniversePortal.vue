@@ -24,26 +24,13 @@
       
       <!-- 宇宙列表 -->
       <div v-else class="universes-grid">
-        <div 
+        <UniverseCard
           v-for="universe in universes" 
           :key="universe.id"
-          class="universe-card"
-          @click="navigateToUniverse(universe)"
-        >
-          <div class="card-header">
-            <h3 class="universe-name">{{ universe.name }}</h3>
-            <span class="universe-status" :class="universe.status">
-              {{ getStatusText(universe.status) }}
-            </span>
-          </div>
-          <p class="universe-description">{{ universe.description }}</p>
-          <div class="card-footer">
-            <span class="universe-meta">{{ universe.meta }}</span>
-            <button class="enter-button">
-              进入宇宙
-            </button>
-          </div>
-        </div>
+          :universe="universe"
+          @click="navigateToUniverse"
+          @enter="navigateToUniverse"
+        />
       </div>
     </main>
   </div>
@@ -53,7 +40,9 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { LoadingSpinner, ErrorState } from '@/shared/components'
+import { UniverseCard } from '../components'
 import type { ErrorState as ErrorStateType } from '@/shared/types'
+import type { Universe } from '../types'
 
 // 路由
 const router = useRouter()
@@ -63,7 +52,7 @@ const loading = ref(false)
 const error = ref<ErrorStateType>({ hasError: false, message: '' })
 
 // 临时宇宙数据（MVP阶段硬编码）
-const universes = ref([
+const universes = ref<Universe[]>([
   {
     id: 'zhou',
     name: '周与春秋练习',
@@ -100,7 +89,7 @@ const loadUniverses = async () => {
   }
 }
 
-const navigateToUniverse = (universe: any) => {
+const navigateToUniverse = (universe: Universe) => {
   if (universe.status !== 'active') {
     // TODO: 可以显示开发中提示
     console.log(`${universe.name} 还在开发中，敬请期待！`)
@@ -114,14 +103,7 @@ const navigateToUniverse = (universe: any) => {
   // TODO: 添加其他宇宙的导航（如毛小豆宇宙）
 }
 
-const getStatusText = (status: string) => {
-  const statusMap: Record<string, string> = {
-    active: '已上线',
-    developing: '开发中',
-    maintenance: '维护中'
-  }
-  return statusMap[status] || '未知'
-}
+
 
 // 生命周期
 onMounted(() => {
@@ -169,86 +151,7 @@ onMounted(() => {
   gap: 2rem;
 }
 
-/* 宇宙卡片样式 */
-.universe-card {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
 
-.universe-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-}
-
-.universe-name {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #2d3748;
-  margin: 0;
-}
-
-.universe-status {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.universe-status.active {
-  background: #c6f6d5;
-  color: #22543d;
-}
-
-.universe-status.developing {
-  background: #feebc8;
-  color: #c05621;
-}
-
-.universe-description {
-  color: #4a5568;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.universe-meta {
-  color: #718096;
-  font-size: 0.875rem;
-}
-
-.enter-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.enter-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
 
 /* 响应式设计 */
 @media (max-width: 768px) {
@@ -263,10 +166,6 @@ onMounted(() => {
   .universes-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
-  }
-  
-  .universe-card {
-    padding: 1.5rem;
   }
 }
 </style>
