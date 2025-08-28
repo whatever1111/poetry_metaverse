@@ -1,7 +1,7 @@
 import { computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
-import { getApiServices, type ApiServiceFactory } from '../../../services/enhancedApi'
-import { isApiError, getUserFriendlyErrorMessage } from '../../../services/api'
+import { getApiServices, type ApiServiceFactory } from '@/shared/services/enhancedApi'
+import { isApiError, getUserFriendlyErrorMessage } from '@/shared/services/api'
 import type {
   ZhouProject,
   ZhouPoem,
