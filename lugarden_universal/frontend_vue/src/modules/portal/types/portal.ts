@@ -1,7 +1,7 @@
 // Portal模块类型定义
 // 包含Universe、PortalState等Portal特定的类型定义
 
-import type { ID, Status } from '@/shared/types/common'
+import type { ID } from '@/shared/types/common'
 
 // 宇宙状态类型
 export type UniverseStatus = 'active' | 'developing' | 'maintenance' | 'archived'

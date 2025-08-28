@@ -231,48 +231,75 @@
    - [x] 步骤E.3.6：执行端口迁移，验证完整用户流程
    - [x] 步骤E.3.7：更新相关文档和启动脚本
 
-### 任务E.4：子项目问答流程Bug修复
+### 任务E.4：周与春秋路由循环Bug修复
 
-**目标**：修复从子项目选择页面无法进入问答页面的关键Bug，恢复Zhou模块核心用户流程
+**目标**：修复从zhou页面进入子项目后点击"开始问答"无限重定向回zhou页面的严重Bug，恢复Zhou模块核心用户流程
 
 **问题背景**：
-- 用户从子项目选择页面点击"开始问答"后无法正常进入问答页面
-- 这影响了Zhou模块的核心用户体验流程：Portal → 主项目 → 子项目 → 问答 → 结果
+- 用户访问 `localhost:5173/zhou` → 点击进入 → 进入子项目选择页面
+- 点击任意子项目的"开始问答"按钮后，页面直接重定向回zhou主项目进入页面
+- 形成无限循环，用户无法进入问答测试环节，核心功能完全不可用
 
-**根本原因分析**：
-- 路由跳转中的中文章节名编码问题：`encodeURIComponent(chapterName)`
-- `selectChapter()` 方法可能未正确设置问答所需的状态数据
-- 问答页面加载时找不到对应的问题数据或状态不匹配
+**根本原因分析**（通过Git二分法确定）：
+- **故障引入点**: commit `9907770` ("Technical debt fix and redundant code cleanup")
+- **具体错误**: quiz路由配置中错误添加了 `requiresProject: true`
+- **配置不匹配**: 路径 `/quiz/:chapter?` 中没有projectId参数，但meta要求检查该参数
+- **循环机制**: 路由守卫检查 `to.params.projectId` 为undefined → 重定向到 `/zhou` → 用户再次操作 → 重复循环
+
+**故障机制详解**：
+```typescript
+// ❌ 错误配置 (9907770引入)
+{
+  path: '/quiz/:chapter?',           // 路径中只有chapter参数
+  meta: {
+    requiresProject: true,          // ❌ 要求检查不存在的projectId参数！
+    requiresChapter: true
+  }
+}
+
+// 路由守卫逻辑导致循环
+if (to.meta.requiresProject) {
+  const projectId = to.params.projectId  // undefined！
+  if (!projectId) {
+    return next('/zhou')  // 重定向回zhou页面
+  }
+}
+```
 
 **核心挑战**：
-- **用户流程中断**: 影响核心功能可用性
-- **状态同步复杂**: 涉及路由、Store状态、数据加载的同步
-- **中文编码处理**: URL路径中的中文参数处理
+- **路由配置一致性**: 路由路径参数与meta检查要求必须匹配
+- **Git历史排障**: 需要通过二分法定位问题引入的确切commit
+- **开发生产环境同步**: 5173开发环境和3000生产环境都需要修复
 
 **技术方案**：
-- 排查路由参数传递和接收逻辑
-- 验证Zhou Store中的状态设置和数据准备
-- 修复字符编码和路由匹配问题
-- 添加错误处理和状态验证
+- 通过Git二分法定位问题引入的确切commit
+- 移除quiz路由中错误的 `requiresProject: true` 配置
+- 保留正确的 `requiresChapter: true` 配置
+- 重新构建前端确保生产环境同步更新
 
 **优先级**：🚨 P0 - 极高优先级
 - **极高用户影响** - 核心功能完全不可用
 - **零容忍问题** - 新前端基础可用性的关键
 
-预期改动文件：
-- `lugarden_universal/frontend_vue/src/modules/zhou/views/SubProjectSelection.vue` (路由跳转逻辑)
-- `lugarden_universal/frontend_vue/src/modules/zhou/stores/zhou.ts` (状态管理修复)
-- `lugarden_universal/frontend_vue/src/router/index.ts` (路由配置检查)
-- `lugarden_universal/frontend_vue/src/modules/zhou/views/QuizScreen.vue` (状态接收逻辑)
+**排障方法论（Git二分法）**：
+- 测试commit序列: `643a17f` ✅ → `082f5b1` ✅ → `d345be7` ✅ → `9907770` ❌
+- 代码差异分析: 生成 `d345be7` → `9907770` 的diff文件
+- 精确定位: 发现router/index.ts中的配置错误
 
-- 完成状态：🔄 待开始
+实际改动文件：
+- `lugarden_universal/frontend_vue/src/router/index.ts` - 移除quiz路由错误的requiresProject配置
+- `lugarden_universal/frontend_vue/src/modules/portal/types/portal.ts` - 清理unused Status import
+- `故障根因分析报告_zhou路由循环bug.md` - 完整排障过程文档
+
+- 完成状态：✅ 已完成 (2025-08-28)
 - 执行步骤：
-   - [ ] 步骤E.4.1：重现Bug，确定问题的具体表现和触发条件
-   - [ ] 步骤E.4.2：排查路由跳转逻辑，检查参数传递和编码问题
-   - [ ] 步骤E.4.3：验证Zhou Store状态设置，确保selectChapter()正确工作
-   - [ ] 步骤E.4.4：检查QuizScreen组件状态接收和数据加载逻辑
-   - [ ] 步骤E.4.5：修复发现的问题并添加错误处理机制
-   - [ ] 步骤E.4.6：端到端测试完整用户流程，确保从Portal到结果页面全流程正常
+   - [x] 步骤E.4.1：用户报告Bug，确认问题可复现 - zhou→子项目→问答重定向循环
+   - [x] 步骤E.4.2：Git二分法排障 - 测试多个commit确定9907770为问题引入点  
+   - [x] 步骤E.4.3：代码差异分析 - 生成并分析9907770的完整变更diff
+   - [x] 步骤E.4.4：精确定位根因 - 发现quiz路由配置中requiresProject设置错误
+   - [x] 步骤E.4.5：应用修复 - 移除错误配置，保留正确的requiresChapter检查
+   - [x] 步骤E.4.6：验证修复效果 - 5173开发环境和3000生产环境功能均恢复正常
+   - [x] 步骤E.4.7：文档化排障过程 - 创建完整的故障根因分析报告供团队学习
 
 ### 任务E.5：Portal API实现与前后端契合
 

@@ -40,7 +40,6 @@ const routes: Array<RouteRecordRaw> = [
       title: '问答测试',
       requiresAuth: false,
       step: 3,
-      requiresProject: true,
       requiresChapter: true
     }
   },
