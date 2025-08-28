@@ -3,7 +3,7 @@
  * 集成拦截器、错误处理、重试机制等高级功能
  */
 
-import { ApiClient, ApiError, type IApiError } from './api'
+import { ApiClient, ApiError } from './api'
 import { 
   InterceptorManager, 
   authInterceptor, 
@@ -11,9 +11,9 @@ import {
   createLoadingInterceptor,
   createErrorHandlingInterceptor,
   createCacheInterceptor,
-  type RequestConfig
+  type ExtendedRequestConfig
 } from './interceptors'
-import type { UniverseContentResponse } from '@/modules/zhou/types/zhou'
+import type { IApiError, UniverseContentResponse } from '@/shared/types/api'
 
 /**
  * 增强的API客户端类
@@ -112,7 +112,7 @@ export class EnhancedApiClient extends ApiClient {
     
     try {
       // 构建请求配置
-      let requestConfig: RequestConfig = {
+      let requestConfig: ExtendedRequestConfig = {
         url: endpoint,
         method: options.method || 'GET',
         headers: {

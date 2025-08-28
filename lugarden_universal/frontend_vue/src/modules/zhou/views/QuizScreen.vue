@@ -122,8 +122,8 @@ import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import { ArrowDownTrayIcon } from '@heroicons/vue/24/outline'
 import ErrorState from '@/shared/components/ErrorState.vue'
 import EmptyState from '@/shared/components/EmptyState.vue'
-import BackButton from '@/modules/zhou/components/BackButton.vue'
-import ProgressBar from '@/modules/zhou/components/ProgressBar.vue'
+import BackButton from '@/shared/components/BackButton.vue'
+import ProgressBar from '@/shared/components/ProgressBar.vue'
 
 const router = useRouter()
 const route = useRoute()

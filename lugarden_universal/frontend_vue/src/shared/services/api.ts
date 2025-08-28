@@ -3,24 +3,11 @@
  * 封装所有后端API调用，提供类型安全的接口和统一的错误处理
  */
 
-import type { UniverseContentResponse } from '@/modules/zhou/types/zhou'
-
-// API错误类型定义
-export interface IApiError {
-  name: string
-  code: string
-  message: string
-  statusCode: number
-  details?: any
-}
-
-// 请求配置接口
-interface RequestConfig {
-  timeout?: number
-  retries?: number
-  retryDelay?: number
-  signal?: AbortSignal
-}
+import type { 
+  UniverseContentResponse, 
+  IApiError, 
+  RequestConfig 
+} from '@/shared/types/api'
 
 // 默认配置
 const DEFAULT_CONFIG: Required<RequestConfig> = {

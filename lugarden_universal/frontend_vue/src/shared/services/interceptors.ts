@@ -3,21 +3,22 @@
  * 统一处理认证、错误处理、加载状态等
  */
 
-import type { IApiError } from './api'
+import type { IApiError, RequestConfig } from '@/shared/types/api'
 
 // 请求拦截器类型
-export type RequestInterceptor = (config: RequestConfig) => RequestConfig | Promise<RequestConfig>
+export type RequestInterceptor = (config: ExtendedRequestConfig) => ExtendedRequestConfig | Promise<ExtendedRequestConfig>
 export type ResponseInterceptor = (response: Response) => Response | Promise<Response>
 export type ErrorInterceptor = (error: IApiError) => IApiError | Promise<IApiError>
 
-// 请求配置接口
-export interface RequestConfig {
+// 扩展的请求配置接口（增加拦截器特有字段）
+export interface ExtendedRequestConfig extends RequestConfig {
   url: string
   method: string
-  headers: Record<string, string>
+  headers?: Record<string, string>
   body?: any
-  timeout?: number
-  retries?: number
+  cache?: boolean
+  cacheKey?: string
+  cacheDuration?: number
 }
 
 // 拦截器管理器
@@ -60,7 +61,7 @@ export class InterceptorManager {
   }
 
   // 执行请求拦截器
-  async executeRequestInterceptors(config: RequestConfig): Promise<RequestConfig> {
+  async executeRequestInterceptors(config: ExtendedRequestConfig): Promise<ExtendedRequestConfig> {
     let result = config
     for (const interceptor of this.requestInterceptors) {
       result = await interceptor(result)
@@ -99,7 +100,7 @@ export const authInterceptor: RequestInterceptor = (config) => {
   // 检查是否需要认证（Admin API）
   if (config.url.includes('/admin/')) {
     // 这里可以添加session或token处理
-    config.headers['X-Requested-With'] = 'XMLHttpRequest'
+    config.headers!['X-Requested-With'] = 'XMLHttpRequest'
   }
   return config
 }
@@ -135,7 +136,7 @@ export function createLoadingInterceptor(
  * 记录请求和响应
  */
 export const logInterceptor = {
-  request: ((config: RequestConfig) => {
+  request: ((config: ExtendedRequestConfig) => {
     console.log(`[API Request] ${config.method} ${config.url}`, {
       headers: config.headers,
       body: config.body
