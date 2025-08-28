@@ -22,24 +22,45 @@
         @retry="portalStore.retryLoad"
       />
       
+      <!-- 空状态 -->
+      <EmptyState
+        v-else-if="universes.length === 0"
+        title="暂无可用宇宙"
+        description="目前还没有已上线的宇宙项目，请稍后再来探索吧～"
+        icon="🌌"
+        :show-action="true"
+        action-text="刷新列表"
+        @action="portalStore.refreshUniverses"
+      />
+      
       <!-- 宇宙列表 -->
       <div v-else class="universes-grid">
         <UniverseCard
-          v-for="universe in universes" 
+          v-for="(universe, index) in universes" 
           :key="universe.id"
           :universe="universe"
+          :index="index"
           @click="navigateToUniverse"
           @enter="navigateToUniverse"
         />
       </div>
     </main>
+
+    <!-- 通知提示 -->
+    <NotificationToast
+      v-if="showToast"
+      :message="toastMessage"
+      :type="toastType"
+      :duration="3000"
+      @close="showToast = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { LoadingSpinner, ErrorState } from '@/shared/components'
+import { LoadingSpinner, ErrorState, EmptyState, NotificationToast } from '@/shared/components'
 import { UniverseCard } from '../components'
 import { usePortalStore } from '../stores'
 import type { Universe } from '../types'
@@ -49,6 +70,11 @@ const router = useRouter()
 
 // Portal状态管理
 const portalStore = usePortalStore()
+
+// Toast通知状态
+const showToast = ref(false)
+const toastMessage = ref('')
+const toastType = ref<'success' | 'error' | 'warning' | 'info'>('info')
 
 // 计算属性
 const loading = computed(() => portalStore.isLoading)
@@ -63,18 +89,32 @@ const loadUniverses = async () => {
   await portalStore.loadUniverses()
 }
 
-const navigateToUniverse = (universe: Universe) => {
+// 显示Toast通知
+const showToastMessage = (message: string, type: 'success' | 'error' | 'warning' | 'info' = 'info') => {
+  toastMessage.value = message
+  toastType.value = type
+  showToast.value = true
+}
+
+const navigateToUniverse = async (universe: Universe) => {
   // 选择宇宙
-  portalStore.selectUniverse(universe)
+  await portalStore.selectUniverse(universe)
   
   if (!portalStore.isUniverseAccessible(universe)) {
-    // TODO: 可以显示开发中提示或模态框
-    console.log(`${universe.name} 还在开发中，敬请期待！`)
+    // 显示友好的开发中提示
+    const statusMessages = {
+      developing: `${universe.name} 正在紧张开发中，敬请期待！🚧`,
+      maintenance: `${universe.name} 正在维护升级，请稍后再来～🔧`,
+      archived: `${universe.name} 已暂时下线，感谢您的关注！📦`
+    }
+    const message = statusMessages[universe.status as keyof typeof statusMessages] || `${universe.name} 暂时无法访问`
+    showToastMessage(message, 'info')
     return
   }
   
   // 获取导航路径并跳转
   const navigationPath = portalStore.getUniverseNavigationPath(universe.id)
+  showToastMessage(`正在进入 ${universe.name}～`, 'success')
   router.push(navigationPath)
 }
 

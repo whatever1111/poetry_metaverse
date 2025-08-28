@@ -1,9 +1,14 @@
 <template>
-  <div 
-    class="universe-card"
-    :class="{ 'card-disabled': !isActive }"
-    @click="handleCardClick"
+  <AnimationWrapper
+    animation-type="fadeInUp"
+    :delay="animationDelay"
+    class="universe-card-wrapper"
   >
+    <div 
+      class="universe-card"
+      :class="{ 'card-disabled': !isActive }"
+      @click="handleCardClick"
+    >
     <div class="card-header">
       <h3 class="universe-name">{{ universe.name }}</h3>
       <span class="universe-status" :class="universe.status">
@@ -21,21 +26,25 @@
         {{ buttonText }}
       </button>
     </div>
-  </div>
+    </div>
+  </AnimationWrapper>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { AnimationWrapper } from '@/shared/components'
 import type { Universe, UniverseCardEvents } from '../types'
 
 // Props定义
 interface Props {
   universe: Universe
   disabled?: boolean
+  index?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  disabled: false
+  disabled: false,
+  index: 0
 })
 
 // 事件定义
@@ -44,6 +53,11 @@ const emit = defineEmits<UniverseCardEvents>()
 // 计算属性
 const isActive = computed(() => {
   return props.universe.status === 'active' && !props.disabled
+})
+
+const animationDelay = computed(() => {
+  // 为每个卡片提供50ms的交错延迟，最大延迟200ms
+  return Math.min(props.index * 50, 200)
 })
 
 const statusText = computed(() => {
