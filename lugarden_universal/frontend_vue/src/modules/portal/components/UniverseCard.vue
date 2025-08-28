@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { AnimationWrapper } from '@/shared/components'
-import type { Universe, UniverseCardEvents } from '../types'
+import type { Universe, UniverseCardEvents } from '@/modules/portal/types'
 
 // Props定义
 interface Props {

@@ -73,8 +73,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useZhouStore } from '../stores/zhou'
-import type { ZhouProject } from '../types/zhou'
+import { useZhouStore } from '@/modules/zhou/stores/zhou'
+import type { ZhouProject } from '@/modules/zhou/types/zhou'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import ErrorState from '@/shared/components/ErrorState.vue'
 import EmptyState from '@/shared/components/EmptyState.vue'

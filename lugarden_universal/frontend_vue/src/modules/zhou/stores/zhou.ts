@@ -12,7 +12,7 @@ import type {
   QuizState,
   ResultState,
   UIState
-} from '../types/zhou'
+} from '@/modules/zhou/types/zhou'
 
 export const useZhouStore = defineStore('zhou', () => {
   // ================================
@@ -247,8 +247,8 @@ export const useZhouStore = defineStore('zhou', () => {
     navigation.canGoBack = true
     appState.currentStep = 2
     
-    // 更新导航历史
-    navigation.navigationHistory.push('/project')
+    // 更新导航历史 - 匹配实际路由结构
+    navigation.navigationHistory.push(`/project/${project.id}`)
     
     console.log('选择主项目:', project.name)
   }
@@ -275,7 +275,7 @@ export const useZhouStore = defineStore('zhou', () => {
     }
     
     appState.currentStep = 3
-    navigation.navigationHistory.push('/quiz')
+    navigation.navigationHistory.push(`/quiz/${chapterName}`)
     
     console.log('选择章节:', chapterName, '问题数量:', quiz.totalQuestions)
   }
@@ -291,7 +291,7 @@ export const useZhouStore = defineStore('zhou', () => {
         appState.currentStep = 1
         navigation.currentMainProject = null
         navigation.currentChapterName = null
-      } else if (previousPath === '/project') {
+      } else if (previousPath.startsWith('/project/')) {
         appState.currentStep = 2
         navigation.currentChapterName = null
         // 重置问答状态

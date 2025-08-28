@@ -61,9 +61,9 @@
 import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { LoadingSpinner, ErrorState, EmptyState, NotificationToast } from '@/shared/components'
-import { UniverseCard } from '../components'
-import { usePortalStore } from '../stores'
-import type { Universe } from '../types'
+import { UniverseCard } from '@/modules/portal/components'
+import { usePortalStore } from '@/modules/portal/stores'
+import type { Universe } from '@/modules/portal/types'
 
 // 路由
 const router = useRouter()

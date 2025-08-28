@@ -25,9 +25,7 @@ export default {
     'PoemViewer', 
     'ClassicalEchoDisplay',
     'InterpretationDisplay',
-    'ControlButtons',
-    'BackButton',
-    'ProgressBar'
+    'ControlButtons'
   ],
   views: [
     'MainProjectSelection',

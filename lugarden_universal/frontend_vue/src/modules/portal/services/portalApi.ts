@@ -4,7 +4,7 @@
  */
 
 import { EnhancedApiClient } from '@/shared/services/enhancedApi'
-import type { Universe, UniverseStatus } from '../types/portal'
+import type { Universe, UniverseStatus } from '@/modules/portal/types/portal'
 import type { ID } from '@/shared/types/common'
 
 // Portal API响应类型定义

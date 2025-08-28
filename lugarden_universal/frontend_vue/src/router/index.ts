@@ -94,23 +94,29 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title as string
   }
 
-  // TODO: 根据实际需求实现更复杂的路由守卫逻辑
-  // 例如：检查是否已选择项目、是否已完成问答等
-  
-  // 示例路由守卫逻辑（后续在状态管理中完善）
+  // 路由守卫逻辑：检查页面访问权限和状态
   if (to.meta.requiresProject) {
-    // 检查是否已选择项目
-    console.log('Route guard: checking project selection for', to.path)
+    // 检查是否已选择项目 - 如果直接访问需要项目的页面，重定向到项目选择
+    const projectId = to.params.projectId
+    if (!projectId) {
+      console.warn('Route guard: 直接访问需要项目的页面，重定向到Zhou项目选择')
+      return next('/zhou')
+    }
   }
   
   if (to.meta.requiresChapter) {
-    // 检查是否已选择章节
-    console.log('Route guard: checking chapter selection for', to.path)
+    // 检查是否已选择章节 - 如果直接访问需要章节的页面，重定向到项目选择
+    const chapter = to.params.chapter
+    if (!chapter) {
+      console.warn('Route guard: 直接访问需要章节的页面，重定向到项目选择')
+      return next('/zhou')
+    }
   }
   
   if (to.meta.requiresQuizComplete) {
-    // 检查是否已完成问答
-    console.log('Route guard: checking quiz completion for', to.path)
+    // 允许直接访问结果页面，由组件内部处理数据获取和验证
+    // 这样用户可以直接访问结果页面URL分享
+    console.log('Route guard: 允许访问结果页面，由组件处理数据验证')
   }
 
   next()
