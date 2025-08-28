@@ -231,6 +231,235 @@
    - [x] 步骤E.3.6：执行端口迁移，验证完整用户流程
    - [x] 步骤E.3.7：更新相关文档和启动脚本
 
+### 任务E.4：子项目问答流程Bug修复
+
+**目标**：修复从子项目选择页面无法进入问答页面的关键Bug，恢复Zhou模块核心用户流程
+
+**问题背景**：
+- 用户从子项目选择页面点击"开始问答"后无法正常进入问答页面
+- 这影响了Zhou模块的核心用户体验流程：Portal → 主项目 → 子项目 → 问答 → 结果
+
+**根本原因分析**：
+- 路由跳转中的中文章节名编码问题：`encodeURIComponent(chapterName)`
+- `selectChapter()` 方法可能未正确设置问答所需的状态数据
+- 问答页面加载时找不到对应的问题数据或状态不匹配
+
+**核心挑战**：
+- **用户流程中断**: 影响核心功能可用性
+- **状态同步复杂**: 涉及路由、Store状态、数据加载的同步
+- **中文编码处理**: URL路径中的中文参数处理
+
+**技术方案**：
+- 排查路由参数传递和接收逻辑
+- 验证Zhou Store中的状态设置和数据准备
+- 修复字符编码和路由匹配问题
+- 添加错误处理和状态验证
+
+**优先级**：🚨 P0 - 极高优先级
+- **极高用户影响** - 核心功能完全不可用
+- **零容忍问题** - 新前端基础可用性的关键
+
+预期改动文件：
+- `lugarden_universal/frontend_vue/src/modules/zhou/views/SubProjectSelection.vue` (路由跳转逻辑)
+- `lugarden_universal/frontend_vue/src/modules/zhou/stores/zhou.ts` (状态管理修复)
+- `lugarden_universal/frontend_vue/src/router/index.ts` (路由配置检查)
+- `lugarden_universal/frontend_vue/src/modules/zhou/views/QuizScreen.vue` (状态接收逻辑)
+
+- 完成状态：🔄 待开始
+- 执行步骤：
+   - [ ] 步骤E.4.1：重现Bug，确定问题的具体表现和触发条件
+   - [ ] 步骤E.4.2：排查路由跳转逻辑，检查参数传递和编码问题
+   - [ ] 步骤E.4.3：验证Zhou Store状态设置，确保selectChapter()正确工作
+   - [ ] 步骤E.4.4：检查QuizScreen组件状态接收和数据加载逻辑
+   - [ ] 步骤E.4.5：修复发现的问题并添加错误处理机制
+   - [ ] 步骤E.4.6：端到端测试完整用户流程，确保从Portal到结果页面全流程正常
+
+### 任务E.5：Portal API实现与前后端契合
+
+**目标**：实现完整的Portal API端点，解决前端Portal模块与后端API脱节问题，消除硬编码数据依赖
+
+**问题背景**：
+- Vue前端Portal模块期望调用`/api/portal/*`系列API
+- 后端完全没有实现Portal API，导致前端100%依赖降级数据
+- 用户看到的宇宙列表是硬编码内容，无法反映真实数据
+
+**API脱节详情**：
+```javascript
+// 前端期望：
+await portalService.getUniverseList({ refresh, includeAnalytics: false })
+// ❌ 后端实际：/api/portal/universes 完全不存在
+
+// 前端期望：
+await portalService.getUniverseDetail(universeId)
+// ❌ 后端实际：/api/portal/universes/:id 完全不存在
+
+// 前端期望：
+await portalService.recordVisit(universeId, visitData)
+// ❌ 后端实际：POST /api/portal/universes/:id/visit 完全不存在
+```
+
+**核心挑战**：
+- **API规范对齐**: 严格按照E.2 API合同实现
+- **数据结构匹配**: 确保响应格式与前端期望完全一致
+- **向下兼容**: 不影响现有`/api/universes`端点
+
+**技术方案**：
+- 创建`src/routes/portal.js`实现所有Portal API端点
+- 按照E.2 API合同的TypeScript接口规范实现响应格式
+- 在server.js中挂载Portal路由
+- 验证前端调用成功，移除降级数据依赖
+
+**优先级**：🚨 P0 - 极高优先级
+- **架构债务消除** - 解决前后端脱节根本问题
+- **用户体验提升** - 真实数据替换硬编码内容
+
+预期改动文件：
+- `lugarden_universal/application/src/routes/portal.js` (新建Portal路由)
+- `lugarden_universal/application/server.js` (路由挂载)
+- Portal API的完整实现和测试
+
+- 完成状态：🔄 待开始
+- 执行步骤：
+   - [ ] 步骤E.5.1：创建Portal路由文件，建立基础Express Router结构
+   - [ ] 步骤E.5.2：实现GET /api/portal/universes端点，返回符合E.2规范的宇宙列表
+   - [ ] 步骤E.5.3：实现GET /api/portal/universes/:id端点，返回宇宙详细信息
+   - [ ] 步骤E.5.4：实现POST /api/portal/universes/:id/visit端点，记录访问统计
+   - [ ] 步骤E.5.5：在server.js中挂载Portal路由，测试端点可访问性
+   - [ ] 步骤E.5.6：前端验证API调用成功，移除降级数据依赖，确保Portal正常显示真实数据
+
+### 任务E.6：Admin API完善与管理功能增强
+
+**目标**：完善Admin API的增删改功能，实现完整的宇宙管理后台
+
+**问题背景**：
+- 当前Admin API仅实现了GET（查询）和POST（创建）功能
+- 缺失PUT（更新）和DELETE（删除）端点
+- 管理后台功能不完整，影响内容管理效率
+
+**API缺失详情**：
+```javascript
+// ✅ 已实现：
+// GET /api/admin/universes - 获取所有宇宙
+// POST /api/admin/universes - 创建新宇宙
+
+// ❌ 缺失：
+// PUT /api/admin/universes/:id - 更新宇宙信息
+// DELETE /api/admin/universes/:id - 删除宇宙
+```
+
+**核心挑战**：
+- **数据完整性**: 删除操作需要考虑关联数据处理
+- **权限验证**: 确保所有操作都有正确的认证检查
+- **错误处理**: 完善的业务逻辑验证和错误响应
+
+**技术方案**：
+- 在现有`src/routes/admin.js`中添加PUT和DELETE端点
+- 实现数据验证和业务逻辑检查
+- 添加完善的错误处理和响应格式
+- 考虑软删除vs硬删除的数据策略
+
+**优先级**：🟡 P1 - 中等优先级
+- **功能完整性** - 完善管理后台体验
+- **运维效率** - 提升内容管理便利性
+
+预期改动文件：
+- `lugarden_universal/application/src/routes/admin.js` (添加PUT/DELETE端点)
+- 相关的数据验证和错误处理逻辑
+
+- 完成状态：🔄 待开始
+- 执行步骤：
+   - [ ] 步骤E.6.1：设计PUT /api/admin/universes/:id端点，实现宇宙信息更新功能
+   - [ ] 步骤E.6.2：设计DELETE /api/admin/universes/:id端点，实现宇宙删除功能
+   - [ ] 步骤E.6.3：添加数据验证逻辑，确保更新和删除操作的安全性
+   - [ ] 步骤E.6.4：实现错误处理机制，提供清晰的业务错误响应
+   - [ ] 步骤E.6.5：测试所有Admin API端点，确保CRUD操作完整可用
+
+### 任务E.7：Authentication API标准化与认证流程重构
+
+**目标**：实现标准化的Authentication API，替换server.js中的硬编码认证逻辑
+
+**问题背景**：
+- 当前认证逻辑直接写在server.js中，不符合RESTful API规范
+- 缺乏标准化的登录、登出、会话检查端点
+- 认证流程不够模块化，难以维护和扩展
+
+**API缺失详情**：
+```javascript
+// ❌ 当前状态：认证逻辑散布在server.js中
+
+// ✅ E.2规范要求：
+// POST /api/auth/login - 管理员登录
+// POST /api/auth/logout - 退出登录  
+// GET /api/auth/session - 检查会话状态
+```
+
+**核心挑战**：
+- **向下兼容**: 不破坏现有认证功能
+- **安全性保证**: 维持现有的安全级别
+- **会话管理**: 正确处理Express Session
+
+**技术方案**：
+- 创建`src/routes/auth.js`实现认证相关端点
+- 将server.js中的认证逻辑迁移到新的路由文件
+- 保持现有的会话机制和安全策略
+- 按照E.2 API合同规范实现响应格式
+
+**优先级**：🟡 P1 - 中等优先级
+- **架构规范性** - 符合RESTful设计原则
+- **代码可维护性** - 模块化认证逻辑
+
+预期改动文件：
+- `lugarden_universal/application/src/routes/auth.js` (新建认证路由)
+- `lugarden_universal/application/server.js` (重构认证逻辑)
+- 认证相关中间件的模块化
+
+- 完成状态：🔄 待开始
+- 执行步骤：
+   - [ ] 步骤E.7.1：创建auth.js路由文件，设计认证端点结构
+   - [ ] 步骤E.7.2：实现POST /api/auth/login端点，迁移登录逻辑
+   - [ ] 步骤E.7.3：实现POST /api/auth/logout端点，处理会话清理
+   - [ ] 步骤E.7.4：实现GET /api/auth/session端点，提供会话状态检查
+   - [ ] 步骤E.7.5：重构server.js，移除硬编码认证逻辑，使用新的路由
+   - [ ] 步骤E.7.6：测试认证流程，确保登录、登出、会话检查功能正常
+
+### 任务E.8：Health & Monitoring API完善
+
+**目标**：完善健康检查和系统监控API，提升系统可观测性
+
+**问题背景**：
+- 当前只有基础的`/api/health`端点
+- 缺乏详细的系统指标和监控数据
+- 不利于生产环境的运维监控
+
+**API增强需求**：
+```javascript
+// ✅ 已有：GET /api/health - 基础健康检查
+
+// 🟡 需要完善：
+// GET /api/health/metrics - 系统指标（需认证）
+// 更详细的健康检查响应格式
+```
+
+**技术方案**：
+- 扩展现有health端点的响应信息
+- 添加详细的系统指标端点
+- 实现缓存状态、数据库连接状态等检查
+
+**优先级**：🟢 P2 - 低优先级
+- **运维便利性** - 提升系统可观测性
+- **生产环境支持** - 完善监控体系
+
+预期改动文件：
+- `lugarden_universal/application/src/routes/health.js` (新建或扩展)
+- 健康检查逻辑的增强
+
+- 完成状态：🔄 待开始
+- 执行步骤：
+   - [ ] 步骤E.8.1：扩展health端点响应格式，包含更详细的系统状态
+   - [ ] 步骤E.8.2：实现metrics端点，提供系统指标数据
+   - [ ] 步骤E.8.3：添加缓存、数据库等组件的健康状态检查
+   - [ ] 步骤E.8.4：测试监控端点，确保提供有用的运维信息
+
 ---
 
 ## 测试与验收
