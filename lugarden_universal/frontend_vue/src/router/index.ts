@@ -3,6 +3,16 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
+    name: 'UniversePortal',
+    component: () => import('@/modules/portal/views/UniversePortal.vue'),
+    meta: {
+      title: '陆家花园 - 宇宙门户',
+      requiresAuth: false,
+      step: 0
+    }
+  },
+  {
+    path: '/zhou',
     name: 'MainProjectSelection',
     component: () => import('@/modules/zhou/views/MainProjectSelection.vue'),
     meta: {
