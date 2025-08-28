@@ -15,6 +15,9 @@ export * from './stores'
 // 类型定义导出
 export * from './types'
 
+// 服务层导出
+export * from './services'
+
 // 默认导出模块信息
 export default {
   name: 'Portal模块',
@@ -29,7 +32,11 @@ export default {
   stores: [
     'portal'
   ],
+  services: [
+    'portalApi'
+  ],
   types: [
-    'portal'
+    'portal',
+    'portalApi'
   ]
 }

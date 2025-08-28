@@ -14,6 +14,7 @@ import {
   type ExtendedRequestConfig
 } from './interceptors'
 import type { IApiError, UniverseContentResponse } from '@/shared/types/api'
+import { PortalApiService } from '@/modules/portal/services/portalApi'
 
 /**
  * 增强的API客户端类
@@ -243,6 +244,7 @@ export class ApiServiceFactory {
   private apiClient: EnhancedApiClient
   private universeService: UniverseService
   private aiService: AIService
+  private portalService: PortalApiService
 
   constructor(options: {
     onLoadingChange?: (loading: boolean) => void
@@ -254,6 +256,7 @@ export class ApiServiceFactory {
     this.apiClient = new EnhancedApiClient('/api', options)
     this.universeService = new UniverseService(this.apiClient)
     this.aiService = new AIService(this.apiClient)
+    this.portalService = new PortalApiService(this.apiClient)
   }
 
   /**
@@ -268,6 +271,13 @@ export class ApiServiceFactory {
    */
   getAIService(): AIService {
     return this.aiService
+  }
+
+  /**
+   * 获取Portal服务
+   */
+  getPortalService(): PortalApiService {
+    return this.portalService
   }
 
   /**

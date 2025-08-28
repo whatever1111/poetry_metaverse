@@ -120,45 +120,59 @@ export const usePortalStore = defineStore('portal', () => {
         return
       }
 
-      // TODO: 替换为真实的API调用
-      // const api = initializeApiServices()
-      // const portalService = api.getPortalService()
-      // const response = await portalService.getUniverseList(refresh)
-      // state.universes = response.data
-
-      // 模拟API调用和数据加载
-      await simulateApiCall()
+      const api = initializeApiServices()
+      const portalService = api.getPortalService()
       
-      // 硬编码数据（MVP阶段）
-      state.universes = [
-        {
-          id: 'zhou',
-          name: '周与春秋练习',
-          description: '基于吴任几《周与春秋练习》系列诗歌的互动体验，通过问答与解诗探索古典诗歌的现代意义。',
-          status: 'active',
-          meta: '诗歌问答 · 古典解读',
-          version: '2.0.0',
-          lastUpdated: '2025-08-28'
-        },
-        {
-          id: 'maoxiaodou',
-          name: '毛小豆故事演绎',
-          description: '毛小豆宇宙的奇幻冒险，包含前篇、正篇、番外的完整故事体系。',
-          status: 'developing',
-          meta: '故事世界 · 角色扮演',
-          version: '0.8.0',
-          lastUpdated: '2025-08-15'
-        },
-        {
-          id: 'poet_universe',
-          name: '诗人宇宙',
-          description: '探索多位诗人的世界观和创作理念，通过AI对话体验不同的诗歌美学。',
-          status: 'developing',
-          meta: '诗人对话 · AI体验',
-          version: '0.3.0',
-          lastUpdated: '2025-08-01'
+      try {
+        // 尝试调用真实API
+        const response = await portalService.getUniverseList({ 
+          refresh,
+          includeAnalytics: false 
+        })
+        
+        if (response.status === 'success' && response.universes) {
+          state.universes = response.universes
+        } else {
+          throw new Error(response.message || '获取宇宙列表失败')
         }
-      ]
+      } catch (apiError) {
+        // 如果API调用失败，使用硬编码数据作为降级方案
+        console.warn('API调用失败，使用硬编码数据作为降级方案:', apiError)
+        
+        // 模拟API调用延迟
+        await simulateApiCall()
+        
+        // 硬编码数据（降级方案）
+        state.universes = [
+          {
+            id: 'zhou',
+            name: '周与春秋练习',
+            description: '基于吴任几《周与春秋练习》系列诗歌的互动体验，通过问答与解诗探索古典诗歌的现代意义。',
+            status: 'active',
+            meta: '诗歌问答 · 古典解读',
+            version: '2.0.0',
+            lastUpdated: '2025-08-28'
+          },
+          {
+            id: 'maoxiaodou',
+            name: '毛小豆故事演绎',
+            description: '毛小豆宇宙的奇幻冒险，包含前篇、正篇、番外的完整故事体系。',
+            status: 'developing',
+            meta: '故事世界 · 角色扮演',
+            version: '0.8.0',
+            lastUpdated: '2025-08-15'
+          },
+          {
+            id: 'poet_universe',
+            name: '诗人宇宙',
+            description: '探索多位诗人的世界观和创作理念，通过AI对话体验不同的诗歌美学。',
+            status: 'developing',
+            meta: '诗人对话 · AI体验',
+            version: '0.3.0',
+            lastUpdated: '2025-08-01'
+          }
+        ]
+      }
 
       console.log('宇宙列表加载成功:', {
         total: state.universes.length,
@@ -198,9 +212,19 @@ export const usePortalStore = defineStore('portal', () => {
   // ================================
 
   // 选择宇宙
-  function selectUniverse(universe: Universe): void {
+  async function selectUniverse(universe: Universe): Promise<void> {
     state.selectedUniverse = universe
     console.log('选择宇宙:', universe.name)
+
+    // 记录宇宙访问（异步，不阻塞UI）
+    try {
+      const api = initializeApiServices()
+      const portalService = api.getPortalService()
+      await portalService.recordUniverseVisit(universe.id, 'portal')
+    } catch (error) {
+      console.warn('记录宇宙访问失败:', error)
+      // 不影响用户体验，静默失败
+    }
   }
 
   // 获取宇宙导航路径
@@ -212,6 +236,27 @@ export const usePortalStore = defineStore('portal', () => {
   // 检查宇宙是否可访问
   function isUniverseAccessible(universe: Universe): boolean {
     return universe.status === 'active'
+  }
+
+  // 检查宇宙访问权限（异步版本，更准确）
+  async function checkUniverseAccessPermission(universeId: ID): Promise<{
+    accessible: boolean
+    reason?: string
+    requirements?: string[]
+  }> {
+    try {
+      const api = initializeApiServices()
+      const portalService = api.getPortalService()
+      return await portalService.checkUniverseAccess(universeId)
+    } catch (error) {
+      console.warn('检查宇宙访问权限失败:', error)
+      // 降级到基本检查
+      const universe = findUniverseById(universeId)
+      return {
+        accessible: universe ? isUniverseAccessible(universe) : false,
+        reason: universe?.status !== 'active' ? `宇宙状态：${getUniverseStatusText(universe?.status || 'archived')}` : undefined
+      }
+    }
   }
 
   // 获取宇宙状态文本
@@ -327,6 +372,7 @@ export const usePortalStore = defineStore('portal', () => {
     selectUniverse,
     getUniverseNavigationPath,
     isUniverseAccessible,
+    checkUniverseAccessPermission,
     getUniverseStatusText,
     findUniverseById,
 
