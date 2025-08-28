@@ -3,7 +3,7 @@
  * 封装所有后端API调用，提供类型安全的接口和统一的错误处理
  */
 
-import type { UniverseContentResponse } from '../types/zhou'
+import type { UniverseContentResponse } from '../modules/zhou/types/zhou'
 
 // API错误类型定义
 export interface IApiError {

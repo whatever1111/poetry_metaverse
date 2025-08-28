@@ -12,7 +12,7 @@ import type {
   QuizState,
   ResultState,
   UIState
-} from '../../../types/zhou'
+} from '../types/zhou'
 
 export const useZhouStore = defineStore('zhou', () => {
   // ================================

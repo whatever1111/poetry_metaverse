@@ -369,8 +369,22 @@ graph TB
     - ✅ TypeScript类型检查：0错误
     - ✅ 构建成功 (1.92s)，开发服务器正常启动 (1245ms)
     - ✅ Zhou模块Store层架构建立，内部依赖路径清晰
-    - [ ] 步骤A.1.2.6：**服务层迁移** - API服务和类型定义到zhou模块
-    - [ ] 步骤A.1.2.7：创建zhou模块统一导出文件，验证模块完整性
+    - [x] 步骤A.1.2.6：**类型定义迁移** - Zhou专用类型移至zhou模块  
+      **实际改动文件**：
+      - 移动`types/zhou.ts`至`modules/zhou/types/zhou.ts` (完整迁移10个类型定义)
+      - 更新zhou.ts内部types import路径 (../../../types/zhou → ../types/zhou) 
+      - 更新5个视图文件的types import路径 (../../../types/zhou → ../types/zhou)
+      - 更新2个组件文件的types import路径 (../types/zhou → ../../../types/zhou)
+      - 更新2个服务文件的types import路径 (../types/zhou → ../modules/zhou/types/zhou)
+      - 创建`modules/zhou/types/index.ts`导出文件
+      
+    **验证结果（A.1.2.6）**：
+    - ✅ Zhou专用类型100%迁移完成，types目录清理
+    - ✅ TypeScript类型检查：0错误
+    - ✅ 模块内部types依赖路径优化（../types/zhou）
+    - ✅ Zhou模块类型层架构建立，类型定义集中管理
+    - [ ] 步骤A.1.2.7：**共享服务迁移** - 将公共API服务移至shared/services/
+    - [ ] 步骤A.1.2.8：创建zhou模块统一导出文件，验证模块完整性
   - **子任务A.1.3: 共享层建立** (高风险 - 组件分类决策复杂，错误分类导致循环依赖)
     - [ ] 步骤A.1.3.1：**组件通用性深度分析** - 逐个分析13个组件的业务耦合度和复用潜力
     - [ ] 步骤A.1.3.2：**确定通用组件** - 基于分析结果确定哪些组件移入shared/components/

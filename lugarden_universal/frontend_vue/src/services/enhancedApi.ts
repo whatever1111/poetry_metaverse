@@ -13,7 +13,7 @@ import {
   createCacheInterceptor,
   type RequestConfig
 } from './interceptors'
-import type { UniverseContentResponse } from '../types/zhou'
+import type { UniverseContentResponse } from '../modules/zhou/types/zhou'
 
 /**
  * 增强的API客户端类
