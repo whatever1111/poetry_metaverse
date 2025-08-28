@@ -47,8 +47,12 @@ if not exist ".env.local" (
 echo 🚀 正在启动陆家花园...
 echo.
 echo 访问地址：
-echo   主页: http://localhost:3000
+echo   主页: http://localhost:3000 (现代化Vue门户)
 echo   管理后台: http://localhost:3000/admin
+echo.
+echo 前端技术：
+echo   Vue3 + TypeScript + UnoCSS 现代化技术栈
+echo   统一的用户体验和设计系统
 echo.
 echo 按 Ctrl+C 停止服务器
 echo ========================================

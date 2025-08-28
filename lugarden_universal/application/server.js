@@ -51,12 +51,17 @@ const PORT = process.env.PORT || 3000;
 // 目录路径
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// 静态文件目录配置：支持Vue前端和传统前端切换
+const USE_VUE_FRONTEND = process.env.USE_VUE_FRONTEND !== 'false';
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const VUE_DIST_DIR = path.join(__dirname, '..', 'frontend_vue', 'dist');
+const STATIC_DIR = USE_VUE_FRONTEND ? VUE_DIST_DIR : PUBLIC_DIR;
 
 // 中间件
 app.use(cors());
 app.use(express.json());
-app.use(express.static(PUBLIC_DIR));
+app.use(express.static(STATIC_DIR));
 
 // 会话
 app.use(
@@ -104,7 +109,9 @@ app.post('/api/logout', (req, res) => {
 
 // 管理页面
 app.get('/admin', requireAuth, (_req, res) => {
-  res.sendFile(path.join(PUBLIC_DIR, 'admin.html'));
+  const adminFile = USE_VUE_FRONTEND ? 'index.html' : 'admin.html';
+  const adminPath = USE_VUE_FRONTEND ? VUE_DIST_DIR : PUBLIC_DIR;
+  res.sendFile(path.join(adminPath, adminFile));
 });
 
 // 第三方代理
@@ -243,10 +250,25 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
+// SPA路由支持：所有非API路由返回index.html（仅在使用Vue前端时）
+if (USE_VUE_FRONTEND) {
+  app.get('*', (req, res) => {
+    // 排除API路由、静态资源和特定文件
+    if (req.path.startsWith('/api') || 
+        req.path.includes('.') || 
+        req.path.startsWith('/admin')) {
+      return res.status(404).send('Not Found');
+    }
+    res.sendFile(path.join(VUE_DIST_DIR, 'index.html'));
+  });
+}
+
 // 启动
 app.listen(PORT, () => {
-  console.log(`🚀 “陆家花园”已在 http://localhost:${PORT} 盛开`);
+  const frontendType = USE_VUE_FRONTEND ? 'Vue' : '传统HTML';
+  console.log(`🚀 "陆家花园"已在 http://localhost:${PORT} 盛开 (${frontendType}前端)`);
   console.log(`🔑 后台管理入口: http://localhost:${PORT}/admin`);
+  console.log(`📁 静态文件目录: ${STATIC_DIR}`);
 });
 
 // 全局错误处理

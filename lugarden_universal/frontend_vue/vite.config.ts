@@ -40,7 +40,13 @@ export default defineConfig({
           return 'assets/[name].[hash].[ext]'
         }
       }
-    }
+    },
+    // 生产环境优化
+    minify: 'esbuild',
+    target: 'es2015',
+    sourcemap: false, // 生产环境不生成sourcemap
+    reportCompressedSize: true,
+    chunkSizeWarningLimit: 1000
   },
   
   server: {
