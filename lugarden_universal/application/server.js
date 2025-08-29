@@ -7,6 +7,7 @@ import session from 'express-session';
 import { ProxyAgent, setGlobalDispatcher } from 'undici';
 import adminRouter from './src/routes/admin.js';
 import portalRouter from './src/routes/portal.js';
+import universesRouter from './src/routes/universes.js';
 import { errorHandler } from './src/middlewares/errorHandler.js';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -231,7 +232,7 @@ ${poem}
 // ================================
 
 // 路由挂载（仅 DB）
-
+app.use('/api/universes', universesRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/portal', portalRouter);
 
