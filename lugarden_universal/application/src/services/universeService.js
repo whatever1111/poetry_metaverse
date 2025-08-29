@@ -19,6 +19,44 @@ function fileFallbackError(message) {
 
 export class UniverseService {
   
+  // GET /api/universes - 获取所有已发布的宇宙列表
+  // 100%复制原有public.js实现逻辑
+  async getPublicUniverses(options = {}) {
+    const { refresh } = options;
+    const cacheKey = '/api/universes';
+    
+    if (refresh === 'true') invalidate([cacheKey]);
+    const cached = getCache(cacheKey);
+    if (cached !== undefined) return cached;
+    
+    try {
+      const prisma = getPrismaClient();
+      const universes = await prisma.universe.findMany({
+        where: {
+          status: 'published'
+        },
+        select: {
+          id: true,
+          code: true,
+          name: true,
+          type: true,
+          description: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true
+        },
+        orderBy: {
+          createdAt: 'asc'
+        }
+      });
+      
+      setCache(cacheKey, universes);
+      return universes;
+    } catch (dbErr) {
+      throw fileFallbackError('无法加载宇宙列表');
+    }
+  }
+  
   async getUniverseContent(universeCode, options = {}) {
     const { format, refresh } = options;
     const isLegacyFormat = format === 'legacy';

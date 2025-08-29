@@ -1,36 +1,43 @@
-# 交互体验现代化 UI增强 - 阶段E TODO
+# API架构治理与契约完善 - 阶段A TODO
+
+> **📋 文档重命名说明 (2025-08-29)**  
+> 本文件原名：`TODO_交互体验现代化_UI增强_阶段E.md`  
+> 重命名原因：经分析发现E.1-E.9任务内容实际为"API架构治理与契约完善"，与"UI增强"主题不符  
+> 主题纠正：这是全新的"API架构治理与契约完善"主题，应从阶段A开始，而非延续已完结的"交互体验现代化_UI增强"系列  
+> 任务编号：保持E.1-E.9原有编号，但在标题中添加"(原E.X)"标记，确保历史追溯性  
+> 修改时间：2025-08-29，所有E引用已统一更新为A，保持内容一致性和命名规范性  
 
 > **🤖 AI 助手注意 (AI Assistant Attention)**
 > 在执行本文件中的任何任务前，你必须首先阅读并严格遵守位于 `.cursor/rules/ai-collaboration-principles.mdc` 的全局协作指南。
 
 ## 目标
-基于2025-08-28完成的Vue技术栈统一化宇宙门户现代化重构阶段A成果，聚焦宇宙门户创建后的种种问题。在已建立的Modular Monolith架构、Portal+Zhou模块体系、shared层复用机制基础上，深入解决宇宙门户在实际使用中暴露的体验问题、性能问题、功能完善需求等，提升宇宙门户的实用性和用户体验质量。
+基于项目发展至今的技术架构成果，系统性解决API层面的架构问题。从A.1全面审查现状开始，通过API合同重设计(A.2)、架构债务清理(A.6-A.7)、核心API实现(A.5,A.8)、契约完善(A.9)等工作，建立完整、规范、实用的API体系。确保前后端完全契合，消除架构债务，为项目长期发展建立坚实的API基础设施。
 
 ## 范围与约束
-- **范围**: 基于阶段A建立的Vue宇宙门户架构，解决门户实际使用中的各类问题
+- **范围**: API架构层面的系统性治理，涵盖前端API服务、后端路由设计、数据契约规范
 - **约束**:
-  - 必须基于已完成的Modular Monolith架构、Portal+Zhou模块体系，确保架构连贯性
-  - 遵循已建立的Vue3+TypeScript+UnoCSS技术栈标准和ARCHITECTURE.md规范
-  - 保持5173端口新系统与3000端口旧系统的稳定并存
-  - 采用渐进式优化方式，关注实际用户痛点和体验问题
-- **核心原则**: 在稳固的现代化架构基础上进行实用性优化，解决宇宙门户的实际使用问题
+  - 必须基于已完成的Vue3+TypeScript+Modular Monolith架构，确保技术栈一致性
+  - 遵循RESTful设计原则和Express.js+Prisma ORM最佳实践
+  - 保持向下兼容性，不能破坏现有功能的正常运行
+  - 采用渐进式重构方式，确保系统稳定性和可回滚性
+- **核心原则**: 建立标准化、可维护、扩展性强的API体系，解决前后端脱节和架构债务问题
 
 ## 任务列表
 
 > **任务编号规范**
-> - 建议按阶段组织任务，使用2025-08-28_E标识阶段
-> - 阶段2025-08-28_E使用前缀"E"：任务E.1、任务E.2 …；步骤使用"E.1.x"的三级编号
-> - 后续阶段使用前缀"F"：任务F.1、任务F.2 …；步骤使用"F.1.x"
+> - 建议按阶段组织任务，使用2025-08-29_A标识阶段
+> - 阶段2025-08-29_A使用前缀"A"：任务A.1、任务A.2 …；步骤使用"A.1.x"的三级编号
+> - 后续阶段使用前缀"B"：任务B.1、任务B.2 …；步骤使用"B.1.x"
 > - 注意，上述阶段标识，都是指在当前TODO列表中的阶段，而非其他。
 
 ---
 
-## **阶段2025-08-28_E：宇宙门户问题解决**
+## **阶段2025-08-29_A：API架构治理与契约完善**
 
-## 🎯 **E阶段核心目标**
-基于阶段A建立的Vue宇宙门户现代化架构，聚焦解决门户创建后在实际使用中暴露的各类问题。包括但不限于：用户体验问题、性能瓶颈、功能缺失、交互优化、数据流问题、错误处理完善等。采用问题驱动的优化方式，提升宇宙门户的实用性和用户满意度。
+## 🎯 **A阶段核心目标**
+基于项目发展至今的API架构现状，进行系统性的API治理和契约完善工作。解决前后端API脱节、缺乏规范、架构债务、功能缺失等根本问题。建立标准化的API设计规范、完整的契约体系、统一的服务架构，为项目的长期发展奠定坚实的API基础设施。
 
-### - [x] 任务E.1：API架构全面现状分析与最佳实践对标
+### - [x] 任务A.1：API架构全面现状分析与最佳实践对标 (原E.1)
 - **核心思想**: 鉴于自2025-08-18 API合同上次更新以来架构变化极大，需要全面审视当前前端、中间件、后端的API实践现状，对标Vue3、Node.js、SQLite等框架的主流最佳实践，识别架构设计、性能、安全性、可维护性等方面的问题和改进机会
 - **技术背景**: 
   - **架构演进情况**：传统HTML→Vue3+TypeScript+Modular Monolith，文件式数据→Pinia Store+API服务层，静态页面→Vue Router+模块化路由
@@ -63,19 +70,19 @@
 - 实际改动文件: `API架构全面审查报告.md` (根目录下新建)
 - 完成状态：✅ 已完成
 - 执行步骤：
-   - [x] 步骤E.1.1：前端API实践盘点与Vue3最佳实践对比分析
-   - [x] 步骤E.1.2：中间件层Node.js/Express规范性审查与评估
-   - [x] 步骤E.1.3：数据层SQLite/Prisma使用模式分析与优化建议
-   - [x] 步骤E.1.4：跨层API协作模式评估与问题优先级矩阵制定
+   - [x] 步骤A.1.1：前端API实践盘点与Vue3最佳实践对比分析
+   - [x] 步骤A.1.2：中间件层Node.js/Express规范性审查与评估
+   - [x] 步骤A.1.3：数据层SQLite/Prisma使用模式分析与优化建议
+   - [x] 步骤A.1.4：跨层API协作模式评估与问题优先级矩阵制定
 
 ---
 
-#### - [x]  任务E.2：完整API合同重设计与系统性问题解决
+#### - [x] 任务A.2：完整API合同重设计与系统性问题解决 (原E.2)
 
 #### 核心思想
-基于E.1审查报告发现的**系统性API架构问题**，完整重新设计`api-contracts.md`。这不仅仅是Portal API问题，而是整个API体系的标准化重构，建立版本化的API合同管理机制。
+基于A.1审查报告发现的**系统性API架构问题**，完整重新设计`api-contracts.md`。这不仅仅是Portal API问题，而是整个API体系的标准化重构，建立版本化的API合同管理机制。
 
-#### 技术背景（基于E.1审查报告）
+#### 技术背景（基于A.1审查报告）
 - **系统性契约脱节**：Portal API只是冰山一角，整个API合同与前后端实现三方不一致
 - **架构混乱**：路由设计混合模式（单文件+模块化）、错误处理不统一、缺乏输入验证
 - **规范缺失**：现有API设计不符合RESTful原则，未充分利用Express.js和TypeScript优势
@@ -119,11 +126,11 @@
 
 #### 执行策略
 1. **版本备份**：将现有api-contracts.md重命名为带版本号的历史文件
-2. **全面问题识别**：基于E.1审查报告的完整问题清单进行系统性重设计
+2. **全面问题识别**：基于A.1审查报告的完整问题清单进行系统性重设计
 3. **标准化重构**：应用理论标准到技术实现的映射，解决路由、错误处理、验证等系统性问题
 4. **完整性验证**：确保新合同覆盖Portal、宇宙内容、管理、认证等所有API域
 
-#### E.1审查报告问题清单（需在E.2中解决）
+#### A.1审查报告问题清单（需在A.2中解决）
 ##### 高优先级
 - Portal API完全缺失 → 设计完整的Portal API规范
 - 整体API契约脱节 → 重新设计所有API端点
@@ -136,12 +143,12 @@
 
 ##### 交付物
 - **历史版本**: `documentation/backend/api-contracts-v2025.08.18.md` - 原版本备份
-- **新版本**: `documentation/backend/api-contracts-v2025.08.28.md` - 基于E.1发现的完整API合同重设计
-- **问题解决映射**: 在新合同中明确记录每个E.1问题的解决方案
+- **新版本**: `documentation/backend/api-contracts-v2025.08.28.md` - 基于A.1发现的完整API合同重设计
+- **问题解决映射**: 在新合同中明确记录每个A.1问题的解决方案
 
 ##### 版本命名规则
 - 历史版本：`api-contracts-v2025.08.18.md` (原最后更新日期)
-- 新版本：`api-contracts-v2025.08.28.md` (E.2任务完成日期)
+- 新版本：`api-contracts-v2025.08.28.md` (A.2任务完成日期)
 
 ##### 验收标准
 
@@ -153,10 +160,10 @@
 ###### 技术实现对齐性
 - **完整路由体系设计**：Portal、宇宙内容、管理、认证所有API域的标准化路由组织
 - **TypeScript端到端类型安全**：前端shared/types/、后端Prisma类型、API规范三方完全同步
-- **统一错误处理格式**：解决E.1发现的前后端错误格式不一致问题
+- **统一错误处理格式**：解决A.1发现的前后端错误格式不一致问题
 - **输入验证策略设计**：为所有API端点设计标准化的请求验证机制
 
-#### E.1问题解决完整性验证
+#### A.1问题解决完整性验证
 - **高优先级问题100%覆盖**：Portal API缺失、整体契约脱节、路由不规范问题全部解决
 - **中优先级问题方案设计**：错误处理、前端架构、输入验证的标准化设计方案
 - **系统性改进依据**：每个问题的解决方案都有明确的理论标准和技术实现映射
@@ -179,13 +186,13 @@
   - `documentation/backend/api-contracts-v2025.08.18.md` (历史版本备份)
   - `documentation/backend/api-contracts-v2025.08.28.md` (完整重设计)
 #### - 执行步骤：
-   - [x] 步骤E.2.1：将现有api-contracts.md重命名为api-contracts-v2025.08.18.md作为历史版本
-   - [x] 步骤E.2.2：基于E.1审查报告完整问题清单，系统性分析所有API域的缺口和不规范问题
-   - [x] 步骤E.2.3：设计理论标准到技术实现的完整映射方案（覆盖Portal、宇宙内容、管理、认证所有API）
-   - [x] 步骤E.2.4：创建api-contracts-v2025.08.28.md，包含所有API域的标准化重设计和问题解决方案
-   - [x] 步骤E.2.5：建立版本变更历史记录，验证新合同解决E.1识别的所有系统性问题
+   - [x] 步骤A.2.1：将现有api-contracts.md重命名为api-contracts-v2025.08.18.md作为历史版本
+   - [x] 步骤A.2.2：基于A.1审查报告完整问题清单，系统性分析所有API域的缺口和不规范问题
+   - [x] 步骤A.2.3：设计理论标准到技术实现的完整映射方案（覆盖Portal、宇宙内容、管理、认证所有API）
+   - [x] 步骤A.2.4：创建api-contracts-v2025.08.28.md，包含所有API域的标准化重设计和问题解决方案
+   - [x] 步骤A.2.5：建立版本变更历史记录，验证新合同解决A.1识别的所有系统性问题
 
-### 任务E.3：端口迁移与Vue前端映射
+### 任务A.3：端口迁移与Vue前端映射 (原E.3)
 
 **目标**：解决3000端口架构迁移问题，将传统HTML门户切换到现代化Vue门户，建立统一的用户入口体验
 
@@ -207,7 +214,7 @@
 **优先级**：⭐⭐⭐ 高优先级
 - **高价值** - 统一用户体验，解决架构债务
 - **中等风险** - 涉及生产环境变更，但有完整回滚方案
-- **架构关键** - 影响E.2 API合同的最终实施策略
+- **架构关键** - 影响A.2 API合同的最终实施策略
 
 预期改动文件：
 - `lugarden_universal/application/server.js` (静态文件配置)
@@ -223,15 +230,15 @@
   - `lugarden_universal/launch/start-dev.bat` (开发启动脚本更新)
   - `E3_端口迁移策略设计.md` (迁移策略文档)
 #### - 执行步骤：
-   - [x] 步骤E.3.1：分析当前3000端口服务器配置和静态文件处理机制
-   - [x] 步骤E.3.2：设计Vue构建产物到3000端口的映射策略
-   - [x] 步骤E.3.3：配置Express.js静态文件服务，支持SPA路由
-   - [x] 步骤E.3.4：优化Vue构建配置，确保生产环境兼容性
-   - [x] 步骤E.3.5：建立迁移测试流程和回滚机制
-   - [x] 步骤E.3.6：执行端口迁移，验证完整用户流程
-   - [x] 步骤E.3.7：更新相关文档和启动脚本
+   - [x] 步骤A.3.1：分析当前3000端口服务器配置和静态文件处理机制
+   - [x] 步骤A.3.2：设计Vue构建产物到3000端口的映射策略
+   - [x] 步骤A.3.3：配置Express.js静态文件服务，支持SPA路由
+   - [x] 步骤A.3.4：优化Vue构建配置，确保生产环境兼容性
+   - [x] 步骤A.3.5：建立迁移测试流程和回滚机制
+   - [x] 步骤A.3.6：执行端口迁移，验证完整用户流程
+   - [x] 步骤A.3.7：更新相关文档和启动脚本
 
-### 任务E.4：周与春秋路由循环Bug修复
+### 任务A.4：周与春秋路由循环Bug修复 (原E.4)
 
 **目标**：修复从zhou页面进入子项目后点击"开始问答"无限重定向回zhou页面的严重Bug，恢复Zhou模块核心用户流程
 
@@ -293,15 +300,15 @@ if (to.meta.requiresProject) {
 
 - 完成状态：✅ 已完成 (2025-08-28)
 #### - 执行步骤：
-   - [x] 步骤E.4.1：用户报告Bug，确认问题可复现 - zhou→子项目→问答重定向循环
-   - [x] 步骤E.4.2：Git二分法排障 - 测试多个commit确定9907770为问题引入点  
-   - [x] 步骤E.4.3：代码差异分析 - 生成并分析9907770的完整变更diff
-   - [x] 步骤E.4.4：精确定位根因 - 发现quiz路由配置中requiresProject设置错误
-   - [x] 步骤E.4.5：应用修复 - 移除错误配置，保留正确的requiresChapter检查
-   - [x] 步骤E.4.6：验证修复效果 - 5173开发环境和3000生产环境功能均恢复正常
-   - [x] 步骤E.4.7：文档化排障过程 - 创建完整的故障根因分析报告供团队学习
+   - [x] 步骤A.4.1：用户报告Bug，确认问题可复现 - zhou→子项目→问答重定向循环
+   - [x] 步骤A.4.2：Git二分法排障 - 测试多个commit确定9907770为问题引入点  
+   - [x] 步骤A.4.3：代码差异分析 - 生成并分析9907770的完整变更diff
+   - [x] 步骤A.4.4：精确定位根因 - 发现quiz路由配置中requiresProject设置错误
+   - [x] 步骤A.4.5：应用修复 - 移除错误配置，保留正确的requiresChapter检查
+   - [x] 步骤A.4.6：验证修复效果 - 5173开发环境和3000生产环境功能均恢复正常
+   - [x] 步骤A.4.7：文档化排障过程 - 创建完整的故障根因分析报告供团队学习
 
-### 任务E.5：Portal API实现与前后端契合
+### 任务A.5：Portal API实现与前后端契合 (原E.5)
 
 **目标**：实现完整的Portal API端点，解决前端Portal模块与后端API脱节问题，消除硬编码数据依赖
 
@@ -344,7 +351,7 @@ await portalService.recordVisit(universeId, visitData)
 
 **技术方案**：
 - 创建`src/routes/portal.js`实现所有Portal API端点
-- 按照E.2 API合同的TypeScript接口规范实现响应格式
+- 按照A.2 API合同的TypeScript接口规范实现响应格式
 - 在server.js中挂载Portal路由
 - 验证前端调用成功，移除降级数据依赖
 
@@ -362,18 +369,18 @@ await portalService.recordVisit(universeId, visitData)
   - `lugarden_universal/application/src/routes/portal.js` (新建完整Portal API实现，322行)
   - `lugarden_universal/application/server.js` (挂载Portal路由)
 #### - 执行步骤：
-   - [x] 步骤E.5.1：创建Portal路由文件，建立基础Express Router结构
-   - [x] 步骤E.5.2：实现GET /api/portal/universes端点，返回符合E.2规范的宇宙列表
-   - [x] 步骤E.5.3：实现GET /api/portal/universes/:id端点，返回宇宙详细信息
-   - [x] 步骤E.5.4：实现POST /api/portal/universes/:id/visit端点，记录访问统计
-   - [x] 步骤E.5.5：在server.js中挂载Portal路由，测试端点可访问性
-   - [x] 步骤E.5.6：前端验证API调用成功，移除降级数据依赖，确保Portal正常显示真实数据
+   - [x] 步骤A.5.1：创建Portal路由文件，建立基础Express Router结构
+   - [x] 步骤A.5.2：实现GET /api/portal/universes端点，返回符合A.2规范的宇宙列表
+   - [x] 步骤A.5.3：实现GET /api/portal/universes/:id端点，返回宇宙详细信息
+   - [x] 步骤A.5.4：实现POST /api/portal/universes/:id/visit端点，记录访问统计
+   - [x] 步骤A.5.5：在server.js中挂载Portal路由，测试端点可访问性
+   - [x] 步骤A.5.6：前端验证API调用成功，移除降级数据依赖，确保Portal正常显示真实数据
 - 关键技术突破：
    - ✅ **状态映射脱节解决**：`published`→`active`, `draft`→`developing`，解决前端显示"未知"状态问题
    - ✅ **ID映射脱节解决**：`universe_zhou_spring_autumn`→`zhou`，解决路由跳转无限循环问题
    - ✅ **双向映射机制**：`mapIdToFrontend()`和`mapIdToDatabase()`支持前后端ID格式转换
    - ✅ **端到端验证方法论**：通过服务器日志分析 + 用户流程测试，精确定位问题根因
-   - ✅ **标准化映射架构**：建立可复用的数据转换模式，为E.6-E.8任务提供参考
+   - ✅ **标准化映射架构**：建立可复用的数据转换模式，为A.6-A.8任务提供参考
 
 - 错误教训总结：
    - ❌ **分析不充分**：最初只关注API端点存在性，忽略了数据格式匹配的重要性
@@ -382,7 +389,7 @@ await portalService.recordVisit(universeId, visitData)
 
 
 
-### 任务E.6：Legacy API清理与代码精简
+### 任务A.6：Legacy API清理与代码精简 (原E.6)
 
 **目标**：删除老前端专用的废弃API端点，精简代码结构
 
@@ -429,14 +436,14 @@ await portalService.recordVisit(universeId, visitData)
 
 - 完成状态：✅ 已完成
 #### - 执行步骤：
-  - [x] 步骤E.6.1：分析确认5个废弃API端点的使用情况，确保安全删除
-  - [x] 步骤E.6.2：删除/api/projects路由，添加2025-08-29删除注释
-  - [x] 步骤E.6.3：删除/api/questions路由，添加2025-08-29删除注释
-  - [x] 步骤E.6.4：删除/api/mappings路由，添加2025-08-29删除注释
-  - [x] 步骤E.6.5：删除/api/poems-all路由，添加2025-08-29删除注释
-  - [x] 步骤E.6.6：删除/api/poem-archetypes路由，添加2025-08-29删除注释
-  - [x] 步骤E.6.7：清理相关的import和依赖项，确保代码整洁
-  - [x] 步骤E.6.8：测试Vue前端功能，确保API清理不影响现有功能
+  - [x] 步骤A.6.1：分析确认5个废弃API端点的使用情况，确保安全删除
+  - [x] 步骤A.6.2：删除/api/projects路由，添加2025-08-29删除注释
+  - [x] 步骤A.6.3：删除/api/questions路由，添加2025-08-29删除注释
+  - [x] 步骤A.6.4：删除/api/mappings路由，添加2025-08-29删除注释
+  - [x] 步骤A.6.5：删除/api/poems-all路由，添加2025-08-29删除注释
+  - [x] 步骤A.6.6：删除/api/poem-archetypes路由，添加2025-08-29删除注释
+  - [x] 步骤A.6.7：清理相关的import和依赖项，确保代码整洁
+  - [x] 步骤A.6.8：测试Vue前端功能，确保API清理不影响现有功能
 
 **实际改动文件**：
 - `lugarden_universal/application/src/routes/public.js` (删除5个废弃API端点，清理依赖)
@@ -447,7 +454,7 @@ await portalService.recordVisit(universeId, visitData)
 - **依赖清理**: 移除fs模块import和9个不再使用的文件路径常量
 - **代码精简**: 从357行减少到更简洁的结构，提升维护性
 
-### 任务E.7：Public.js模块注释化与架构清理
+### 任务A.7：Public.js模块注释化与架构清理 (原E.7)
 
 **目标**：注释化public.js中所有剩余代码，完成Vue迁移后的最终清理
 
@@ -492,13 +499,13 @@ await portalService.recordVisit(universeId, visitData)
 
 - 完成状态：✅ 已完成
 #### - 执行步骤：
-  - [x] 步骤E.7.1：分析public.js剩余代码，确认注释范围
-  - [x] 步骤E.7.2：在文件头部添加详细注释说明，记录2025-08-29注释时间
-  - [x] 步骤E.7.3：注释化所有路由处理函数，保留代码结构
-  - [x] 步骤E.7.4：注释化import语句和常量定义
-  - [x] 步骤E.7.5：保留基础export结构，避免server.js import错误
-  - [x] 步骤E.7.6：添加架构演进说明，记录Vue迁移完成里程碑
-  - [x] 步骤E.7.7：测试server.js启动正常，确保注释化不影响系统运行
+  - [x] 步骤A.7.1：分析public.js剩余代码，确认注释范围
+  - [x] 步骤A.7.2：在文件头部添加详细注释说明，记录2025-08-29注释时间
+  - [x] 步骤A.7.3：注释化所有路由处理函数，保留代码结构
+  - [x] 步骤A.7.4：注释化import语句和常量定义
+  - [x] 步骤A.7.5：保留基础export结构，避免server.js import错误
+  - [x] 步骤A.7.6：添加架构演进说明，记录Vue迁移完成里程碑
+  - [x] 步骤A.7.7：测试server.js启动正常，确保注释化不影响系统运行
 
 **实际改动文件**：
 - `lugarden_universal/application/src/routes/public.js` (文件移动至archive目录)
@@ -514,13 +521,13 @@ await portalService.recordVisit(universeId, visitData)
 
 ---
 
-### 任务E.8 Universe Content API实现 - 完成宇宙内容API架构
+### 任务A.8 Universe Content API实现 - 完成宇宙内容API架构 (原E.8)
 
 #### 任务概述
 创建标准化的Universe Content API，完成从旧架构(public.js)到新架构的最后一环，确保前端能够正常获取宇宙业务内容。
 
 #### 背景与动机
-- **架构完整性**: E.7清理了public.js，但前端仍需要/api/universes/:code/content端点获取宇宙内容
+- **架构完整性**: A.7清理了public.js，但前端仍需要/api/universes/:code/content端点获取宇宙内容
 - **API契约遵循**: 实现API合同v2025.08.28中定义的Universe Content API规范
 - **功能恢复**: 解决当前Zhou模块"加载失败 Not Found"的问题
 - **架构统一**: 通过服务层统一避免Portal/Admin/Universes之间的代码重复
@@ -537,7 +544,7 @@ await portalService.recordVisit(universeId, visitData)
 - ✅ **架构分层**: 路由层(HTTP处理) + 服务层(业务逻辑)清晰分离
 - ✅ **代码复用**: UniverseService可被多个路由模块调用
 
-##### E.8.1 创建Universe Service服务层
+##### A.8.1 创建Universe Service服务层
 - **目标**: 创建统一的宇宙数据服务，避免重复实现
 - **技术要求**: 
   - 实现 `getPublicUniverses()` 方法（供路由层复用）
@@ -546,7 +553,7 @@ await portalService.recordVisit(universeId, visitData)
   - 根据宇宙类型动态聚合不同内容结构
 - **输出文件**: `src/services/universeService.js`
 
-##### E.8.2 创建Universe Routes路由层  
+##### A.8.2 创建Universe Routes路由层  
 - **目标**: 创建/api/universes/*端点，处理HTTP请求响应
 - **技术要求**:
   - 实现 `GET /api/universes/:code/content` (核心功能)
@@ -555,7 +562,7 @@ await portalService.recordVisit(universeId, visitData)
   - 标准化API响应格式
 - **输出文件**: `src/routes/universes.js`
 
-##### E.8.3 系统集成与路由挂载
+##### A.8.3 系统集成与路由挂载
 - **目标**: 将新API集成到server.js，确保路由正常工作
 - **技术要求**:
   - 在server.js中导入universes路由
@@ -563,7 +570,7 @@ await portalService.recordVisit(universeId, visitData)
   - 确保与现有路由不冲突
 - **修改文件**: `server.js`
 
-##### E.8.4 功能验证与测试
+##### A.8.4 功能验证与测试
 - **目标**: 验证API功能正常，前端能够正常获取数据
 - **技术要求**:
   - 测试 `GET /api/universes/universe_zhou_spring_autumn/content` 返回正确数据
@@ -585,12 +592,12 @@ await portalService.recordVisit(universeId, visitData)
   - `排障指导_E8_API_500错误.md` (排障方法论指导)
 
 ##### - 执行步骤：
-  - [x] 步骤E.8.1：创建UniverseService服务层，实现统一的宇宙数据服务
-  - [x] 步骤E.8.2：创建universes路由层，处理/api/universes/*端点
-  - [x] 步骤E.8.3：在server.js中挂载universes路由到/api/universes路径
-  - [x] 步骤E.8.4：测试API端点响应，验证数据格式正确
-  - [x] 步骤E.8.5：验证前端Zhou模块能正常加载宇宙内容数据
-  - [x] 步骤E.8.6：测试缓存机制和刷新功能正常工作
+  - [x] 步骤A.8.1：创建UniverseService服务层，实现统一的宇宙数据服务
+  - [x] 步骤A.8.2：创建universes路由层，处理/api/universes/*端点
+  - [x] 步骤A.8.3：在server.js中挂载universes路由到/api/universes路径
+  - [x] 步骤A.8.4：测试API端点响应，验证数据格式正确
+  - [x] 步骤A.8.5：验证前端Zhou模块能正常加载宇宙内容数据
+  - [x] 步骤A.8.6：测试缓存机制和刷新功能正常工作
 
 - 关键技术突破：
   - ✅ **科学排障方法论成功应用**：基于Zhou路由bug成功经验，建立"基线重置→工作参考→精确复制"标准化流程
@@ -608,16 +615,16 @@ await portalService.recordVisit(universeId, visitData)
 
 ---
 
-### 任务E.9 API契约完整性与实用性完善
+### 任务A.9 API契约完整性与实用性完善 (原E.9)
 
 #### 任务概述
 完成Universe Content API的最后一个缺失端点，并对整个API契约进行实用性重检，确保每个API的项目使用场景都有清晰说明，提升API契约的可理解性和实用价值。
 
 #### 背景与动机
-- **API完整性**: E8完成了核心内容端点，但遗漏了`GET /api/universes`宇宙列表端点
+- **API完整性**: A8完成了核心内容端点，但遗漏了`GET /api/universes`宇宙列表端点
 - **契约实用性**: 当前API契约偏向技术规范，缺乏实际使用场景和目的说明
 - **可维护性**: 需要让团队成员（包括非技术人员）能够理解每个API的具体用途
-- **架构收官**: E1-E8完成了技术实现，E9确保文档体系的完整性和实用性
+- **架构收官**: A1-A8完成了技术实现，A9确保文档体系的完整性和实用性
 
 #### 具体任务
 **第一部分：技术完善**
@@ -635,7 +642,7 @@ await portalService.recordVisit(universeId, visitData)
 - ✅ **API完整性**: Universe Content API 100%完成，符合契约规范
 - ✅ **契约实用性**: API契约不仅有技术规范，更有使用场景和目的说明
 - ✅ **团队友好**: 非技术人员也能理解每个API的作用和价值
-- ✅ **架构收官**: E阶段项目完美收官，API体系完整且文档化
+- ✅ **架构收官**: A阶段项目完美收官，API体系完整且文档化
 
 #### 技术要求
 - 100%复制原有public.js中`/universes`端点的实现逻辑
@@ -654,16 +661,16 @@ await portalService.recordVisit(universeId, visitData)
 - `lugarden_universal/application/src/routes/universes.js` (添加GET /api/universes路由)
 - `documentation/backend/api-contracts-v2025.08.29.md` (新建，基于0828增加实用性说明)
 
-- 完成状态：⚠️ 待开始
+- 完成状态：✅ 已完成
 ##### - 执行步骤：
-  - [ ] 步骤E.9.1：提取原有public.js中/universes端点的完整实现
-  - [ ] 步骤E.9.2：在universeService.js中添加getPublicUniverses方法
-  - [ ] 步骤E.9.3：在universes.js中添加GET /api/universes路由处理
-  - [ ] 步骤E.9.4：测试新端点功能，确保与原有实现一致
-  - [ ] 步骤E.9.5：分析现有API在项目中的实际使用场景和前端调用模式
-  - [ ] 步骤E.9.6：基于v2025.08.28创建v2025.08.29新版本API契约
-  - [ ] 步骤E.9.7：为新版本的每个API域添加"项目中的使用"实用性章节
-  - [ ] 步骤E.9.8：验证新API契约版本的完整性、准确性和实用性
+  - [x] 步骤A.9.1：提取原有public.js中/universes端点的完整实现
+  - [x] 步骤A.9.2：在universeService.js中添加getPublicUniverses方法
+  - [x] 步骤A.9.3：在universes.js中添加GET /api/universes路由处理
+  - [x] 步骤A.9.4：测试新端点功能，确保与原有实现一致
+  - [x] 步骤A.9.5：分析现有API在项目中的实际使用场景和前端调用模式
+  - [x] 步骤A.9.6：基于v2025.08.28创建v2025.08.29新版本API契约
+  - [x] 步骤A.9.7：为新版本的每个API域添加"项目中的使用"实用性章节
+  - [x] 步骤A.9.8：验证新API契约版本的完整性、准确性和实用性
 
 **实际改动文件**：
 - (待补充)
@@ -680,8 +687,8 @@ await portalService.recordVisit(universeId, visitData)
 - **用户体验验证**: 实际用户场景下的体验提升可感知
 
 ## 更新日志关联
-- **预计更新类型**: 功能更新/用户体验优化
-- **更新目录**: `documentation/changelog/2025-08-28_交互体验现代化_UI增强_阶段E完成/`
+- **预计更新类型**: API架构治理/系统性重构
+- **更新目录**: `documentation/changelog/2025-08-29_API架构治理与契约完善_阶段A完成/`
 - **更新日志文件**: `更新日志.md`
 - **测试验证点**: 
   - [ ] 宇宙门户核心问题解决验证
@@ -696,7 +703,7 @@ await portalService.recordVisit(universeId, visitData)
 - 优化过程中必须保持与ARCHITECTURE.md规范的一致性
 
 ## 完成后的操作
-- [ ] 创建更新目录：`documentation/changelog/2025-08-28_交互体验现代化_UI增强_阶段E完成/`
+- [ ] 创建更新目录：`documentation/changelog/2025-08-29_API架构治理与契约完善_阶段A完成/`
 - [ ] 将本TODO文件移动到更新目录并重命名为 `TODO.md`
 - [ ] 创建对应的更新日志文档：`更新日志.md`
 - [ ] 更新 `当前进展.md` 文件
@@ -704,7 +711,7 @@ await portalService.recordVisit(universeId, visitData)
 - [ ] 更新项目状态
 
 ## 当前状态
-🔄 进行中 - E.1-E.8已完成，E.9待开始。API核心功能已实现，需完成最后的完整性补充和文档实用性提升
+✅ 已完成 - A.1-A.9全部完成。API架构治理与契约完善工作完美收官，建立了完整、规范、实用的API体系
 
 ---
 *本模板基于陆家花园项目Git开发指南创建*
