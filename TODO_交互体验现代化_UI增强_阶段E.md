@@ -380,138 +380,63 @@ await portalService.recordVisit(universeId, visitData)
    - ❌ **测试不完整**：只测试API响应，未进行端到端用户流程验证
    - ✅ **改进方法**：先分析前端降级数据格式，再设计后端API响应；必须进行完整用户流程测试
 
-### 任务E.6：Admin API完善与管理功能增强
 
-**目标**：完善Admin API的增删改功能，实现完整的宇宙管理后台
+
+### 任务E.6：Legacy API清理与代码精简
+
+**目标**：删除老前端专用的废弃API端点，精简代码结构
 
 **问题背景**：
-- 当前Admin API仅实现了GET（查询）和POST（创建）功能
-- 缺失PUT（更新）和DELETE（删除）端点
-- 管理后台功能不完整，影响内容管理效率
+- 完成Vue前端迁移后，老前端已弃用
+- public.js中存在5个废弃API端点，仅供legacy前端使用
+- 这些API带有DEPRECATED标记，增加维护负担
 
-**API缺失详情**：
+**需要删除的API端点**：
 ```javascript
-// ✅ 已实现：
-// GET /api/admin/universes - 获取所有宇宙
-// POST /api/admin/universes - 创建新宇宙
+// public.js中的废弃端点（仅legacy前端使用）：
+// GET /api/projects - [DEPRECATED] 
+// GET /api/questions - [DEPRECATED]
+// GET /api/mappings - [DEPRECATED] 
+// GET /api/poems-all - [DEPRECATED]
+// GET /api/poem-archetypes - [DEPRECATED]
+```
 
-// ❌ 缺失：
-// PUT /api/admin/universes/:id - 更新宇宙信息
-// DELETE /api/admin/universes/:id - 删除宇宙
+**需要保留的API端点**：
+```javascript
+// 现代API（可能被其他系统使用）：
+// GET /api/universes - 宇宙列表API
+// GET /api/universes/:universeCode/content - 宇宙内容聚合API
 ```
 
 **核心挑战**：
-- **数据完整性**: 删除操作需要考虑关联数据处理
-- **权限验证**: 确保所有操作都有正确的认证检查
-- **错误处理**: 完善的业务逻辑验证和错误响应
+- **安全删除**: 确保不影响任何现有功能
+- **注释完整**: 记录删除时间和原因
+- **向下兼容**: 考虑是否需要返回410 Gone状态
 
 **技术方案**：
-- 在现有`src/routes/admin.js`中添加PUT和DELETE端点
-- 实现数据验证和业务逻辑检查
-- 添加完善的错误处理和响应格式
-- 考虑软删除vs硬删除的数据策略
+- 删除public.js中的5个废弃路由处理函数
+- 为每个删除添加详细的时间注释和删除原因
+- 保留现代化的API端点，确保Vue前端正常运行
+- 清理相关的import和依赖项
 
-**优先级**：🟡 P1 - 中等优先级
-- **功能完整性** - 完善管理后台体验
-- **运维效率** - 提升内容管理便利性
+**优先级**：🟢 P2 - 低优先级（代码清理）
+- **代码维护性** - 减少技术债务
+- **系统简化** - 移除不必要的复杂性
 
 预期改动文件：
-- `lugarden_universal/application/src/routes/admin.js` (添加PUT/DELETE端点)
-- 相关的数据验证和错误处理逻辑
+- `lugarden_universal/application/src/routes/public.js` (删除废弃路由)
+- 添加详细的删除注释和时间记录
 
 - 完成状态：🔄 待开始
 - 执行步骤：
-   - [ ] 步骤E.6.1：设计PUT /api/admin/universes/:id端点，实现宇宙信息更新功能
-   - [ ] 步骤E.6.2：设计DELETE /api/admin/universes/:id端点，实现宇宙删除功能
-   - [ ] 步骤E.6.3：添加数据验证逻辑，确保更新和删除操作的安全性
-   - [ ] 步骤E.6.4：实现错误处理机制，提供清晰的业务错误响应
-   - [ ] 步骤E.6.5：测试所有Admin API端点，确保CRUD操作完整可用
-
-### 任务E.7：Authentication API标准化与认证流程重构
-
-**目标**：实现标准化的Authentication API，替换server.js中的硬编码认证逻辑
-
-**问题背景**：
-- 当前认证逻辑直接写在server.js中，不符合RESTful API规范
-- 缺乏标准化的登录、登出、会话检查端点
-- 认证流程不够模块化，难以维护和扩展
-
-**API缺失详情**：
-```javascript
-// ❌ 当前状态：认证逻辑散布在server.js中
-
-// ✅ E.2规范要求：
-// POST /api/auth/login - 管理员登录
-// POST /api/auth/logout - 退出登录  
-// GET /api/auth/session - 检查会话状态
-```
-
-**核心挑战**：
-- **向下兼容**: 不破坏现有认证功能
-- **安全性保证**: 维持现有的安全级别
-- **会话管理**: 正确处理Express Session
-
-**技术方案**：
-- 创建`src/routes/auth.js`实现认证相关端点
-- 将server.js中的认证逻辑迁移到新的路由文件
-- 保持现有的会话机制和安全策略
-- 按照E.2 API合同规范实现响应格式
-
-**优先级**：🟡 P1 - 中等优先级
-- **架构规范性** - 符合RESTful设计原则
-- **代码可维护性** - 模块化认证逻辑
-
-预期改动文件：
-- `lugarden_universal/application/src/routes/auth.js` (新建认证路由)
-- `lugarden_universal/application/server.js` (重构认证逻辑)
-- 认证相关中间件的模块化
-
-- 完成状态：🔄 待开始
-- 执行步骤：
-   - [ ] 步骤E.7.1：创建auth.js路由文件，设计认证端点结构
-   - [ ] 步骤E.7.2：实现POST /api/auth/login端点，迁移登录逻辑
-   - [ ] 步骤E.7.3：实现POST /api/auth/logout端点，处理会话清理
-   - [ ] 步骤E.7.4：实现GET /api/auth/session端点，提供会话状态检查
-   - [ ] 步骤E.7.5：重构server.js，移除硬编码认证逻辑，使用新的路由
-   - [ ] 步骤E.7.6：测试认证流程，确保登录、登出、会话检查功能正常
-
-### 任务E.8：Health & Monitoring API完善
-
-**目标**：完善健康检查和系统监控API，提升系统可观测性
-
-**问题背景**：
-- 当前只有基础的`/api/health`端点
-- 缺乏详细的系统指标和监控数据
-- 不利于生产环境的运维监控
-
-**API增强需求**：
-```javascript
-// ✅ 已有：GET /api/health - 基础健康检查
-
-// 🟡 需要完善：
-// GET /api/health/metrics - 系统指标（需认证）
-// 更详细的健康检查响应格式
-```
-
-**技术方案**：
-- 扩展现有health端点的响应信息
-- 添加详细的系统指标端点
-- 实现缓存状态、数据库连接状态等检查
-
-**优先级**：🟢 P2 - 低优先级
-- **运维便利性** - 提升系统可观测性
-- **生产环境支持** - 完善监控体系
-
-预期改动文件：
-- `lugarden_universal/application/src/routes/health.js` (新建或扩展)
-- 健康检查逻辑的增强
-
-- 完成状态：🔄 待开始
-- 执行步骤：
-   - [ ] 步骤E.8.1：扩展health端点响应格式，包含更详细的系统状态
-   - [ ] 步骤E.8.2：实现metrics端点，提供系统指标数据
-   - [ ] 步骤E.8.3：添加缓存、数据库等组件的健康状态检查
-   - [ ] 步骤E.8.4：测试监控端点，确保提供有用的运维信息
+  - [ ] 步骤E.6.1：分析确认5个废弃API端点的使用情况，确保安全删除
+  - [ ] 步骤E.6.2：删除/api/projects路由，添加2025-08-29删除注释
+  - [ ] 步骤E.6.3：删除/api/questions路由，添加2025-08-29删除注释
+  - [ ] 步骤E.6.4：删除/api/mappings路由，添加2025-08-29删除注释
+  - [ ] 步骤E.6.5：删除/api/poems-all路由，添加2025-08-29删除注释
+  - [ ] 步骤E.6.6：删除/api/poem-archetypes路由，添加2025-08-29删除注释
+  - [ ] 步骤E.6.7：清理相关的import和依赖项，确保代码整洁
+  - [ ] 步骤E.6.8：测试Vue前端功能，确保API清理不影响现有功能
 
 ---
 
@@ -546,7 +471,7 @@ await portalService.recordVisit(universeId, visitData)
 - [ ] 更新项目状态
 
 ## 当前状态
-🔄 待开始
+🔄 进行中 - 核心任务(E.1-E.5)已完成，API清理任务(E.6)待执行
 
 ---
 *本模板基于陆家花园项目Git开发指南创建*
