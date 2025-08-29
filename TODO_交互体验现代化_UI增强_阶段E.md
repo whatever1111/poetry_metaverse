@@ -11,7 +11,7 @@
 - **约束**:
   - 必须基于已完成的Modular Monolith架构、Portal+Zhou模块体系，确保架构连贯性
   - 遵循已建立的Vue3+TypeScript+UnoCSS技术栈标准和ARCHITECTURE.md规范
-  - 保持5174端口新系统与3000端口旧系统的稳定并存
+  - 保持5173端口新系统与3000端口旧系统的稳定并存
   - 采用渐进式优化方式，关注实际用户痛点和体验问题
 - **核心原则**: 在稳固的现代化架构基础上进行实用性优化，解决宇宙门户的实际使用问题
 
@@ -325,10 +325,22 @@ await portalService.recordVisit(universeId, visitData)
 // ❌ 后端实际：POST /api/portal/universes/:id/visit 完全不存在
 ```
 
+**排障过程记录**：
+1. **初始实现**：按E.2 API合同创建Portal路由，实现3个端点
+2. **第一次问题**：API端点创建成功，但前端仍显示"未知"状态和"暂不可用"按钮
+   - **根因发现**：状态映射脱节 - 后端返回`published/draft`，前端期望`active/developing`
+   - **解决方案**：创建`mapStatusToFrontend()`状态映射函数
+3. **第二次问题**：状态修复后，点击按钮仍然无限加载循环
+   - **根因发现**：ID映射脱节 - 后端返回`universe_zhou_spring_autumn`，前端导航配置期望`zhou`
+   - **关键日志**：服务器显示API调用成功但路由跳转失败
+   - **深度分析**：`getUniverseNavigationPath(universeId)`在`navigationConfig['universe_zhou_spring_autumn']`找不到匹配，返回默认路径`'/'`
+   - **解决方案**：创建双向ID映射 - `mapIdToFrontend()`和`mapIdToDatabase()`函数
+
 **核心挑战**：
 - **API规范对齐**: 严格按照E.2 API合同实现
-- **数据结构匹配**: 确保响应格式与前端期望完全一致
-- **向下兼容**: 不影响现有`/api/universes`端点
+- **数据结构匹配**: 确保响应格式与前端期望完全一致  
+- **前后端数据格式差异**: 数据库设计与前端展示需求之间的映射转换
+- **路由导航兼容**: 确保API返回的ID能正确匹配前端路由配置
 
 **技术方案**：
 - 创建`src/routes/portal.js`实现所有Portal API端点
@@ -345,14 +357,28 @@ await portalService.recordVisit(universeId, visitData)
 - `lugarden_universal/application/server.js` (路由挂载)
 - Portal API的完整实现和测试
 
-- 完成状态：🔄 待开始
+- 完成状态：✅ 已完成 (2025-08-29)
+- 实际改动文件:
+  - `lugarden_universal/application/src/routes/portal.js` (新建完整Portal API实现，322行)
+  - `lugarden_universal/application/server.js` (挂载Portal路由)
 - 执行步骤：
-   - [ ] 步骤E.5.1：创建Portal路由文件，建立基础Express Router结构
-   - [ ] 步骤E.5.2：实现GET /api/portal/universes端点，返回符合E.2规范的宇宙列表
-   - [ ] 步骤E.5.3：实现GET /api/portal/universes/:id端点，返回宇宙详细信息
-   - [ ] 步骤E.5.4：实现POST /api/portal/universes/:id/visit端点，记录访问统计
-   - [ ] 步骤E.5.5：在server.js中挂载Portal路由，测试端点可访问性
-   - [ ] 步骤E.5.6：前端验证API调用成功，移除降级数据依赖，确保Portal正常显示真实数据
+   - [x] 步骤E.5.1：创建Portal路由文件，建立基础Express Router结构
+   - [x] 步骤E.5.2：实现GET /api/portal/universes端点，返回符合E.2规范的宇宙列表
+   - [x] 步骤E.5.3：实现GET /api/portal/universes/:id端点，返回宇宙详细信息
+   - [x] 步骤E.5.4：实现POST /api/portal/universes/:id/visit端点，记录访问统计
+   - [x] 步骤E.5.5：在server.js中挂载Portal路由，测试端点可访问性
+   - [x] 步骤E.5.6：前端验证API调用成功，移除降级数据依赖，确保Portal正常显示真实数据
+- 关键技术突破：
+   - ✅ **状态映射脱节解决**：`published`→`active`, `draft`→`developing`，解决前端显示"未知"状态问题
+   - ✅ **ID映射脱节解决**：`universe_zhou_spring_autumn`→`zhou`，解决路由跳转无限循环问题
+   - ✅ **双向映射机制**：`mapIdToFrontend()`和`mapIdToDatabase()`支持前后端ID格式转换
+   - ✅ **端到端验证方法论**：通过服务器日志分析 + 用户流程测试，精确定位问题根因
+   - ✅ **标准化映射架构**：建立可复用的数据转换模式，为E.6-E.8任务提供参考
+
+- 错误教训总结：
+   - ❌ **分析不充分**：最初只关注API端点存在性，忽略了数据格式匹配的重要性
+   - ❌ **测试不完整**：只测试API响应，未进行端到端用户流程验证
+   - ✅ **改进方法**：先分析前端降级数据格式，再设计后端API响应；必须进行完整用户流程测试
 
 ### 任务E.6：Admin API完善与管理功能增强
 
