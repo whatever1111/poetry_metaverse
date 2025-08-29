@@ -427,16 +427,25 @@ await portalService.recordVisit(universeId, visitData)
 - `lugarden_universal/application/src/routes/public.js` (删除废弃路由)
 - 添加详细的删除注释和时间记录
 
-- 完成状态：🔄 待开始
+- 完成状态：✅ 已完成
 - 执行步骤：
-  - [ ] 步骤E.6.1：分析确认5个废弃API端点的使用情况，确保安全删除
-  - [ ] 步骤E.6.2：删除/api/projects路由，添加2025-08-29删除注释
-  - [ ] 步骤E.6.3：删除/api/questions路由，添加2025-08-29删除注释
-  - [ ] 步骤E.6.4：删除/api/mappings路由，添加2025-08-29删除注释
-  - [ ] 步骤E.6.5：删除/api/poems-all路由，添加2025-08-29删除注释
-  - [ ] 步骤E.6.6：删除/api/poem-archetypes路由，添加2025-08-29删除注释
-  - [ ] 步骤E.6.7：清理相关的import和依赖项，确保代码整洁
-  - [ ] 步骤E.6.8：测试Vue前端功能，确保API清理不影响现有功能
+  - [x] 步骤E.6.1：分析确认5个废弃API端点的使用情况，确保安全删除
+  - [x] 步骤E.6.2：删除/api/projects路由，添加2025-08-29删除注释
+  - [x] 步骤E.6.3：删除/api/questions路由，添加2025-08-29删除注释
+  - [x] 步骤E.6.4：删除/api/mappings路由，添加2025-08-29删除注释
+  - [x] 步骤E.6.5：删除/api/poems-all路由，添加2025-08-29删除注释
+  - [x] 步骤E.6.6：删除/api/poem-archetypes路由，添加2025-08-29删除注释
+  - [x] 步骤E.6.7：清理相关的import和依赖项，确保代码整洁
+  - [x] 步骤E.6.8：测试Vue前端功能，确保API清理不影响现有功能
+
+**实际改动文件**：
+- `lugarden_universal/application/src/routes/public.js` (删除5个废弃API端点，清理依赖)
+
+**关键技术突破**：
+- **安全删除策略**: 通过详细分析确保只删除legacy前端专用API
+- **完整注释体系**: 为每个删除的API添加完整的时间戳、原因和恢复说明
+- **依赖清理**: 移除fs模块import和9个不再使用的文件路径常量
+- **代码精简**: 从357行减少到更简洁的结构，提升维护性
 
 ---
 
@@ -471,7 +480,7 @@ await portalService.recordVisit(universeId, visitData)
 - [ ] 更新项目状态
 
 ## 当前状态
-🔄 进行中 - 核心任务(E.1-E.5)已完成，API清理任务(E.6)待执行
+✅ 已完成 - 所有任务(E.1-E.6)完成，Vue前端迁移和API清理全部完成
 
 ---
 *本模板基于陆家花园项目Git开发指南创建*

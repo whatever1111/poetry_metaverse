@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getPrismaClient } from '../persistence/prismaClient.js';
@@ -18,15 +17,6 @@ const router = Router();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ROOT = path.join(__dirname, '..', '..');
-const DATA_DIR = path.join(ROOT, 'data', 'content');
-const POEMS_DIR = path.join(ROOT, 'data', 'poems');
-const DATA_DRAFT_DIR = path.join(ROOT, 'data', 'content_draft');
-const POEMS_DRAFT_DIR = path.join(ROOT, 'data', 'poems_draft');
-const PROJECTS_PATH = path.join(DATA_DIR, 'projects.json');
-const QUESTIONS_PATH = path.join(DATA_DIR, 'questions.json');
-const MAPPINGS_PATH = path.join(DATA_DIR, 'mappings.json');
-const POEM_ARCHETYPES_PATH = path.join(DATA_DRAFT_DIR, 'poem_archetypes.json');
 
 // 统一文件回退策略：默认关闭（与 server.js 保持一致）。
 // 如需启用文件回退（紧急应急），设置环境变量 FALLBACK_TO_FS=1
@@ -158,169 +148,208 @@ router.get('/universes/:universeCode/content', async (req, res, next) => {
   }
 });
 
-// GET /api/projects - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
-router.get('/projects', async (req, res, next) => {
-  // 返回废弃提示，但保持向后兼容
-  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/universe_zhou_spring_autumn/content instead."');
-  
-  const cacheKey = '/api/projects';
-  if (req.query.refresh === 'true') invalidate([cacheKey]);
-  const cached = getCache(cacheKey);
-  if (cached !== undefined) return res.json(cached);
-  try {
-    const prisma = getPrismaClient();
-    const zhouProjects = await prisma.zhouProject.findMany({
-      include: { subProjects: { select: { name: true, description: true } } },
-    });
-    const mapped = mapZhouProjectsToPublicProjects(zhouProjects).filter(
-      (p) => (p.status || '').toLowerCase() === 'published'
-    );
-    setCache(cacheKey, mapped);
-    return res.json(mapped);
-  } catch (dbErr) {
-    if (!FALLBACK_TO_FS) return next(fileFallbackError('无法加载项目结构'));
-    // 若 Prisma 客户端不可用或查询失败，回退至文件
-    try {
-      const projectsData = await fs.readFile(PROJECTS_PATH, 'utf-8');
-      const projectsJson = JSON.parse(projectsData);
-      const all = projectsJson.projects || [];
-      const publishedOnly = all.filter((p) => (p.status || '').toLowerCase() === 'published');
-      setCache(cacheKey, publishedOnly);
-      return res.json(publishedOnly);
-    } catch (fsErr) {
-      return next(fileFallbackError('无法加载项目结构'));
-    }
-  }
-});
+// ================================
+// /api/projects 端点移除记录 (2025-08-29)
+// ================================
+// 移除内容: GET /api/projects 接口 (项目列表API)
+// 删除原因: Vue前端迁移完成，legacy前端已弃用，该API仅供传统HTML前端使用
+// 功能替代: 使用 GET /api/universes/universe_zhou_spring_autumn/content 获取项目数据
+// 删除的接口:
+// router.get('/projects', async (req, res, next) => {
+//   // 返回废弃提示，但保持向后兼容
+//   res.set('Warning', '299 - "This API is deprecated. Use /api/universes/universe_zhou_spring_autumn/content instead."');
+//   const cacheKey = '/api/projects';
+//   if (req.query.refresh === 'true') invalidate([cacheKey]);
+//   const cached = getCache(cacheKey);
+//   if (cached !== undefined) return res.json(cached);
+//   try {
+//     const prisma = getPrismaClient();
+//     const zhouProjects = await prisma.zhouProject.findMany({
+//       include: { subProjects: { select: { name: true, description: true } } },
+//     });
+//     const mapped = mapZhouProjectsToPublicProjects(zhouProjects).filter(
+//       (p) => (p.status || '').toLowerCase() === 'published'
+//     );
+//     setCache(cacheKey, mapped);
+//     return res.json(mapped);
+//   } catch (dbErr) {
+//     if (!FALLBACK_TO_FS) return next(fileFallbackError('无法加载项目结构'));
+//     try {
+//       const projectsData = await fs.readFile(PROJECTS_PATH, 'utf-8');
+//       const projectsJson = JSON.parse(projectsData);
+//       const all = projectsJson.projects || [];
+//       const publishedOnly = all.filter((p) => (p.status || '').toLowerCase() === 'published');
+//       setCache(cacheKey, publishedOnly);
+//       return res.json(publishedOnly);
+//     } catch (fsErr) {
+//       return next(fileFallbackError('无法加载项目结构'));
+//     }
+//   }
+// });
+// 接口功能: 获取周与春秋宇宙的项目列表，支持数据库和文件系统双重回退
+// 恢复说明: 如需恢复此API，取消注释上述代码并确保相关mapper函数正常工作
+// ================================
 
 // ============ AI功能API路由已移至server.js实现 ============
 // 注：/api/interpret 和 /api/listen 现在由server.js处理，使用真实的Gemini和Google TTS API
 
-// GET /api/questions - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
-router.get('/questions', async (req, res, next) => {
-  // 返回废弃提示，但保持向后兼容
-  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
-  
-  const cacheKey = '/api/questions';
-  if (req.query.refresh === 'true') invalidate([cacheKey]);
-  const cached = getCache(cacheKey);
-  if (cached !== undefined) return res.json(cached);
-  try {
-    const prisma = getPrismaClient();
-    const qas = await prisma.zhouQA.findMany();
-    const mapped = mapZhouQAToPublicQuestions(qas);
-    setCache(cacheKey, mapped);
-    return res.json(mapped);
-  } catch (dbErr) {
-    if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read questions'));
-    try {
-      const questionsData = await fs.readFile(QUESTIONS_PATH, 'utf-8');
-      const json = JSON.parse(questionsData);
-      setCache(cacheKey, json);
-      return res.json(json);
-    } catch (fsErr) {
-      return next(fileFallbackError('Failed to read questions'));
-    }
-  }
-});
+// ================================
+// /api/questions 端点移除记录 (2025-08-29)
+// ================================
+// 移除内容: GET /api/questions 接口 (问答列表API)
+// 删除原因: Vue前端迁移完成，legacy前端已弃用，该API仅供传统HTML前端使用
+// 功能替代: 使用 GET /api/universes/universe_zhou_spring_autumn/content 获取问答数据
+// 删除的接口:
+// router.get('/questions', async (req, res, next) => {
+//   // 返回废弃提示，但保持向后兼容
+//   res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+//   const cacheKey = '/api/questions';
+//   if (req.query.refresh === 'true') invalidate([cacheKey]);
+//   const cached = getCache(cacheKey);
+//   if (cached !== undefined) return res.json(cached);
+//   try {
+//     const prisma = getPrismaClient();
+//     const qas = await prisma.zhouQA.findMany();
+//     const mapped = mapZhouQAToPublicQuestions(qas);
+//     setCache(cacheKey, mapped);
+//     return res.json(mapped);
+//   } catch (dbErr) {
+//     if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read questions'));
+//     try {
+//       const questionsData = await fs.readFile(QUESTIONS_PATH, 'utf-8');
+//       const json = JSON.parse(questionsData);
+//       setCache(cacheKey, json);
+//       return res.json(json);
+//     } catch (fsErr) {
+//       return next(fileFallbackError('Failed to read questions'));
+//     }
+//   }
+// });
+// 接口功能: 获取周与春秋宇宙的问答数据，支持数据库和文件系统双重回退
+// 恢复说明: 如需恢复此API，取消注释上述代码并确保mapZhouQAToPublicQuestions函数正常工作
+// ================================
 
-// GET /api/mappings - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
-router.get('/mappings', async (req, res, next) => {
-  // 返回废弃提示，但保持向后兼容
-  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
-  
-  const cacheKey = '/api/mappings';
-  if (req.query.refresh === 'true') invalidate([cacheKey]);
-  const cached = getCache(cacheKey);
-  if (cached !== undefined) return res.json(cached);
-  try {
-    const prisma = getPrismaClient();
-    const mappings = await prisma.zhouMapping.findMany();
-    const mapped = mapZhouMappingToPublicMappings(mappings);
-    setCache(cacheKey, mapped);
-    return res.json(mapped);
-  } catch (dbErr) {
-    if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read mappings'));
-    try {
-      const mappingsData = await fs.readFile(MAPPINGS_PATH, 'utf-8');
-      const json = JSON.parse(mappingsData);
-      setCache(cacheKey, json);
-      return res.json(json);
-    } catch (fsErr) {
-      return next(fileFallbackError('Failed to read mappings'));
-    }
-  }
-});
+// ================================
+// /api/mappings 端点移除记录 (2025-08-29)
+// ================================
+// 移除内容: GET /api/mappings 接口 (映射关系API)
+// 删除原因: Vue前端迁移完成，legacy前端已弃用，该API仅供传统HTML前端使用
+// 功能替代: 使用 GET /api/universes/universe_zhou_spring_autumn/content 获取映射数据
+// 删除的接口:
+// router.get('/mappings', async (req, res, next) => {
+//   // 返回废弃提示，但保持向后兼容
+//   res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+//   const cacheKey = '/api/mappings';
+//   if (req.query.refresh === 'true') invalidate([cacheKey]);
+//   const cached = getCache(cacheKey);
+//   if (cached !== undefined) return res.json(cached);
+//   try {
+//     const prisma = getPrismaClient();
+//     const mappings = await prisma.zhouMapping.findMany();
+//     const mapped = mapZhouMappingToPublicMappings(mappings);
+//     setCache(cacheKey, mapped);
+//     return res.json(mapped);
+//   } catch (dbErr) {
+//     if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read mappings'));
+//     try {
+//       const mappingsData = await fs.readFile(MAPPINGS_PATH, 'utf-8');
+//       const json = JSON.parse(mappingsData);
+//       setCache(cacheKey, json);
+//       return res.json(json);
+//     } catch (fsErr) {
+//       return next(fileFallbackError('Failed to read mappings'));
+//     }
+//   }
+// });
+// 接口功能: 获取周与春秋宇宙的映射关系数据，支持数据库和文件系统双重回退
+// 恢复说明: 如需恢复此API，取消注释上述代码并确保mapZhouMappingToPublicMappings函数正常工作
+// ================================
 
-// GET /api/poems-all - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
-router.get('/poems-all', async (req, res, next) => {
-  // 返回废弃提示，但保持向后兼容
-  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
-  
-  const cacheKey = '/api/poems-all';
-  if (req.query.refresh === 'true') invalidate([cacheKey]);
-  const cached = getCache(cacheKey);
-  if (cached !== undefined) return res.json(cached);
-  try {
-    const prisma = getPrismaClient();
-    const poems = await prisma.zhouPoem.findMany();
-    const mapped = mapZhouPoemsToPublicPoems(poems);
-    setCache(cacheKey, mapped);
-    return res.json(mapped);
-  } catch (dbErr) {
-    if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read poems'));
-    try {
-      const poemsObj = {};
-      const items = await fs.readdir(POEMS_DIR, { withFileTypes: true });
-      for (const item of items) {
-        if (item.isDirectory()) {
-          const folder = path.join(POEMS_DIR, item.name);
-          const files = await fs.readdir(folder);
-          for (const file of files) {
-            if (file.endsWith('.txt')) {
-              const full = path.join(folder, file);
-              const content = await fs.readFile(full, 'utf-8');
-              const key = path.basename(file, '.txt').replace(/[《》]/g, '');
-              poemsObj[key] = content;
-            }
-          }
-        }
-      }
-      setCache(cacheKey, poemsObj);
-      return res.json(poemsObj);
-    } catch (fsErr) {
-      return next(fileFallbackError('Failed to read poems'));
-    }
-  }
-});
+// ================================
+// /api/poems-all 端点移除记录 (2025-08-29)
+// ================================
+// 移除内容: GET /api/poems-all 接口 (诗歌集合API)
+// 删除原因: Vue前端迁移完成，legacy前端已弃用，该API仅供传统HTML前端使用
+// 功能替代: 使用 GET /api/universes/universe_zhou_spring_autumn/content 获取诗歌数据
+// 删除的接口:
+// router.get('/poems-all', async (req, res, next) => {
+//   // 返回废弃提示，但保持向后兼容
+//   res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+//   const cacheKey = '/api/poems-all';
+//   if (req.query.refresh === 'true') invalidate([cacheKey]);
+//   const cached = getCache(cacheKey);
+//   if (cached !== undefined) return res.json(cached);
+//   try {
+//     const prisma = getPrismaClient();
+//     const poems = await prisma.zhouPoem.findMany();
+//     const mapped = mapZhouPoemsToPublicPoems(poems);
+//     setCache(cacheKey, mapped);
+//     return res.json(mapped);
+//   } catch (dbErr) {
+//     if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read poems'));
+//     try {
+//       const poemsObj = {};
+//       const items = await fs.readdir(POEMS_DIR, { withFileTypes: true });
+//       for (const item of items) {
+//         if (item.isDirectory()) {
+//           const folder = path.join(POEMS_DIR, item.name);
+//           const files = await fs.readdir(folder);
+//           for (const file of files) {
+//             if (file.endsWith('.txt')) {
+//               const full = path.join(folder, file);
+//               const content = await fs.readFile(full, 'utf-8');
+//               const key = path.basename(file, '.txt').replace(/[《》]/g, '');
+//               poemsObj[key] = content;
+//             }
+//           }
+//         }
+//       }
+//       setCache(cacheKey, poemsObj);
+//       return res.json(poemsObj);
+//     } catch (fsErr) {
+//       return next(fileFallbackError('Failed to read poems'));
+//     }
+//   }
+// });
+// 接口功能: 获取周与春秋宇宙的所有诗歌数据，支持数据库和文件系统双重回退
+// 恢复说明: 如需恢复此API，取消注释上述代码并确保mapZhouPoemsToPublicPoems函数和文件读取逻辑正常工作
+// ================================
 
-// GET /api/poem-archetypes - [DEPRECATED] 使用 /api/universes/:universeCode/content 替代
-router.get('/poem-archetypes', async (req, res, next) => {
-  // 返回废弃提示，但保持向后兼容
-  res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
-  
-  const cacheKey = '/api/poem-archetypes';
-  if (req.query.refresh === 'true') invalidate([cacheKey]);
-  const cached = getCache(cacheKey);
-  if (cached !== undefined) return res.json(cached);
-  try {
-    const prisma = getPrismaClient();
-    const poems = await prisma.zhouPoem.findMany();
-    const mapped = mapPoemArchetypesForFrontend(poems);
-    setCache(cacheKey, mapped);
-    return res.json(mapped);
-  } catch (dbErr) {
-    if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read poem archetypes'));
-    try {
-      const archetypesData = await fs.readFile(POEM_ARCHETYPES_PATH, 'utf-8');
-      const json = JSON.parse(archetypesData);
-      setCache(cacheKey, json);
-      return res.json(json);
-    } catch (fsErr) {
-      return next(fileFallbackError('Failed to read poem archetypes'));
-    }
-  }
-});
+// ================================
+// /api/poem-archetypes 端点移除记录 (2025-08-29)
+// ================================
+// 移除内容: GET /api/poem-archetypes 接口 (诗歌原型API)
+// 删除原因: Vue前端迁移完成，legacy前端已弃用，该API仅供传统HTML前端使用
+// 功能替代: 使用 GET /api/universes/universe_zhou_spring_autumn/content 获取诗歌原型数据
+// 删除的接口:
+// router.get('/poem-archetypes', async (req, res, next) => {
+//   // 返回废弃提示，但保持向后兼容
+//   res.set('Warning', '299 - "This API is deprecated. Use /api/universes/zhou/content instead."');
+//   const cacheKey = '/api/poem-archetypes';
+//   if (req.query.refresh === 'true') invalidate([cacheKey]);
+//   const cached = getCache(cacheKey);
+//   if (cached !== undefined) return res.json(cached);
+//   try {
+//     const prisma = getPrismaClient();
+//     const poems = await prisma.zhouPoem.findMany();
+//     const mapped = mapPoemArchetypesForFrontend(poems);
+//     setCache(cacheKey, mapped);
+//     return res.json(mapped);
+//   } catch (dbErr) {
+//     if (!FALLBACK_TO_FS) return next(fileFallbackError('Failed to read poem archetypes'));
+//     try {
+//       const archetypesData = await fs.readFile(POEM_ARCHETYPES_PATH, 'utf-8');
+//       const json = JSON.parse(archetypesData);
+//       setCache(cacheKey, json);
+//       return res.json(json);
+//     } catch (fsErr) {
+//       return next(fileFallbackError('Failed to read poem archetypes'));
+//     }
+//   }
+// });
+// 接口功能: 获取周与春秋宇宙的诗歌原型数据，支持数据库和文件系统双重回退
+// 恢复说明: 如需恢复此API，取消注释上述代码并确保mapPoemArchetypesForFrontend函数正常工作
+// ================================
 
 export default router;
 
