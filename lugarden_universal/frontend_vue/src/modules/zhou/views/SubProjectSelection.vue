@@ -123,10 +123,10 @@ watch(
   }
 )
 
-// 返回上一级
+// 返回上一级 - 返回主项目选择页
 const goBack = () => {
-  zhouStore.goBack()
-  router.push('/')
+  // 直接返回主项目选择页，不调用zhouStore.goBack()避免状态被清空
+  router.push('/zhou')
 }
 
 // 选择章节，开始问答

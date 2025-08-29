@@ -284,10 +284,20 @@ const showPoetExplanation = () => {
   zhouStore.showPoetExplanation()
 }
 
-// 重新开始
+// 重新开始 - 智能导航回到当前项目的子项目选择页
 const startOver = () => {
+  // 保存当前项目信息用于导航
+  const currentProject = zhouStore.navigation.currentMainProject
+  
+  // 重置应用状态
   zhouStore.resetApp()
-  router.push('/')
+  
+  // 智能导航：如果有当前主项目，返回其子项目选择页；否则返回主项目选择页
+  if (currentProject) {
+    router.push(`/project/${currentProject.id}`)
+  } else {
+    router.push('/zhou')
+  }
 }
 
 // 重试加载
