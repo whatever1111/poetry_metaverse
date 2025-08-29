@@ -608,6 +608,71 @@ await portalService.recordVisit(universeId, visitData)
 
 ---
 
+### 任务E.9 API契约完整性与实用性完善
+
+#### 任务概述
+完成Universe Content API的最后一个缺失端点，并对整个API契约进行实用性重检，确保每个API的项目使用场景都有清晰说明，提升API契约的可理解性和实用价值。
+
+#### 背景与动机
+- **API完整性**: E8完成了核心内容端点，但遗漏了`GET /api/universes`宇宙列表端点
+- **契约实用性**: 当前API契约偏向技术规范，缺乏实际使用场景和目的说明
+- **可维护性**: 需要让团队成员（包括非技术人员）能够理解每个API的具体用途
+- **架构收官**: E1-E8完成了技术实现，E9确保文档体系的完整性和实用性
+
+#### 具体任务
+**第一部分：技术完善**
+- 在universeService.js中添加getPublicUniverses方法
+- 在universes.js中添加`GET /api/universes`路由
+- 100%复制原有public.js的实现逻辑，确保功能一致性
+
+**第二部分：文档演进** 
+- 基于api-contracts-v2025.08.28.md创建新版本api-contracts-v2025.08.29.md
+- 保持原有技术规范完整性，增加"项目中的使用"实用性章节
+- 为每个API域添加前端调用场景、用户操作流程等实际使用说明
+- 生成反映项目实际现状的API契约版本，而非修改冻结的指导合同
+
+#### 预期成果
+- ✅ **API完整性**: Universe Content API 100%完成，符合契约规范
+- ✅ **契约实用性**: API契约不仅有技术规范，更有使用场景和目的说明
+- ✅ **团队友好**: 非技术人员也能理解每个API的作用和价值
+- ✅ **架构收官**: E阶段项目完美收官，API体系完整且文档化
+
+#### 技术要求
+- 100%复制原有public.js中`/universes`端点的实现逻辑
+- 保持与portal.js等现有API的一致性
+- 确保缓存机制和错误处理的标准化
+- 维护现有的性能和安全特性
+
+#### 文档版本管理要求
+- **保持v2025.08.28不变**: 作为冻结的指导合同，不进行任何修改
+- **创建v2025.08.29新版本**: 基于0828，添加项目实际使用说明
+- **内容一致性**: 技术规范与指导思想保持与0828完全一致
+- **实用性增强**: 为每个API域添加"项目中的使用"章节，说明前端调用和用户流程
+
+**预期改动文件**：
+- `lugarden_universal/application/src/services/universeService.js` (添加getPublicUniverses方法)
+- `lugarden_universal/application/src/routes/universes.js` (添加GET /api/universes路由)
+- `documentation/backend/api-contracts-v2025.08.29.md` (新建，基于0828增加实用性说明)
+
+- 完成状态：⚠️ 待开始
+##### - 执行步骤：
+  - [ ] 步骤E.9.1：提取原有public.js中/universes端点的完整实现
+  - [ ] 步骤E.9.2：在universeService.js中添加getPublicUniverses方法
+  - [ ] 步骤E.9.3：在universes.js中添加GET /api/universes路由处理
+  - [ ] 步骤E.9.4：测试新端点功能，确保与原有实现一致
+  - [ ] 步骤E.9.5：分析现有API在项目中的实际使用场景和前端调用模式
+  - [ ] 步骤E.9.6：基于v2025.08.28创建v2025.08.29新版本API契约
+  - [ ] 步骤E.9.7：为新版本的每个API域添加"项目中的使用"实用性章节
+  - [ ] 步骤E.9.8：验证新API契约版本的完整性、准确性和实用性
+
+**实际改动文件**：
+- (待补充)
+
+**关键技术突破**：
+- (待补充)
+
+---
+
 ## 测试与验收
 - **功能验证**: 宇宙门户核心功能正常运行，用户体验问题得到有效解决
 - **性能验证**: 门户响应速度和资源使用效率符合用户期望
@@ -639,7 +704,7 @@ await portalService.recordVisit(universeId, visitData)
 - [ ] 更新项目状态
 
 ## 当前状态
-✅ 已完成 - E.1-E.8全部完成！Vue迁移架构纯净化完成，Universe Content API架构重建成功
+🔄 进行中 - E.1-E.8已完成，E.9待开始。API核心功能已实现，需完成最后的完整性补充和文档实用性提升
 
 ---
 *本模板基于陆家花园项目Git开发指南创建*
