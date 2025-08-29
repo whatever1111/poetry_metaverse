@@ -1,6 +1,17 @@
 <template>
   <div class="min-h-screen" style="background-color: var(--bg-primary);">
     <div class="container mx-auto px-4 py-8">
+      <!-- 返回按钮 -->
+      <div class="mb-6">
+        <BackButton 
+          text="返回"
+          variant="default"
+          size="medium"
+          :hover-animation="true"
+          @click="goBack"
+        />
+      </div>
+
       <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
         周与春秋
       </h1>
@@ -78,6 +89,7 @@ import type { ZhouProject } from '@/modules/zhou/types/zhou'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import ErrorState from '@/shared/components/ErrorState.vue'
 import EmptyState from '@/shared/components/EmptyState.vue'
+import BackButton from '@/shared/components/BackButton.vue'
 
 const router = useRouter()
 const zhouStore = useZhouStore()
@@ -109,6 +121,12 @@ function shouldRefreshData(): boolean {
 function selectProject(project: ZhouProject): void {
   zhouStore.selectMainProject(project)
   router.push(`/project/${project.id}`)
+}
+
+// 返回宇宙门户
+function goBack(): void {
+  // 直接跳转到宇宙门户，避免状态管理操作（吸取E2教训）
+  router.push('/')
 }
 
 // 重试加载
