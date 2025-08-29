@@ -20,7 +20,16 @@ export const usePortalStore = defineStore('portal', () => {
     if (!apiServices) {
       apiServices = getApiServices({
         onLoadingChange: (loading: boolean) => {
-          state.loading = loading
+          console.log('[Portal API] Loading状态变化:', loading, '当前手动状态:', state.loading)
+          
+          // 防护机制：避免API回调与手动状态控制冲突
+          // 只有当前不在手动控制loading状态时，才接受API回调的状态变化
+          if (!state.loading || loading === false) {
+            console.log('[Portal API] 接受状态变化')
+            state.loading = loading
+          } else {
+            console.log('[Portal API] 忽略状态变化，避免冲突')
+          }
         },
         onError: (error: unknown) => {
           console.error('Portal API错误:', error)
@@ -108,14 +117,19 @@ export const usePortalStore = defineStore('portal', () => {
 
   // 加载宇宙列表
   async function loadUniverses(refresh = false): Promise<void> {
-    if (state.loading) return
+    if (state.loading) {
+      console.log('[Portal] 已在加载中，跳过重复请求')
+      return
+    }
 
     try {
+      console.log('[Portal] 开始加载宇宙列表, refresh:', refresh)
       state.loading = true
       clearError()
 
       // 如果有缓存且不需要强制刷新，返回
       if (!refresh && state.universes.length > 0) {
+        console.log('[Portal] 缓存数据存在且不需要刷新，直接返回')
         state.loading = false
         return
       }
@@ -174,7 +188,7 @@ export const usePortalStore = defineStore('portal', () => {
         ]
       }
 
-      console.log('宇宙列表加载成功:', {
+      console.log('[Portal] 宇宙列表加载成功:', {
         total: state.universes.length,
         active: activeUniverses.value.length,
         developing: developingUniverses.value.length
@@ -192,6 +206,7 @@ export const usePortalStore = defineStore('portal', () => {
         state.error.message = error instanceof Error ? error.message : '加载宇宙列表失败'
       }
     } finally {
+      console.log('[Portal] 加载完成，重置loading状态')
       state.loading = false
     }
   }
@@ -341,9 +356,24 @@ export const usePortalStore = defineStore('portal', () => {
 
   // 预加载宇宙数据
   async function preloadUniverseData(): Promise<void> {
+    console.log('[Portal] 预加载宇宙数据开始, isDataStale:', isDataStale(), 'currentLoading:', state.loading)
+    
+    // 如果数据过期，需要加载
     if (isDataStale()) {
+      console.log('[Portal] 数据过期，开始加载')
       await loadUniverses()
+    } else {
+      // 数据不过期，但需要确保loading状态正确
+      console.log('[Portal] 数据新鲜，确保loading状态正确')
+      
+      // 防护机制：如果当前是loading状态但数据已存在，重置loading状态
+      if (state.loading && state.universes.length > 0) {
+        console.log('[Portal] 检测到状态冲突，重置loading状态')
+        state.loading = false
+      }
     }
+    
+    console.log('[Portal] 预加载完成, finalLoading:', state.loading, 'universes:', state.universes.length)
   }
 
   // ================================
