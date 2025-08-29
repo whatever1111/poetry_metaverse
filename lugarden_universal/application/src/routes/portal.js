@@ -203,16 +203,41 @@ router.get('/universes', async (req, res, next) => {
       whereCondition.status = { in: statusFilter };
     }
     
-    // 查询宇宙列表
+    // 查询宇宙列表 - 使用业务优先级排序
     const universes = await prisma.universe.findMany({
       where: whereCondition,
+      // 先查询所有数据，然后在应用层按业务优先级排序
       orderBy: { updatedAt: 'desc' }
     });
+
+    // 应用层业务优先级排序
+    const sortedUniverses = universes.sort((a, b) => {
+      // 定义状态优先级权重：数值越小优先级越高
+      const statusPriority = {
+        'published': 1,   // 已发布(对应前端active) - 最高优先级
+        'active': 1,      // 活跃状态 - 最高优先级
+        'developing': 2,  // 开发中 - 第二优先级
+        'draft': 2,       // 草稿(对应前端developing) - 第二优先级  
+        'maintenance': 3, // 维护中 - 第三优先级
+        'archived': 4     // 已归档 - 最低优先级
+      };
+
+      const aPriority = statusPriority[a.status] || 999;
+      const bPriority = statusPriority[b.status] || 999;
+
+      // 首先按状态优先级排序
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;
+      }
+
+      // 同优先级内按更新时间降序排序
+      return new Date(b.updatedAt) - new Date(a.updatedAt);
+    });
     
-    console.log(`[Portal API] 从数据库查询到 ${universes.length} 个宇宙`);
+    console.log(`[Portal API] 从数据库查询到 ${universes.length} 个宇宙，已按业务优先级排序`);
     
     // 映射到Portal API格式
-    const mappedUniverses = universes.map(universe => 
+    const mappedUniverses = sortedUniverses.map(universe => 
       mapUniverseToPortalFormat(universe, includeAnalytics)
     );
     
