@@ -24,6 +24,9 @@ Thumbs.db
 *.tmp
 *.temp
 
+# 原始素材
+*.pdf
+
 # 环境变量文件
 # 允许本地开发版本，但排除生产敏感配置
 lugarden_universal/application/.env.local
