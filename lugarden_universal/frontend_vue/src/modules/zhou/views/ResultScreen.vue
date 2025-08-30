@@ -141,7 +141,7 @@
               :retrying="zhouStore.result.interpretationLoading"
               ai-animation-delay="0.6s"
               poet-animation-delay="0.8s"
-              empty-message="点击上方按钮获取诗歌解读"
+              empty-message=""
               @retry-ai="retryAiFeatures"
             />
           </div>

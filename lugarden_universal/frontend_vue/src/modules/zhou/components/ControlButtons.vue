@@ -38,13 +38,6 @@
       <!-- 可选的自定义按钮插槽 -->
       <slot name="extra-buttons"></slot>
     </div>
-    
-    <!-- 操作提示 -->
-    <div v-if="showHints" class="text-center mt-lg">
-      <p class="text-caption italic text-gray-500 opacity-80">
-        点击上方按钮探索诗歌的不同维度
-      </p>
-    </div>
   </div>
 </template>
 
@@ -72,7 +65,6 @@ interface Props {
   poetButtonClicked?: boolean
   poetButtonClickCount?: number
   disabled?: boolean
-  showHints?: boolean
   gridLayout?: 'grid-2x2' | 'grid-1x3' | 'grid-responsive'
   poetButtonText?: string
 }
@@ -89,7 +81,6 @@ const props = withDefaults(defineProps<Props>(), {
   poetButtonClicked: false,
   poetButtonClickCount: 0,
   disabled: false,
-  showHints: true,
   gridLayout: 'grid-responsive',
   poetButtonText: '最好不要点'
 })

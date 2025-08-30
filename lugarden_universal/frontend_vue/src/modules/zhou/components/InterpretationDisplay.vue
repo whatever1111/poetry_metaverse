@@ -82,13 +82,7 @@
       </div>
     </div>
 
-    <!-- 空状态 -->
-    <div v-if="!aiInterpretation && !poetExplanation && !$slots.custom && !showAiError" class="text-center card-padding-normal content-spacing-normal text-gray-600">
-      <div class="text-5xl mb-base opacity-60">
-        <ChatBubbleLeftEllipsisIcon class="w-6 h-6 mx-auto" aria-hidden="true" />
-      </div>
-      <p class="text-body italic">{{ emptyMessage }}</p>
-    </div>
+    <!-- 空状态已移除 - E.5界面极简化优化 -->
   </div>
 </template>
 
@@ -101,7 +95,7 @@
 // 清理原因: 移除读诗功能后，这些图标不再被使用
 // 恢复说明: 如需恢复相关功能，可根据需要重新导入对应的图标组件
 // ================================
-import { ExclamationTriangleIcon, ChatBubbleLeftEllipsisIcon, AcademicCapIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+import { ExclamationTriangleIcon, AcademicCapIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 
 // 组件Props
 interface Props {
