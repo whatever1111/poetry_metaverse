@@ -55,32 +55,143 @@
 ### **阶段08-31_A：双Agent对抗博弈实验系统构建**
 
 #### - [ ] 任务A.1：知识库架构设计与构建
-- **核心思想**: 在Dify内构建支撑对抗博弈的知识库架构，实现风格域与正典域的分离，为Generator和Discriminator提供差异化的检索支持
+- **核心思想**: 数据库作为唯一真源（Single Source of Truth），对外一次性导出“干净可读文本（Markdown）+ 元数据”的语料；在Dify内构建风格域与正典域两个独立知识库，为Generator与Discriminator提供差异化检索支持。结构化JSON/JSONL保留为权威数据源与评测集，不直接作为可检索文本入索引。
 - **实施内容**:
-  - 设计风格域知识库（项目语料/吴任几风格）与正典域知识库（《周易》《春秋公羊传》《孟子》全域）
-  - 配置检索权重与重排策略（向量/关键词混合，top_k调优）
-  - 验证检索召回质量与引用归属功能
+  - 语料形态（索引用）：采用 Markdown/TXT。风格域仅包含「篇章/题目/引文/引文出处/正文」的人类可读文本；结构字段（如 series、poem_id、主题标签等）作为元数据保存，不并入可检索文本。
+  - 分段策略：
+    - 风格域（项目语料/吴任几风格）：通用模式，按诗作与自然段切分，保证每段为完整语义单元。
+    - 正典域（《周易》《春秋公羊传》《孟子》）：父子模式（父=书目·篇章；子=细粒度断句/小节），统一“书目·篇章”命名，增强命中与归因。
+  - 元数据字段建议：
+    - 风格域：series、poem_id、title、subseries/主题、tags。
+    - 正典域：book、chapter（书目·篇章）、location/canon_id、断句索引。
+  - 检索设置：混合检索 + 重排（rerank）。
+    - 风格域：top_k=4–6，关键词:向量≈0.3:0.7。
+    - 正典域：top_k=6–8，开启重排以提升跨书目检索质量。
+  - 多库联检：知识检索节点同时关联风格域与正典域并启用重排；或分别检索后用变量聚合/列表操作合并上下文供同一 LLM 节点使用。
+  - 召回与归因验证：使用“召回测试/引用归属”视图验证样本查询的相关性与篇章归因准确性，记录参数与结果。
 - 交付物：
-  - [ ] **知识库架构方案**: 风格域与正典域的分离设计文档
-  - [ ] **检索配置策略**: 向量/关键词权重与重排参数优化
-  - [ ] **召回质量验证**: 基于样本查询的检索效果评估
+  - [ ] **知识库架构方案**: 分域设计、分段模式与元数据字段清单
+  - [ ] **风格域语料与导入记录**: Markdown 文本与元数据映射、导入配置
+  - [ ] **正典域语料与导入记录**: 三书 Markdown 文本、父子分段与导入配置
+  - [ ] **检索与重排配置报告**: top_k、权重、重排开关的对比实验与结论
 - 验收标准：
-  - [ ] 成功创建并配置风格域与正典域两个独立知识库
-  - [ ] 验证检索召回的相关性与引用归属的准确性
-  - [ ] 确认检索配置可支撑后续G/D节点的上下文需求
-- **风险评估**: 中风险 - 知识库质量直接影响对抗效果
+  - [ ] 已在 Dify 中创建并导入“风格域（通用模式）”与“正典域（父子模式）”两个独立知识库，索引语料为 Markdown 文本
+  - [ ] 多库检索+重排生效，样本查询召回相关且归因到正确“书目·篇章/句段”
+  - [ ] 检索配置能稳定支撑后续 G/D 节点上下文需求
+- **风险评估**: 中风险 - 文本清洗质量、分段粒度与权重设置直接影响召回与生成质量
 - 预期改动文件（预判）：
-  - `lugarden_universal/lu_the_poet/` - 实验文档与配置记录
+  - `lugarden_universal/lu_the_poet/corpus/` - 清洗后的 Markdown 正文与元数据映射 Markdown（分文件）
+  - `lugarden_universal/lu_the_poet/` - 实验记录与配置文档
 - **实际改动文件**: 
 - **完成状态**：🔄 进行中
 - 独立审计意见（可选）：
   - 质量评级：
   - 审计结论：
-- 执行步骤：
-  - [ ] 步骤A.1.1：设计知识库分域架构（风格域vs正典域）
-  - [ ] 步骤A.1.2：在Dify内创建并配置知识库
-  - [ ] 步骤A.1.3：优化检索权重与重排参数
-  - [ ] 步骤A.1.4：验证召回质量与引用归属
+##### - [ ] 子任务A.1.1：风格域知识库（简体）
+- **目标**: 为 G（生成器）提供高质量风格上下文，使用“简体+干净文本”的项目原创诗作，结构字段仅作为元数据，不并入可检索文本。
+- **来源与简体策略**:
+  - 唯一真源：数据库。导出为 Markdown（标题/引文/出处/正文），必要时使用 OpenCC 统一为大陆简体规范（如：系辞/贤/礼等用字）。
+  - 过渡期（如需）：可临时依据 `lugarden_universal/lu_the_poet/corpus/human` 中的人类可读文本生成 MD，随后以数据库导出替换为准。
+- **字段映射与导出规范（基于 Prisma 模型 `ZhouPoem`）**:
+  - 源表/模型：`ZhouPoem`（生产 schema：`id, title, chapter, body(Json), filePath?, coreTheme?, problemSolved?, spiritualConsolation?, classicalEcho?, poetExplanation?, universeId, subProjectId?`，唯一键：`[universeId, title]`）。
+  - 选择条件：限定 `Universe.code = 'zhou'` 或指定的 `universeId`；仅导出发布态数据（如有状态控制则附加过滤）。
+  - 文本生成：
+    - 标题：取 `title`；章节标识用于元数据（`chapter`）。
+    - 正文：从 `body`（JSON）解析为段落/行（支持形态：字符串、行数组、或对象键 `paragraphs/lines`）。
+  - 元数据映射（写入 KB 文档 metadata，不进入可检索正文）：
+    - `chapter`→chapter；`coreTheme`→core_theme；`problemSolved`→problem_solved；`spiritualConsolation`→spiritual_consolation；`classicalEcho`→classical_echo；`poetExplanation`→poet_explanation；`filePath`→source_path；`universeId`→universe_id；`subProjectId`→sub_project_id。
+  - 命名与定位：文档 slug 建议 `zhou/{chapter}/{normalized-title}`；文件命名：正文 `zhou-{chapter}-{normalized-title}.md`，映射 `zhou-{chapter}-{normalized-title}-metadata.md`；保留 `locator`（`chapter + title`）作为 D/RAG 归因锚点。
+  - 质量约束：导出前做简体统一、去除控制符/空白行折叠、校验 `title` 非空且 `body` 展开后≥1段。
+- **`body`(JSON) 典型结构解析规则**:
+  - 支持格式：
+    - 字符串：整首诗作为一个文本块；按换行符切分为行/段。
+    - 数组（`string[]`）：每个元素代表一段/一行；空字符串或仅含空白视为段落分隔。
+    - 对象：以下键优先级检测（由上至下）：
+      - `paragraphs: string[]` → 直接作为段落；
+      - `stanzas: string[][]` → 每个小节内的行合并为段；
+      - `lines: string[]` → 聚合为段（遇空行分段）；
+      - `content: string | string[] | { ... }` → 递归按以上规则展开；
+      - 其他键（如 `format, type`）仅作提示，不进入文本。
+  - 标准化流程：
+    - 简体统一（OpenCC t2s/tw2sp）；
+    - 去除零宽与控制字符；半角/全角与中文引号规范化（“”‘’）；
+    - 去重与裁剪：行首尾空白清理；连续空行折叠为单一段落分隔；
+    - 严格保留创作上的分行（不合并非空行）。
+  - Markdown 生成规范（风格域 KB）：
+    - 文档级：`# 标题` 仅用于父文档锚点（不参与可检索正文）；
+    - 正文块：按段输出；子级分段文本作为检索单元；
+    - 元数据全部写入 KB 的 metadata，不写入正文。
+  - 校验规则：
+    - 至少 1 段文本，且每段至少 1 非空行；
+    - `title` 非空；`chapter` 存在；
+    - 展开后总长度与行数在合理阈值内（例如行数 ≤ 200，字符数 ≤ 8k，可按经验调整）。
+  - 失败与回退：
+    - 解析失败 → 记录 `id` 与 `filePath`，跳过导入并输出错误清单；
+    - 结构未知但可降级为字符串 → 连接所有叶子文本，以换行分隔。
+  - 示例：
+    - 字符串：
+      ```json
+      "我们情况差不多\n……\n（段落二）"
+      ```
+    - 数组：
+      ```json
+      ["（段一）第一行", "第二行", "", "（段二）第一行"]
+      ```
+    - 对象：
+      ```json
+      {"paragraphs": ["段一……", "段二……"]}
+      ```
+- **分段与元数据**:
+  - 分段：通用模式。父=整首诗（标题为锚），子=自然段/行段，保证语义完整。
+  - 元数据字段（与 Prisma 一致）：
+    - `poem_id(ZhouPoem.id)`, `title`, `chapter`
+    - `core_theme`, `problem_solved`, `spiritual_consolation`, `classical_echo`, `poet_explanation`
+    - `source_path`, `universe_id`, `sub_project_id`
+    - 可选：`alt_titles`, `tags`, `created_at`, `version`, `source_url`
+- **检索设置**: 混合检索 + 重排；top_k=4–6；关键词:向量≈0.3:0.7。
+- **交付物**:
+  - [ ] 风格域 Markdown 正文（简体）与元数据映射 Markdown（分文件）
+  - [ ] 导入配置与记录（检索、重排参数）
+- **验收标准**:
+  - [ ] 样本查询稳定命中目标诗作与对应段落
+  - [ ] 召回上下文与预期风格特征一致，文本为简体且无结构噪声
+- **执行步骤**：
+  - [ ] 步骤A.1.1.1：从 Prisma 生产库导出 `ZhouPoem` → 生成两份产物：正文 `zhou-{chapter}-{normalized-title}.md` 与映射 `zhou-{chapter}-{normalized-title}-metadata.md`（按上述字段映射；仅上传正文至 Dify，元数据通过知识库元数据功能或 API 写入）
+  - [ ] 步骤A.1.1.2：统一命名与通用分段；补全元数据字段
+  - [ ] 步骤A.1.1.3：导入 Dify 风格域 KB，配置混合检索+重排
+  - [ ] 步骤A.1.1.4：进行召回与归因自测，记录参数与结果
+
+##### - [ ] 子任务A.1.2：正典域知识库（简体，核验专用）
+- **目标**: 为 D（判别器）提供“唯一正典库（简体）”，覆盖《周易》《春秋公羊传》《孟子》，用于引文真实性硬核验与引用归属。
+- **来源与简体策略**:
+  - 主来源：维基文库简体（zh-hans），可合法再利用并支持导出。
+    - 周易：`https://zh.wikisource.org/zh-hans/周易`
+    - 春秋公羊传：`https://zh.wikisource.org/zh-hans/春秋公羊传`
+    - 孟子：`https://zh.wikisource.org/zh-hans/孟子`
+  - 繁转简：如个别条目仅有繁体，使用 OpenCC 统一为简体；保留原始来源 URL。
+  - 校对与命名：对照 CTP 统一篇章与结构（仅对照，不批量抓取，引用需附链接）：
+    - CTP·周易：`https://ctext.org/book-of-changes/zh`
+    - CTP·公羊传：`https://ctext.org/gongyang-zhuan/zh`
+    - CTP·孟子：`https://ctext.org/mengzi/zh`
+- **分段与元数据**:
+  - 父子分段：父=“书目·篇章”标题，子=细粒度断句/小节；在子级存放“书目·篇章+原句/断句”锚点，便于 D 的精确核验。
+  - 元数据字段：`book, chapter, section, alt_titles_trad, locator, source_url, canon_id`。
+- **检索设置**: 混合检索 + 重排；top_k=6–8；优化跨书目检索质量。
+- **交付物**:
+  - [ ] 三书简体 Markdown（父子分段）与元数据映射
+  - [ ] 导入配置与记录（检索、重排参数）
+  - [ ] 篇章命名对照表（含繁/简异名）
+- **验收标准**:
+  - [ ] D 的核验节点仅认可本库命中“书目·篇章+原句/断句”即通过；未命中直接“驳回”
+  - [ ] 5–10 条标准化断句检索命中正确篇章与原文，归因准确
+- **合规说明**:
+  - 维基文库文本属公有领域，可再利用；
+  - CTP 页面禁止自动化批量下载，允许引用请附对应页面链接；遵守其使用条款。
+- **执行步骤**：
+  - [ ] 步骤A.1.2.1：获取三书简体文本（维基文库）；必要时繁转简
+  - [ ] 步骤A.1.2.2：统一命名与父子分段，生成 Markdown 与元数据
+  - [ ] 步骤A.1.2.3：导入 Dify 正典域 KB，配置混合检索+重排
+  - [ ] 步骤A.1.2.4：执行核验样本检索与归因测试，记录结果
 
 #### - [ ] 任务A.2：双Agent工作流架构实现
 - **核心思想**: 在Dify工作流中构建Generator Agent与Discriminator Agent的对抗循环，实现创作→评估→迭代的完整闭环，支持最多3轮优化迭代
