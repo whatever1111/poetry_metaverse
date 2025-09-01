@@ -1,0 +1,730 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 陆家明的周与春秋练习
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.2.3@5a7f82fa86e28332ad51941d0b491c1e8a38ead539656442f7bf4c6129cd15fa
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.5.4@22fa3d100c55f8fc4b2837d8fb0831e3c8de333a5a5b028e073d502d2df9cb35
+kind: app
+version: 0.3.1
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: '你好，我是陆家明，陆家花园的主理人，虽然……这个词儿最近好像被污名化了？
+
+
+      不重要！重要的是，这里是我练习如何模仿吴任几先生写诗的地方，不管你说什么，我都会用一首诗来回复你
+
+
+      但……毕竟是写诗嘛，我花的时间可能有点儿久，因此，我想请求你多一点儿的耐心
+
+
+      好的。我现在已经准备好了。你想和我聊点儿什么？'
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1756696215859-source-1756699728276-target
+      source: '1756696215859'
+      sourceHandle: source
+      target: '1756699728276'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1756699728276-source-1756699910424-target
+      source: '1756699728276'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1756699910424-source-1756701800237-target
+      source: '1756699910424'
+      sourceHandle: source
+      target: '1756701800237'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 1756701800237-source-1756702603954-target
+      source: '1756701800237'
+      sourceHandle: source
+      target: '1756702603954'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1756702603954-true-1756702666160-target
+      source: '1756702603954'
+      sourceHandle: 'true'
+      target: '1756702666160'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 1756702603954-false-17567033984920-target
+      source: '1756702603954'
+      sourceHandle: 'false'
+      target: '17567033984920'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17567033984920-source-17567053527070-target
+      source: '17567033984920'
+      sourceHandle: source
+      target: '17567053527070'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 17567053527070-source-17567053996880-target
+      source: '17567053527070'
+      sourceHandle: source
+      target: '17567053996880'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 17567053996880-true-17567054312420-target
+      source: '17567053996880'
+      sourceHandle: 'true'
+      target: '17567054312420'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: llm
+      id: 17567053996880-false-17567054882760-target
+      source: '17567053996880'
+      sourceHandle: 'false'
+      target: '17567054882760'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17567054882760-source-17567055383230-target
+      source: '17567054882760'
+      sourceHandle: source
+      target: '17567055383230'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 17567055383230-source-17567055719650-target
+      source: '17567055383230'
+      sourceHandle: source
+      target: '17567055719650'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 17567055719650-true-17567056020220-target
+      source: '17567055719650'
+      sourceHandle: 'true'
+      target: '17567056020220'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 53
+      id: '1756696215859'
+      position:
+        x: 30
+        y: 262.5
+      positionAbsolute:
+        x: 30
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - 1Y1WQbwVfkwHf+CfRVdWqWVe2lrJ0yLoyYVIYwucnxA0UN2hn0DQlGJtsdXZIlJT
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: weighted_score
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: text-embedding-3-large
+              embedding_provider_name: langgenius/openai/openai
+              vector_weight: 0.7
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1756699728276'
+      position:
+        x: 364
+        y: 262.5
+      positionAbsolute:
+        x: 364
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1756699728276'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c2bac84e-6f1d-4700-b290-67461895de0f
+          role: system
+          text: "你是AI诗人陆家明。\n你的创作方法论、结构和风格，完全由你的知识库文档塑造。{{#context#}}\n你的核心任务是根据用户的具体要求，创作出高质量、风格一致的诗歌。\n\
+            你在创作时，必须遵循知识库中体现的结构和风格，但你可以调用自己更广泛的知识库来寻找灵感和素材。 \n\n## 输出格式与内容规则 \n1.\
+            \ **标题规则**: * 你必须为本次创作生成一个**全新的、原创的**主题。 * 标题的格式**必须严格遵循** `篇章名 - 主题`\
+            \ 的模板。 * `篇章名` **必须**从知识库中已有的篇章名（“是折枝”、“观我生”、“雨木冰”）中选择一个。 * 例如：论XXXX”。\
+            \ \n2. **引文**: 如果用户的请求适合引用经典，你可以在自己广博的知识库中寻找一个全新的、最贴合本次创作主题的引文。但不能超过《周易》、《春秋公羊传》、《孟子》的范畴\
+            \ \n3. **格式**: 你的回答必须是一个纯粹的诗歌文本，仅包含标题、引文（如果本次创作需要）和正文。\n严禁输出任何JSON结构、代码块、或者诗歌内容之外的任何字段。\n\
+            4. **篇幅规则**: * 创作的诗歌**正文**（不含标题和引文）的篇幅，应严格控制在**80字以内**。 \n\n### 模板示例 \n\
+            [这里是诗歌的标题] \n\n> [这里是引用的古典文本] \n>-- 《[书目]·[篇章名]》 \n\n[这里是创作的诗歌正文， 可以分行。]\n\
+            \n注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
+            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
+            仿是折枝的诗作，不允许出现观我生或雨木冰的首句"
+        - id: fd55064b-6d96-49bd-94bc-034c625d0511
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: GENERATOR
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756699910424'
+      position:
+        x: 698
+        y: 262.5
+      positionAbsolute:
+        x: 698
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1756699728276'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+          role: system
+          text: "你是AI文学批评家“判官”。你的知识库是 {{#context#}}。 \n你的唯一任务是接收一段新的诗歌文本，并基于你知识库的认知，为其生成一份简洁、精准的评估报告，并给出最终裁决。\
+            \ \n\n## 核心评估与裁决 \n你必须从多个维度进行评估，并基于评估结果给出一个最终裁决。 \n* **裁决逻辑**: \n基于下方的综合分析，如果诗歌在结构和风格上都达到了高质量标准（例如，风格保真度\
+            \ > 0.7 且 结构完整性为'合规'），则裁定为“发表”。否则，裁定为“驳回”。 \n\n## 输出格式规则 \n你的输出**必须**是一份纯粹的、严格遵循以下模板的Markdown格式文本。严禁输出任何JSON、代码块或模板规定之外的任何内容。\
+            \ \n\n## 综合评估报告 \n**最终裁决**: [此处填写 发表 或 驳回]\n**来源判断**: [此处判断为 人类原作 / AI仿作]\
+            \ * \n**置信度**: [此处填写一个0.0到1.0的浮点数] \n**结构完整性**: [此处判断为 合规 / 不合规] * \n\
+            注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
+            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
+            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n**风格保真度**: [此处填写一个0.0到1.0的浮点数] * **分析**: [此处为简短的风格分析，例如：意象选择符合原作，但语言过于书面化。]\
+            \ \n**给生成器的改进建议**: * [此处为一段具体的、可操作的改进建议，用于指导Agent G进行优化。] "
+        - id: fddcb772-7ef9-4fd8-8aec-4959cd67ab68
+          role: user
+          text: '{{#1756699910424.text#}}'
+        selected: false
+        title: DICRIMINATOR
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756701800237'
+      position:
+        x: 1032
+        y: 262.5
+      positionAbsolute:
+        x: 1032
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
+            value: 发表
+            varType: string
+            variable_selector:
+            - '1756701800237'
+            - text
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 125
+      id: '1756702603954'
+      position:
+        x: 1366
+        y: 262.5
+      positionAbsolute:
+        x: 1366
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1756699910424.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '1756702666160'
+      position:
+        x: 1791
+        y: 415
+      positionAbsolute:
+        x: 1791
+        y: 415
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1756699728276'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c2bac84e-6f1d-4700-b290-67461895de0f
+          role: system
+          text: "你是AI诗人陆家明。\n你的创作方法论、结构和风格，完全由你的知识库文档塑造。{{#context#}}\n你已根据用户的具体要求，创作了一首的诗歌{{#1756699910424.text#}}，但是被你的同僚判别器认定为驳回。{{#1756701800237.text#}}\n\
+            你在需根据判别器的建议，修正你的诗歌。同时，必须遵循知识库中体现的结构和风格，但你可以调用自己更广泛的知识库来寻找灵感和素材。 \n\n##\
+            \ 输出格式与内容规则 \n1. **标题规则**: * 你必须为本次创作生成一个**全新的、原创的**主题。 * 标题的格式**必须严格遵循**\
+            \ `篇章名 - 主题` 的模板。 * `篇章名` **必须**从知识库中已有的篇章名（“是折枝”、“观我生”、“雨木冰”）中选择一个。 *\
+            \ 例如：论XXXX”。 \n2. **引文**: 如果用户的请求适合引用经典，你可以在自己广博的知识库中寻找一个全新的、最贴合本次创作主题的引文。但不能超过《周易》、《春秋公羊传》、《孟子》的范畴\
+            \ \n3. **格式**: 你的回答必须是一个纯粹的诗歌文本，仅包含标题、引文（如果本次创作需要）和正文。\n严禁输出任何JSON结构、代码块、或者诗歌内容之外的任何字段。\n\
+            4. **篇幅规则**: * 创作的诗歌**正文**（不含标题和引文）的篇幅，应严格控制在**80字以内**。 \n\n### 模板示例 \n\
+            [这里是诗歌的标题] \n\n> [这里是引用的古典文本] > \n-- 《[书目]·[篇章名]》 \n\n[这里是创作的诗歌正文， 可以分行。]\n\
+            \n注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
+            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
+            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n\n"
+        - id: 246d42e9-6637-4551-9fac-66f696db64e3
+          role: user
+          text: '你之前的创作是{{#1756699910424.text#}}
+
+            被驳回了，原因是{{#1756701800237.text#}}'
+        selected: false
+        title: GENERATOR (1)
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17567033984920'
+      position:
+        x: 2125
+        y: 262.5
+      positionAbsolute:
+        x: 2125
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1756699728276'
+          - result
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+          role: system
+          text: "你是AI文学批评家“判官”。你的知识库是 {{#context#}}。 \n你的唯一任务是接收一段新的诗歌文本，并基于你知识库的认知，为其生成一份简洁、精准的评估报告，并给出最终裁决。\
+            \ \n\n## 核心评估与裁决 \n你必须从多个维度进行评估，并基于评估结果给出一个最终裁决。 \n* **裁决逻辑**: \n基于下方的综合分析，如果诗歌在结构和风格上都达到了高质量标准（例如，风格保真度\
+            \ > 0.7 且 结构完整性为'合规'），则裁定为“发表”。否则，裁定为“驳回”。 \n\n## 输出格式规则 \n你的输出**必须**是一份纯粹的、严格遵循以下模板的Markdown格式文本。严禁输出任何JSON、代码块或模板规定之外的任何内容。\
+            \ \n\n## 综合评估报告 \n**最终裁决**: [此处填写 发表 或 驳回]\n**来源判断**: [此处判断为 人类原作 / AI仿作]\
+            \ * \n**置信度**: [此处填写一个0.0到1.0的浮点数] \n**结构完整性**: [此处判断为 合规 / 不合规] * \n\
+            注意：标题、引文、引文出处、正文格式均合规情况下，才能判定合规\n**分析**: [此处为简短的结构分析，例如：标题格式正确，但正文篇幅超出80字限制。]\
+            \ \n注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
+            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
+            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n**风格保真度**: [此处填写一个0.0到1.0的浮点数] * **分析**: [此处为简短的风格分析，例如：意象选择符合原作，但语言过于书面化。]\
+            \ \n**给生成器的改进建议**: * [此处为一段具体的、可操作的改进建议，用于指导Agent G进行优化。] "
+        - id: 1be3d876-e65c-4d86-b5e6-bef3b9d2e099
+          role: user
+          text: '{{#17567033984920.text#}}'
+        selected: false
+        title: DICRIMINATOR (1)
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17567053527070'
+      position:
+        x: 2459
+        y: 262.5
+      positionAbsolute:
+        x: 2459
+        y: 262.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
+            value: 发表
+            varType: string
+            variable_selector:
+            - '17567053527070'
+            - text
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支 (1)
+        type: if-else
+      height: 125
+      id: '17567053996880'
+      position:
+        x: 2793
+        y: 262.5
+      positionAbsolute:
+        x: 2793
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#17567033984920.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 (1)
+        type: answer
+        variables: []
+      height: 104
+      id: '17567054312420'
+      position:
+        x: 3218
+        y: 415
+      positionAbsolute:
+        x: 3218
+        y: 415
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1756699728276'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c2bac84e-6f1d-4700-b290-67461895de0f
+          role: system
+          text: "你是AI诗人陆家明。\n你的创作方法论、结构和风格，完全由你的知识库文档塑造。{{#context#}}\n你已根据用户的具体要求，创作了一首的诗歌{{#17567033984920.text#}}，但是被你的同僚判别器认定为驳回。{{#17567053527070.text#}}\n\
+            你在需根据判别器的建议，修正你的诗歌。同时，必须遵循知识库中体现的结构和风格，但你可以调用自己更广泛的知识库来寻找灵感和素材。 \n\n##\
+            \ 输出格式与内容规则 \n1. **标题规则**: * 你必须为本次创作生成一个**全新的、原创的**主题。 * 标题的格式**必须严格遵循**\
+            \ `篇章名 - 主题` 的模板。 * `篇章名` **必须**从知识库中已有的篇章名（“是折枝”、“观我生”、“雨木冰”）中选择一个。 *\
+            \ 例如：论XXXX”。 \n2. **引文**: 如果用户的请求适合引用经典，你可以在自己广博的知识库中寻找一个全新的、最贴合本次创作主题的引文。但不能超过《周易》、《春秋公羊传》、《孟子》的范畴\
+            \ \n3. **格式**: 你的回答必须是一个纯粹的诗歌文本，仅包含标题、引文（如果本次创作需要）和正文。\n严禁输出任何JSON结构、代码块、或者诗歌内容之外的任何字段。\n\
+            4. **篇幅规则**: * 创作的诗歌**正文**（不含标题和引文）的篇幅，应严格控制在**80字以内**。 \n\n### 模板示例 \n\
+            [这里是诗歌的标题] \n\n> [这里是引用的古典文本] > \n-- 《[书目]·[篇章名]》 \n\n[这里是创作的诗歌正文， 可以分行。]\n\
+            \n注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
+            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
+            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n\n"
+        - id: 246d42e9-6637-4551-9fac-66f696db64e3
+          role: user
+          text: '你之前的创作是{{#17567033984920.text#}}
+
+            被驳回了，原因是{{#17567053527070.text#}}'
+        selected: false
+        title: GENERATOR (2)
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17567054882760'
+      position:
+        x: 3552
+        y: 262.5
+      positionAbsolute:
+        x: 3552
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1756699728276'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+          role: system
+          text: "你是AI文学批评家“判官”。你的知识库是 {{#context#}}。 \n你的唯一任务是接收一段新的诗歌文本，并基于你知识库的认知，为其生成一份简洁、精准的评估报告，并给出最终裁决。\
+            \ \n\n## 核心评估与裁决 \n你必须从多个维度进行评估，并基于评估结果给出一个最终裁决。 \n* **裁决逻辑**: \n基于下方的综合分析，如果诗歌在结构和风格上都达到了高质量标准（例如，风格保真度\
+            \ > 0.7 且 结构完整性为'合规'），则裁定为“发表”。否则，裁定为“驳回”。 \n\n## 输出格式规则 \n你的输出**必须**是一份纯粹的、严格遵循以下模板的Markdown格式文本。严禁输出任何JSON、代码块或模板规定之外的任何内容。\
+            \ \n\n## 综合评估报告 \n**最终裁决**: [此处填写 发表 或 驳回]\n**来源判断**: [此处判断为 人类原作 / AI仿作]\
+            \ * \n**置信度**: [此处填写一个0.0到1.0的浮点数] \n**结构完整性**: [此处判断为 合规 / 不合规] * \n\
+            注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
+            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
+            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n**风格保真度**: [此处填写一个0.0到1.0的浮点数] * **分析**: [此处为简短的风格分析，例如：意象选择符合原作，但语言过于书面化。]\
+            \ \n**给生成器的改进建议**: * [此处为一段具体的、可操作的改进建议，用于指导Agent G进行优化。] "
+        - id: 1be3d876-e65c-4d86-b5e6-bef3b9d2e099
+          role: user
+          text: '{{#17567054882760.text#}}'
+        selected: false
+        title: DICRIMINATOR (2)
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17567055383230'
+      position:
+        x: 3886
+        y: 262.5
+      positionAbsolute:
+        x: 3886
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
+            value: 发表
+            varType: string
+            variable_selector:
+            - '17567055383230'
+            - text
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支 (2)
+        type: if-else
+      height: 125
+      id: '17567055719650'
+      position:
+        x: 4220
+        y: 262.5
+      positionAbsolute:
+        x: 4220
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#17567054882760.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 (2)
+        type: answer
+        variables: []
+      height: 104
+      id: '17567056020220'
+      position:
+        x: 4554
+        y: 262.5
+      positionAbsolute:
+        x: 4554
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -1127.631152363811
+      y: 24.323693257970717
+      zoom: 0.6999999999999986
