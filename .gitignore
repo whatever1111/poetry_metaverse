@@ -46,3 +46,6 @@ lugarden_universal/application/generated/
 # - lugarden_universal/application/.env (环境变量配置)
 # Cursor - 本地AI配置
 .cursor/
+
+# 语料库文件 - 敏感数据，不应被版本控制跟踪
+lugarden_universal/lu_the_poet/corpus/
