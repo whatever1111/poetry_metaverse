@@ -42,7 +42,7 @@
 - **完成状态**：🔄 进行中
 - **执行步骤**：
   - [ ] 步骤A1.2.1：环境准备与依赖安装
-    - 使用 `uv` 安装Python依赖：`ebooklib`, `beautifulsoup4`, `opencc`, `pathlib`
+    - 使用 `uv` 安装Python依赖：`ebooklib`, `beautifulsoup4`, `opencc-python-reimplemented`, `pathlib`
     - 验证EPUB文件完整性和可读性
   - [ ] 步骤A1.2.2：EPUB解析与章节提取
     - 使用 `ebooklib` 解析13个EPUB文件
@@ -50,7 +50,7 @@
     - 识别并过滤版权页、导航页等非正文内容
   - [ ] 步骤A1.2.3：内容处理与转换
     - 使用 `BeautifulSoup` 清理HTML标签和样式
-    - 使用 `opencc` 进行繁体转简体转换
+    - 使用 `opencc-python-reimplemented` 进行繁体转简体转换
     - 标准化文本格式：统一空白、标点符号
   - [ ] 步骤A1.2.4：结构化输出
     - 为每本书创建独立的 `书名_chapters` 目录
