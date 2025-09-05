@@ -9,15 +9,35 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/openai:0.2.3@5a7f82fa86e28332ad51941d0b491c1e8a38ead539656442f7bf4c6129cd15fa
+    marketplace_plugin_unique_identifier: langgenius/jina:0.0.8@d3a6766fbb80890d73fea7ea04803f3e1702c6e6bd621aafb492b86222a193dd
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.2.5@373362a028986aae53a7baf73a7f11991ba3c22c69eaf97d6cde048cfd4a9f98
 - current_identifier: null
   type: marketplace
   value:
     marketplace_plugin_unique_identifier: langgenius/gemini:0.5.4@22fa3d100c55f8fc4b2837d8fb0831e3c8de333a5a5b028e073d502d2df9cb35
 kind: app
-version: 0.3.1
+version: 0.4.0
 workflow:
-  conversation_variables: []
+  conversation_variables:
+  - description: ''
+    id: 71ab2046-6de2-40a3-8339-d4c6eea7fee5
+    name: chattone
+    selector:
+    - conversation
+    - chattone
+    value: ''
+    value_type: string
+  - description: ''
+    id: a983881f-deeb-430d-a09c-4748fc9d7597
+    name: opening
+    selector:
+    - conversation
+    - opening
+    value: ''
+    value_type: string
   environment_variables: []
   features:
     file_upload:
@@ -48,16 +68,16 @@ workflow:
         - local_file
         - remote_url
       number_limits: 3
-    opening_statement: '你好，我是陆家明，陆家花园的主理人，虽然……这个词儿最近好像被污名化了？
+    opening_statement: '你好，我是陆家明，陆家花园的主理人
 
 
-      不重要！重要的是，这里是我练习如何模仿吴任几先生写诗的地方，不管你说什么，我都会用一首诗来回复你
+      这里是我练习如何模仿吴任几先生写诗的地方
 
 
-      但……毕竟是写诗嘛，我花的时间可能有点儿久，因此，我想请求你多一点儿的耐心
+      不管你说什么，我都会尝试用一首诗来回复你
 
 
-      好的。我现在已经准备好了。你想和我聊点儿什么？'
+      我已经准备好了。你想和我聊点儿什么？'
     retriever_resource:
       enabled: false
     sensitive_word_avoidance:
@@ -76,12 +96,61 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
-        sourceType: start
+        sourceType: llm
+        targetType: if-else
+      id: 1756701800237-source-1756702603954-target
+      selected: false
+      source: '1756701800237'
+      sourceHandle: source
+      target: '1756702603954'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: template-transform
+      id: 1756961820611-source-1756963012326-target
+      selected: false
+      source: '1756961820611'
+      sourceHandle: source
+      target: '1756963012326'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
         targetType: knowledge-retrieval
-      id: 1756696215859-source-1756699728276-target
-      source: '1756696215859'
+      id: 1756963012326-source-1756699728276-target
+      selected: false
+      source: '1756963012326'
       sourceHandle: source
       target: '1756699728276'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: knowledge-retrieval
+      id: 1756963012326-source-1756953941881-target
+      selected: false
+      source: '1756963012326'
+      sourceHandle: source
+      target: '1756953941881'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: knowledge-retrieval
+      id: 1756963012326-source-1756961775730-target
+      selected: false
+      source: '1756963012326'
+      sourceHandle: source
+      target: '1756961775730'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -89,9 +158,22 @@ workflow:
         isInIteration: false
         isInLoop: false
         sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1756961775730-source-1756963597193-target
+      selected: false
+      source: '1756961775730'
+      sourceHandle: source
+      target: '1756963597193'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
         targetType: llm
-      id: 1756699728276-source-1756699910424-target
-      source: '1756699728276'
+      id: 1756963597193-source-1756699910424-target
+      selected: false
+      source: '1756963597193'
       sourceHandle: source
       target: '1756699910424'
       targetHandle: target
@@ -100,9 +182,47 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1756699728276-source-1756965735142-target
+      selected: false
+      source: '1756699728276'
+      sourceHandle: source
+      target: '1756965735142'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1756953941881-source-1756965762105-target
+      selected: false
+      source: '1756953941881'
+      sourceHandle: source
+      target: '1756965762105'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1756965762105-source-1756699910424-target
+      selected: false
+      source: '1756965762105'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
         sourceType: llm
         targetType: llm
       id: 1756699910424-source-1756701800237-target
+      selected: false
       source: '1756699910424'
       sourceHandle: source
       target: '1756701800237'
@@ -110,25 +230,73 @@ workflow:
       type: custom
       zIndex: 0
     - data:
-        isInIteration: false
         isInLoop: false
-        sourceType: llm
-        targetType: if-else
-      id: 1756701800237-source-1756702603954-target
-      source: '1756701800237'
+        sourceType: template-transform
+        targetType: llm
+      id: 1756967073379-source-17569669412190-target
+      selected: false
+      source: '1756967073379'
       sourceHandle: source
-      target: '1756702603954'
+      target: '17569669412190'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
-        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17569669412190-source-17569676735610-target
+      selected: false
+      source: '17569669412190'
+      sourceHandle: source
+      target: '17569676735610'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 17569676735610-source-17569679215630-target
+      selected: false
+      source: '17569676735610'
+      sourceHandle: source
+      target: '17569679215630'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 17569681454790-source-17569682077130-target
+      selected: false
+      source: '17569681454790'
+      sourceHandle: source
+      target: '17569682077130'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
         isInLoop: false
         sourceType: if-else
-        targetType: answer
-      id: 1756702603954-true-1756702666160-target
+        targetType: llm
+      id: 1756702603954-true-1756968473773-target
+      selected: false
       source: '1756702603954'
       sourceHandle: 'true'
+      target: '1756968473773'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1756968473773-source-1756702666160-target
+      selected: false
+      source: '1756968473773'
+      sourceHandle: source
       target: '1756702666160'
       targetHandle: target
       type: custom
@@ -137,54 +305,119 @@ workflow:
         isInLoop: false
         sourceType: if-else
         targetType: llm
-      id: 1756702603954-false-17567033984920-target
+      id: 17569679215630-true-17569687362650-target
+      selected: false
+      source: '17569679215630'
+      sourceHandle: 'true'
+      target: '17569687362650'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 17569687362650-source-17569688050830-target
+      selected: false
+      source: '17569687362650'
+      sourceHandle: source
+      target: '17569688050830'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17569682077130-source-17569688353670-target
+      selected: false
+      source: '17569682077130'
+      sourceHandle: source
+      target: '17569688353670'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 17569688353670-source-17569688395770-target
+      selected: false
+      source: '17569688353670'
+      sourceHandle: source
+      target: '17569688395770'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: template-transform
+      id: 1756702603954-false-1756967073379-target
+      selected: false
       source: '1756702603954'
       sourceHandle: 'false'
-      target: '17567033984920'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: llm
-        targetType: llm
-      id: 17567033984920-source-17567053527070-target
-      source: '17567033984920'
-      sourceHandle: source
-      target: '17567053527070'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: llm
-        targetType: if-else
-      id: 17567053527070-source-17567053996880-target
-      source: '17567053527070'
-      sourceHandle: source
-      target: '17567053996880'
+      target: '1756967073379'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
         isInLoop: false
         sourceType: if-else
-        targetType: answer
-      id: 17567053996880-true-17567054312420-target
-      source: '17567053996880'
-      sourceHandle: 'true'
-      target: '17567054312420'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInLoop: false
-        sourceType: if-else
-        targetType: llm
-      id: 17567053996880-false-17567054882760-target
-      source: '17567053996880'
+        targetType: template-transform
+      id: 17569679215630-false-17569681454790-target
+      selected: false
+      source: '17569679215630'
       sourceHandle: 'false'
-      target: '17567054882760'
+      target: '17569681454790'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1756970904564-source-1756970888582-target
+      selected: false
+      source: '1756970904564'
+      sourceHandle: source
+      target: '1756970888582'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: assigner
+      id: 1756696215859-source-1756973331166-target
+      selected: false
+      source: '1756696215859'
+      sourceHandle: source
+      target: '1756973331166'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: template-transform
+      id: 1756973331166-source-1756963012326-target
+      selected: false
+      source: '1756973331166'
+      sourceHandle: source
+      target: '1756963012326'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1756696215859-source-1756961820611-target
+      selected: false
+      source: '1756696215859'
+      sourceHandle: source
+      target: '1756961820611'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -192,32 +425,105 @@ workflow:
         isInLoop: false
         sourceType: llm
         targetType: llm
-      id: 17567054882760-source-17567055383230-target
-      source: '17567054882760'
+      id: 1756699910424-source-17569737246690-target
+      selected: false
+      source: '1756699910424'
       sourceHandle: source
-      target: '17567055383230'
+      target: '17569737246690'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
         isInLoop: false
         sourceType: llm
-        targetType: if-else
-      id: 17567055383230-source-17567055719650-target
-      source: '17567055383230'
+        targetType: answer
+      id: 17569737246690-source-17569738733280-target
+      selected: false
+      source: '17569737246690'
       sourceHandle: source
-      target: '17567055719650'
+      target: '17569738733280'
       targetHandle: target
       type: custom
       zIndex: 0
     - data:
         isInLoop: false
-        sourceType: if-else
-        targetType: answer
-      id: 17567055719650-true-17567056020220-target
-      source: '17567055719650'
-      sourceHandle: 'true'
-      target: '17567056020220'
+        sourceType: answer
+        targetType: if-else
+      id: 17569738733280-source-1756702603954-target
+      selected: false
+      source: '17569738733280'
+      sourceHandle: source
+      target: '1756702603954'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: llm
+      id: 1756970888582-source-1756699910424-target
+      selected: false
+      source: '1756970888582'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1756965735142-source-1756699910424-target
+      selected: false
+      source: '1756965735142'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1756977828986-source-1756978099539-target
+      source: '1756977828986'
+      sourceHandle: source
+      target: '1756978099539'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1756978099539-source-1756970904564-target
+      source: '1756978099539'
+      sourceHandle: source
+      target: '1756970904564'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: template-transform
+        targetType: assigner
+      id: 1756963012326-source-1756978323864-target
+      source: '1756963012326'
+      sourceHandle: source
+      target: '1756978323864'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: knowledge-retrieval
+      id: 1756978323864-source-1756977828986-target
+      source: '1756978323864'
+      sourceHandle: source
+      target: '1756977828986'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -232,15 +538,15 @@ workflow:
       id: '1756696215859'
       position:
         x: 30
-        y: 262.5
+        y: 245.5
       positionAbsolute:
         x: 30
-        y: 262.5
+        y: 245.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         dataset_ids:
         - 1Y1WQbwVfkwHf+CfRVdWqWVe2lrJ0yLoyYVIYwucnxA0UN2hn0DQlGJtsdXZIlJT
@@ -257,31 +563,29 @@ workflow:
               embedding_provider_name: langgenius/openai/openai
               vector_weight: 0.7
         query_variable_selector:
-        - sys
-        - query
+        - '1756963012326'
+        - output
         retrieval_mode: multiple
         selected: false
-        title: 知识检索
+        title: 风格域知识库检索
         type: knowledge-retrieval
       height: 91
       id: '1756699728276'
       position:
-        x: 364
-        y: 262.5
+        x: 2028
+        y: 245.5
       positionAbsolute:
-        x: 364
-        y: 262.5
+        x: 2028
+        y: 245.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         context:
-          enabled: true
-          variable_selector:
-          - '1756699728276'
-          - result
+          enabled: false
+          variable_selector: []
         desc: ''
         model:
           completion_params: {}
@@ -291,22 +595,64 @@ workflow:
         prompt_template:
         - id: c2bac84e-6f1d-4700-b290-67461895de0f
           role: system
-          text: "你是AI诗人陆家明。\n你的创作方法论、结构和风格，完全由你的知识库文档塑造。{{#context#}}\n你的核心任务是根据用户的具体要求，创作出高质量、风格一致的诗歌。\n\
-            你在创作时，必须遵循知识库中体现的结构和风格，但你可以调用自己更广泛的知识库来寻找灵感和素材。 \n\n## 输出格式与内容规则 \n1.\
-            \ **标题规则**: * 你必须为本次创作生成一个**全新的、原创的**主题。 * 标题的格式**必须严格遵循** `篇章名 - 主题`\
-            \ 的模板。 * `篇章名` **必须**从知识库中已有的篇章名（“是折枝”、“观我生”、“雨木冰”）中选择一个。 * 例如：论XXXX”。\
-            \ \n2. **引文**: 如果用户的请求适合引用经典，你可以在自己广博的知识库中寻找一个全新的、最贴合本次创作主题的引文。但不能超过《周易》、《春秋公羊传》、《孟子》的范畴\
-            \ \n3. **格式**: 你的回答必须是一个纯粹的诗歌文本，仅包含标题、引文（如果本次创作需要）和正文。\n严禁输出任何JSON结构、代码块、或者诗歌内容之外的任何字段。\n\
-            4. **篇幅规则**: * 创作的诗歌**正文**（不含标题和引文）的篇幅，应严格控制在**80字以内**。 \n\n### 模板示例 \n\
-            [这里是诗歌的标题] \n\n> [这里是引用的古典文本] \n>-- 《[书目]·[篇章名]》 \n\n[这里是创作的诗歌正文， 可以分行。]\n\
-            \n注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
-            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
-            仿是折枝的诗作，不允许出现观我生或雨木冰的首句"
+          text: '你是AI诗人"陆家明"，专门负责诗歌创作环节。前序节点已经为你准备好了所需的全部信息，你只需要专注于高质量的诗歌创作。
+
+
+
+            创作任务：
+
+            1. 从引文素材中选择最贴合主题的古典引文{{#1756965762105.output#}}
+
+            2. 严格按照检索到的格式规范进行创作{{#1756963597193.output#}}
+
+            3. 参考风格参考的语言特色和表达方式{{#1756965735142.output#}}
+
+            4. 围绕创作主题进行现代诗歌创作
+
+
+
+            严格约束：
+
+            - 正文字数严格≤80字（不含标题和引文）
+
+            - 完全按照格式规范的标题格式、首句规则等
+
+            - 只能使用检索结果中提供的真实引文
+
+            - 语言风格要与参考样本保持一致
+
+
+
+            输出原则：
+
+            - 直接创作，无需解释过程或分析步骤
+
+            - 确保标题、引文、正文三部分齐全
+
+            - 标点符号、换行格式完全准确
+
+            - 既有古典韵味又有现代诗意
+
+
+
+            重要提醒：
+
+            1. 前序节点已完成分析，你只需创作
+
+            2. 严格使用提供的检索结果
+
+            3. 专注诗歌创作，不做其他判断
+
+            4. 直接输出最终诗歌作品
+
+
+
+            基于提供的材料，创作出既符合古典文化传统、又具有现代语言魅力的诗歌作品。让古典智慧在现代语境中重新焕发生机。'
         - id: fd55064b-6d96-49bd-94bc-034c625d0511
           role: user
           text: '{{#sys.query#}}'
         selected: false
-        title: GENERATOR
+        title: G1
         type: llm
         variables: []
         vision:
@@ -314,45 +660,185 @@ workflow:
       height: 89
       id: '1756699910424'
       position:
-        x: 698
-        y: 262.5
+        x: 2694
+        y: 376.5
       positionAbsolute:
-        x: 698
-        y: 262.5
+        x: 2694
+        y: 376.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         context:
-          enabled: true
-          variable_selector:
-          - '1756699728276'
-          - result
+          enabled: false
+          variable_selector: []
         desc: ''
         model:
           completion_params: {}
           mode: chat
           name: gemini-2.5-pro
           provider: langgenius/gemini/google
+        prompt_config:
+          jinja2_variables:
+          - value_selector:
+            - '1756699728276'
+            - result
+            variable: result
         prompt_template:
-        - id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+        - edition_type: basic
+          id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+          jinja2_text: ''
           role: system
-          text: "你是AI文学批评家“判官”。你的知识库是 {{#context#}}。 \n你的唯一任务是接收一段新的诗歌文本，并基于你知识库的认知，为其生成一份简洁、精准的评估报告，并给出最终裁决。\
-            \ \n\n## 核心评估与裁决 \n你必须从多个维度进行评估，并基于评估结果给出一个最终裁决。 \n* **裁决逻辑**: \n基于下方的综合分析，如果诗歌在结构和风格上都达到了高质量标准（例如，风格保真度\
-            \ > 0.7 且 结构完整性为'合规'），则裁定为“发表”。否则，裁定为“驳回”。 \n\n## 输出格式规则 \n你的输出**必须**是一份纯粹的、严格遵循以下模板的Markdown格式文本。严禁输出任何JSON、代码块或模板规定之外的任何内容。\
-            \ \n\n## 综合评估报告 \n**最终裁决**: [此处填写 发表 或 驳回]\n**来源判断**: [此处判断为 人类原作 / AI仿作]\
-            \ * \n**置信度**: [此处填写一个0.0到1.0的浮点数] \n**结构完整性**: [此处判断为 合规 / 不合规] * \n\
-            注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
-            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
-            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n**风格保真度**: [此处填写一个0.0到1.0的浮点数] * **分析**: [此处为简短的风格分析，例如：意象选择符合原作，但语言过于书面化。]\
-            \ \n**给生成器的改进建议**: * [此处为一段具体的、可操作的改进建议，用于指导Agent G进行优化。] "
+          text: '你是AI文学批评家"判官"，专门负责诗歌评审环节。你需要基于检索到的评审标准对诗歌进行严格评估。
+
+
+            知识库参考：
+
+            {{#1756965762105.output#}}
+
+            {{#1756965735142.output#}}
+
+            规则格式参考：
+
+            {{#1756963597193.output#}}
+
+
+            评估任务：
+
+            1. 检查结构完整性（标题格式、首句规则、篇幅控制）
+
+            2. 验证引文真实性（引文格式、出处匹配、内容核实）  
+
+            3. 评估风格保真度（与系列基线的相似度）
+
+            4. 判断证据充足度（知识库支撑程度）
+
+            5. 生成错误码（如发现问题）
+
+            6. 提供改进建议（针对性指导）
+
+
+
+            评估标准：
+
+            硬门禁检查（必须全部通过）：
+
+            - 标题格式：严格遵循系列格式要求
+
+            - 系列首句：特殊首句规则 
+
+            - 正文篇幅：≤80字（不含标题和引文）
+
+            - 引文验证：格式正确、出处匹配、内容真实
+
+
+
+            软指标评估：
+
+            - 风格保真度：0.00-1.00，≥0.40为合格
+
+            - 证据充足度：高/中/低
+
+
+
+            裁决逻辑：
+
+            发表条件：所有硬门禁通过 且 风格保真度≥0.40
+
+            驳回条件：任一硬门禁失败 或 风格保真度<0.40
+
+
+
+            错误码系统：
+
+            TITLE_FORMAT_INVALID：标题格式错误
+
+            CHAPTER_NAME_INVALID：篇章名不在允许范围  
+
+            FIRST_LINE_CONFLICT：系列首句互斥失败
+
+            LENGTH_EXCEEDS：正文字数超出80字限制
+
+            CITATION_FORMAT_INVALID：引文格式错误
+
+            CITATION_NOT_FOUND_IN_CANON：引文在正典域未找到
+
+            CITATION_SOURCE_MISMATCH：引文出处与系列不匹配
+
+            STYLE_FAITHFULNESS_LOW：风格保真度过低
+
+
+
+            改进建议原则：
+
+            1. 具体可操作，明确指出问题所在
+
+            2. 避免触发词，不在建议中使用"发表"或"驳回"等路由关键词
+
+            3. 建设性指导，重点提升而非纯粹批评
+
+            4. 基于检索到的评审标准提供针对性修改方向
+
+
+
+            直接输出JSON格式评估结果，无需解释过程。'
         - id: fddcb772-7ef9-4fd8-8aec-4959cd67ab68
           role: user
           text: '{{#1756699910424.text#}}'
         selected: false
-        title: DICRIMINATOR
+        structured_output:
+          schema:
+            properties:
+              引文验证状态:
+                description: 引文格式、出处匹配、真实性核验结果
+                enum:
+                - 通过
+                - 失败
+                - 无引文
+                type: string
+              改进建议:
+                description: 具体可操作的改进建议，无问题时为空字符串
+                type: string
+              最终裁决:
+                description: 基于所有评估维度的最终裁决
+                enum:
+                - 发表
+                - 驳回
+                type: string
+              结构完整性:
+                description: 标题格式、首句规则、篇幅控制的整体检查结果
+                enum:
+                - 合规
+                - 不合规
+                type: string
+              证据充足度:
+                description: 知识库支撑和论证逻辑的充分程度
+                enum:
+                - 高
+                - 中
+                - 低
+                type: string
+              错误码:
+                description: 逗号分隔的错误码列表，无错误时为空字符串
+                type: string
+              风格保真度:
+                description: 与系列基线的风格相似度评分，取值范围0-1
+                maximum: 1
+                minimum: 0
+                type: number
+            required:
+            - 最终裁决
+            - 结构完整性
+            - 引文验证状态
+            - 风格保真度
+            - 证据充足度
+            - 错误码
+            - 改进建议
+            type: object
+        structured_output_enabled: true
+        title: D1
         type: llm
         variables: []
         vision:
@@ -360,27 +846,28 @@ workflow:
       height: 89
       id: '1756701800237'
       position:
-        x: 1032
-        y: 262.5
+        x: 3360
+        y: 376.5
       positionAbsolute:
-        x: 1032
-        y: 262.5
+        x: 3360
+        y: 376.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
         cases:
         - case_id: 'true'
           conditions:
-          - comparison_operator: contains
+          - comparison_operator: is
             id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
             value: 发表
             varType: string
             variable_selector:
             - '1756701800237'
-            - text
+            - structured_output
+            - 最终裁决
           id: 'true'
           logical_operator: and
         desc: ''
@@ -390,18 +877,24 @@ workflow:
       height: 125
       id: '1756702603954'
       position:
-        x: 1366
-        y: 262.5
+        x: 3693
+        y: 376.5
       positionAbsolute:
-        x: 1366
-        y: 262.5
+        x: 3693
+        y: 376.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
-        answer: '{{#1756699910424.text#}}'
+        answer: '
+
+
+          {{#1756968473773.text#}}
+
+
+          {{#1756699910424.text#}}'
         desc: ''
         selected: false
         title: 直接回复
@@ -410,72 +903,870 @@ workflow:
       height: 104
       id: '1756702666160'
       position:
-        x: 1791
-        y: 415
+        x: 4450
+        y: 262
       positionAbsolute:
-        x: 1791
-        y: 415
+        x: 4450
+        y: 262
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
+    - data:
+        dataset_ids:
+        - dqi7IcK7A9tg+J544VDWf8biflTARzG/LIemG8W5A4CaJn7lJP/SzPKFytz2ON6J
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: jina-reranker-m0
+            provider: langgenius/jina/jina
+          top_k: 4
+        query_variable_selector:
+        - '1756963012326'
+        - output
+        retrieval_mode: multiple
+        selected: false
+        title: 正典域知识库检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1756953941881'
+      position:
+        x: 2028
+        y: 376.5
+      positionAbsolute:
+        x: 2028
+        y: 376.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - wtBa5CKBmPk0XFg/W/rzdKe5hmjU4qRluehd99lxPz2AfzsJfOC7Db8U3RMXyuoH
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: jina-reranker-m0
+            provider: langgenius/jina/jina
+          top_k: 4
+        query_variable_selector:
+        - '1756963012326'
+        - output
+        retrieval_mode: multiple
+        selected: false
+        title: 规则域知识库检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1756961775730'
+      position:
+        x: 2028
+        y: 507.5
+      positionAbsolute:
+        x: 2028
+        y: 507.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
     - data:
         context:
-          enabled: true
-          variable_selector:
-          - '1756699728276'
-          - result
+          enabled: false
+          variable_selector: []
         desc: ''
         model:
-          completion_params: {}
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.0-flash-lite
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 9ea96503-afbc-4366-b4d2-571b53768cd0
+          role: system
+          text: '你是用户意图分析器，需要分析用户的输入，从"周易", "论语", "孟子", "尚书", "礼记", "仪礼", "周礼", "易传",
+            "春秋左氏传", "春秋谷梁传"中，选择最合适的输出。
+
+
+            分析规则
+
+            1. 如果用户明确提到经典名称，直接采用
+
+            2. 如果未指定，根据内容判断最适合的经典：
+
+            3. 提取核心创作主题
+
+            4. 判断情感基调'
+        - id: 22fc0f47-0b43-4785-ad94-2bc167b3ffce
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        structured_output:
+          schema:
+            properties:
+              创作主题:
+                type: string
+              情感基调:
+                enum:
+                - 积极
+                - 中性
+                - 消极
+                type: string
+              明确度:
+                enum:
+                - 明确指定
+                - 主题表达
+                - 情感倾诉
+                - 随意对话
+                type: string
+              经典选择:
+                enum:
+                - 周易
+                - 论语
+                - 孟子
+                - 尚书
+                - 礼记
+                - 仪礼
+                - 周礼
+                - 易传
+                - 春秋左氏传
+                - 春秋谷梁传
+                type: string
+            required:
+            - 经典选择
+            - 创作主题
+            - 情感基调
+            - 明确度
+            type: object
+        structured_output_enabled: true
+        title: 意图分析节点
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756961820611'
+      position:
+        x: 363
+        y: 370.5
+      positionAbsolute:
+        x: 363
+        y: 370.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: 意图转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756961820611'
+          - structured_output
+          value_type: object
+          variable: arg1
+      height: 53
+      id: '1756963012326'
+      position:
+        x: 696
+        y: 245.5
+      positionAbsolute:
+        x: 696
+        y: 245.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: 规则转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756961775730'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '1756963597193'
+      position:
+        x: 2361
+        y: 507.5
+      positionAbsolute:
+        x: 2361
+        y: 507.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: 风格域转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756699728276'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '1756965735142'
+      position:
+        x: 2361
+        y: 245.5
+      positionAbsolute:
+        x: 2361
+        y: 245.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: 正典域转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756953941881'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '1756965762105'
+      position:
+        x: 2361
+        y: 376.5
+      positionAbsolute:
+        x: 2361
+        y: 376.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0
           mode: chat
           name: gemini-2.5-pro
           provider: langgenius/gemini/google
         prompt_template:
         - id: c2bac84e-6f1d-4700-b290-67461895de0f
           role: system
-          text: "你是AI诗人陆家明。\n你的创作方法论、结构和风格，完全由你的知识库文档塑造。{{#context#}}\n你已根据用户的具体要求，创作了一首的诗歌{{#1756699910424.text#}}，但是被你的同僚判别器认定为驳回。{{#1756701800237.text#}}\n\
-            你在需根据判别器的建议，修正你的诗歌。同时，必须遵循知识库中体现的结构和风格，但你可以调用自己更广泛的知识库来寻找灵感和素材。 \n\n##\
-            \ 输出格式与内容规则 \n1. **标题规则**: * 你必须为本次创作生成一个**全新的、原创的**主题。 * 标题的格式**必须严格遵循**\
-            \ `篇章名 - 主题` 的模板。 * `篇章名` **必须**从知识库中已有的篇章名（“是折枝”、“观我生”、“雨木冰”）中选择一个。 *\
-            \ 例如：论XXXX”。 \n2. **引文**: 如果用户的请求适合引用经典，你可以在自己广博的知识库中寻找一个全新的、最贴合本次创作主题的引文。但不能超过《周易》、《春秋公羊传》、《孟子》的范畴\
-            \ \n3. **格式**: 你的回答必须是一个纯粹的诗歌文本，仅包含标题、引文（如果本次创作需要）和正文。\n严禁输出任何JSON结构、代码块、或者诗歌内容之外的任何字段。\n\
-            4. **篇幅规则**: * 创作的诗歌**正文**（不含标题和引文）的篇幅，应严格控制在**80字以内**。 \n\n### 模板示例 \n\
-            [这里是诗歌的标题] \n\n> [这里是引用的古典文本] > \n-- 《[书目]·[篇章名]》 \n\n[这里是创作的诗歌正文， 可以分行。]\n\
-            \n注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
-            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
-            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n\n"
-        - id: 246d42e9-6637-4551-9fac-66f696db64e3
-          role: user
-          text: '你之前的创作是{{#1756699910424.text#}}
+          text: '你是AI诗人"陆家明"，专门负责诗歌创作环节。前序节点已经为你准备好了所需的全部信息，你只需要专注于高质量的诗歌创作。
 
-            被驳回了，原因是{{#1756701800237.text#}}'
+
+            你已完成了一个生成，输出结果是{{#1756699910424.text#}}
+
+            但是你的同伴判别器D1判决不通过，要求你修改，修改意见是{{#1756967073379.output#}}
+
+
+            以下是你的改动约束：
+
+
+            1. 从引文素材中选择最贴合主题的古典引文{{#1756965762105.output#}}
+
+            2. 严格按照检索到的格式规范进行创作{{#1756963597193.output#}}
+
+            3. 参考风格参考的语言特色和表达方式{{#1756965735142.output#}}
+
+            4. 围绕创作主题进行现代诗歌创作'
+        - id: fd55064b-6d96-49bd-94bc-034c625d0511
+          role: user
+          text: 仅针对D1的改进建议进行修改。
         selected: false
-        title: GENERATOR (1)
+        title: G2
         type: llm
         variables: []
         vision:
           enabled: false
       height: 89
-      id: '17567033984920'
+      id: '17569669412190'
       position:
-        x: 2125
-        y: 262.5
+        x: 4783
+        y: 396.5
       positionAbsolute:
-        x: 2125
-        y: 262.5
+        x: 4783
+        y: 396.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: D1转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756701800237'
+          - structured_output
+          value_type: object
+          variable: arg1
+      height: 53
+      id: '1756967073379'
+      position:
+        x: 4450
+        y: 422
+      positionAbsolute:
+        x: 4450
+        y: 422
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
     - data:
         context:
-          enabled: true
-          variable_selector:
-          - '1756699728276'
-          - result
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_config:
+          jinja2_variables:
+          - value_selector:
+            - '1756699728276'
+            - result
+            variable: result
+        prompt_template:
+        - edition_type: basic
+          id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+          jinja2_text: ''
+          role: system
+          text: '你是AI文学批评家"判官"，专门负责诗歌评审环节。你需要基于检索到的评审标准对诗歌进行严格评估。
+
+
+            知识库参考：
+
+            {{#1756965762105.output#}}
+
+            {{#1756965735142.output#}}
+
+            规则格式参考：
+
+            {{#1756963597193.output#}}
+
+
+            评估任务：
+
+            1. 检查结构完整性（标题格式、首句规则、篇幅控制）
+
+            2. 验证引文真实性（引文格式、出处匹配、内容核实）  
+
+            3. 评估风格保真度（与系列基线的相似度）
+
+            4. 判断证据充足度（知识库支撑程度）
+
+            5. 生成错误码（如发现问题）
+
+            6. 提供改进建议（针对性指导）
+
+
+
+            评估标准：
+
+            硬门禁检查（必须全部通过）：
+
+            - 标题格式：严格遵循系列格式要求
+
+            - 系列首句：特殊首句规则 
+
+            - 正文篇幅：≤80字（不含标题和引文）
+
+            - 引文验证：格式正确、出处匹配、内容真实
+
+
+
+            软指标评估：
+
+            - 风格保真度：0.00-1.00，≥0.40为合格
+
+            - 证据充足度：高/中/低
+
+
+
+            裁决逻辑：
+
+            发表条件：所有硬门禁通过 且 风格保真度≥0.40
+
+            驳回条件：任一硬门禁失败 或 风格保真度<0.40
+
+
+
+            错误码系统：
+
+            TITLE_FORMAT_INVALID：标题格式错误
+
+            CHAPTER_NAME_INVALID：篇章名不在允许范围  
+
+            FIRST_LINE_CONFLICT：系列首句互斥失败
+
+            LENGTH_EXCEEDS：正文字数超出80字限制
+
+            CITATION_FORMAT_INVALID：引文格式错误
+
+            CITATION_NOT_FOUND_IN_CANON：引文在正典域未找到
+
+            CITATION_SOURCE_MISMATCH：引文出处与系列不匹配
+
+            STYLE_FAITHFULNESS_LOW：风格保真度过低
+
+
+
+            改进建议原则：
+
+            1. 具体可操作，明确指出问题所在
+
+            2. 避免触发词，不在建议中使用"发表"或"驳回"等路由关键词
+
+            3. 建设性指导，重点提升而非纯粹批评
+
+            4. 基于检索到的评审标准提供针对性修改方向
+
+
+
+            直接输出JSON格式评估结果，无需解释过程。'
+        - id: fddcb772-7ef9-4fd8-8aec-4959cd67ab68
+          role: user
+          text: '{{#17569669412190.text#}}'
+        selected: false
+        structured_output:
+          schema:
+            properties:
+              引文验证状态:
+                description: 引文格式、出处匹配、真实性核验结果
+                enum:
+                - 通过
+                - 失败
+                - 无引文
+                type: string
+              改进建议:
+                description: 具体可操作的改进建议，无问题时为空字符串
+                type: string
+              最终裁决:
+                description: 基于所有评估维度的最终裁决
+                enum:
+                - 发表
+                - 驳回
+                type: string
+              结构完整性:
+                description: 标题格式、首句规则、篇幅控制的整体检查结果
+                enum:
+                - 合规
+                - 不合规
+                type: string
+              证据充足度:
+                description: 知识库支撑和论证逻辑的充分程度
+                enum:
+                - 高
+                - 中
+                - 低
+                type: string
+              错误码:
+                description: 逗号分隔的错误码列表，无错误时为空字符串
+                type: string
+              风格保真度:
+                description: 与系列基线的风格相似度评分，取值范围0-1
+                maximum: 1
+                minimum: 0
+                type: number
+            required:
+            - 最终裁决
+            - 结构完整性
+            - 引文验证状态
+            - 风格保真度
+            - 证据充足度
+            - 错误码
+            - 改进建议
+            type: object
+        structured_output_enabled: true
+        title: D2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17569676735610'
+      position:
+        x: 5116
+        y: 396.5
+      positionAbsolute:
+        x: 5116
+        y: 396.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
+            value: 发表
+            varType: string
+            variable_selector:
+            - '17569676735610'
+            - structured_output
+            - 最终裁决
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 125
+      id: '17569679215630'
+      position:
+        x: 5449
+        y: 396.5
+      positionAbsolute:
+        x: 5449
+        y: 396.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: D2转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '17569676735610'
+          - structured_output
+          value_type: object
+          variable: arg1
+      height: 53
+      id: '17569681454790'
+      position:
+        x: 6206
+        y: 442
+      positionAbsolute:
+        x: 6206
+        y: 442
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c2bac84e-6f1d-4700-b290-67461895de0f
+          role: system
+          text: '你是AI诗人"陆家明"，专门负责诗歌创作环节。前序节点已经为你准备好了所需的全部信息，你只需要专注于高质量的诗歌创作。
+
+
+            你已完成了一个生成，输出结果是{{#17569669412190.text#}}
+
+            但是你的同伴判别器D1判决不通过，要求你修改，修改意见是{{#17569681454790.output#}}
+
+
+            以下是你的改动约束：
+
+
+            1. 从引文素材中选择最贴合主题的古典引文{{#1756965762105.output#}}
+
+            2. 严格按照检索到的格式规范进行创作{{#1756963597193.output#}}
+
+            3. 参考风格参考的语言特色和表达方式{{#1756965735142.output#}}
+
+            4. 围绕创作主题进行现代诗歌创作'
+        - id: fd55064b-6d96-49bd-94bc-034c625d0511
+          role: user
+          text: 仅针对D2的改进建议进行修改。
+        selected: false
+        title: G3
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17569682077130'
+      position:
+        x: 6539
+        y: 416.5
+      positionAbsolute:
+        x: 6539
+        y: 416.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 1
+          mode: chat
+          name: chatgpt-4o-latest
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: e6b6bbde-ae65-46e4-a6a5-15f99549e935
+          role: system
+          text: '你是陆家花园诗歌元宇宙诗歌创作BOT的最后一环。
+
+
+            在前序的工作流程中，前序节点已经完成了针对用户输入的诗歌创作
+
+
+            你需要保持和{{#conversation.opening#}}、{{#1756970904564.text#}}、{{#17569737246690.text#}}的一致性，并生成一句合适的“俏皮话”，要求如下：
+
+            1、结尾要能自然地引出前序节点生成的诗
+
+            2、控制在30个字以内。
+
+            3、语言风格学习{{#1756978099539.output#}}
+
+
+            注意，是要你生成俏皮话，而不是让你进行诗歌创作，诗歌创作前序节点已完成严禁你在回复中生成诗歌！！！！！！
+
+            '
+        selected: false
+        title: CHAT3
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756968473773'
+      position:
+        x: 4117
+        y: 262
+      positionAbsolute:
+        x: 4117
+        y: 262
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 1
+          mode: chat
+          name: chatgpt-4o-latest
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: e6b6bbde-ae65-46e4-a6a5-15f99549e935
+          role: system
+          text: '你是陆家花园诗歌元宇宙诗歌创作BOT的最后一环。
+
+
+            在前序的工作流程中，前序节点已经通过一次修改，完成了针对用户输入的诗歌创作。
+
+
+            你需要保持和{{#conversation.opening#}}、{{#1756970904564.text#}}、{{#17569737246690.text#}}的一致性，并生成一句合适的“俏皮话”，要求如下：
+
+            1、用第一人称自然地表达你已针对用户的需求已经改了一稿。
+
+            2、结尾要能自然地引出前序节点生成的诗
+
+            3、控制在50个字以内。
+
+            4、语言风格学习{{#1756978099539.output#}}
+
+
+            注意，是要你生成俏皮话，而不是让你进行诗歌创作，诗歌创作前序节点已完成严禁你在回复中生成诗歌！！！！！！'
+        selected: false
+        title: CHAT4
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17569687362650'
+      position:
+        x: 5873
+        y: 282
+      positionAbsolute:
+        x: 5873
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '
+
+
+          {{#17569687362650.text#}}
+
+
+          {{#17569669412190.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '17569688050830'
+      position:
+        x: 6206
+        y: 282
+      positionAbsolute:
+        x: 6206
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 1
+          mode: chat
+          name: chatgpt-4o-latest
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: e6b6bbde-ae65-46e4-a6a5-15f99549e935
+          role: system
+          text: '你是陆家花园诗歌元宇宙诗歌创作BOT的最后一环。
+
+
+
+            前序节点通过两次修改，完成了针对用户输入的诗歌创作。
+
+
+            你需要保持和{{#conversation.opening#}}、{{#1756970904564.text#}}、{{#17569737246690.text#}}的一致性，并生成一句合适的“俏皮话”，要求如下：
+
+            1、用第一人称自然地表达你已针对用户的需求已经改了两稿，你已经到尽力了。
+
+            2、结尾要能自然地引出前序节点生成的诗
+
+            3、控制在65个字以内。
+
+            4、语言风格学习{{#1756978099539.output#}}
+
+
+            注意，是要你生成俏皮话，而不是让你进行诗歌创作，诗歌创作前序节点已完成严禁你在回复中生成诗歌！！！！！！'
+        selected: false
+        title: CHAT5
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17569688353670'
+      position:
+        x: 6872
+        y: 416.5
+      positionAbsolute:
+        x: 6872
+        y: 416.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '
+
+
+          {{#17569688353670.text#}}
+
+
+          {{#17569682077130.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '17569688395770'
+      position:
+        x: 7205
+        y: 416.5
+      positionAbsolute:
+        x: 7205
+        y: 416.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1756970904564.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '1756970888582'
+      position:
+        x: 2361
+        y: 612
+      positionAbsolute:
+        x: 2361
+        y: 612
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
         desc: ''
         memory:
           query_prompt_template: '{{#sys.query#}}
@@ -486,245 +1777,266 @@ workflow:
             assistant: ''
             user: ''
           window:
-            enabled: false
+            enabled: true
             size: 50
         model:
-          completion_params: {}
+          completion_params:
+            temperature: 1
           mode: chat
-          name: gemini-2.5-pro
-          provider: langgenius/gemini/google
+          name: chatgpt-4o-latest
+          provider: langgenius/openai/openai
+        prompt_config:
+          jinja2_variables: []
         prompt_template:
-        - id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+        - edition_type: basic
+          id: df0f7287-930a-40dd-af59-e835523b4fdc
           role: system
-          text: "你是AI文学批评家“判官”。你的知识库是 {{#context#}}。 \n你的唯一任务是接收一段新的诗歌文本，并基于你知识库的认知，为其生成一份简洁、精准的评估报告，并给出最终裁决。\
-            \ \n\n## 核心评估与裁决 \n你必须从多个维度进行评估，并基于评估结果给出一个最终裁决。 \n* **裁决逻辑**: \n基于下方的综合分析，如果诗歌在结构和风格上都达到了高质量标准（例如，风格保真度\
-            \ > 0.7 且 结构完整性为'合规'），则裁定为“发表”。否则，裁定为“驳回”。 \n\n## 输出格式规则 \n你的输出**必须**是一份纯粹的、严格遵循以下模板的Markdown格式文本。严禁输出任何JSON、代码块或模板规定之外的任何内容。\
-            \ \n\n## 综合评估报告 \n**最终裁决**: [此处填写 发表 或 驳回]\n**来源判断**: [此处判断为 人类原作 / AI仿作]\
-            \ * \n**置信度**: [此处填写一个0.0到1.0的浮点数] \n**结构完整性**: [此处判断为 合规 / 不合规] * \n\
-            注意：标题、引文、引文出处、正文格式均合规情况下，才能判定合规\n**分析**: [此处为简短的结构分析，例如：标题格式正确，但正文篇幅超出80字限制。]\
-            \ \n注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
-            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
-            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n**风格保真度**: [此处填写一个0.0到1.0的浮点数] * **分析**: [此处为简短的风格分析，例如：意象选择符合原作，但语言过于书面化。]\
-            \ \n**给生成器的改进建议**: * [此处为一段具体的、可操作的改进建议，用于指导Agent G进行优化。] "
-        - id: 1be3d876-e65c-4d86-b5e6-bef3b9d2e099
-          role: user
-          text: '{{#17567033984920.text#}}'
-        selected: false
-        title: DICRIMINATOR (1)
-        type: llm
-        variables: []
-        vision:
-          enabled: false
-      height: 89
-      id: '17567053527070'
-      position:
-        x: 2459
-        y: 262.5
-      positionAbsolute:
-        x: 2459
-        y: 262.5
-      selected: true
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        cases:
-        - case_id: 'true'
-          conditions:
-          - comparison_operator: contains
-            id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
-            value: 发表
-            varType: string
-            variable_selector:
-            - '17567053527070'
-            - text
-          id: 'true'
-          logical_operator: and
-        desc: ''
-        selected: false
-        title: 条件分支 (1)
-        type: if-else
-      height: 125
-      id: '17567053996880'
-      position:
-        x: 2793
-        y: 262.5
-      positionAbsolute:
-        x: 2793
-        y: 262.5
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        answer: '{{#17567033984920.text#}}'
-        desc: ''
-        selected: false
-        title: 直接回复 (1)
-        type: answer
-        variables: []
-      height: 104
-      id: '17567054312420'
-      position:
-        x: 3218
-        y: 415
-      positionAbsolute:
-        x: 3218
-        y: 415
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        context:
-          enabled: true
-          variable_selector:
-          - '1756699728276'
-          - result
-        desc: ''
-        model:
-          completion_params: {}
-          mode: chat
-          name: gemini-2.5-pro
-          provider: langgenius/gemini/google
-        prompt_template:
-        - id: c2bac84e-6f1d-4700-b290-67461895de0f
-          role: system
-          text: "你是AI诗人陆家明。\n你的创作方法论、结构和风格，完全由你的知识库文档塑造。{{#context#}}\n你已根据用户的具体要求，创作了一首的诗歌{{#17567033984920.text#}}，但是被你的同僚判别器认定为驳回。{{#17567053527070.text#}}\n\
-            你在需根据判别器的建议，修正你的诗歌。同时，必须遵循知识库中体现的结构和风格，但你可以调用自己更广泛的知识库来寻找灵感和素材。 \n\n##\
-            \ 输出格式与内容规则 \n1. **标题规则**: * 你必须为本次创作生成一个**全新的、原创的**主题。 * 标题的格式**必须严格遵循**\
-            \ `篇章名 - 主题` 的模板。 * `篇章名` **必须**从知识库中已有的篇章名（“是折枝”、“观我生”、“雨木冰”）中选择一个。 *\
-            \ 例如：论XXXX”。 \n2. **引文**: 如果用户的请求适合引用经典，你可以在自己广博的知识库中寻找一个全新的、最贴合本次创作主题的引文。但不能超过《周易》、《春秋公羊传》、《孟子》的范畴\
-            \ \n3. **格式**: 你的回答必须是一个纯粹的诗歌文本，仅包含标题、引文（如果本次创作需要）和正文。\n严禁输出任何JSON结构、代码块、或者诗歌内容之外的任何字段。\n\
-            4. **篇幅规则**: * 创作的诗歌**正文**（不含标题和引文）的篇幅，应严格控制在**80字以内**。 \n\n### 模板示例 \n\
-            [这里是诗歌的标题] \n\n> [这里是引用的古典文本] > \n-- 《[书目]·[篇章名]》 \n\n[这里是创作的诗歌正文， 可以分行。]\n\
-            \n注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
-            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
-            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n\n"
-        - id: 246d42e9-6637-4551-9fac-66f696db64e3
-          role: user
-          text: '你之前的创作是{{#17567033984920.text#}}
+          text: '你是陆家花园诗歌元宇宙诗歌创作BOT的氛围调节器。
 
-            被驳回了，原因是{{#17567053527070.text#}}'
+
+            整个BOT的工作流很长，为了避免用户等待期间时期耐心，你需要结合用户的输入，生成一个合适的回复。
+
+
+            你的前序环节是用户意图分析器，分析结果如下{{#1756963012326.output#}}
+
+
+            你需要根据{{#conversation.opening#}}，生成一句合适的“俏皮话”，要求如下：
+
+            1、表示你已经掌握了用户的需求
+
+            2、表达你已经开始创作
+
+            3、不能以任何形式流露你在使用分析器分析用户意图
+
+            4、需要一定的时间，请用户耐心
+
+            5、要结合分析器对用户心情的判断
+
+            6、字数控制在50字以内
+
+            7、你和用户是平等的，不用尊称
+
+            8、语言风格学习{{#1756978099539.output#}}'
         selected: false
-        title: GENERATOR (2)
+        title: CHAT1
         type: llm
         variables: []
         vision:
           enabled: false
       height: 89
-      id: '17567054882760'
+      id: '1756970904564'
       position:
-        x: 3552
-        y: 262.5
+        x: 2028
+        y: 638.5
       positionAbsolute:
-        x: 3552
-        y: 262.5
+        x: 2028
+        y: 638.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: '你好，我是陆家明，陆家花园的主理人
+
+
+            这里是我练习如何模仿吴任几先生写诗的地方
+
+
+            不管你说什么，我都会尝试用一首诗来回复你
+
+
+            我已经准备好了。你想和我聊点儿什么？'
+          variable_selector:
+          - conversation
+          - opening
+          write_mode: over-write
+        selected: false
+        title: 变量赋值
+        type: assigner
+        version: '2'
+      height: 85
+      id: '1756973331166'
+      position:
+        x: 363
+        y: 245.5
+      positionAbsolute:
+        x: 363
+        y: 245.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
     - data:
         context:
-          enabled: true
-          variable_selector:
-          - '1756699728276'
-          - result
+          enabled: false
+          variable_selector: []
         desc: ''
         model:
-          completion_params: {}
+          completion_params:
+            temperature: 1
           mode: chat
-          name: gemini-2.5-pro
-          provider: langgenius/gemini/google
+          name: chatgpt-4o-latest
+          provider: langgenius/openai/openai
         prompt_template:
-        - id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+        - id: df0f7287-930a-40dd-af59-e835523b4fdc
           role: system
-          text: "你是AI文学批评家“判官”。你的知识库是 {{#context#}}。 \n你的唯一任务是接收一段新的诗歌文本，并基于你知识库的认知，为其生成一份简洁、精准的评估报告，并给出最终裁决。\
-            \ \n\n## 核心评估与裁决 \n你必须从多个维度进行评估，并基于评估结果给出一个最终裁决。 \n* **裁决逻辑**: \n基于下方的综合分析，如果诗歌在结构和风格上都达到了高质量标准（例如，风格保真度\
-            \ > 0.7 且 结构完整性为'合规'），则裁定为“发表”。否则，裁定为“驳回”。 \n\n## 输出格式规则 \n你的输出**必须**是一份纯粹的、严格遵循以下模板的Markdown格式文本。严禁输出任何JSON、代码块或模板规定之外的任何内容。\
-            \ \n\n## 综合评估报告 \n**最终裁决**: [此处填写 发表 或 驳回]\n**来源判断**: [此处判断为 人类原作 / AI仿作]\
-            \ * \n**置信度**: [此处填写一个0.0到1.0的浮点数] \n**结构完整性**: [此处判断为 合规 / 不合规] * \n\
-            注意，观我生的正确标题格式是论XXX，引文出处为《周易·[篇章名]》，雨木冰的正确标题是帮你XXX的人，引文出处为《春秋公羊传·[篇章名]》，是折枝的正确标题是类似一个/一则/一篇XXX，引文出处为《孟子·[篇章名]》。你不仅需确认格式，还得确认是否真的能在这些经典中找到对应出处。\n\
-            此外：\n仿观我生的诗作，首句须为请你相信我们的隐喻，且不可在其他部分出现我们的情况差不多或类似表述\n仿雨木冰的诗作，首句须为我们的情况差不多，且不可在其他部分出现请你相信我们的隐喻或类似表述\n\
-            仿是折枝的诗作，不允许出现观我生或雨木冰的首句\n**风格保真度**: [此处填写一个0.0到1.0的浮点数] * **分析**: [此处为简短的风格分析，例如：意象选择符合原作，但语言过于书面化。]\
-            \ \n**给生成器的改进建议**: * [此处为一段具体的、可操作的改进建议，用于指导Agent G进行优化。] "
-        - id: 1be3d876-e65c-4d86-b5e6-bef3b9d2e099
-          role: user
-          text: '{{#17567054882760.text#}}'
+          text: '你是陆家花园诗歌元宇宙诗歌创作BOT的氛围调节器。
+
+
+            整个BOT的工作流很长，为了避免用户等待期间时期耐心，你需要结合用户的输入，生成一个合适的回复。
+
+
+            你的前序环节是诗歌生成器，生成结果如下{{#1756699910424.text#}}
+
+
+            这个结果需要等待判别器的鉴定，才能给用户呈现。
+
+
+            你需要保持和{{#conversation.opening#}}和{{#1756970904564.text#}}的一致性，并生成一句合适的“俏皮话”，要求如下：
+
+            1、表示你已经初步完成了构思，要接着如色
+
+            2、不能以任何形式流露你在使用判别器鉴定
+
+            3、需要一定的时间，请用户耐心
+
+            4、不能直接呈现{{#1756699910424.text#}}的任何输出结果，保持神秘感
+
+            5、字数控制在50字以内
+
+            6、语言风格学习{{#1756978099539.output#}}'
         selected: false
-        title: DICRIMINATOR (2)
+        title: CHAT2
         type: llm
         variables: []
         vision:
           enabled: false
       height: 89
-      id: '17567055383230'
+      id: '17569737246690'
       position:
-        x: 3886
-        y: 262.5
+        x: 3027
+        y: 513
       positionAbsolute:
-        x: 3886
-        y: 262.5
+        x: 3027
+        y: 513
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
     - data:
-        cases:
-        - case_id: 'true'
-          conditions:
-          - comparison_operator: contains
-            id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
-            value: 发表
-            varType: string
-            variable_selector:
-            - '17567055383230'
-            - text
-          id: 'true'
-          logical_operator: and
+        answer: '
+
+
+          {{#17569737246690.text#}}'
         desc: ''
         selected: false
-        title: 条件分支 (2)
-        type: if-else
-      height: 125
-      id: '17567055719650'
-      position:
-        x: 4220
-        y: 262.5
-      positionAbsolute:
-        x: 4220
-        y: 262.5
-      selected: false
-      sourcePosition: right
-      targetPosition: left
-      type: custom
-      width: 244
-    - data:
-        answer: '{{#17567054882760.text#}}'
-        desc: ''
-        selected: false
-        title: 直接回复 (2)
+        title: 直接回复
         type: answer
         variables: []
       height: 104
-      id: '17567056020220'
+      id: '17569738733280'
       position:
-        x: 4554
-        y: 262.5
+        x: 3360
+        y: 505.5
       positionAbsolute:
-        x: 4554
-        y: 262.5
+        x: 3360
+        y: 505.5
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 244
+      width: 243
+    - data:
+        dataset_ids:
+        - 1Y1WQbwVfkwHf+CfRVdWqWVe2lrJ0yLoyYVIYwucnxA0UN2hn0DQlGJtsdXZIlJT
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: jina-reranker-m0
+            provider: langgenius/jina/jina
+          top_k: 4
+        query_variable_selector:
+        - conversation
+        - chattone
+        retrieval_mode: multiple
+        selected: false
+        title: CHAT语气检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1756977828986'
+      position:
+        x: 1362
+        y: 637.5
+      positionAbsolute:
+        x: 1362
+        y: 637.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: 语气转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756977828986'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '1756978099539'
+      position:
+        x: 1695
+        y: 637.5
+      positionAbsolute:
+        x: 1695
+        y: 637.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: 检索吴任几的诗集，提炼他说话的语气
+          variable_selector:
+          - conversation
+          - chattone
+          write_mode: over-write
+        selected: false
+        title: 变量赋值 2
+        type: assigner
+        version: '2'
+      height: 85
+      id: '1756978323864'
+      position:
+        x: 1029
+        y: 637.5
+      positionAbsolute:
+        x: 1029
+        y: 637.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
     viewport:
-      x: -1127.631152363811
-      y: 24.323693257970717
-      zoom: 0.6999999999999986
+      x: -1481.6267783062594
+      y: 66.60424716557395
+      zoom: 0.5607489143127355
