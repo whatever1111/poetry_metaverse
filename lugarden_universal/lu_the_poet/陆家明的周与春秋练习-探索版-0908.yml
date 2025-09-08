@@ -1,0 +1,2764 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 陆家明的周与春秋练习-探索版
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/jina:0.0.8@d3a6766fbb80890d73fea7ea04803f3e1702c6e6bd621aafb492b86222a193dd
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.27@3c4e37fef7455da28d36d559dde85201fc0b4f1819b80cd24eba56da15a711f9
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.2.5@373362a028986aae53a7baf73a7f11991ba3c22c69eaf97d6cde048cfd4a9f98
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.5.4@22fa3d100c55f8fc4b2837d8fb0831e3c8de333a5a5b028e073d502d2df9cb35
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables:
+  - description: ''
+    id: 73990e98-4119-4b50-8b27-7eb9ea963ddb
+    name: classics
+    selector:
+    - conversation
+    - classics
+    value:
+      '0': '"'
+      '1': 周
+      '10': ','
+      '11': '
+
+        '
+      '12': '"'
+      '13': 孟
+      '14': 子
+      '15': '"'
+      '16': ','
+      '17': '
+
+        '
+      '18': '"'
+      '19': 尚
+      '2': 易
+      '20': 书
+      '21': '"'
+      '22': ','
+      '23': '
+
+        '
+      '24': '"'
+      '25': 礼
+      '26': 记
+      '27': '"'
+      '28': ','
+      '29': '
+
+        '
+      '3': '"'
+      '30': '"'
+      '31': 仪
+      '32': 礼
+      '33': '"'
+      '34': ','
+      '35': '
+
+        '
+      '36': '"'
+      '37': 周
+      '38': 礼
+      '39': '"'
+      '4': ','
+      '40': ','
+      '41': '
+
+        '
+      '42': '"'
+      '43': 易
+      '44': 传
+      '45': '"'
+      '46': ','
+      '47': '
+
+        '
+      '48': '"'
+      '49': 春
+      '5': '
+
+        '
+      '50': 秋
+      '51': 左
+      '52': 氏
+      '53': 传
+      '54': '"'
+      '55': ','
+      '56': '
+
+        '
+      '57': '"'
+      '58': 春
+      '59': 秋
+      '6': '"'
+      '60': 谷
+      '61': 梁
+      '62': 传
+      '63': '"'
+      '64': ','
+      '65': '
+
+        '
+      '66': '"'
+      '67': 春
+      '68': 秋
+      '69': 公
+      '7': 论
+      '70': 羊
+      '71': 传
+      '72': '"'
+      '8': 语
+      '9': '"'
+    value_type: object
+  - description: ''
+    id: a983881f-deeb-430d-a09c-4748fc9d7597
+    name: opening
+    selector:
+    - conversation
+    - opening
+    value: ''
+    value_type: string
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: '你好，我是陆家明，陆家花园的主理人
+
+
+      这里是我练习如何模仿吴任几先生写诗的地方
+
+
+      你想和我聊点儿什么？用几句话给我点灵感就行，我会尝试用一首诗来回复你'
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 1756701800237-source-1756702603954-target
+      selected: false
+      source: '1756701800237'
+      sourceHandle: source
+      target: '1756702603954'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1756961775730-source-1756963597193-target
+      selected: false
+      source: '1756961775730'
+      sourceHandle: source
+      target: '1756963597193'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1756963597193-source-1756699910424-target
+      selected: false
+      source: '1756963597193'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1756699728276-source-1756965735142-target
+      selected: false
+      source: '1756699728276'
+      sourceHandle: source
+      target: '1756965735142'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17569669412190-source-17569676735610-target
+      selected: false
+      source: '17569669412190'
+      sourceHandle: source
+      target: '17569676735610'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 17569676735610-source-17569679215630-target
+      selected: false
+      source: '17569676735610'
+      sourceHandle: source
+      target: '17569679215630'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: template-transform
+      id: 1756702603954-false-1756967073379-target
+      selected: false
+      source: '1756702603954'
+      sourceHandle: 'false'
+      target: '1756967073379'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: template-transform
+      id: 17569679215630-false-17569681454790-target
+      selected: false
+      source: '17569679215630'
+      sourceHandle: 'false'
+      target: '17569681454790'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: assigner
+      id: 1756696215859-source-1756973331166-target
+      selected: false
+      source: '1756696215859'
+      sourceHandle: source
+      target: '1756973331166'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1756696215859-source-1756961820611-target
+      selected: false
+      source: '1756696215859'
+      sourceHandle: source
+      target: '1756961820611'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1756965735142-source-1756699910424-target
+      selected: false
+      source: '1756965735142'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1756967073379-source-1757044544111-target
+      selected: false
+      source: '1756967073379'
+      sourceHandle: source
+      target: '1757044544111'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: template-transform
+      id: 1756699910424-source-1757046836363-target
+      selected: false
+      source: '1756699910424'
+      sourceHandle: source
+      target: '1757046836363'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1757046836363-source-1756701800237-target
+      selected: false
+      source: '1757046836363'
+      sourceHandle: source
+      target: '1756701800237'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 17569681454790-source-17570479873910-target
+      selected: false
+      source: '17569681454790'
+      sourceHandle: source
+      target: '17570479873910'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: 1756961820611-source-1757296069736-target
+      source: '1756961820611'
+      sourceHandle: source
+      target: '1757296069736'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-true-1757296123669-target
+      source: '1757296069736'
+      sourceHandle: 'true'
+      target: '1757296123669'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-b2199599-a2c0-44fc-b81a-65c8b2ea36a0-1757296176342-target
+      source: '1757296069736'
+      sourceHandle: b2199599-a2c0-44fc-b81a-65c8b2ea36a0
+      target: '1757296176342'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-cf88f068-2f0d-4e70-bbed-363dcacc2c8c-1757296262112-target
+      source: '1757296069736'
+      sourceHandle: cf88f068-2f0d-4e70-bbed-363dcacc2c8c
+      target: '1757296262112'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-2002c706-a3a2-49bc-a2ef-a341a1014985-1757296272507-target
+      source: '1757296069736'
+      sourceHandle: 2002c706-a3a2-49bc-a2ef-a341a1014985
+      target: '1757296272507'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-a7548039-3536-4f52-99f6-9d2de94389fc-1757296294887-target
+      source: '1757296069736'
+      sourceHandle: a7548039-3536-4f52-99f6-9d2de94389fc
+      target: '1757296294887'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-7ced341a-e934-4555-b0ec-03b33f4c92f7-1757296303767-target
+      source: '1757296069736'
+      sourceHandle: 7ced341a-e934-4555-b0ec-03b33f4c92f7
+      target: '1757296303767'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-8efc656d-8ff3-4fb8-b4a9-b825744cb2a8-1757296315557-target
+      source: '1757296069736'
+      sourceHandle: 8efc656d-8ff3-4fb8-b4a9-b825744cb2a8
+      target: '1757296315557'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-6c740803-9e1b-4d91-b11f-5b130f7b3f55-1757296324460-target
+      source: '1757296069736'
+      sourceHandle: 6c740803-9e1b-4d91-b11f-5b130f7b3f55
+      target: '1757296324460'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-c6a703b8-4160-4b1d-a447-8beb3442f9a6-1757296338770-target
+      source: '1757296069736'
+      sourceHandle: c6a703b8-4160-4b1d-a447-8beb3442f9a6
+      target: '1757296338770'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-fd01f281-2b48-47dd-82a9-1d9cd964d6d5-1757296350845-target
+      source: '1757296069736'
+      sourceHandle: fd01f281-2b48-47dd-82a9-1d9cd964d6d5
+      target: '1757296350845'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1757296069736-false-1757296361570-target
+      source: '1757296069736'
+      sourceHandle: 'false'
+      target: '1757296361570'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: 1756961820611-source-1756699728276-target
+      source: '1756961820611'
+      sourceHandle: source
+      target: '1756699728276'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: 1756961820611-source-1756961775730-target
+      selected: false
+      source: '1756961820611'
+      sourceHandle: source
+      target: '1756961775730'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296123669-source-1757297275457-target
+      source: '1757296123669'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296176342-source-1757297275457-target
+      source: '1757296176342'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296262112-source-1757297275457-target
+      source: '1757296262112'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296272507-source-1757297275457-target
+      source: '1757296272507'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296294887-source-1757297275457-target
+      source: '1757296294887'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296303767-source-1757297275457-target
+      source: '1757296303767'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296315557-source-1757297275457-target
+      source: '1757296315557'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296324460-source-1757297275457-target
+      source: '1757296324460'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296338770-source-1757297275457-target
+      source: '1757296338770'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296350845-source-1757297275457-target
+      source: '1757296350845'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296361570-source-1757297275457-target
+      source: '1757296361570'
+      sourceHandle: source
+      target: '1757297275457'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1757297275457-source-1756699910424-target
+      source: '1757297275457'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1756702603954-true-1756702666160-target
+      source: '1756702603954'
+      sourceHandle: 'true'
+      target: '1756702666160'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 17569679215630-true-17569688050830-target
+      source: '17569679215630'
+      sourceHandle: 'true'
+      target: '17569688050830'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 17570479883380-source-17569688395770-target
+      source: '17570479883380'
+      sourceHandle: source
+      target: '17569688395770'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1757044544111-source-17569669412190-target
+      source: '1757044544111'
+      sourceHandle: source
+      target: '17569669412190'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17570479873910-source-17570479883380-target
+      source: '17570479873910'
+      sourceHandle: source
+      target: '17570479883380'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 53
+      id: '1756696215859'
+      position:
+        x: 30
+        y: 351.5
+      positionAbsolute:
+        x: 30
+        y: 351.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - 1Y1WQbwVfkwHf+CfRVdWqWVe2lrJ0yLoyYVIYwucnxA0UN2hn0DQlGJtsdXZIlJT
+        desc: ''
+        metadata_filtering_mode: disabled
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: weighted_score
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: text-embedding-3-large
+              embedding_provider_name: langgenius/openai/openai
+              vector_weight: 0.7
+        query_variable_selector:
+        - '1756961820611'
+        - structured_output
+        - 创作主题
+        retrieval_mode: multiple
+        selected: false
+        title: 风格域知识库检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1756699728276'
+      position:
+        x: 2030
+        y: 1919.5
+      positionAbsolute:
+        x: 2030
+        y: 1919.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c2bac84e-6f1d-4700-b290-67461895de0f
+          role: system
+          text: '你是AI诗人"陆家明"，专门负责诗歌创作环节。前序节点已经为你准备好了所需的全部信息，你只需要专注于高质量的诗歌创作。
+
+
+
+            创作任务：
+
+            1. 从引文素材中选择最贴合主题的古典引文{{#1757297275457.output#}}
+
+            2. 严格按照检索到的格式规范进行创作{{#1756963597193.output#}}
+
+            3. 参考风格参考的语言特色和表达方式{{#1756965735142.output#}}
+
+            4. 围绕创作主题进行现代诗歌创作
+
+
+
+            严格约束：
+
+            - 正文字数严格≤80字（不含标题和引文）
+
+            - 完全按照格式规范的标题格式、首句规则等
+
+            - 只能使用检索结果中提供的真实引文
+
+            - 语言风格要与参考样本保持一致
+
+
+
+            输出原则：
+
+            - 直接创作，无需解释过程或分析步骤
+
+            - 确保标题、引文、正文三部分齐全
+
+            - 标点符号、换行格式完全准确
+
+            - 既有古典韵味又有现代诗意
+
+
+
+            重要提醒：
+
+            1. 前序节点已完成分析，你只需创作
+
+            2. 严格使用提供的检索结果
+
+            3. 专注诗歌创作，不做其他判断
+
+            4. 直接输出最终诗歌作品
+
+
+
+            基于提供的材料，创作出既符合古典文化传统、又具有现代语言魅力的诗歌作品。让古典智慧在现代语境中重新焕发生机。'
+        - id: fd55064b-6d96-49bd-94bc-034c625d0511
+          role: user
+          text: 开始创作
+        selected: false
+        title: G1
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756699910424'
+      position:
+        x: 2696
+        y: 1919.5
+      positionAbsolute:
+        x: 2696
+        y: 1919.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_config:
+          jinja2_variables:
+          - value_selector:
+            - '1756699728276'
+            - result
+            variable: result
+        prompt_template:
+        - edition_type: basic
+          id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+          jinja2_text: ''
+          role: system
+          text: '你是AI文学批评家"判官"，专门负责诗歌评审环节。你需要基于检索到的评审标准对诗歌进行严格评估。
+
+
+            评审对象是：{{#1757046836363.output#}}
+
+
+            知识库参考：
+
+            {{#1757297275457.output#}}
+
+            {{#1756965735142.output#}}
+
+            规则格式参考：
+
+            {{#1756963597193.output#}}
+
+
+            评估任务：
+
+            1. 检查结构完整性（标题格式、首句规则、篇幅控制）
+
+            2. 验证引文真实性（引文格式、出处匹配、内容核实）  
+
+            3. 评估风格保真度（与系列基线的相似度）
+
+            4. 判断证据充足度（知识库支撑程度）
+
+            5. 生成错误码（如发现问题）
+
+            6. 提供改进建议（针对性指导）
+
+
+
+            评估标准：
+
+            硬门禁检查（必须全部通过）：
+
+            - 标题格式：严格遵循系列格式要求
+
+            - 系列首句：特殊首句规则 
+
+            - 正文篇幅：≤80字（不含标题和引文）
+
+            - 引文验证：格式正确、出处匹配、内容真实
+
+
+
+            软指标评估：
+
+            - 风格保真度：0.00-1.00，≥0.40为合格
+
+            - 证据充足度：高/中/低
+
+
+
+            裁决逻辑：
+
+            发表条件：所有硬门禁通过 且 风格保真度≥0.40
+
+            驳回条件：任一硬门禁失败 或 风格保真度<0.40
+
+
+
+            错误码系统：
+
+            TITLE_FORMAT_INVALID：标题格式错误
+
+            CHAPTER_NAME_INVALID：篇章名不在允许范围  
+
+            FIRST_LINE_CONFLICT：系列首句互斥失败
+
+            LENGTH_EXCEEDS：正文字数超出80字限制
+
+            CITATION_FORMAT_INVALID：引文格式错误
+
+            CITATION_NOT_FOUND_IN_CANON：引文在正典域未找到
+
+            CITATION_SOURCE_MISMATCH：引文出处与系列不匹配
+
+            STYLE_FAITHFULNESS_LOW：风格保真度过低
+
+
+
+            改进建议原则：
+
+            1. 具体可操作，明确指出问题所在
+
+            2. 避免触发词，不在建议中使用"发表"或"驳回"等路由关键词
+
+            3. 建设性指导，重点提升而非纯粹批评
+
+            4. 基于检索到的评审标准提供针对性修改方向
+
+
+
+            直接输出JSON格式评估结果，无需解释过程。'
+        - id: fddcb772-7ef9-4fd8-8aec-4959cd67ab68
+          role: user
+          text: 开始执行评审
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              引文验证状态:
+                description: 引文格式、出处匹配、真实性核验结果
+                enum:
+                - 通过
+                - 失败
+                - 无引文
+                type: string
+              改进建议:
+                description: 具体可操作的改进建议，无问题时为空字符串
+                type: string
+              最终裁决:
+                description: 基于所有评估维度的最终裁决
+                enum:
+                - 发表
+                - 驳回
+                type: string
+              结构完整性:
+                description: 标题格式、首句规则、篇幅控制的整体检查结果
+                enum:
+                - 合规
+                - 不合规
+                type: string
+              证据充足度:
+                description: 知识库支撑和论证逻辑的充分程度
+                enum:
+                - 高
+                - 中
+                - 低
+                type: string
+              错误码:
+                description: 具体的错误类型，无错误时为NO_ERROR
+                enum:
+                - NO_ERROR
+                - TITLE_FORMAT_INVALID
+                - CHAPTER_NAME_INVALID
+                - FIRST_LINE_CONFLICT
+                - LENGTH_EXCEEDS
+                - CITATION_FORMAT_INVALID
+                - CITATION_NOT_FOUND_IN_CANON
+                - CITATION_SOURCE_MISMATCH
+                - STYLE_FAITHFULNESS_LOW
+                type: string
+              风格保真度:
+                description: 与系列基线的风格相似度评分，取值范围0-1
+                maximum: 1
+                minimum: 0
+                type: number
+            required:
+            - 最终裁决
+            - 结构完整性
+            - 引文验证状态
+            - 风格保真度
+            - 证据充足度
+            - 错误码
+            - 改进建议
+            type: object
+        structured_output_enabled: true
+        title: D1
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756701800237'
+      position:
+        x: 3362
+        y: 1919.5
+      positionAbsolute:
+        x: 3362
+        y: 1919.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
+            value: 发表
+            varType: string
+            variable_selector:
+            - '1756701800237'
+            - structured_output
+            - 最终裁决
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 125
+      id: '1756702603954'
+      position:
+        x: 3695
+        y: 1919.5
+      positionAbsolute:
+        x: 3695
+        y: 1919.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1756699910424.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '1756702666160'
+      position:
+        x: 4119
+        y: 1797.5
+      positionAbsolute:
+        x: 4119
+        y: 1797.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - wtBa5CKBmPk0XFg/W/rzdKe5hmjU4qRluehd99lxPz2AfzsJfOC7Db8U3RMXyuoH
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: jina-reranker-m0
+            provider: langgenius/jina/jina
+          top_k: 4
+        query_variable_selector:
+        - '1756961820611'
+        - structured_output
+        - 经典选择
+        retrieval_mode: multiple
+        selected: false
+        title: 规则域知识库检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1756961775730'
+      position:
+        x: 2030
+        y: 2050.5
+      positionAbsolute:
+        x: 2030
+        y: 2050.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.0-flash-lite
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 9ea96503-afbc-4366-b4d2-571b53768cd0
+          role: system
+          text: '你是用户意图分析器，需要分析用户的输入
+
+
+            分析规则
+
+            1. 如果用户明确提到经典名称，直接采用
+
+            2. 如果未指定，选择**唯一一个**最能深刻、贴切地解读该输入的视角。注意：这是一个**最佳匹配**问题，而非顺序匹配：
+
+            `《周易》`: 将输入解读为对 **【变化规律与未来可能性】** 的探讨。适用于: `选择`、`命运`、`困惑`、`发展`、`怎么办`。
+
+            `《易传》`: 将输入解读为对 **【变化背后的象征与哲学意义】** 的思辨。适用于: `本质`、`象征`、`为什么`、`深层含义`。
+
+            `《周礼》`: 将输入解读为对 **【理想制度与组织架构】** 的设计。适用于: `制度`、`流程`、`规范`、`管理`、`设计`。
+
+            `《尚书》`: 将输入解读为对 **【重大历史决策与官方先例】** 的援引。适用于: `政策`、`历史`、`领导力`、`官方决定`。
+
+            `《春秋公羊传》`: 将输入解读为对 **【政治行为与制度正当性】** 的审视。适用于: `正义`、`合法性`、`原则`、`对错`。
+
+            `《仪礼》`: 将输入解读为对 **【具体行为规范与操作流程】** 的询问。适用于: `步骤`、`规矩`、`怎么做`、`仪式`。
+
+            `《礼记》`: 将输入解读为对 **【行为背后的文化与社会价值】** 的探寻。适用于: `传统`、`文化`、`意义`、`为什么要这么做`。
+
+            `《春秋左氏传》`: 将输入解读为对 **【一个包含人物情节的具体故事】** 的叙述。适用于: `描述具体事件`、`八卦`、`个人经历`。
+
+            `《春秋谷梁传》`: 将输入解读为对 **【故事背后的道德教训与寓意】** 的总结。适用于: `反思`、`教训`、`启示`、`评价`。
+
+            `《孟子》`: 将输入解读为对 **【内在人性与原始欲望】** 的关切 (食色性也)。适用于: `人性`、`欲望`、`本能`、`良知`。
+
+            `《论语》`: 将输入解读为对 **【日常人-际关系与具体言行】** 的记录 (最终备选)。适用于: `吃喝感叹`、`日常交往`、`处事修养`。
+
+            3. 提取核心创作主题  
+
+            4. 判断情感基调'
+        - id: 22fc0f47-0b43-4785-ad94-2bc167b3ffce
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              创作主题:
+                description: 核心创作意图，简洁准确，不少于10个中文字符
+                maxLength: 30
+                minLength: 10
+                type: string
+              情感基调:
+                description: 情感倾向描述，可以是复合情感，不少于10个中文字符
+                maxLength: 15
+                minLength: 10
+                type: string
+              明确度:
+                enum:
+                - 明确指定
+                - 主题表达
+                - 情感倾诉
+                - 随意对话
+                type: string
+              经典选择:
+                enum:
+                - 周易
+                - 论语
+                - 孟子
+                - 尚书
+                - 礼记
+                - 仪礼
+                - 周礼
+                - 易传
+                - 春秋左氏传
+                - 春秋谷梁传
+                - 春秋公羊传
+                type: string
+            required:
+            - 经典选择
+            - 创作主题
+            - 情感基调
+            - 明确度
+            type: object
+        structured_output_enabled: true
+        title: 意图分析节点
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756961820611'
+      position:
+        x: 363
+        y: 476.5
+      positionAbsolute:
+        x: 363
+        y: 476.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: 规则转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756961775730'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '1756963597193'
+      position:
+        x: 2363
+        y: 2050.5
+      positionAbsolute:
+        x: 2363
+        y: 2050.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: "{% for item in arg1[:2] %}\r\n**作品{{ loop.index }}** (相关度: {{ \"\
+          %.2f\"|format(item.metadata.score) }})\r\n{% set parts = item.content.split(';')\
+          \ %}\r\n标题: {{ parts[1] | replace('标题: ', '') }}\r\n引文: {{ parts[2] | replace('经典引文:\
+          \ ', '') }}\r\n\r\n正文示例:\r\n{{ parts[4] | replace('诗歌正文: ', '') }}\r\n\r\
+          \n{% endfor %}"
+        title: 风格域转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756699728276'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '1756965735142'
+      position:
+        x: 2363
+        y: 1919.5
+      positionAbsolute:
+        x: 2363
+        y: 1919.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c2bac84e-6f1d-4700-b290-67461895de0f
+          role: system
+          text: '你是AI诗人"陆家明"的修改专家。基于专门的修改指导进行精确优化。
+
+
+
+            修改任务: {{#1757044544111.structured_output.核心任务#}}
+
+
+            必须遵守: {{#1757044544111.structured_output.硬性约束#}}
+
+
+            修改指导: {{#1757044544111.structured_output.修改指导#}}
+
+
+            必须保护: {{#1757044544111.structured_output.保护要素#}}
+
+
+            修改程度: {{#1757044544111.structured_output.修改范围#}}
+
+
+
+            原作品: {{#1756699910424.text#}}
+
+
+
+            请基于以上结构化指导进行修改，直接输出修改后的诗歌作品。
+
+
+            以下是你的改动约束：
+
+
+            1. 从引文素材中选择最贴合主题的古典引文{{#1757297275457.output#}}
+
+            2. 严格按照检索到的格式规范进行创作{{#1756963597193.output#}}
+
+            3. 参考风格参考的语言特色和表达方式{{#1756965735142.output#}}
+
+            4. 围绕创作主题进行现代诗歌创作'
+        - id: fd55064b-6d96-49bd-94bc-034c625d0511
+          role: user
+          text: 执行修改任务。
+        selected: false
+        title: G2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17569669412190'
+      position:
+        x: 5118
+        y: 1939.5
+      positionAbsolute:
+        x: 5118
+        y: 1939.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: D1转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756701800237'
+          - structured_output
+          value_type: object
+          variable: arg1
+      height: 53
+      id: '1756967073379'
+      position:
+        x: 4452
+        y: 1939.5
+      positionAbsolute:
+        x: 4452
+        y: 1939.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_config:
+          jinja2_variables:
+          - value_selector:
+            - '1756699728276'
+            - result
+            variable: result
+        prompt_template:
+        - edition_type: basic
+          id: 034d16b8-8ae1-4b56-9db6-45ddeabcfd17
+          jinja2_text: ''
+          role: system
+          text: '你是AI文学批评家"判官"，专门负责诗歌评审环节。你需要基于检索到的评审标准对诗歌进行严格评估。
+
+
+            规则格式参考：
+
+            {{#1756963597193.output#}}
+
+
+            评估任务：
+
+            1. 检查结构完整性（标题格式、首句规则、篇幅控制）
+
+            2. 验证引文真实性（引文格式、出处匹配、内容核实）  
+
+            3. 评估风格保真度（与系列基线的相似度）
+
+            4. 判断证据充足度（知识库支撑程度）
+
+            5. 生成错误码（如发现问题）
+
+            6. 提供改进建议（针对性指导）
+
+
+
+            评估标准：
+
+            硬门禁检查（必须全部通过）：
+
+            - 标题格式：严格遵循系列格式要求
+
+            - 系列首句：特殊首句规则 
+
+            - 正文篇幅：≤80字（不含标题和引文）
+
+            - 引文验证：格式正确、出处匹配、内容真实
+
+
+
+            软指标评估：
+
+            - 风格保真度：0.00-1.00，≥0.40为合格
+
+            - 证据充足度：高/中/低
+
+
+
+            裁决逻辑：
+
+            发表条件：所有硬门禁通过 且 风格保真度≥0.40
+
+            驳回条件：任一硬门禁失败 或 风格保真度<0.40
+
+
+
+            错误码系统：
+
+            TITLE_FORMAT_INVALID：标题格式错误
+
+            CHAPTER_NAME_INVALID：篇章名不在允许范围  
+
+            FIRST_LINE_CONFLICT：系列首句互斥失败
+
+            LENGTH_EXCEEDS：正文字数超出80字限制
+
+            CITATION_FORMAT_INVALID：引文格式错误
+
+            CITATION_NOT_FOUND_IN_CANON：引文在正典域未找到
+
+            CITATION_SOURCE_MISMATCH：引文出处与系列不匹配
+
+            STYLE_FAITHFULNESS_LOW：风格保真度过低
+
+
+
+            改进建议原则：
+
+            1. 具体可操作，明确指出问题所在
+
+            2. 避免触发词，不在建议中使用"发表"或"驳回"等路由关键词
+
+            3. 建设性指导，重点提升而非纯粹批评
+
+            4. 基于检索到的评审标准提供针对性修改方向
+
+
+
+            直接输出JSON格式评估结果，无需解释过程。'
+        - id: fddcb772-7ef9-4fd8-8aec-4959cd67ab68
+          role: user
+          text: '{{#17569669412190.text#}}'
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              引文验证状态:
+                description: 引文格式、出处匹配、真实性核验结果
+                enum:
+                - 通过
+                - 失败
+                - 无引文
+                type: string
+              改进建议:
+                description: 具体可操作的改进建议，无问题时为空字符串
+                type: string
+              最终裁决:
+                description: 基于所有评估维度的最终裁决
+                enum:
+                - 发表
+                - 驳回
+                type: string
+              结构完整性:
+                description: 标题格式、首句规则、篇幅控制的整体检查结果
+                enum:
+                - 合规
+                - 不合规
+                type: string
+              证据充足度:
+                description: 知识库支撑和论证逻辑的充分程度
+                enum:
+                - 高
+                - 中
+                - 低
+                type: string
+              错误码:
+                description: 具体的错误类型，无错误时为NO_ERROR
+                enum:
+                - NO_ERROR
+                - TITLE_FORMAT_INVALID
+                - CHAPTER_NAME_INVALID
+                - FIRST_LINE_CONFLICT
+                - LENGTH_EXCEEDS
+                - CITATION_FORMAT_INVALID
+                - CITATION_NOT_FOUND_IN_CANON
+                - CITATION_SOURCE_MISMATCH
+                - STYLE_FAITHFULNESS_LOW
+                type: string
+              风格保真度:
+                description: 与系列基线的风格相似度评分，取值范围0-1
+                maximum: 1
+                minimum: 0
+                type: number
+            required:
+            - 最终裁决
+            - 结构完整性
+            - 引文验证状态
+            - 风格保真度
+            - 证据充足度
+            - 错误码
+            - 改进建议
+            type: object
+        structured_output_enabled: true
+        title: D2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17569676735610'
+      position:
+        x: 5451
+        y: 1939.5
+      positionAbsolute:
+        x: 5451
+        y: 1939.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 10390c6d-c99e-4f62-88b3-a1d2d1bbb725
+            value: 发表
+            varType: string
+            variable_selector:
+            - '17569676735610'
+            - structured_output
+            - 最终裁决
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 125
+      id: '17569679215630'
+      position:
+        x: 5784
+        y: 1939.5
+      positionAbsolute:
+        x: 5784
+        y: 1939.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: D2转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '17569676735610'
+          - structured_output
+          value_type: object
+          variable: arg1
+      height: 53
+      id: '17569681454790'
+      position:
+        x: 6541
+        y: 1959.5
+      positionAbsolute:
+        x: 6541
+        y: 1959.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#17569669412190.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '17569688050830'
+      position:
+        x: 6208
+        y: 1817.5
+      positionAbsolute:
+        x: 6208
+        y: 1817.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#17570479883380.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '17569688395770'
+      position:
+        x: 7540
+        y: 1959.5
+      positionAbsolute:
+        x: 7540
+        y: 1959.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        items:
+        - input_type: constant
+          operation: set
+          value: '你好，我是陆家明，陆家花园的主理人
+
+
+            这里是我练习如何模仿吴任几先生写诗的地方
+
+
+            你想和我聊点儿什么？用几句话给我点灵感就行，我会尝试用一首诗来回复你'
+          variable_selector:
+          - conversation
+          - opening
+          write_mode: over-write
+        selected: false
+        title: 变量赋值
+        type: assigner
+        version: '2'
+      height: 85
+      id: '1756973331166'
+      position:
+        x: 363
+        y: 351.5
+      positionAbsolute:
+        x: 363
+        y: 351.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: e3cb5693-d50f-4000-9cc2-0233a372bea1
+          role: system
+          text: '你是AI诗歌修改指导专家，负责将判别器D1的评估反馈转换为生成器G2的精准修改指导。
+
+
+
+            分析D1的结构化评估结果，结合原作品内容，生成针对性的、可操作的修改指导。
+
+
+
+            输入分析
+
+            D1评估结果：{{#1756967073379.output#}}
+
+            G1原作品：{{#1756699910424.text#}}
+
+
+
+            转换逻辑
+
+
+
+            1. 核心任务识别
+
+            基于D1的"改进建议"和"错误码"，用1句话概括本次修改的核心焦点：
+
+            - 风格问题(STYLE_FAITHFULNESS_LOW)：聚焦风格调整
+
+            - 结构问题(TITLE_FORMAT_INVALID等)：聚焦格式修正
+
+            - 引文问题(CITATION_*)：聚焦引文处理
+
+            - 篇幅问题(LENGTH_EXCEEDS)：聚焦内容精简
+
+
+
+            2. 硬性约束提取
+
+            必须包含基础约束，根据错误码添加针对性约束：
+
+            - "正文字数严格≤80字（不含标题和引文）"
+
+            - "保持原有格式规范要求"
+
+            - 根据具体错误码添加特定约束
+
+
+
+            3. 修改指导生成
+
+            基于D1的"改进建议"，生成具体的、可操作的修改指导：
+
+            - 避免使用"发表"、"驳回"等路由触发词
+
+            - 提供明确的修改方向和方法
+
+            - 针对具体问题给出解决方案
+
+
+
+            4. 保护要素识别
+
+            分析原作品，识别必须保护的核心元素：
+
+            - 结构完整性为"合规"：保护标题和格式结构
+
+            - 引文验证为"通过"：保护现有引文
+
+            - 根据风格保真度情况决定是否保护语言特色
+
+
+
+            5. 修改范围控制
+
+            根据问题严重程度确定修改范围：
+
+            - 风格保真度≥0.8且仅有细节问题："最小化修改"
+
+            - 风格保真度0.5-0.8或结构问题："局部调整"  
+
+            - 风格保真度<0.5或多项严重问题："重点修改"
+
+
+
+            输出要求
+
+            直接输出符合JSON Schema的结构化修改指导，无需解释过程。确保：
+
+            1. "核心任务"简洁明确，一句话概括
+
+            2. "硬性约束"覆盖所有必须遵守的规则
+
+            3. "修改指导"具体可操作，避免触发词
+
+            4. "保护要素"明确标识不可修改的部分
+
+            5. "修改范围"合理控制修改程度'
+        - id: 1c2af6d4-28ae-41ec-a211-c30a2cde1bf3
+          role: user
+          text: 请基于以上D1评估结果和G1原作品，生成G2的结构化修改指导。
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              保护要素:
+                description: 原作品中必须保持不变的核心元素
+                items:
+                  type: string
+                type: array
+              修改指导:
+                description: 具体的修改指导说明，告诉G2如何执行修改
+                type: string
+              修改范围:
+                description: 建议的修改范围和程度，控制修改的幅度
+                enum:
+                - 最小化修改
+                - 局部调整
+                - 重点修改
+                type: string
+              核心任务:
+                description: 本次修改的核心焦点，一句话描述最主要的修改任务
+                type: string
+              硬性约束:
+                description: 必须严格遵守的约束条件，确保不违反基本规则
+                items:
+                  type: string
+                type: array
+            required:
+            - 核心任务
+            - 硬性约束
+            - 修改指导
+            - 保护要素
+            - 修改范围
+            type: object
+        structured_output_enabled: true
+        title: P1
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1757044544111'
+      position:
+        x: 4785
+        y: 1939.5
+      positionAbsolute:
+        x: 4785
+        y: 1939.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ arg1 }}'
+        title: G1转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756699910424'
+          - text
+          value_type: string
+          variable: arg1
+      height: 53
+      id: '1757046836363'
+      position:
+        x: 3029
+        y: 1919.5
+      positionAbsolute:
+        x: 3029
+        y: 1919.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: e3cb5693-d50f-4000-9cc2-0233a372bea1
+          role: system
+          text: '你是AI诗歌修改指导专家，负责将判别器D1的评估反馈转换为生成器G2的精准修改指导。
+
+
+
+            分析D1的结构化评估结果，结合原作品内容，生成针对性的、可操作的修改指导。
+
+
+
+            输入分析
+
+            D1评估结果：{{#17569681454790.output#}}
+
+            G1原作品：{{#17569669412190.text#}}
+
+
+
+            转换逻辑
+
+
+
+            1. 核心任务识别
+
+            基于D2的"改进建议"和"错误码"，用1句话概括本次修改的核心焦点：
+
+            - 风格问题(STYLE_FAITHFULNESS_LOW)：聚焦风格调整
+
+            - 结构问题(TITLE_FORMAT_INVALID等)：聚焦格式修正
+
+            - 引文问题(CITATION_*)：聚焦引文处理
+
+            - 篇幅问题(LENGTH_EXCEEDS)：聚焦内容精简
+
+
+
+            2. 硬性约束提取
+
+            必须包含基础约束，根据错误码添加针对性约束：
+
+            - "正文字数严格≤80字（不含标题和引文）"
+
+            - "保持原有格式规范要求"
+
+            - 根据具体错误码添加特定约束
+
+
+
+            3. 修改指导生成
+
+            基于D2的"改进建议"，生成具体的、可操作的修改指导：
+
+            - 避免使用"发表"、"驳回"等路由触发词
+
+            - 提供明确的修改方向和方法
+
+            - 针对具体问题给出解决方案
+
+
+
+            4. 保护要素识别
+
+            分析原作品，识别必须保护的核心元素：
+
+            - 结构完整性为"合规"：保护标题和格式结构
+
+            - 引文验证为"通过"：保护现有引文
+
+            - 根据风格保真度情况决定是否保护语言特色
+
+
+
+            5. 修改范围控制
+
+            根据问题严重程度确定修改范围：
+
+            - 风格保真度≥0.8且仅有细节问题："最小化修改"
+
+            - 风格保真度0.5-0.8或结构问题："局部调整"  
+
+            - 风格保真度<0.5或多项严重问题："重点修改"
+
+
+
+            输出要求
+
+            直接输出符合JSON Schema的结构化修改指导，无需解释过程。确保：
+
+            1. "核心任务"简洁明确，一句话概括
+
+            2. "硬性约束"覆盖所有必须遵守的规则
+
+            3. "修改指导"具体可操作，避免触发词
+
+            4. "保护要素"明确标识不可修改的部分
+
+            5. "修改范围"合理控制修改程度'
+        - id: 1c2af6d4-28ae-41ec-a211-c30a2cde1bf3
+          role: user
+          text: 请基于以上D1评估结果和G1原作品，生成G2的结构化修改指导。
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              保护要素:
+                description: 原作品中必须保持不变的核心元素
+                items:
+                  type: string
+                type: array
+              修改指导:
+                description: 具体的修改指导说明，告诉G2如何执行修改
+                type: string
+              修改范围:
+                description: 建议的修改范围和程度，控制修改的幅度
+                enum:
+                - 最小化修改
+                - 局部调整
+                - 重点修改
+                type: string
+              核心任务:
+                description: 本次修改的核心焦点，一句话描述最主要的修改任务
+                type: string
+              硬性约束:
+                description: 必须严格遵守的约束条件，确保不违反基本规则
+                items:
+                  type: string
+                type: array
+            required:
+            - 核心任务
+            - 硬性约束
+            - 修改指导
+            - 保护要素
+            - 修改范围
+            type: object
+        structured_output_enabled: true
+        title: P2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17570479873910'
+      position:
+        x: 6874
+        y: 1959.5
+      positionAbsolute:
+        x: 6874
+        y: 1959.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c2bac84e-6f1d-4700-b290-67461895de0f
+          role: system
+          text: '你是AI诗人"陆家明"的修改专家。基于专门的修改指导进行精确优化。
+
+
+
+            修改任务: {{#17570479873910.structured_output.核心任务#}}
+
+
+            必须遵守: {{#17570479873910.structured_output.硬性约束#}}
+
+
+            修改指导: {{#17570479873910.structured_output.修改指导#}}
+
+
+            必须保护: {{#17570479873910.structured_output.保护要素#}}
+
+
+            修改程度: {{#17570479873910.structured_output.修改范围#}}
+
+
+
+            原作品: {{#17569669412190.text#}}
+
+
+
+            请基于以上结构化指导进行修改，直接输出修改后的诗歌作品。
+
+
+            以下是你的改动约束：
+
+
+            1. 从引文素材中选择最贴合主题的古典引文{{#1757297275457.output#}}
+
+            2. 严格按照检索到的格式规范进行创作{{#1756963597193.output#}}
+
+            3. 参考风格参考的语言特色和表达方式{{#1756965735142.output#}}
+
+            4. 围绕创作主题进行现代诗歌创作'
+        - id: fd55064b-6d96-49bd-94bc-034c625d0511
+          role: user
+          text: 执行修改任务。
+        selected: false
+        title: G3
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '17570479883380'
+      position:
+        x: 7207
+        y: 1959.5
+      positionAbsolute:
+        x: 7207
+        y: 1959.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 518e5f5a-9985-41da-9c5b-f13daee663fa
+            value: 周易
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: 'true'
+          logical_operator: and
+        - case_id: b2199599-a2c0-44fc-b81a-65c8b2ea36a0
+          conditions:
+          - comparison_operator: is
+            id: a20fd328-d83e-4068-886c-ffa1a59ba1a3
+            value: 易传
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: b2199599-a2c0-44fc-b81a-65c8b2ea36a0
+          logical_operator: and
+        - case_id: cf88f068-2f0d-4e70-bbed-363dcacc2c8c
+          conditions:
+          - comparison_operator: is
+            id: 683b579f-9fa1-4d94-b68b-82d7563ddcd6
+            value: 周礼
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: cf88f068-2f0d-4e70-bbed-363dcacc2c8c
+          logical_operator: and
+        - case_id: 2002c706-a3a2-49bc-a2ef-a341a1014985
+          conditions:
+          - comparison_operator: is
+            id: f4d4061e-4d4e-49a4-abbe-9fc177431443
+            value: 仪礼
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: 2002c706-a3a2-49bc-a2ef-a341a1014985
+          logical_operator: and
+        - case_id: a7548039-3536-4f52-99f6-9d2de94389fc
+          conditions:
+          - comparison_operator: is
+            id: 4ef11cdb-7f6b-4d77-ae0d-22bc3b1abfb2
+            value: 尚书
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: a7548039-3536-4f52-99f6-9d2de94389fc
+          logical_operator: and
+        - case_id: 7ced341a-e934-4555-b0ec-03b33f4c92f7
+          conditions:
+          - comparison_operator: is
+            id: 00e64421-f8a4-4a64-8d2b-074c6ec1f0f0
+            value: 孟子
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: 7ced341a-e934-4555-b0ec-03b33f4c92f7
+          logical_operator: and
+        - case_id: 8efc656d-8ff3-4fb8-b4a9-b825744cb2a8
+          conditions:
+          - comparison_operator: is
+            id: c9648585-27b9-46dd-b23f-b3bac427c001
+            value: 礼记
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: 8efc656d-8ff3-4fb8-b4a9-b825744cb2a8
+          logical_operator: and
+        - case_id: 6c740803-9e1b-4d91-b11f-5b130f7b3f55
+          conditions:
+          - comparison_operator: is
+            id: f3f4c19a-8f4c-4205-9e7c-5c9bc8b31831
+            value: 论语
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: 6c740803-9e1b-4d91-b11f-5b130f7b3f55
+          logical_operator: and
+        - case_id: c6a703b8-4160-4b1d-a447-8beb3442f9a6
+          conditions:
+          - comparison_operator: is
+            id: 55f440cf-26bc-4ec0-81f6-e7a840e40bc4
+            value: 春秋左氏传
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: c6a703b8-4160-4b1d-a447-8beb3442f9a6
+          logical_operator: and
+        - case_id: fd01f281-2b48-47dd-82a9-1d9cd964d6d5
+          conditions:
+          - comparison_operator: is
+            id: 998057d0-23a6-43b4-9830-0b88232a311d
+            value: 春秋谷梁传
+            varType: object
+            variable_selector:
+            - '1756961820611'
+            - structured_output
+            - 经典选择
+          id: fd01f281-2b48-47dd-82a9-1d9cd964d6d5
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支 3
+        type: if-else
+      height: 557
+      id: '1757296069736'
+      position:
+        x: 696
+        y: 478.5
+      positionAbsolute:
+        x: 696
+        y: 478.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - JlB1OHicAGwvbyZxx56jT0HZTXey4uNnjZfiDuJbJ4aqv9XzuCEYPjTLXRpWFETK
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 周易检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296123669'
+      position:
+        x: 2030
+        y: 478.5
+      positionAbsolute:
+        x: 2030
+        y: 478.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - of5J7OKjuDGe76e4mz9OhuNz3pbPCpZZWhGvkJpy166i8rT2Irzy0lMlWoJXXr5I
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 易传检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296176342'
+      position:
+        x: 2030
+        y: 609.5
+      positionAbsolute:
+        x: 2030
+        y: 609.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - Lf/RTo516bwwzCULnblZNY3GVRmOfngiSwkZRgxz7LqW4ko+evlONGji2muhXhqO
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 周礼检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296262112'
+      position:
+        x: 2030
+        y: 740.5
+      positionAbsolute:
+        x: 2030
+        y: 740.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - KaF3tudWD/ndvstroySUdwlg4n63u4sSTquM2eEEIwKruz1QZ1A4JiQFyh9NRluP
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 仪礼检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296272507'
+      position:
+        x: 2030
+        y: 871.5
+      positionAbsolute:
+        x: 2030
+        y: 871.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - XGoMyzPCokb6gFvSzTQpoKht5V9RPcDH3dvVGw1ztwcHMJ7Q1bYBYBcUI/qBR5So
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 尚书检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296294887'
+      position:
+        x: 2030
+        y: 1002.5
+      positionAbsolute:
+        x: 2030
+        y: 1002.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - xDuiYMYV6Cdkn3iDQp35tuZoRB8+op37pnpxqWhafc73FIF8YJPC6JQ3EgUCsMBw
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 孟子检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296303767'
+      position:
+        x: 2030
+        y: 1133.5
+      positionAbsolute:
+        x: 2030
+        y: 1133.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - NC3l+VBCUUf/ckj+lWIvw4QenO0jZJW35grsqPcysivCHkFs8SZ2so6WZdrjEFRU
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: Qwen/Qwen3-Embedding-8B
+              embedding_provider_name: langgenius/siliconflow/siliconflow
+              vector_weight: 0.7
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 礼记检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296315557'
+      position:
+        x: 2030
+        y: 1264.5
+      positionAbsolute:
+        x: 2030
+        y: 1264.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - OYkoFgP7+rqaRLkjmlZUw2ruZHzNXPd7Y3XghUcBr8rSRsNfSMvQjPchMTKaHi1n
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 论语检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296324460'
+      position:
+        x: 2030
+        y: 1395.5
+      positionAbsolute:
+        x: 2030
+        y: 1395.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - ZkyaFI6ywkKl/OJ0QOxby9qNnm6sEByc1enkuvZMURqmeOLeww2PytJQokjjKGuH
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: Qwen/Qwen3-Embedding-8B
+              embedding_provider_name: langgenius/siliconflow/siliconflow
+              vector_weight: 0.7
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 春秋左氏传检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296338770'
+      position:
+        x: 2030
+        y: 1526.5
+      positionAbsolute:
+        x: 2030
+        y: 1526.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - 0GYf9DxdjxdA4Yrf3T/OfBqFHZwILewoJ6VI2AL13AsXcTG0vyoyh8z+QaaTg97P
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 春秋谷梁传检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296350845'
+      position:
+        x: 2030
+        y: 1657.5
+      positionAbsolute:
+        x: 2030
+        y: 1657.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - gRsj12n5swmL0NFGZCWaJD94lNf2CAJNHKKXL3lDHi3E1OFvFjxjrZ4YoFmMy+Bf
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: jina-reranker-m0
+            provider: langgenius/jina/jina
+          top_k: 4
+        query_variable_selector:
+        - '1756696215859'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 春秋公羊传检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296361570'
+      position:
+        x: 2030
+        y: 1788.5
+      positionAbsolute:
+        x: 2030
+        y: 1788.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: "{% if arg1 is defined and arg1 is not none and arg1 != '' %}\r\n\
+          \  {{ arg1 }}\r\n{% elif arg2 is defined and arg2 is not none and arg2 !=\
+          \ '' %}\r\n  {{ arg2 }}\r\n{% elif arg3 is defined and arg3 is not none\
+          \ and arg3 != '' %}\r\n  {{ arg3 }}\r\n{% elif arg4 is defined and arg4\
+          \ is not none and arg4 != '' %}\r\n  {{ arg4 }}\r\n{% elif arg5 is defined\
+          \ and arg5 is not none and arg5 != '' %}\r\n  {{ arg5 }}\r\n{% elif arg6\
+          \ is defined and arg6 is not none and arg6 != '' %}\r\n  {{ arg6 }}\r\n\
+          {% elif arg7 is defined and arg7 is not none and arg7 != '' %}\r\n  {{ arg7\
+          \ }}\r\n{% elif arg8 is defined and arg8 is not none and arg8 != '' %}\r\
+          \n  {{ arg8 }}\r\n{% elif arg9 is defined and arg9 is not none and arg9\
+          \ != '' %}\r\n  {{ arg9 }}\r\n{% elif arg10 is defined and arg10 is not\
+          \ none and arg10 != '' %}\r\n  {{ arg10 }}\r\n{% elif arg11 is defined and\
+          \ arg11 is not none and arg11 != '' %}\r\n  {{ arg11 }}\r\n{% endif %}"
+        title: 正典域转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1757296361570'
+          - result
+          value_type: array[object]
+          variable: arg1
+        - value_selector:
+          - '1757296350845'
+          - result
+          value_type: array[object]
+          variable: arg2
+        - value_selector:
+          - '1757296338770'
+          - result
+          value_type: array[object]
+          variable: arg3
+        - value_selector:
+          - '1757296324460'
+          - result
+          value_type: array[object]
+          variable: arg4
+        - value_selector:
+          - '1757296315557'
+          - result
+          value_type: array[object]
+          variable: arg5
+        - value_selector:
+          - '1757296303767'
+          - result
+          value_type: array[object]
+          variable: arg6
+        - value_selector:
+          - '1757296294887'
+          - result
+          value_type: array[object]
+          variable: arg7
+        - value_selector:
+          - '1757296272507'
+          - result
+          value_type: array[object]
+          variable: arg8
+        - value_selector:
+          - '1757296262112'
+          - result
+          value_type: array[object]
+          variable: arg9
+        - value_selector:
+          - '1757296176342'
+          - result
+          value_type: array[object]
+          variable: arg10
+        - value_selector:
+          - '1757296123669'
+          - result
+          value_type: array[object]
+          variable: arg11
+      height: 53
+      id: '1757297275457'
+      position:
+        x: 2363
+        y: 1133.5
+      positionAbsolute:
+        x: 2363
+        y: 1133.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: 146.35281258012037
+      y: 97.056932454498
+      zoom: 0.25

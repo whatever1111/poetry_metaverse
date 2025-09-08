@@ -49,3 +49,8 @@ lugarden_universal/application/generated/
 
 # 语料库文件 - 敏感数据，不应被版本控制跟踪
 lugarden_universal/lu_the_poet/corpus/
+
+# Dify API 配置文件 - 包含敏感的API密钥
+lugarden_universal/lu_the_poet/dify_output/.env.local
+lugarden_universal/lu_the_poet/dify_output/logs/
+lugarden_universal/lu_the_poet/dify_output/daily_output/
