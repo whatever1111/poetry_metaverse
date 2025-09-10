@@ -188,8 +188,50 @@
   - ✨ **多样性优化**: 解决知识库检索同质化核心问题
   - ✨ **边界探索**: 验证constrained generation技术边界，为后续优化提供指导
 
-#### - [ ] 任务B.3：[工作流架构与节点配置优化]  
-*（占位符 - 基于实际性能瓶颈确定）*
+#### - [x] 任务B.3：诗歌生成评估工具链建设与输出路径优化 ✅
+- **核心思想**: 基于前期P节点和意图分析优化成果，建设完整的诗歌生成评估工具链，为人类志愿者评估判别器D打分质量提供技术支撑，同时优化输出路径管理，实现生成诗歌的集中化存储
+- **问题识别**:
+  - **输出路径分散**: lujiaming_output.py和评估脚本输出位置不统一，文件管理混乱
+  - **缺少评估工具**: 无法让人类志愿者便捷评估判别器D的决策质量
+  - **数据收集困难**: 缺少结构化的评估数据收集机制
+  - **文件命名冗余**: 评估表文件名过于冗长，不够专业简洁
+- **实施内容**:
+  - 修改lujiaming_output.py脚本，统一输出路径到../corpus/lujiaming/
+  - 设计并实现create_evaluation_csv系列脚本，从v1迭代到v5版本
+  - 实现Excel格式评估表生成，包含下拉菜单和格式化功能
+  - 优化评估表列结构，拆分诗歌内容为系列、标题、引文、完整诗歌
+  - 中文本地化所有表头，移除无关元数据列
+- 交付物：
+  - [x] **lujiaming_output.py输出路径优化**: 修改默认base_dir为../corpus/lujiaming/，统一文件管理
+  - [x] **create_evaluation_csv_v5.py评估表生成器**: 支持Excel输出、智能目录扫描、下拉评分
+  - [x] **requirements.txt依赖更新**: 添加pandas>=1.5.0和openpyxl>=3.0.0支持
+  - [x] **Excel高级功能实现**: 1-5分下拉菜单、单元格格式化、悬停提示、冻结表头
+  - [x] **文件命名规范优化**: 从诗歌评估表_Excel版_YYMMDD_HHMMSS.xlsx简化为人类评估表_YYMMDD_HHMM.xlsx
+- 验收标准：
+  - [x] lujiaming_output.py成功将生成诗歌保存到../corpus/lujiaming/目录
+  - [x] create_evaluation_csv_v5.py能够扫描诗歌文件并生成Excel评估表
+  - [x] Excel评估表包含1-5分下拉评分功能，支持人类志愿者便捷操作
+  - [x] 所有单元格垂直居中，文本左对齐，数字居中对齐，悬停提示清晰显示
+  - [x] 评估表列结构合理，诗歌内容拆分为4个独立列便于阅读
+- **风险评估**: ✅ 风险已控制 - 脚本功能完整测试，Excel功能正常运行
+- 预期改动文件：
+  - `lugarden_universal/lu_the_poet/dify_output/lujiaming_output.py` - 输出路径优化
+  - `lugarden_universal/lu_the_poet/dify_output/create_evaluation_csv_v5.py` - 评估表生成器
+  - `lugarden_universal/lu_the_poet/dify_output/requirements.txt` - 依赖更新
+- **实际改动文件**: 
+  - `lugarden_universal/lu_the_poet/dify_output/lujiaming_output.py` - 修改create_output_directory和save_poetry_with_metadata默认base_dir
+  - `lugarden_universal/lu_the_poet/dify_output/create_evaluation_csv_v5.py` - 完整评估表生成器，支持Excel+下拉菜单
+  - `lugarden_universal/lu_the_poet/dify_output/requirements.txt` - 添加pandas和openpyxl依赖
+  - 删除中间版本文件：create_evaluation_csv.py, create_evaluation_csv_v2.py, create_evaluation_csv_v3.py, create_evaluation_csv_v4.py
+- **完成状态**：✅ 已完成
+- 独立审计意见：
+  - 质量评级：B+ - 实用工具完整实现，支撑评估数据收集需求
+  - 审计结论：成功建立诗歌评估工具链，为后续数据驱动优化提供基础设施
+- **核心实现**:
+  - ✅ **路径统一**: 实现生成诗歌和评估表的集中化输出管理
+  - ✅ **Excel工具**: 建立专业的人类评估界面，支持下拉评分和格式化
+  - ✅ **数据结构**: 优化评估表列结构，拆分诗歌内容便于人类阅读
+  - ✅ **用户体验**: 实现中文本地化、悬停提示、智能目录扫描等友好功能
 
 #### - [ ] 任务B.4：[对抗博弈效果量化与调优]
 *（占位符 - 基于效果评估结果规划）*
@@ -260,7 +302,7 @@
 - [ ] 更新项目状态，准备下一阶段工作
 
 ## 当前状态
-🎉 B.1+B.2已完成 - P节点智能对抗优化架构设计与实施完成，实现重大方法论突破；意图分析节点RAG多样性与Token效率优化完成，建立Schema设计理论基础，基于阶段A基线的敏捷优化进行中
+🎉 B.1+B.2+B.3已完成 - P节点智能对抗优化架构设计与实施完成，实现重大方法论突破；意图分析节点RAG多样性与Token效率优化完成，建立Schema设计理论基础；诗歌生成评估工具链建设与输出路径优化完成，建立完整的人类评估基础设施，基于阶段A基线的敏捷优化进行中
 
 ---
 *本TODO基于陆家花园项目敏捷优化方法论创建，专注数据驱动的性能提升*
