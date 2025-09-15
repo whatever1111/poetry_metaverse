@@ -204,5 +204,35 @@
   - `peoject_tangzongzheng_universe/tangzongzheng-analysis-data.json`
   - `peoject_tangzongzheng_universe/数据治理完成报告.md`
 
+#### - [ ] 任务A.6：李尤台诗歌原始文本数据模型设计与JSON文件生成 🔄
+- **核心思想**: 基于99首李尤台诗歌的**原始.md文本**（非分析报告）设计实验性数据schema，生成结构化JSON文件作为唐宗正宇宙的实验阶段数据源。
+- **实施内容**:
+  - 分析99个清理后的.md文件的YAML Front Matter结构和诗歌正文特征
+  - 设计符合现有22张表架构模式的TangzongzhengPoem等表结构
+  - 基于"观念碎片并置模型"设计李尤台诗歌特有字段
+  - 生成完整的JSON文件：`tangzongzheng-poems.json`（包含99首诗歌数据）
+  - 设计实验环境独立的数据结构，确保与生产环境完全隔离
+- **关键约束**:
+  - **数据源限定**: 仅使用原始诗歌.md文件，不涉及分析报告内容
+  - **环境隔离**: 完全独立于现有22张表生产数据库
+  - **架构兼容**: 遵循"主宇宙中立实体 + 子宇宙桥接"模式
+  - **未来集成**: 为后续迁移到生产数据库做好准备
+- **交付物**:
+  - [ ] **Schema设计文档**: `tangzongzheng-schema-design.md`（详细数据模型）
+  - [ ] **诗歌数据JSON**: `tangzongzheng-poems.json`（99首诗歌结构化数据）
+  - [ ] **元数据JSON**: `tangzongzheng-metadata.json`（宇宙基本信息）
+  - [ ] **数据验证脚本**: `validate-tangzongzheng-data.cjs`（质量检查）
+- **验收标准**:
+  - [ ] 99首诗歌100%转换为结构化JSON数据
+  - [ ] Schema设计符合现有架构模式，支持未来集成
+  - [ ] 实验数据与生产环境完全隔离，零污染风险
+  - [ ] 数据验证脚本确认数据完整性和一致性
+- **风险评估**: 低 - 基于已清理的标准化.md文件，数据质量有保障
+- **预期改动文件**:
+  - `peoject_tangzongzheng_universe/tangzongzheng-schema-design.md`
+  - `peoject_tangzongzheng_universe/tangzongzheng-poems.json`
+  - `peoject_tangzongzheng_universe/tangzongzheng-metadata.json`
+  - `peoject_tangzongzheng_universe/validate-tangzongzheng-data.cjs`
+
 ---
 *本TODO基于陆家花园项目"数据治理优先，质量第一"的开发理念创建*
