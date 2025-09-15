@@ -239,5 +239,35 @@
   - `poeject_tangzongzheng_universe/tangzongzheng-schema-design.md`
   - `poeject_tangzongzheng_universe/tangzongzheng-poems.json`
 
+#### - [ ] 任务A.7：李尤台分析报告知识库化与RAG集成 🔄
+- **核心思想**: 将A5阶段完成的9个辑分析报告转化为GDP框架下的结构化RAG知识库，专注于感知流动模式、反讽解构机制和意象并置逻辑的提取。
+- **实施内容**:
+  - 从9个辑分析报告中提取李尤台诗歌的核心创作机制和特征模式
+  - 设计3个专门的RAG知识库JSON：感知流模式库、反讽解构机制库、意象并置逻辑库
+  - 基于"观念碎片并置模型"设计AI可检索的知识结构
+  - 提取意识流动轨迹、文化解构策略和无逻辑桥接技巧
+  - 确保知识库内容能够精确召回，支持高质量的李尤台风格诗歌生成
+- **关键约束**:
+  - **GDP适配优先**: 所有设计必须适配Generator-Discriminator-Optimizer对抗生成架构
+  - **RAG检索优化**: 知识库结构必须支持基于语义相似度的精确召回
+  - **李尤台特质保持**: 保持"感知流动"、"反讽解构"、"无规律引用"等核心特征
+  - **意象并置核心**: 重点建模李尤台"观念碎片并置"的核心创作机制
+- **交付物**:
+  - [ ] **感知流模式库**: `tangzongzheng-perception-patterns.json`（感知流动模式的结构化数据）
+  - [ ] **反讽解构机制库**: `tangzongzheng-deconstruction-mechanisms.json`（解构逻辑和技巧的数据库）
+  - [ ] **意象并置逻辑库**: `tangzongzheng-juxtaposition-logic.json`（观念碎片并置规则和模式）
+  - [x] **知识库设计文档**: `tangzongzheng-rag-knowledge-design.md`（详细的架构设计说明）
+- **验收标准**:
+  - [ ] 3个JSON知识库文件完整覆盖9个辑的核心特征和机制
+  - [ ] 知识库支持基于用户输入的语义检索和精确召回
+  - [ ] 完整建模李尤台"感知流动"、"反讽解构"、"意象并置"三大核心机制
+  - [ ] 知识库架构完全适配GDP对抗生成框架的RAG需求
+- **风险评估**: 中等 - 需要深度理解李尤台诗学特质并转化为技术架构
+- **预期改动文件**:
+  - `poeject_tangzongzheng_universe/tangzongzheng-perception-patterns.json`
+  - `poeject_tangzongzheng_universe/tangzongzheng-deconstruction-mechanisms.json`
+  - `poeject_tangzongzheng_universe/tangzongzheng-juxtaposition-logic.json`
+  - `poeject_tangzongzheng_universe/tangzongzheng-rag-knowledge-design.md`
+
 ---
 *本TODO基于陆家花园项目"数据治理优先，质量第一"的开发理念创建*

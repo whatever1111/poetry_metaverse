@@ -1102,7 +1102,10 @@ workflow:
       type: custom
       width: 243
     - data:
-        answer: '{{#1756699910424.text#}}'
+        answer: '{{#1756699910424.text#}}
+
+
+          {{#1756701800237.text#}}'
         desc: ''
         selected: false
         title: 直接回复
@@ -1665,33 +1668,54 @@ workflow:
       type: custom
       width: 243
     - data:
-        answer: '{{#17569669412190.text#}}'
+        answer: '{{#1756699910424.text#}}
+
+
+          {{#1756701800237.text#}}
+
+
+          {{#17569669412190.text#}}
+
+
+          {{#17569676735610.text#}}'
         desc: ''
         selected: false
         title: 直接回复
         type: answer
         variables: []
-      height: 104
+      height: 123
       id: '17569688050830'
       position:
         x: 6208
-        y: 1817.5
+        y: 1808
       positionAbsolute:
         x: 6208
-        y: 1817.5
+        y: 1808
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 243
     - data:
-        answer: '{{#17570479883380.text#}}'
+        answer: '{{#1756699910424.text#}}
+
+
+          {{#1756701800237.text#}}
+
+
+          {{#17569669412190.text#}}
+
+
+          {{#17569676735610.text#}}
+
+
+          {{#17570479883380.text#}}'
         desc: ''
         selected: false
         title: 直接回复
         type: answer
         variables: []
-      height: 104
+      height: 142
       id: '17569688395770'
       position:
         x: 7540
@@ -1699,7 +1723,7 @@ workflow:
       positionAbsolute:
         x: 7540
         y: 1959.5
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -2319,10 +2343,11 @@ workflow:
           score_threshold: null
           top_k: 4
         query_variable_selector:
-        - sys
-        - query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
-        selected: false
+        selected: true
         title: 周易检索
         type: knowledge-retrieval
       height: 91
@@ -2333,7 +2358,7 @@ workflow:
       positionAbsolute:
         x: 2030
         y: 478.5
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -2351,8 +2376,9 @@ workflow:
           score_threshold: null
           top_k: 4
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 易传检索
@@ -2383,8 +2409,9 @@ workflow:
           score_threshold: null
           top_k: 4
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 周礼检索
@@ -2415,8 +2442,9 @@ workflow:
           score_threshold: null
           top_k: 4
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 仪礼检索
@@ -2447,8 +2475,9 @@ workflow:
           score_threshold: null
           top_k: 4
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 尚书检索
@@ -2479,8 +2508,9 @@ workflow:
           score_threshold: null
           top_k: 4
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 孟子检索
@@ -2518,8 +2548,9 @@ workflow:
               embedding_provider_name: langgenius/siliconflow/siliconflow
               vector_weight: 0.7
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 礼记检索
@@ -2550,8 +2581,9 @@ workflow:
           score_threshold: null
           top_k: 4
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 论语检索
@@ -2589,8 +2621,9 @@ workflow:
               embedding_provider_name: langgenius/siliconflow/siliconflow
               vector_weight: 0.7
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 春秋左氏传检索
@@ -2621,8 +2654,9 @@ workflow:
           score_threshold: null
           top_k: 4
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 春秋谷梁传检索
@@ -2652,8 +2686,9 @@ workflow:
             provider: langgenius/jina/jina
           top_k: 4
         query_variable_selector:
-        - '1756696215859'
-        - sys.query
+        - '1756961820611'
+        - structured_output
+        - 创作主题
         retrieval_mode: multiple
         selected: false
         title: 春秋公羊传检索
@@ -2759,6 +2794,6 @@ workflow:
       type: custom
       width: 243
     viewport:
-      x: 146.35281258012037
-      y: 97.056932454498
-      zoom: 0.25
+      x: -1421.9144736450662
+      y: -253.94632542019258
+      zoom: 0.5046424006059371
