@@ -1,0 +1,100 @@
+﻿ID,诗集名称,辑名,序号,标题,核心情感基调,情感极性评分,关联主题,我的功能角色
+tangzongzheng_poem_001,偶记集,阳光雨露,1,偶记,沉浸式的孤独感知 (Immersive Solitude)，带有微弱的价值确认,弱正向(+0.5)，最终指向能量确认,光照作为意识触发器，集体与个体的感知差异,被动光学传感器 + 价值能量放大器
+tangzongzheng_poem_002,偶记集,阳光雨露,2,偶记,社会性的压抑与异化 (Social Oppression & Alienation),负向(-0.7)，带有批判性洞察,阶级意识与个体在集体中的位置,社会状态诊断器 + 权力关系分析者
+tangzongzheng_poem_003,偶记集,阳光雨露,3,偶记,享受中的被动驱动 (Passive Drive within Enjoyment),中性偏正(+0.3)，但带有被动性,自然中的神秘力量与个体的被动接受,享受状态记录器 + 神秘力量接收者
+tangzongzheng_poem_004,偶记集,阳光雨露,4,偶记,瞬间启示中的眩惑 (Bewilderment in Instantaneous Revelation),中性偏正(+0.4)，倾向于积极的困惑,瞬间光影变化作为意识触发器,瞬间感知捕捉器 + 悖论体验者
+tangzongzheng_poem_005,偶记集,阳光雨露,5,偶记,时代疲倦中的关系敏感 (Relational Sensitivity within Epochal Fatigue),负向(-0.6)，但带有温柔的人际觉察,时代诊断与私人关系的交织,时代状态诊断器 + 关系敏感探测器
+tangzongzheng_poem_006,偶记集,阳光雨露,6,偶记,灾后重生中的冰冷清醒 (Cold Clarity in Post-disaster Rebirth),中性偏正(+0.3)，清醒但带有冰冷感,自然灾害与感知重生,灾后环境感知器 + 清醒状态记录者
+tangzongzheng_poem_007,偶记集,阳光雨露,7,偶记,光照疲劳中的孤立忏悔 (Isolated Repentance within Light Fatigue),负向(-0.5)，但带有自觉的孤立感,光照作为疲劳源，身体作为世界的分隔媒介,光照疲劳感受器 + 世界分隔的身体媒介
+tangzongzheng_poem_008,偶记集,阳光雨露,8,偶记,光照治愈中的身体记忆 (Bodily Memory within Light Healing),正向(+0.6)，带有温柔的记忆色彩,冬日光照的治愈性与对他者身体的温柔记忆,光照治愈接受器 + 身体记忆存储器
+tangzongzheng_poem_009,偶记集,阳光雨露,9,偶记,暴烈环境中的他者身体凝视 (Gazing at Others' Bodies amid Violence),中性偏正(+0.4)，但带有复杂的情感张力,自然暴力与私密空间中的他者身体观看,环境暴力感受器 + 他者身体观察者
+tangzongzheng_poem_010,偶记集,阳光雨露,10,偶记,焦虑中的重力感与道路宽阔 (Gravity and Road Vastness within Anxiety),中性(0)，焦虑与自在并存,感知焦虑与空间的宽阔感,焦虑感知探测器 + 重力感受器
+tangzongzheng_poem_011,偶记集,阳光雨露,11,偶记,阴雨中的瞬间鲜明与最终黯灭 (Momentary Vividness and Final Dimming in Rain),中性偏负(-0.2)，从鲜明转向黯灭,地下到地上的空间转换与意识的瞬间鲜明,空间转换感受器 + 瞬间鲜明捕捉器
+tangzongzheng_poem_012,偶记集,阳光雨露,12,偶记,身体麻痹中的意识碎片化 (Consciousness Fragmentation within Bodily Numbness),负向(-0.4)，但带有抽象的美感,身体麻痹作为意识解体的物理基础,身体麻痹记录器 + 意识碎片化见证者
+tangzongzheng_poem_013,偶记集,阳光雨露,13,偶记,无声骚扰中的存在确认 (Existential Confirmation within Silent Harassment),中性偏负(-0.3)，但最终指向存在的确认,微妙感知的不安与最终的现实回归,微妙感知接收器 + 存在状态确认者
+tangzongzheng_poem_014,偶记集,阳光雨露,14,偶记,日常变化中的生命困锁感 (Life Entrapment within Daily Changes),中性偏负(-0.3)，但带有接受性,日常计划的改变与最终的声音困锁,日常生活记录器 + 声音环境被困者
+tangzongzheng_poem_015,偶记集,异性阑珊,1,偶记,迷醉与清醒的悖论并存 (Intoxication-Sobriety Paradox),弱正向(+0.2)，偏向沉醉体验,欲望的文学化升华，现实与幻想的边界模糊,被动沉浸的感知接收器 + 主动的文学创造者
+tangzongzheng_poem_016,偶记集,异性阑珊,2,偶记,模糊的集体性悲哀 (Collective Vague Melancholy),负向(-0.1)，偏向忧郁,集体空间中的个体感知孤立,隐匿的听觉观察者
+tangzongzheng_poem_017,偶记集,异性阑珊,3,偶记,观看欲望与道德焦虑的张力 (Desire-Anxiety Tension),中性(0)，情感悬置状态,现代工作场所的异性关系边界,矛盾的观察者 + 身份认知的探索者
+tangzongzheng_poem_018,偶记集,异性阑珊,4,偶记,美学愉悦与文化忧虑的复合 (Aesthetic-Cultural Anxiety Complex),负向(-0.1)，偏向文化焦虑,个体美学体验与民族文化心理的关联,美学感受者 + 文化诊断者
+tangzongzheng_poem_019,偶记集,异性阑珊,5,偶记,疲倦与社交疏离感 (Fatigue & Social Alienation),负向(-0.1)，偏向疲惫,集体活动中的个体感知差异,被动的活动参与者 + 自然的情感反应者
+tangzongzheng_poem_020,偶记集,异性阑珊,6,偶记,离别的深层震荡感 (Deep Separation Shock),强负向(-0.6)，明确的离愁,时间感知与离别情感的身体化体验,被动的情感承受者 + 时间流逝的敏感记录者
+tangzongzheng_poem_021,偶记集,异性阑珊,7,偶记,瞬间的强烈感官冲击 (Instant Sensory Shock),弱正向(+0.2)，偏向审美愉悦,密闭空间中的异性身体感知,瞬间的强烈感知器 + 美学与生理反应的记录者
+tangzongzheng_poem_022,偶记集,异性阑珊,8,偶记,参与式的超脱感 (Participatory Detachment),中性(0)，完全超脱状态,集体活动中的个体感知独立性,参与的观察者 + 唯一的诉说者
+tangzongzheng_poem_023,偶记集,异性阑珊,9,偶记,微观迷恋与宏观眩晕的并存 (Micro-obsession & Macro-vertigo Coexistence),弱正向(+0.1)，偏向迷恋体验,物质痕迹的诗学与历史感知，微观行为的意识放大,微观物质操作者 + 历史感知承受者
+tangzongzheng_poem_024,偶记集,异性阑珊,10,偶记,美学冲击与现实克制的张力 (Aesthetic-Reality Restraint Tension),微弱正向(+0.1)，偏向美学体验,日常社交中的美学遭遇与行为边界,冲动的观察者 + 自我约束的理性主体
+tangzongzheng_poem_025,偶记集,异性阑珊,11,偶记,纯粹的亲密冲动 (Pure Intimacy Impulse),强正向(+0.6)，明确的亲密体验,密闭空间中的自然身体反应,直接的身体反应者 + 自然情感的执行者
+tangzongzheng_poem_026,偶记集,异性阑珊,12,偶记,亲密空间的哲学悖论感 (Intimate Space Philosophical Paradox),中性(0)，悖论状态,理想空间中的情感获得悖论,空间享受者 + 哲学思考者的复合身份
+tangzongzheng_poem_027,偶记集,异性阑珊,13,偶记,技术操控与情感依赖的对比 (Technical-Emotional Dependency Contrast),微弱正向(+0.1)，偏向依赖温暖,技术能力与情感需求的关系,技术操作者 + 情感需求者的矛盾统一
+tangzongzheng_poem_028,偶记集,异性阑珊,14,偶记,生命重复中的微妙变化感知 (Subtle Life-Repetition Variation Perception),中性(0)，生命状态的客观记录,生命重复性中的微观差异感知,生命状态的观察者 + 重复中变化的记录者
+tangzongzheng_poem_029,偶记集,感时孕,1,偶记,时间边界上的分离恐惧 (Separation Anxiety at Temporal Boundaries),负向(-0.6)，带有预期性悲伤,时间边界意识、分离恐惧、祈愿心理、传统情感表达,时间敏感的祈愿者 + 传统情感角色的扮演者
+tangzongzheng_poem_030,偶记集,感时孕,2,偶记,历史创伤的现实投射体验 (Historical Trauma Projected into Reality),强负向(-0.8)，历史恐怖的深度体验,历史创伤记忆、政治恐怖体验、时空穿梭感知、身体政治反应、自我反省意识,历史创伤的现代载体 + 政治恐怖的身体感知器
+tangzongzheng_poem_031,偶记集,感时孕,3,偶记,自然力量的历史压迫感知 (Historical Oppression Perception of Natural Forces),负向(-0.4)，压迫感与疲倦感,自然力量、隐形劳动、疲倦积累、历史压迫、空间压力,自然力量的观察者 + 历史压迫的感知器
+tangzongzheng_poem_032,偶记集,感时孕,4,偶记,分离体验中的时间感知与文学救赎 (Temporal Perception and Literary Redemption in Separation Experience),复杂双向(-0.3至+0.4)，从迷失到秩序的转换,分离体验、时间感知、意志衰弱、文学救赎、精神秩序,分离时间的敏感体验者 + 文学秩序的接受者
+tangzongzheng_poem_033,偶记集,感时孕,5,偶记,孕期感知敏感化的时间流动体验 (Temporal Flow Experience with Pregnancy Hypersensitivity),复杂正向(-0.1至+0.6)，从昏沉到美妙的转换,孕期体验、感知敏感化、时间流动、思绪停断、环境感知、偶遇社交、诗意体验,孕期敏感状态的体验者 + 时间流动的细微感知器
+tangzongzheng_poem_034,偶记集,感时孕,6,偶记,现代生活空虚中的数字化逃避体验 (Digital Escapism in Modern Life Emptiness),负向(-0.5)，空虚感与疏离感,生活空虚、时间流逝、数字化体验、情感疏离、道德安慰,现代生活空虚的体验者 + 数字化逃避的实践者
+tangzongzheng_poem_035,偶记集,感时孕,7,偶记,孕育过程中的生命力量感知体验 (Life Force Perception in Gestation Process),复杂正向(+0.3至+0.7)，从快慰到迟钝的体验转换,生命孕育、自然力量、视觉关系、感知变化、时间快慰感,生命孕育的观察者 + 自然力量的感知器
+tangzongzheng_poem_036,偶记集,感时孕,8,偶记,产后时间感知中的身体变化观察 (Bodily Change Observation in Postpartum Temporal Perception),复杂中性(-0.2至+0.2)，观察中的复杂情感,产后变化、时间标记、身体观察、状态对比、记忆回溯,产后变化的细致观察者 + 时间感知的精确记录者
+tangzongzheng_poem_037,偶记集,感时孕,9,偶记,时间流逝中的情感依恋与空间疏离 (Emotional Attachment and Spatial Alienation in Temporal Flow),负向(-0.7)，深度的时间焦虑与情感依恋,时间焦虑、老去恐惧、情感依恋、空间疏离、感官体验,时间流逝的焦虑感知者 + 情感依恋的空间体验者
+tangzongzheng_poem_038,偶记集,感时孕,10,偶记,日常乏味中的身体想象与感官逃避 (Bodily Imagination and Sensory Escapism in Daily Boredom),复杂负向(-0.4至-0.6)，乏味中的复杂身体体验,日常乏味、身体想象、生育体验、感官刺激、视觉逃避、意识流动,乏味时间的身体想象者 + 感官体验的逃避实践者
+tangzongzheng_poem_039,偶记集,感时孕,11,偶记,时间变化敏感感知中的生命成长观察 (Life Growth Observation in Time-Change Hypersensitivity),复杂正向(0.0至+0.5)，变化感知中的复杂情感,时间变化、生命成长、日常观察、感知强迫、数字依赖、机器化生活,时间变化的敏感观察者 + 生命成长的想象投射者
+tangzongzheng_poem_040,偶记集,感时孕,12,偶记,育儿生活中的身体坚持与哲学领悟 (Bodily Persistence and Philosophical Insight in Parenting Life),中性偏正(0.0至+0.3)，坚持中的生活智慧,育儿生活、身体坚持、睡眠中断、人性开合、自然观察、生活哲学,育儿生活的坚持实践者 + 生活哲学的感悟者
+tangzongzheng_poem_041,偶记集,感时孕,13,偶记,身体内在混沌状态的细微感知体验 (Subtle Perception of Internal Bodily Chaos),负向(-0.5)，内在混沌的不适感,意识苏醒、身体混沌、内在发酵、空间不确定、呼吸状态,身体内在状态的细微感知者 + 混沌状态的比喻表达者
+tangzongzheng_poem_042,偶记集,感时孕,14,偶记,日常相遇中的感官敏感与空间消解体验 (Sensory Sensitivity and Spatial Dissolution in Daily Encounter),复杂中性(-0.2至+0.3)，从甜蜜到消解的复杂转换,日常相遇、环境感知、感官变化、空间体验、视觉确认、时间消解,日常相遇的细致观察者 + 感官变化的敏感体验者
+tangzongzheng_poem_043,偶记集,伪士嚎,1,偶记,历史投射下的存在焦虑 (Historical Projection Anxiety),中性偏负(-0.2)，带有历史重负感,身体衰老、历史认同、知识分子的精神处境,历史人格的现代载体 + 文化符号的感知器
+tangzongzheng_poem_044,偶记集,伪士嚎,2,偶记,知识分子的虚无主义绝望 (Intellectual Nihilistic Despair),强负向(-0.8)，带有自我毁灭倾向,时代悲观、死亡意志、民族性批判、鲁迅精神传承,文化批判者 + 民族性格的诊断器
+tangzongzheng_poem_045,偶记集,伪士嚎,3,偶记,政治恐慌下的身体失控感 (Political Panic with Bodily Dyscontrol),强负向(-0.9)，极度不安与恐惧,政治恐慌、身体控制、历史创伤、权力结构、集体无意识,政治恐慌的身体记录器 + 历史创伤的感知载体
+tangzongzheng_poem_046,偶记集,伪士嚎,4,偶记,压抑下的触觉敏感化 (Tactile Hypersensitivity under Repression),复杂双向（-0.3至+0.4），从压抑到释放的转换,身体压抑、古典情感、触觉放大、时间边界、情感补偿,压抑状态下的超敏感感知器 + 古典情感的现代载体
+tangzongzheng_poem_047,偶记集,伪士嚎,5,偶记,知识分子的文化身份认同焦虑 (Cultural Identity Anxiety of Intellectuals),中性偏正(+0.2)，带有文化自嘲色彩,历史记忆、文化身份、代际传承、反五四情结、知识分子立场,文化记忆的载体 + 知识分子身份的观察者
+tangzongzheng_poem_048,偶记集,伪士嚎,6,偶记,鲁迅精神空间中的文化创伤体验 (Cultural Trauma in Lu Xun's Spiritual Space),复杂负向(-0.6至-0.8)，从沉思到恐怖的递进,德赛先生、鲁迅精神、文化创伤、恶的本质、知识分子困境、民族文化焦虑,鲁迅精神空间的体验者 + 文化创伤的感知载体
+tangzongzheng_poem_049,偶记集,伪士嚎,7,偶记,时间质感的细微体验感知 (Subtle Temporal Texture Perception),中性偏负(-0.1)，带有微弱的忧郁色彩,时间本质、鲁迅精神状态、身体被动性、存在的虚弱感,时间质感的细微感知器 + 鲁迅精神状态的体验者
+tangzongzheng_poem_050,偶记集,伪士嚎,8,偶记,哲学困境下的身体自由渴望 (Bodily Freedom Yearning under Philosophical Dilemma),中性(0.0)，平衡状态,世事困扰、存在真实性、身体自由、简单生活的羡慕,哲学困境的体验者 + 身体自由的渴望者
+tangzongzheng_poem_051,偶记集,伪士嚎,9,偶记,历史重负下的个体空心感 (Individual Emptiness under Historical Burden),负向(-0.5)，带有历史创伤的沉重感,历史创伤、个体空虚、民族命运、存在重负、避世情结,历史语言的承载者 + 个体空心状态的体验者
+tangzongzheng_poem_052,偶记集,伪士嚎,10,偶记,日常情境中的孤独美学体验 (Aesthetic Experience of Solitude in Daily Context),中性偏正(+0.3)，带有诗意化的孤独美感,日常偶遇、孤独美学、音乐体验、空间感知,日常情境的美学体验者 + 孤独状态的自觉者
+tangzongzheng_poem_053,偶记集,伪士嚎,11,偶记,梦境与现实边界的存在困惑 (Existential Confusion at Dream-Reality Boundary),负向(-0.4)，带有存在困惑的焦虑感,梦境体验、身体界限、自我认知、光彩与温暖的分离、成人世界的虚无,梦境与现实边界的体验者 + 虚无美学的感知者
+tangzongzheng_poem_054,偶记集,伪士嚎,12,偶记,轻盈美感与时间重负的并置体验 (Juxtaposition of Light Aesthetics and Temporal Burden),复杂双向(-0.2至+0.6)，从轻盈到沉重的转换,轻盈美学、光线质感、尘埃真实性、时间重负、空间层次、快感分离,轻盈美感的观察者 + 时间重负的体验者
+tangzongzheng_poem_055,偶记集,伪士嚎,13,偶记,存在主义的悲壮美学体验 (Existential Tragic Aesthetic Experience),复杂正向(+0.4至+0.7)，悲壮中的生命确认,生活悲壮感、身体坚韧、虚无穿越、生命把握、存在主义美学,悲壮美学的体验者 + 存在哲学的实践者
+tangzongzheng_poem_056,偶记集,伪士嚎,14,偶记,破落美学与生活适应的复杂情感 (Complex Emotions of Decay Aesthetics and Life Adaptation),复杂中性(-0.1至+0.2)，情感的复杂转换,破落美学、崩溃边缘、虚无状态、厌倦学习、生活适应、人际关系,破落美学的欣赏者 + 生活适应的学习者
+tangzongzheng_poem_057,爱人,急就诗,1,阳台,现代性的无聊与等待 (Modern Boredom & Waiting),中性偏负向(-0.2)，体现现代生活的麻木感,现代都市移动性与阅读文化的碎片化体验,现代性观察者 + 文本结构分析者
+tangzongzheng_poem_058,爱人,急就诗,2,魔窗,理性观察的冷静与系统性认知建构 (Rational Detachment & Systematic Cognition),中性(0)，偏向冷静分析,成人认知与儿童天性的观察边界，系统性思维的自我意识,集体认知观察者 + 系统性思维建构者
+tangzongzheng_poem_059,爱人,急就诗,3,唯一，与拥抱,存在焦虑与空间确认的哲学性困惑 (Existential Anxiety & Spatial Confirmation),弱负向(-0.3)，带有存在主义式的不安,物体存在性与空间记忆，日常物体的哲学化反思,存在状态诊断器 + 空间记忆验证者
+tangzongzheng_poem_060,爱人,急就诗,4,是他，就是他,身份确认的执着与认知固着 (Identity Fixation & Cognitive Persistence),中性偏正向(+0.1)，体现确认感的满足,日常空间中的身份识别，听觉线索的认知确认,身份识别器 + 认知确认系统
+tangzongzheng_poem_061,爱人,急就诗,5,因为不是诗,创作自由的解放感与元诗学自觉 (Creative Liberation & Meta-poetic Consciousness),正向(+0.6)，体现解放和自由的积极感受,诗歌边界的哲学思考，创作规则的自我解构,元诗学反思者 + 创作规则解构者
+tangzongzheng_poem_062,爱人,急就诗,6,羊排,日常生活的平静记录与简朴满足 (Everyday Simplicity & Plain Satisfaction),中性偏正向(+0.2)，体现简单满足感,日常饮食的诗学价值，生活事实的直接呈现,生活事实记录器 + 简朴体验者
+tangzongzheng_poem_063,爱人,急就诗,7,朋友,社会关系的冷静观察与边界确认 (Social Boundary Observation & Relationship Definition),中性(0)，客观陈述无情感倾向,社会关系的简化定义，人际边界的确认,社会关系观察者 + 人际边界确认器
+tangzongzheng_poem_064,爱人,急就诗,8,九九八十一,文化记忆的轻松调用与困难体验的风趣化 (Cultural Memory & Humorous Difficulty),中性偏正向(+0.3)，带有文化趣味,传统文化在现代语境中的诗学运用,文化记忆调用者 + 数字诗学实验者
+tangzongzheng_poem_065,爱人,急就诗,9,少年游,青春记忆的温暖触发与人际温情观察 (Youthful Warmth & Interpersonal Tenderness),正向(+0.7)，体现温暖和愉悦,游戏文化与青春记忆，人际交往中的情感观察,情感状态观察者 + 青春记忆触发器
+tangzongzheng_poem_066,爱人,急就诗,10,17 岁的理发师,身体服务中的性焦虑与身份错乱 (Sexual Anxiety & Identity Confusion in Body Service),负向(-0.4)，带有不适感和身份混乱,服务业中的身体边界，年龄与性经验的社会想象,身体服务接受者 + 性别角色观察者
+tangzongzheng_poem_067,爱人,急就诗,11,想去北京很久了，我活了二十年没有去过北京。5 月 7 日将独身往北京了，扑一个虚空,生命缺失的焦虑与存在虚无的哲学自嘲 (Life Deficiency Anxiety & Existential Self-mockery),负向(-0.6)，带有存在焦虑和自嘲,地理经验与生命完整性，青年人的存在焦虑,生命缺失诊断者 + 存在虚无体验者
+tangzongzheng_poem_068,爱人,急就诗,12,4 月 27 日与鸸鹋小毛兄在诗图学诗,友谊学习的温暖记录与文化活动的简朴满足 (Friendship Learning & Cultural Simplicity),正向(+0.5)，体现学习和友谊的积极性,诗歌学习的社交性质，友谊在文化活动中的体现,文化活动记录者 + 友谊见证者
+tangzongzheng_poem_069,爱人,急就诗,13,某将于书包里装陈先发《九章》而启程,文学旅行的仪式感与知识装备的庄重准备 (Literary Journey Ritual & Intellectual Preparation),正向(+0.6)，体现准备和启程的积极性,文学作为旅行伴侣，知识准备的仪式性意义,文学旅行准备者 + 文化选择决策者
+tangzongzheng_poem_070,爱人,急就诗,14,火车在早晨到北京,目标实现的平静满足与旅行到达的朴素确认 (Destination Achievement & Simple Arrival),正向(+0.4)，体现到达的满足感,地理愿望的实现，交通工具与生活节奏,旅行事实记录者 + 地理目标实现者
+tangzongzheng_poem_071,爱人,急就诗,15,小书记,简单美感的直接确认与职业身份的温和关注 (Simple Beauty Appreciation & Professional Identity Warmth),正向(+0.7)，体现美感和温暖,职场美学的简单发现，日常工作中的人际温情,美感识别者 + 职业身份观察者
+tangzongzheng_poem_072,爱人,急就诗,16,"巴尔韦德取消了\""荒唐\""这个词语",语言权威的荒诞感与概念操作的哲学游戏 (Linguistic Authority Absurdity & Conceptual Operation Play),中性偏正向(+0.2)，带有哲学游戏的趣味,个人权威与语言权力，词语概念的可操作性,语言哲学观察者 + 概念权力记录者
+tangzongzheng_poem_073,爱人,急就诗,17,他们迎面走过来,日常行走中的哲学观察与性别命运的社会思考 (Philosophical Observation & Gender Destiny Contemplation),中性(-0.1)，带有哲学思考的严肃性,日常移动中的性别观察，个人命运的哲学化思考,移动中的哲学观察者 + 性别命运分析者
+tangzongzheng_poem_074,爱人,改良派,1,倾覆,社会批判的愤懑与政治敏感的疲惫 (Social Critical Indignation & Political Fatigue),负向(-0.8)，强烈的社会不满和个人疲惫,城市民生问题的诗学化，知识分子的政治立场与个人倦怠,社会批判观察者 + 政治疲惫体验者
+tangzongzheng_poem_075,爱人,改良派,2,致萧开愚……兼致他浊朽的冰，兼致王善秋、秦建东与唐亚文,文学圈疏离感与知识分子的观察焦虑 (Literary Circle Alienation & Intellectual Observation Anxiety),负向(-0.5)，文学疏离和观察焦虑,文学圈人际关系，现代技术与传统观察，知识分子的社会位置,文学圈观察者 + 技术时代体验者
+tangzongzheng_poem_076,爱人,改良派,3,诗•剧,文学实验的复杂性与性别体验的矛盾张力 (Literary Experimental Complexity & Gender Experience Tension),中性偏负向(-0.2)，复杂的文学与性别思考,诗歌美学理论，古典文学重构，现代性别关系,文学实验者 + 性别体验分析者
+tangzongzheng_poem_077,爱人,改良派,4,涉,暴力创伤的复杂心理与欲望冲突的深层焦虑 (Violence Trauma Psychology & Deep Desire Conflict Anxiety),负向(-0.9)，极强的创伤和冲突感,身体暴力与心理创伤，欲望与理性的冲突，集体与个体的边界,创伤体验者 + 欲望冲突分析者
+tangzongzheng_poem_078,爱人,改良派,5,冬季家庭问卷（两份）,家庭生活的哲学倦怠与日常行为的机械重复 (Domestic Life Philosophical Fatigue & Daily Behavior Mechanical Repetition),负向(-0.3)，倦怠和机械感,家庭关系的哲学思考，日常生活的重复性质，现实与记忆的关系,家庭生活观察者 + 日常行为记录者
+tangzongzheng_poem_079,爱人,改良派,6,阡陌,传统文化的现代转化与时空交融的诗意体验 (Traditional Culture Modern Transformation & Spatiotemporal Fusion Poetic Experience),中性偏正向(+0.3)，带有文化怀念和诗意体验,传统中医文化，农村与城市的关系，时间的层次性,文化体验者 + 时空观察者
+tangzongzheng_poem_080,爱人,改良派,7,1962 年的屏风,历史创伤的集体记忆与个体在困境中的美感体验 (Historical Trauma Collective Memory & Individual Aesthetic Experience in Adversity),负向(-0.7)，强烈的历史创伤和困境感,1960年代的历史创伤，集体苦难的个人体验，困境中的美学坚持,历史见证者 + 创伤体验分析者
+tangzongzheng_poem_081,爱人,改良派,8,那东西,古典理想与现实困顿的冲突及对神秘事物的复杂情感 (Classical Ideal vs Reality Conflict & Complex Emotion toward Mystery),负向(-0.4)，困顿、困惑和最终的牺牲感,古典文化与现代生活的冲突，理解能力的限制，神秘事物的诱惑与代价,古典理想追求者 + 现实困境体验者
+tangzongzheng_poem_082,爱人,学朽,1,海思路 999 号,失望中的自我安慰 (disappointed self-comfort),负向(-0.6)，带有想象性补偿的微弱正向元素,现实与期待的落差，友情与孤独的并存,失望的体验者 + 想象的补偿者
+tangzongzheng_poem_083,爱人,学朽,2,永恒,压抑中的微弱抗争 (suppressed subtle resistance),负向(-0.7)，但含有语言节奏带来的微弱慰藉,日常生活的压迫感，语言作为身体训练的可能性,被压迫的承受者 + 语言节奏的感知者
+tangzongzheng_poem_084,爱人,学朽,3,豆瓣三五条,愤世嫉俗的自我消解 (cynical self-dissolution),负向(-0.8)，带有攻击性和自毁性,当代青年的生存困境，性与暴力的混合，道德虚无主义,愤怒的攻击者 + 自我贬抑的消解者
+tangzongzheng_poem_085,爱人,学朽,4,青年胡闹家,对文艺虚伪的讽刺与恐惧 (satirical fear of artistic pretension),负向(-0.6)，带有明显的讽刺和轻蔑,对文艺创作虚伪性的质疑，现代青年的生存状态,冷眼观察者 + 现实主义批判者
+tangzongzheng_poem_086,爱人,学朽,5,日记,怀旧中的语言哲学思考 (nostalgic linguistic philosophizing),中性偏负(-0.2)，带有回望的复杂性,童年暴力与成年创作的关系，语言的物质性和时间性,回望者 + 语言哲学的思考者
+tangzongzheng_poem_087,爱人,学朽,6,懂得值得懂得,批判冲动中的自我反省 (self-reflective critical impulse),负向(-0.4)，但在古典意象中转向克制和距离,文学批评与自我批判，情感表达的节制,批评者 + 自我反省的克制者
+tangzongzheng_poem_088,爱人,学朽,7,无题,冷漠中的诚实自省 (honest self-examination in indifference),中性(0)，带有对创作行为的质疑,现代人对重大事件的冷漠，创作的虚无感,冷漠观察者 + 诚实的创作反思者
+tangzongzheng_poem_089,爱人,歪门邪道,1,巴黎之心,现代生活的间接体验与反思 (indirect modern experience reflection),中性偏负(-0.3)，带有对现代信息消费的审视,社交媒体时代的间接生活，信息消化与情感投射,信息消费者 + 反思性观察者
+tangzongzheng_poem_090,爱人,歪门邪道,2,恬不知耻,抽象化的道德反思 (abstract moral contemplation),中性(0)，情感被高度抽象化处理,道德状态的抽象表达，现代行为与古典语言的对比,隐匿观察者 + 抽象化表达者
+tangzongzheng_poem_091,爱人,歪门邪道,3,含风鸭绿,身体修炼的抽象化表达 (abstract bodily cultivation),中性偏正(+0.2)，带有修炼的积极暗示,身体修炼与自然融合，传统养生文化的现代重构,修炼者 + 自然观察者
+tangzongzheng_poem_092,爱人,歪门邪道,4,年少如花,青春期的情感困顿与空间流浪 (adolescent emotional confusion and spatial wandering),负向(-0.5)，带有强烈的迷茫和不安,青春期的身体与情感体验，都市空间中的孤独感,困顿的流浪者 + 敏感的观察者
+tangzongzheng_poem_093,爱人,歪门邪道,5,汉高皇帝,机会主义中的诗意沉思 (poetic contemplation in opportunism),中性偏负(-0.3)，复杂的道德暧昧性,机会主义行为与诗意体验的并存，历史典故的现代重构,机会主义者 + 诗意观察者
+tangzongzheng_poem_094,爱人,歪门邪道,6,芒芒云朵,现代生活的荒诞化哲学思考 (absurdist philosophical contemplation of modern life),复杂多变，从正向(+0.6)到负向(-0.4)的极大波动,现代消费社会的荒诞，哲学思辨与日常生活的交织,现代生活的体验者 + 荒诞哲学的思考者
+tangzongzheng_poem_095,爱人,儒家,1,与大地诗人谈论江山之助,权力幻想中的自我解构 (self-deconstructing power fantasy),复杂(-0.2到+0.4间波动)，权力感与虚无感交替,政治权力的性化，传统文化概念的身体化改写,权力幻想者 + 身体行为的设计者
+tangzongzheng_poem_096,爱人,儒家,2,在杨世海办公室外面口占,实用主义的自我优先 (pragmatic self-prioritization),中性偏负(-0.3)，带有对现实的妥协,个人需求与社会关系的冲突，生存策略的实用主义,需求优先者 + 实用主义者
+tangzongzheng_poem_097,爱人,儒家,3,君子说,艺术批评的身体化表达 (embodied art criticism),复杂多变，从好奇(+0.3)到厌恶(-0.6)的剧烈波动,艺术创作与观看的身体性，传统君子身份的现代解构,艺术观看者 + 身体感受的记录者
+tangzongzheng_poem_098,爱人,儒家,4,嫩果,现代生活的复杂纠结与古典情怀的混合 (complex modern entanglement with classical sentiment),大幅波动，从压抑(-0.7)到快感(+0.5)到无聊(-0.3)到怀旧(+0.2),现代都市生活的空虚感，性与日常生活的交织，古典文化的现代体验,现代都市生活者 + 古典情怀的承载者
+tangzongzheng_poem_099,爱人,儒家,5,烟缕翻卷舌头,日常接触中的性意识与学术讨论的并置 (sexual consciousness in mundane contact juxtaposed with academic discussion),微弱正向(+0.1)，暧昧但不强烈,日常生活中的性意识，男性友谊中的学术与情欲,敏感观察者 + 学术讨论参与者
