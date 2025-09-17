@@ -23,21 +23,21 @@
 
 ### **阶段B：风格量化模型构建**
 
-#### - [ ] 任务B.1：词频与词性分析脚本开发及报告生成
+#### - [x] 任务B.1：词频与词性分析脚本开发及报告生成
 - **核心思想**: 在定义任何指标前，首先通过开发一个自动化脚本对全部99首诗歌语料进行基础的NLP分析（分词、词性标注、词频统计），生成一份客观的、数据驱动的语料分析报告，作为所有后续工作无可争议的实证基础。
 - **交付物**:
-  - [ ] `poeject_tangzongzheng_universe/tools/corpus_analyzer.py`: 实现语料分析逻辑的Python脚本。
-  - [ ] `documentation/tangzongzheng_corpus_analysis_report.md`: 自动生成的语料分析报告，包含高频词、不同词性的高频词列表等。
+  - [x] `poeject_tangzongzheng_universe/tools/corpus_analyzer.py`: 实现语料分析逻辑的Python脚本。
+  - [x] `documentation/tangzongzheng_corpus_analysis_report.md`: 自动生成的语料分析报告，包含高频词、不同词性的高频词列表等。
 - **验收标准**:
-  - [ ] 脚本能够成功读取 `tangzongzheng-poems.json` 并生成一份结构清晰的Markdown格式报告。
-  - [ ] 报告中应至少包含Top 30总高频词、Top 20名词、Top 20形容词、Top 20动词列表。
-  - [ ] 脚本代码清晰，有必要的注释。
+  - [x] 脚本能够成功读取 `tangzongzheng-poems.json` 并生成一份结构清晰的Markdown格式报告。
+  - [x] 报告中应至少包含Top 30总高频词、Top 20名词、Top 20形容词、Top 20动词列表。
+  - [x] 脚本代码清晰，有必要的注释。
 - **风险评估**: 低风险 - 为标准化NLP任务，现有库支持良好。
 - **预期改动文件（预判）**:
   - `poeject_tangzongzheng_universe/tools/corpus_analyzer.py`
   - `documentation/tangzongzheng_corpus_analysis_report.md`
-- **实际改动文件**: [记录实际修改的文件列表]
-- **完成状态**: 🔄 进行中 / ✅ 已完成 / ❌ 遇到问题
+- **实际改动文件**: [`poeject_tangzongzheng_universe/tools/corpus_analyzer.py`, `poeject_tangzongzheng_universe/tools/user_dict.txt`, `poeject_tangzongzheng_universe/tangzongzheng_corpus_analysis_report.md`]
+- **完成状态**: ✅ 已完成
 
 #### - [ ] 任务B.2：《风格量化定义书》修订与定稿
 - **核心思想**: **严格基于B.1产出的《语料分析报告》**，重新审查并最终确定《风格量化定义书》中的8个核心指标。特别是高频感官/心理词库，必须从B.1的报告中选取，确保其数据来源的客观性。
