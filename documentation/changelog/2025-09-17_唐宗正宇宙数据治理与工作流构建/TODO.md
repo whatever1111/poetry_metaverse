@@ -233,7 +233,7 @@
   - ✅ **验证通过**: 数据完整性100%，结构一致性100%
 - **风险评估**: 极低 - 基于标准化.md文件，采用简洁设计，质量保障完备
 - **预期改动文件**:
-  - `poeject_tangzongzheng_universe/tangzongzheng-schema-design.md`
+  - `peoject_tangzongzheng_universe/tangzongzheng-schema-design.md`
   - `poeject_tangzongzheng_universe/tangzongzheng-poems.json`
 - **实际改动文件**:
   - `poeject_tangzongzheng_universe/tangzongzheng-schema-design.md`
