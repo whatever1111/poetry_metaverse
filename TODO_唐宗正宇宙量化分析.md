@@ -39,34 +39,34 @@
 - **实际改动文件**: [`poeject_tangzongzheng_universe/tools/corpus_analyzer.py`, `poeject_tangzongzheng_universe/tools/user_dict.txt`, `poeject_tangzongzheng_universe/tangzongzheng_corpus_analysis_report.md`]
 - **完成状态**: ✅ 已完成
 
-#### - [ ] 任务B.2：《风格量化定义书》修订与定稿
+#### - [x] 任务B.2：《风格量化定义书》修订与定稿
 - **核心思想**: **严格基于B.1产出的《语料分析报告》**，重新审查并最终确定《风格量化定义书》中的8个核心指标。特别是高频感官/心理词库，必须从B.1的报告中选取，确保其数据来源的客观性。
 - **交付物**:
-  - [ ] `documentation/tangzongzheng_quantitative_metrics.md`: 一份经过数据验证并最终定稿的指标定义文档。
+  - [x] `poeject_tangzongzheng_universe/tangzongzheng_quantitative_metrics.md`: 一份经过数据验证并最终定稿的指标定义文档。
 - **验收标准**:
-  - [ ] 文档中用于计算SVUR、PVUR、SDS的核心词库，必须明确注明其源自B.1的分析报告。
-  - [ ] 所有8个核心指标都有明确的、无歧义的、且经过数据验证的定义和计算方法。
+  - [x] 文档中用于计算SVUR、PVUR、SDS的核心词库，必须明确注明其源自B.1的分析报告。
+  - [x] 所有8个核心指标都有明确的、无歧义的、且经过数据验证的定义和计算方法。
 - **风险评估**: 低风险 - 主要为理论和定义工作，但有了数据基础。
 - **预期改动文件（预判）**:
   - `documentation/tangzongzheng_quantitative_metrics.md`
-- **实际改动文件**: [记录实际修改的文件列表]
-- **完成状态**: 🔄 进行中 / ✅ 已完成 / ❌ 遇到问题
+- **实际改动文件**: [`poeject_tangzongzheng_universe/tangzongzheng_quantitative_metrics.md`]
+- **完成状态**: ✅ 已完成
 
-#### - [ ] 任务B.3：“风格计算器”自动化分析脚本开发
-- **核心思想**: 开发一个自动化的Python脚本，该脚本能够读取 `tangzongzheng-poems.json`，并**根据B.2中最终定稿的《风格量化定义书》**，为每首诗计算出全部8个核心指标，生成一份“风格体检报告”。
+#### - [x] 任务B.3："风格计算器"自动化分析脚本开发
+- **核心思想**: 开发一个自动化的Python脚本，该脚本能够读取 `tangzongzheng-poems.json`，并**根据B.2中最终定稿的《风格量化定义书》**，为每首诗计算出全部8个核心指标，生成一份"风格体检报告"。
 - **交付物**:
-  - [ ] `poeject_tangzongzheng_universe/tools/quantitative_analyzer.py`: 实现量化分析逻辑的Python脚本。
-  - [ ] `poeject_tangzongzheng_universe/data/quantitative_analysis_results.csv`: 包含99首诗歌及其对应8个量化指标的最终数据文件。
+  - [x] `poeject_tangzongzheng_universe/tools/quantitative_analyzer.py`: 实现量化分析逻辑的Python脚本。
+  - [x] `poeject_tangzongzheng_universe/data/quantitative_analysis_results.csv`: 包含99首诗歌及其对应8个量化指标的最终数据文件。
 - **验收标准**:
-  - [ ] 脚本能够成功读取 `tangzongzheng-poems.json` 并为全部99首诗歌生成CSV输出。
-  - [ ] 输出的CSV文件包含99条记录，每条记录都有诗歌ID和8个完整的、格式正确的指标数据。
-  - [ ] 对脚本产出的数据进行3-5首诗歌的抽样人工核对，结果与预期一致。
+  - [x] 脚本能够成功读取 `tangzongzheng-poems.json` 并为全部99首诗歌生成CSV输出。
+  - [x] 输出的CSV文件包含99条记录，每条记录都有诗歌ID和8个完整的、格式正确的指标数据。
+  - [x] 对脚本产出的数据进行3-5首诗歌的抽样人工核对，结果与预期一致。
 - **风险评估**: 中风险 - SFI（句法碎片化指数）等自定义指标的算法实现可能需要调试。
 - **预期改动文件（预判）**:
   - `poeject_tangzongzheng_universe/tools/quantitative_analyzer.py`
   - `poeject_tangzongzheng_universe/data/quantitative_analysis_results.csv`
-- **实际改动文件**: [记录实际修改的文件列表]
-- **完成状态**: 🔄 进行中 / ✅ 已完成 / ❌ 遇到问题
+- **实际改动文件**: [`poeject_tangzongzheng_universe/tools/quantitative_analyzer.py`, `poeject_tangzongzheng_universe/data/quantitative_analysis_results.csv`]
+- **完成状态**: ✅ 已完成
 
 #### - [ ] 任务B.4：“数据驱动”的AI生成策略与提示词V3设计
 - **核心思想**: 基于B.3产出的量化数据，设计一套全新的、以达成可测量指标为目标的AI生成策略。将提示词从“风格模仿请求”重构为“量化目标指令”，让RAG知识库成为达成目标的“工具箱”而非模仿的唯一模板。
