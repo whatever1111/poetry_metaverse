@@ -1,0 +1,447 @@
+/* 
+  周与春秋 - 响应式设计系统
+  移动端优化和断点管理
+*/
+
+/* ================================
+   响应式断点定义
+================================ */
+
+/* 
+  断点系统:
+  - xs: < 480px (小屏手机)
+  - sm: 480px - 767px (大屏手机) 
+  - md: 768px - 1023px (平板)
+  - lg: 1024px - 1279px (小桌面)
+  - xl: >= 1280px (大桌面)
+*/
+
+/* ================================
+   移动端基础优化
+================================ */
+
+/* 小屏手机优化 (< 480px) */
+@media (max-width: 479px) {
+  /* 容器间距调整 */
+  .container {
+    padding: 0 var(--spacing-base);
+  }
+  
+  /* 标题字体调整 */
+  .content-title {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-base);
+  }
+  
+  .content-subtitle {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  /* 问题文本优化 */
+  .question-text {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-lg);
+    min-height: 100px;
+  }
+  
+  /* 诗歌展示优化 */
+  .poem-title {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.3;
+  }
+  
+  .poem-body {
+    font-size: var(--font-size-base);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-xl);
+    padding: 0 var(--spacing-sm);
+  }
+  
+  /* 卡片组件调整 */
+  .card-base,
+  .card-question {
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .card-project {
+    padding: var(--spacing-base);
+  }
+  
+  .card-project h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  /* 按钮调整 - 已迁移至UnoCSS的按钮不再需要响应式定义 */
+  
+  /* 网格布局调整 */
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--spacing-base);
+  }
+  
+  /* 选项网格调整 */
+  .options-grid {
+    gap: var(--spacing-base);
+  }
+}
+
+/* 超小屏设备优化 (< 320px) */
+@media (max-width: 319px) {
+  .content-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .question-text {
+    font-size: 1.25rem;
+    min-height: 80px;
+    padding: var(--spacing-sm);
+  }
+  
+  .poem-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-base);
+  }
+  
+  .poem-body {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    padding: 0;
+  }
+  
+  .card-base,
+  .card-question {
+    padding: var(--spacing-base);
+  }
+  
+  .btn-base,
+  .btn-option {
+    font-size: 0.875rem;
+    padding: 0.625rem 0.75rem;
+    min-height: 44px;
+    min-width: 100px;
+  }
+  
+  .loading-container,
+  .error-container,
+  .empty-container {
+    padding: var(--spacing-xl) var(--spacing-sm);
+  }
+}
+
+/* 大屏手机优化 (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+  .container {
+    padding: 0 var(--spacing-lg);
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-lg);
+  }
+  
+  .options-grid {
+    gap: var(--spacing-lg);
+  }
+  
+  .card-project {
+    padding: var(--spacing-lg);
+  }
+  
+  .btn-base,
+  .btn-option {
+    min-width: 140px;
+  }
+}
+
+/* 平板优化 (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 var(--spacing-xl);
+  }
+  
+  .grid-cols-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-xl);
+  }
+  
+  .card-project {
+    max-width: none;
+  }
+  
+  .question-text {
+    font-size: var(--font-size-2xl);
+    min-height: 140px;
+  }
+  
+  .options-grid {
+    gap: var(--spacing-xl);
+  }
+}
+
+/* 桌面优化 (>= 1024px) */
+@media (min-width: 1024px) {
+  .grid-cols-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-xl);
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  
+  .card-project:hover {
+    transform: translateY(-6px) scale(1.02);
+  }
+  
+  .btn-base:hover,
+  .btn-option:hover {
+    transform: translateY(-3px) scale(1.02);
+  }
+  
+  .question-text {
+    min-height: 160px;
+  }
+}
+
+/* 大桌面优化 (>= 1280px) */
+@media (min-width: 1280px) {
+  .grid-cols-1 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 1200px;
+  }
+  
+  .content-title {
+    font-size: 3rem;
+  }
+  
+  .question-text {
+    font-size: 2rem;
+    min-height: 180px;
+  }
+}
+
+/* ================================
+   触摸设备优化
+================================ */
+
+/* 触摸设备按钮尺寸优化 */
+@media (hover: none) {
+  .btn-base,
+  .btn-option {
+    min-height: 48px;
+    min-width: 120px;
+    padding: var(--spacing-base) var(--spacing-lg);
+  }
+  
+  /* 移除hover效果，使用active效果 */
+  .btn-base:hover,
+  .btn-option:hover,
+  .card-project:hover {
+    transform: none;
+    box-shadow: initial;
+  }
+  
+  .btn-base:active,
+  .btn-option:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+  
+  .card-project:active {
+    transform: scale(0.99);
+    opacity: 0.9;
+  }
+}
+
+/* ================================
+   横屏模式优化
+================================ */
+
+/* 手机横屏 */
+@media (max-height: 480px) and (orientation: landscape) {
+  .question-text {
+    min-height: 60px;
+    font-size: var(--font-size-lg);
+  }
+  
+  .card-base,
+  .card-question {
+    padding: var(--spacing-base);
+  }
+  
+  .loading-container,
+  .error-container,
+  .empty-container {
+    padding: var(--spacing-base);
+  }
+  
+  .content-title {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+/* ================================
+   高分辨率屏幕优化
+================================ */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  /* 高分辨率屏幕下的图标和文字优化 */
+  .loading-spinner {
+    border-width: 2px;
+  }
+  
+  /* 细线边框优化 */
+  .card-project {
+    border-width: 0.5px;
+  }
+}
+
+/* ================================
+   可访问性和偏好设置
+================================ */
+
+/* 用户偏好：减少动画 */
+@media (prefers-reduced-motion: reduce) {
+  .card-project,
+  .btn-base,
+  .btn-option {
+    transition: none !important;
+  }
+  
+  .card-project:hover,
+  .btn-base:hover,
+  .btn-option:hover {
+    transform: none !important;
+  }
+}
+
+/* 用户偏好：高对比度 */
+@media (prefers-contrast: high) {
+  .btn-option {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--text-primary);
+    border-width: 2px;
+  }
+  
+  .card-project {
+    border-color: var(--text-primary);
+    border-width: 2px;
+  }
+  
+  .text-secondary,
+  .text-tertiary {
+    color: var(--text-primary);
+  }
+}
+
+/* 用户偏好：深色模式 */
+@media (prefers-color-scheme: dark) {
+  /* 如果需要深色模式支持，可以在这里定义 */
+  /* 当前项目使用固定浅色主题 */
+}
+
+/* ================================
+   打印样式优化
+================================ */
+
+@media print {
+  /* 隐藏交互元素 */
+  .btn-base,
+  .btn-option,
+  .loading-container,
+  .error-container {
+    display: none !important;
+  }
+  
+  /* 优化打印布局 */
+  .card-base,
+  .card-project,
+  .card-question {
+    background: white !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+  
+  /* 文字颜色优化 */
+  .content-title,
+  .question-text,
+  .poem-title {
+    color: black !important;
+  }
+  
+  .poem-body,
+  .content-subtitle {
+    color: #333 !important;
+  }
+}
+
+/* ================================
+   网格系统辅助类
+================================ */
+
+/* 响应式网格 */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-base);
+}
+
+@media (min-width: 480px) {
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 响应式显示控制 */
+.hidden-mobile {
+  display: block;
+}
+
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .hidden-mobile {
+    display: none;
+  }
+  
+  .show-mobile {
+    display: block;
+  }
+}
+
+/* 响应式文字大小 */
+.text-responsive {
+  font-size: var(--font-size-base);
+}
+
+@media (max-width: 479px) {
+  .text-responsive {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-responsive {
+    font-size: var(--font-size-lg);
+  }
+}
