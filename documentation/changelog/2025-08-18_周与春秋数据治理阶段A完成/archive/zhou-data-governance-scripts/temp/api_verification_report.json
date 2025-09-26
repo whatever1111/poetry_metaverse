@@ -1,0 +1,48 @@
+{
+  "verified_at": "2025-08-18T09:18:15.962Z",
+  "summary": {
+    "mappings_with_meaning": 48,
+    "total_mappings": 48,
+    "poems_with_body": 48,
+    "total_poems": 48,
+    "mapping_completeness": 100,
+    "poem_completeness": 100
+  },
+  "sample_data": {
+    "mappings": [
+      {
+        "chapter": "是折枝",
+        "combination": "0000",
+        "poemTitle": "一则视野",
+        "meaning_preview": "你是一位高瞻远瞩的制度设计者。你相信，公平的制度和稳固的物质基础是团队成功的基石。你严于律己，相信领导的示范作用，并以仁义作为衡量一切的最终标准。你的提问格局，决定了你能达到的高度。"
+      },
+      {
+        "chapter": "是折枝",
+        "combination": "0001",
+        "poemTitle": "一个例子",
+        "meaning_preview": "你致力于构建公平的制度和坚实的物质基础。你相信领导者的率先垂范，但你也看重实际效果。你正在学习如何平衡理想与现实，在追求仁义的同时，确保团队能够获得实在的利益。"
+      }
+    ],
+    "poems": [
+      {
+        "title": "一个主意",
+        "body_type": "object",
+        "has_quote_text": true,
+        "has_quote_citation": true,
+        "has_main_text": true
+      },
+      {
+        "title": "一个例子",
+        "body_type": "object",
+        "has_quote_text": true,
+        "has_quote_citation": true,
+        "has_main_text": true
+      }
+    ]
+  },
+  "verification_result": {
+    "meaning_data_available": true,
+    "json_body_format_available": true,
+    "all_data_verified": true
+  }
+}

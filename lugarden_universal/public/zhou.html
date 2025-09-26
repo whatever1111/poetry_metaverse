@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周与春秋 | 陆家花园</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Noto Serif SC', serif; 
+            background-color: #f3f4f6; 
+            transition: background-color 0.5s ease; 
+            line-height: 1.6;
+        }
+        
+        /* 全局段落间距优化 */
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        /* 增强的fadeIn动画，结合轻微缩放效果 */
+        @keyframes fadeIn { 
+            from { 
+                opacity: 0; 
+                transform: scale(0.95);
+            } 
+            to { 
+                opacity: 1; 
+                transform: scale(1);
+            } 
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .loader { 
+            border: 2px solid #f3f3f3; 
+            border-top: 2px solid #60a5fa; 
+            border-radius: 50%; 
+            width: 16px; 
+            height: 16px; 
+            animation: spin 1s linear infinite; 
+            display: inline-block; 
+            margin-left: 8px; 
+        }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+
+        /* 优化的加载状态样式 */
+        .loading-container {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #60a5fa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        .loading-text {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        
+        .loading-subtitle {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        /* 诗意错误状态样式 */
+        .error-container {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+            margin: 1rem;
+            border: 1px solid #f59e0b;
+        }
+        
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+        
+        .error-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-message {
+            font-size: 1rem;
+            color: #a16207;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .error-action {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        
+        .error-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+        }
+
+        /* 空数据状态样式 */
+        .empty-container {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 12px;
+            margin: 1rem;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+        
+        .empty-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-message {
+            font-size: 1rem;
+            color: #0369a1;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .card-base {
+            background-color: #f5f1e8;
+            background-image: radial-gradient(ellipse at top left, rgba(228, 222, 210, 0.6) 0%, transparent 70%),
+                              repeating-linear-gradient(88deg, transparent, transparent 40px, rgba(188, 177, 158, 0.07) 40px, rgba(188, 177, 158, 0.07) 41px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.08);
+            border-radius: 12px;
+        }
+        /* 统一的动画时间系统 */
+        /* 主要过渡动画：0.4s */
+        .animate-fadeInUp { 
+            animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; 
+            opacity: 0; 
+        }
+        
+        /* 动画状态控制：防止重复触发 */
+        .animate-fadeInUp.animation-played {
+            animation: none;
+            opacity: 1;
+        }
+        
+        .text-change-animation {
+            animation: textFadeInOut 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* 微交互动画：0.2s */
+        .option-button { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            /* 确保按钮有足够的点击区域 */
+            min-height: 44px;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* 添加高透明毛玻璃效果 */
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: clamp(1rem, 2.5vw, 1.125rem);
+            color: #1f2937;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            padding: 1rem 1.5rem;
+        }
+        
+        .option-button:hover { 
+            transform: translateY(-2px) scale(1.02); 
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(188, 177, 158, 0.8);
+        }
+        
+        .option-button:active { 
+            transform: translateY(0) scale(0.98); 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(188, 177, 158, 1);
+        }
+        
+        .result-btn { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #f0e8d9; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4); 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15); 
+            /* 确保结果按钮有足够的点击区域 */
+            min-height: 44px;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .result-btn:hover { 
+            transform: translateY(-2px); 
+        }
+        #interpret-button { 
+            background: linear-gradient(145deg, #789a9a, #527a7a); 
+            border: 1px solid #4a6869; 
+        }
+        #listen-button { 
+            background: linear-gradient(145deg, #9d6b53, #804d39); 
+            border: 1px solid #6a3e2f; 
+        }
+        #poet-interpret-button { 
+            background: linear-gradient(145deg, #8b5a96, #6a4c7a); 
+            border: 1px solid #5a3d6a; 
+        }
+        #restart-button { 
+            background: linear-gradient(145deg, #6c757d, #495057); 
+            border: 1px solid #343a40; 
+        }
+        
+        .continue-btn { 
+            background: linear-gradient(145deg, #2d4a4a, #1a2e2e); 
+            border: 1px solid #1a2e2e; 
+            /* 基于文字大小动态计算按钮尺寸 */
+            height: 1.5em; /* 高度绑定文字大小 */
+            width: 2.25em; /* 宽度是高度的1.5倍 */
+            border-radius: 0.75em; /* 圆角为高度的一半 */
+            color: #f0e8d9;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15);
+        }
+        .continue-btn:hover { 
+            background: linear-gradient(145deg, #1a2e2e, #0f1a1a); 
+            transform: translateY(-2px);
+        }
+        
+        .continue-btn-icon {
+            width: 0.75em;
+            height: 0.75em;
+        }
+        
+        /* 文本变化动画 - 只保留缩放效果，移除淡入淡出 */
+        @keyframes textChangeScale {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+        
+        .text-change-animation {
+            animation: textChangeScale 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 优化的卡片动画 */
+        .project-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 优化的按钮动画 */
+        .option-button { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            /* 确保按钮有足够的点击区域 */
+            min-height: 44px;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* 添加高透明毛玻璃效果 */
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: clamp(1rem, 2.5vw, 1.125rem);
+            color: #1f2937;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            padding: 1rem 1.5rem;
+        }
+        .option-button:hover { 
+            transform: translateY(-2px) scale(1.02); 
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(188, 177, 158, 0.8);
+        }
+        
+        .option-button:active { 
+            transform: translateY(0) scale(0.98); 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(188, 177, 158, 1);
+        }
+
+        /* 宇宙页面头部样式 - Low Poly 风格（增强色彩深度与光影） */
+        .universe-header {
+            background: 
+                linear-gradient(135deg, #2d3748 0%, #4a5568 15%, #718096 30%, transparent 30%),
+                linear-gradient(225deg, #1a202c 0%, #2d3748 20%, #4a5568 40%, transparent 40%),
+                linear-gradient(45deg, #4a5568 0%, #718096 25%, #a0aec0 50%, transparent 50%),
+                linear-gradient(315deg, #718096 0%, #a0aec0 30%, #cbd5e0 60%, transparent 60%),
+                linear-gradient(180deg, #a0aec0 0%, #cbd5e0 40%, #e2e8f0 70%, #f1f5f9 85%, #f3f4f6 100%);
+            background-size: 100% 100%;
+            color: white;
+            position: relative;
+            border-bottom: none;
+        }
+        
+        /* 完全移除分割线，使用渐变过渡到内容区域 */
+        .universe-header::after {
+            display: none;
+        }
+        
+        /* 移动端专用设计系统 */
+        /* 移动端字体大小规范 */
+        .mobile-title {
+            font-size: clamp(1.5rem, 4.5vw, 2rem);
+            line-height: 1.3;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .mobile-subtitle {
+            font-size: clamp(1.125rem, 3.5vw, 1.25rem);
+            line-height: 1.5;
+            color: #374151;
+            margin-bottom: 1.5rem;
+        }
+        
+        .mobile-body {
+            font-size: clamp(1rem, 3vw, 1.125rem);
+            line-height: 1.7;
+            color: #4b5563;
+        }
+        
+        /* 移动端间距规范 */
+        .mobile-section {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+        }
+        
+        .mobile-content {
+            margin-bottom: 1.25rem;
+        }
+        
+        .mobile-poem {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            line-height: 1.8;
+            font-size: clamp(1rem, 3vw, 1.125rem);
+        }
+        
+        /* 移动端按钮规范 */
+        .mobile-button {
+            min-height: 48px;
+            min-width: 120px;
+            font-size: clamp(1rem, 3vw, 1.125rem);
+            padding: 0.75rem 1rem;
+            line-height: 1.5;
+        }
+        
+
+
+        /* 改善内容层次结构 */
+        .content-section {
+            margin-bottom: 2rem;
+        }
+        
+        .content-title {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+        }
+        
+        .content-subtitle {
+            font-size: clamp(1.125rem, 3vw, 1.25rem);
+            color: #374151;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .question-container {
+            background-color: #f5f1e8;
+            background-image: radial-gradient(ellipse at top left, rgba(228, 222, 210, 0.6) 0%, transparent 70%),
+                              repeating-linear-gradient(88deg, transparent, transparent 40px, rgba(188, 177, 158, 0.07) 40px, rgba(188, 177, 158, 0.07) 41px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        
+        .question-text {
+            font-size: clamp(1.375rem, 4vw, 1.75rem);
+            font-weight: 600;
+            color: #1f2937;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 480px) {
+            .options-grid {
+                gap: 1.5rem;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .options-grid {
+                gap: 2rem;
+            }
+        }
+
+        /* 移动端专用设计系统 - 完整版 */
+        @media (max-width: 480px) {
+            /* 页面头部优化 */
+            .universe-header {
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .universe-header h1 {
+                font-size: clamp(1.5rem, 4.5vw, 1.75rem) !important;
+                line-height: 1.3;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* 页面底部功能说明优化 */
+            footer p {
+                font-size: clamp(0.875rem, 2.5vw, 1rem) !important;
+                line-height: 1.4;
+                opacity: 0.6;
+            }
+            
+            /* 内容标题优化 */
+            .content-title {
+                font-size: clamp(1.5rem, 4.5vw, 1.75rem);
+                margin-bottom: 1rem;
+            }
+            
+            .content-subtitle {
+                font-size: clamp(1.125rem, 3.5vw, 1.25rem);
+                margin-bottom: 1.5rem;
+            }
+            
+            /* 问题文本优化 */
+            .question-text {
+                font-size: clamp(1.25rem, 4vw, 1.5rem);
+                margin-bottom: 1.5rem;
+                min-height: 100px;
+            }
+            
+            /* 诗歌展示页面优化 */
+            #poem-title {
+                font-size: clamp(1.5rem, 4.5vw, 1.75rem) !important;
+                line-height: 1.3;
+                margin-bottom: 2rem !important;
+                font-weight: 700;
+            }
+            
+            #poem-body {
+                font-size: clamp(1rem, 3vw, 1.125rem) !important;
+                line-height: 1.8;
+                margin-bottom: 2rem;
+                padding: 0 0.5rem;
+            }
+            
+            /* 容器优化 */
+            .question-container {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            #result-screen .card-base {
+                padding: 1.5rem !important;
+            }
+            
+            .options-grid {
+                gap: 1rem;
+            }
+            
+            .option-button {
+                font-size: clamp(1rem, 3vw, 1.125rem);
+                padding: 0.75rem 1rem;
+                min-height: 48px;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            /* 页面头部优化 */
+            .universe-header {
+                margin-bottom: 0.25rem !important;
+            }
+            
+            .universe-header h1 {
+                font-size: 1.5rem !important;
+                margin-bottom: 0.375rem;
+            }
+            
+            /* 页面底部功能说明优化 */
+            footer p {
+                font-size: 0.875rem !important;
+                opacity: 0.5;
+            }
+            
+            /* 内容标题优化 */
+            .content-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .content-subtitle {
+                font-size: 1.125rem;
+                margin-bottom: 1.25rem;
+            }
+            
+            /* 问题文本优化 */
+            .question-text {
+                font-size: 1.25rem;
+                margin-bottom: 1.25rem;
+                min-height: 80px;
+            }
+            
+            /* 诗歌展示页面优化 */
+            #poem-title {
+                font-size: 1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            #poem-body {
+                font-size: 1rem !important;
+                margin-bottom: 1.5rem;
+                padding: 0 0.25rem;
+            }
+            
+            /* 容器优化 */
+            .question-container {
+                padding: 1.25rem;
+                margin-bottom: 1.25rem;
+            }
+            
+            #result-screen .card-base {
+                padding: 1.25rem !important;
+            }
+            
+            .options-grid {
+                gap: 0.75rem;
+            }
+            
+            .option-button {
+                font-size: 1rem;
+                padding: 0.625rem 0.875rem;
+                min-height: 44px;
+            }
+        }
+
+        /* 页面切换过渡动画 - 水平滑动结合fadeIn效果 */
+        .page-transition {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .page-enter {
+            opacity: 0;
+            transform: translateX(30px) translateY(10px);
+        }
+        
+        .page-enter-active {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .page-exit {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+        
+        .page-exit-active {
+            opacity: 0;
+            transform: translateX(-30px) translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 古典回响页面移动端优化 */
+        @media (max-width: 480px) {
+            #classical-echo-screen .card-base {
+                padding: 1.5rem;
+            }
+            
+            #classical-echo-screen h2 {
+                font-size: 1.75rem;
+            }
+            
+            #classical-echo-screen p {
+                font-size: 1rem;
+            }
+            
+            #classical-content {
+                font-size: 1rem;
+                padding: 1rem;
+                min-height: 150px;
+            }
+            
+
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- 宇宙页面头部 -->
+    <header class="universe-header py-6 mb-4">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">周与春秋</h1>
+                </div>
+                <a href="/index.html" class="text-white hover:text-gray-300 transition-colors">
+                    ← 返回宇宙门户
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容容器 -->
+    <div id="app-container" class="w-full max-w-2xl mx-auto p-4 md:p-8">
+        
+        <!-- 主项目选择屏幕 -->
+        <div id="main-project-selection-screen" class="content-section page-transition">
+            <h2 class="content-title text-center animate-fadeInUp">选择一段旅程</h2>
+            <p class="content-subtitle text-center animate-fadeInUp" style="animation-delay: 0.1s;">不选我也不强求</p>
+            <div id="main-project-list" class="grid grid-cols-1 gap-6"></div>
+            <div id="loading-projects-message" class="loading-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">正在加载诗歌宇宙...</div>
+                <div class="loading-subtitle">别急，别急，急也没用</div>
+            </div>
+        </div>
+
+        <!-- 子项目选择屏幕 -->
+        <div id="sub-project-selection-screen" class="hidden content-section page-transition">
+            <button id="back-to-main-selection-button" class="text-sm text-gray-500 hover:text-gray-800 transition-colors mb-4">&larr; 返回</button>
+            <h2 id="main-project-title" class="content-title text-center"></h2>
+            <p id="main-project-description" class="content-subtitle text-center"></p>
+            <div id="sub-project-list" class="grid grid-cols-1 gap-6"></div>
+        </div>
+
+        <!-- 问题屏幕 -->
+        <div id="question-screen" class="hidden content-section page-transition">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="quiz-project-title" class="text-2xl font-bold text-gray-800"></h2>
+                <button id="back-to-sub-selection-button" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">返回篇章选择</button>
+            </div>
+            <div id="question-container" class="question-container transition-opacity duration-300 ease-in-out">
+                <p id="question-text" class="question-text"></p>
+                <div class="options-grid">
+                    <button id="option-a-button" class="option-button"></button>
+                    <button id="option-b-button" class="option-button"></button>
+                </div>
+            </div>
+            <p class="text-center mt-4 text-gray-400 text-sm">问题 <span id="question-counter">1 / 4</span></p>
+        </div>
+
+        <!-- 古典回响屏幕 -->
+        <div id="classical-echo-screen" class="hidden content-section page-transition">
+            <div class="card-base p-8 md:p-12 rounded-lg">
+                <div class="text-center animate-fadeInUp">
+                    <h2 class="text-xl md:text-2xl font-bold mb-6 text-gray-800">你选择的道路，有古人智慧的回响</h2>
+                </div>
+                
+                <!-- 古典内容展示区域 -->
+                <div class="mt-12 mb-12 animate-fadeInUp" style="animation-delay: 0.1s;">
+                    <div id="classical-content" class="text-left text-lg leading-loose whitespace-pre-wrap text-gray-700 backdrop-blur-md bg-white/40 p-6 rounded-lg border border-white/30 shadow-lg min-h-[200px]">
+                        <!-- 古典内容将在这里动态填充 -->
+                    </div>
+                </div>
+                
+                <!-- 分离式按钮区域 -->
+                <div class="flex items-center justify-center gap-2 animate-fadeInUp" style="animation-delay: 0.2s;">
+                    <!-- 文字部分：居中显示 -->
+                    <span class="text-center text-gray-600 text-lg">看看你的同行者吴任几是怎么说的</span>
+                    <!-- 箭头按钮：紧跟文字 -->
+                    <button id="continue-to-poem-button" class="continue-btn flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                        <svg class="continue-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果屏幕 -->
+        <div id="result-screen" class="hidden page-transition">
+            <div class="card-base p-8 md:p-12 rounded-lg">
+                <div class="text-center animate-fadeInUp">
+                    <h2 id="poem-title" class="text-3xl md:text-4xl font-bold mb-6 text-gray-800"></h2>
+                    <div id="poem-body" class="text-left text-lg leading-loose whitespace-pre-wrap text-gray-700"></div>
+                </div>
+                <div class="mt-10 flex flex-col justify-center items-center gap-6 animate-fadeInUp" style="animation-delay: 0.1s;">
+                    <!-- 第一排：解诗和读诗按钮 -->
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
+                        <button id="interpret-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full"></button>
+                        <button id="listen-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full"></button>
+                    </div>
+                    <!-- 第二排：最好不要点和返回按钮 -->
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
+                        <button id="poet-interpret-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full">最好不要点</button>
+                        <button id="restart-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full">返回篇章选择</button>
+                    </div>
+                </div>
+                <div id="interpretation-container" class="hidden mt-8 pt-6 border-t border-gray-200/50 animate-fadeIn" style="animation-delay: 0.1s;">
+                    <h3 id="interpretation-author" class="text-2xl font-bold text-center mb-4 text-gray-800"></h3>
+                    <div id="interpretation-text" class="text-left text-base leading-relaxed backdrop-blur-md bg-white/40 p-6 rounded-lg text-gray-700 border border-white/30 shadow-lg"></div>
+                </div>
+                <audio id="audio-player" class="hidden"></audio>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面底部功能说明 -->
+    <footer class="mt-16 py-8 text-center">
+        <p class="text-sm text-gray-400 opacity-70">诗歌问答宇宙</p>
+    </footer>
+
+    <!-- 引入周与春秋宇宙专用脚本 -->
+    <script src="assets/zhou.js"></script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>陆家花园 | 你的诗歌在场</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Serif SC', serif; background-color: #f3f4f6; transition: background-color 0.5s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fadeInUp { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
+        .loader { border: 2px solid #f3f3f3; border-top: 2px solid #60a5fa; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; margin-left: 8px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .card-base {
+            background-color: #f5f1e8;
+            background-image: radial-gradient(ellipse at top left, rgba(228, 222, 210, 0.6) 0%, transparent 70%),
+                              repeating-linear-gradient(88deg, transparent, transparent 40px, rgba(188, 177, 158, 0.07) 40px, rgba(188, 177, 158, 0.07) 41px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.08);
+            border-radius: 12px;
+        }
+        .option-button { transition: all 0.2s ease-in-out; }
+        .option-button:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
+        .result-btn { color: #f0e8d9; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15); }
+        .result-btn:hover { transform: translateY(-2px); }
+        #interpret-button { background: linear-gradient(145deg, #789a9a, #527a7a); border: 1px solid #4a6869; }
+        #listen-button { background: linear-gradient(145deg, #9d6b53, #804d39); border: 1px solid #6a3e2f; }
+        #poet-interpret-button { background: linear-gradient(145deg, #8b5a96, #6a4c7a); border: 1px solid #5a3d6a; }
+        #restart-button { background: linear-gradient(145deg, #6c757d, #495057); border: 1px solid #343a40; }
+        
+        /* 文本变化动画 */
+        @keyframes textFadeInOut {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .text-change-animation {
+            animation: textFadeInOut 0.6s ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto p-4 md:p-8">
+        
+        <div id="main-project-selection-screen">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-center text-gray-800 animate-fadeInUp">陆家花园</h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-8 text-center animate-fadeInUp" style="animation-delay: 0.1s;">选择一段旅程，开始探索</p>
+            <div id="main-project-list" class="grid grid-cols-1 gap-6"></div>
+            <p id="loading-projects-message" class="text-center text-gray-500 mt-8">正在加载项目列表...</p>
+        </div>
+
+        <div id="sub-project-selection-screen" class="hidden">
+            <button id="back-to-main-selection-button" class="text-sm text-gray-500 hover:text-gray-800 transition-colors mb-4">&larr; 返回</button>
+            <h2 id="main-project-title" class="text-3xl font-bold mb-2 text-center"></h2>
+            <p id="main-project-description" class="text-lg text-gray-600 mb-8 text-center"></p>
+            <div id="sub-project-list" class="grid grid-cols-1 gap-6"></div>
+        </div>
+
+        <div id="question-screen" class="hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="quiz-project-title" class="text-2xl font-bold text-gray-800"></h2>
+                <button id="back-to-sub-selection-button" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">返回篇章选择</button>
+            </div>
+            <div id="question-container" class="card-base p-8 rounded-lg transition-opacity duration-300 ease-in-out">
+                <p id="question-text" class="text-2xl md:text-3xl font-semibold mb-8 text-center min-h-[100px]"></p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button id="option-a-button" class="option-button py-4 px-6 rounded-lg text-lg"></button>
+                    <button id="option-b-button" class="option-button py-4 px-6 rounded-lg text-lg"></button>
+                </div>
+            </div>
+            <p class="text-center mt-4 text-gray-400 text-sm">问题 <span id="question-counter">1 / 4</span></p>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="card-base p-8 md:p-12 rounded-lg">
+                <div class="text-center animate-fadeInUp">
+                    <h2 id="poem-title" class="text-3xl md:text-4xl font-bold mb-6 text-gray-800"></h2>
+                    <div id="poem-body" class="text-left text-lg leading-loose whitespace-pre-wrap text-gray-700"></div>
+                </div>
+                <div class="mt-10 flex flex-col justify-center items-center gap-4 animate-fadeInUp" style="animation-delay: 0.1s;">
+                    <!-- 第一排：解诗和读诗按钮 -->
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <button id="interpret-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full"></button>
+                        <button id="listen-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full"></button>
+                    </div>
+                    <!-- 第二排：最好不要点和返回按钮 -->
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <button id="poet-interpret-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full">最好不要点</button>
+                        <button id="restart-button" class="result-btn w-full sm:w-48 flex justify-center items-center font-bold py-3 px-6 rounded-full">返回篇章选择</button>
+                    </div>
+                </div>
+                <div id="interpretation-container" class="hidden mt-8 pt-6 border-t border-gray-200 animate-fadeInUp" style="animation-delay: 0.2s;">
+                    <h3 id="interpretation-author" class="text-2xl font-bold text-center mb-4 text-gray-800"></h3>
+                    <div id="interpretation-text" class="text-left text-base leading-relaxed bg-gray-50 p-6 rounded-lg text-gray-600"></div>
+                </div>
+                <audio id="audio-player" class="hidden"></audio>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const state = {
+        projects: [],
+        poems: {},
+        questions: {},
+        mappings: {},
+        currentMainProject: null,
+        currentChapterName: null,
+        currentQuestionIndex: 0,
+        userAnswers: [],
+        userAnswerMeanings: [],
+        poetButtonClicked: false, // 跟踪"最好不要点"按钮是否被点击
+        poetButtonClickCount: 0, // 跟踪点击次数
+    };
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => document.querySelectorAll(selector);
+    
+    // 根据点击次数获取按钮文本
+    function getPoetButtonText(clickCount) {
+        const texts = [
+            '最好不要点',
+            '哎，还是点了……',
+            '点都点了，看吧',
+            '别点了，别点了',
+            '点吧，点吧……'
+        ];
+        return texts[Math.min(clickCount, texts.length - 1)];
+    }
+
+    const screens = {
+        main: $('#main-project-selection-screen'),
+        sub: $('#sub-project-selection-screen'),
+        quiz: $('#question-screen'),
+        result: $('#result-screen'),
+    };
+    
+    function showScreen(screenName) {
+        Object.values(screens).forEach(s => s.classList.add('hidden'));
+        screens[screenName].classList.remove('hidden');
+    }
+
+    async function initGarden() {
+        showScreen('main');
+        try {
+            const [projectsData, mappingsData, questionsData, poemsData, poemArchetypesData] = await Promise.all([
+                fetch('/api/projects').then(res => res.json()),
+                fetch('/api/mappings').then(res => res.json()),
+                fetch('/api/questions').then(res => res.json()),
+                fetch('/api/poems-all').then(res => res.json()),
+                fetch('/api/poem-archetypes').then(res => res.json())
+            ]);
+
+            state.projects = projectsData;
+            state.mappings = mappingsData.units;
+            state.questions = questionsData;
+            state.poems = poemsData;
+            state.poemArchetypes = poemArchetypesData.poems;
+            
+            renderMainProjects();
+            $('#loading-projects-message').classList.add('hidden');
+
+        } catch (error) {
+            console.error("加载花园数据失败:", error);
+            $('#loading-projects-message').textContent = '加载项目失败，请确认后院服务已启动。';
+        }
+    }
+
+    function renderMainProjects() {
+        showScreen('main');
+        const mainProjectList = $('#main-project-list');
+        mainProjectList.innerHTML = '';
+        
+        state.projects.forEach((p, index) => {
+            mainProjectList.innerHTML += `
+                <div class="project-card bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer animate-fadeInUp" style="animation-delay: ${0.1 * index}s;" data-project-id="${p.id}">
+                    <h2 class="text-2xl font-bold mb-2 text-gray-800">${p.name}</h2>
+                    <div class="text-gray-600 mb-4 whitespace-pre-line">${p.description}</div>
+                    <div class="flex justify-between items-center mt-4">
+                        <p class="text-sm text-gray-500">导游: ${p.poet || '未指定'}</p>
+                        <button class="enter-main-project-btn bg-gray-800 text-white font-bold py-2 px-6 rounded-full hover:bg-gray-700">进入</button>
+                    </div>
+                </div>`;
+        });
+    }
+
+    function renderChapterSelection(projectId) {
+        state.currentMainProject = state.projects.find(p => p.id === projectId);
+        if (!state.currentMainProject) return;
+
+        showScreen('sub');
+        const p = state.currentMainProject;
+        $('#main-project-title').textContent = p.name;
+        $('#main-project-description').innerHTML = p.description.replace(/\n/g, '<br>');
+        const subProjectList = $('#sub-project-list');
+        subProjectList.innerHTML = '';
+        p.subProjects.forEach((sp, index) => {
+            subProjectList.innerHTML += `
+                <div class="project-card bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer animate-fadeInUp" style="animation-delay: ${0.1 * index}s;" data-chapter-name="${sp.name}">
+                    <h3 class="text-xl font-bold mb-2">${sp.name}</h3>
+                    <div class="text-gray-500 whitespace-pre-line">${sp.description}</div>
+                </div>
+            `;
+        });
+    }
+
+    function startQuiz(chapterName) {
+        state.currentChapterName = chapterName;
+        state.currentQuestionIndex = 0;
+        state.userAnswers = [];
+        state.userAnswerMeanings = [];
+        
+        $('#quiz-project-title').textContent = state.currentChapterName;
+        
+        $('#question-container').style.opacity = 1;
+
+        renderCurrentQuestion();
+        showScreen('quiz');
+    }
+
+    function renderCurrentQuestion() {
+        const chapterQuestions = state.questions[state.currentChapterName];
+        if (!chapterQuestions || chapterQuestions.length <= state.currentQuestionIndex) {
+            showResult();
+            return;
+        }
+        const q = chapterQuestions[state.currentQuestionIndex];
+        $('#question-text').textContent = q.question;
+        $('#option-a-button').textContent = q.options.A;
+        $('#option-b-button').textContent = q.options.B;
+        $('#question-counter').textContent = `${state.currentQuestionIndex + 1} / ${chapterQuestions.length}`;
+    }
+
+    function handleAnswer(choice) {
+        const q = state.questions[state.currentChapterName][state.currentQuestionIndex];
+        state.userAnswers.push(choice);
+        state.userAnswerMeanings.push(q.meaning[choice]);
+        
+        $('#question-container').style.opacity = 0;
+        setTimeout(() => {
+            state.currentQuestionIndex++;
+            if (state.currentQuestionIndex < state.questions[state.currentChapterName].length) {
+                renderCurrentQuestion();
+                $('#question-container').style.opacity = 1;
+            } else {
+                showResult();
+            }
+        }, 400);
+    }
+
+    function showResult() {
+        // 重置"最好不要点"按钮状态（每次显示新结果时）
+        state.poetButtonClicked = false;
+        state.poetButtonClickCount = 0;
+        
+        const answerKeyMap = { 'A': '1', 'B': '0' };
+        const resultKey = state.userAnswers.map(ans => answerKeyMap[ans]).join('');
+        
+        const finalPoemTitleWithQuotes = state.mappings[state.currentChapterName][resultKey];
+        const finalPoemTitle = finalPoemTitleWithQuotes.replace(/[《》]/g, '');
+        const finalPoemBody = state.poems[finalPoemTitle];
+
+        if (finalPoemBody) {
+            $('#poem-title').textContent = finalPoemTitleWithQuotes;
+            $('#poem-body').textContent = finalPoemBody;
+        } else {
+            $('#poem-title').textContent = "未知的诗篇";
+            $('#poem-body').textContent = `朋友，你的选择之路独辟蹊径，连我的诗库都未曾预见这首名为《${finalPoemTitle}》的诗。`;
+        }
+        
+        $('#interpretation-container').classList.add('hidden');
+        $$('.result-btn').forEach(btn => btn.disabled = false);
+        const aiPoetName = '陆家明';
+        $('#interpret-button').innerHTML = `听${aiPoetName}为你解诗`;
+        $('#listen-button').innerHTML = `听${aiPoetName}为你读诗`;
+        $('#interpretation-author').textContent = aiPoetName;
+
+        // 检查当前诗歌是否有吴任几的解诗内容，并根据状态显示不同文本
+        const poemArchetype = state.poemArchetypes.find(p => p.title === finalPoemTitle);
+        const buttonText = getPoetButtonText(state.poetButtonClickCount);
+        
+        if (poemArchetype && poemArchetype.poet_explanation) {
+            // 有解诗内容，启用按钮
+            $('#poet-interpret-button').disabled = false;
+            $('#poet-interpret-button').innerHTML = buttonText;
+        } else {
+            // 没有解诗内容，仍然启用按钮（利用逆反心理）
+            $('#poet-interpret-button').disabled = false;
+            $('#poet-interpret-button').innerHTML = buttonText;
+        }
+
+        showScreen('result');
+    }
+
+    async function handleInterpretation() {
+        const aiPoetName = '陆家明';
+        const btn = $('#interpret-button');
+        btn.disabled = true;
+        btn.innerHTML = `朋友，稍等，${aiPoetName}正在构思... <div class="loader"></div>`;
+        
+        // 重置"最好不要点"按钮状态
+        state.poetButtonClicked = false;
+        state.poetButtonClickCount = 0;
+
+        const userState = state.userAnswerMeanings.join('，');
+        const prompt = `你现在是AI诗人“陆家明”。你的语言风格充满诗意、温柔且富有哲思。一位朋友刚刚通过一个心理测试，得到了下面的诗歌，而他当下的心境是：${userState}。\n\n他得到的诗歌是：\n标题：${$('#poem-title').textContent}\n内容：\n${$('#poem-body').textContent}\n\n请你以陆家明的身份，为他专门解读这首诗...`;
+
+        try {
+            const response = await fetch(`/api/interpret`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt })
+            });
+            if (!response.ok) throw new Error('API请求失败');
+            const result = await response.json();
+            if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                $('#interpretation-text').textContent = result.candidates[0].content.parts[0].text;
+                $('#interpretation-container').classList.remove('hidden');
+            } else { throw new Error("返回数据格式不正确"); }
+        } catch (error) {
+            $('#interpretation-text').textContent = `朋友，${aiPoetName}的思绪似乎被云雾遮蔽，请稍后让我再试一次。`;
+            $('#interpretation-container').classList.remove('hidden');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `听${aiPoetName}为你解诗`;
+        }
+    }
+
+    async function handlePoetInterpretation() {
+        const btn = $('#poet-interpret-button');
+        
+        try {
+            // 获取当前诗歌标题（去掉书名号）
+            const currentPoemTitle = $('#poem-title').textContent.replace(/[《》]/g, '');
+            
+            // 在诗歌原型数据中查找对应的解诗内容
+            const poemArchetype = state.poemArchetypes.find(p => p.title === currentPoemTitle);
+            
+            if (poemArchetype && poemArchetype.poet_explanation) {
+                // 更新作者署名
+                $('#interpretation-author').textContent = '吴任几';
+                // 显示解诗内容
+                $('#interpretation-text').textContent = poemArchetype.poet_explanation;
+                // 显示容器
+                $('#interpretation-container').classList.remove('hidden');
+            } else {
+                // 没有找到解诗内容
+                $('#interpretation-text').textContent = '恭喜你，虽然你不听劝，但诗人听劝，没给这首诗也提供官方解读';
+                $('#interpretation-container').classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error('获取诗人解读失败:', error);
+            $('#interpretation-text').textContent = '抱歉，获取诗人解读时出现了问题。';
+            $('#interpretation-container').classList.remove('hidden');
+        } finally {
+            // 增加点击次数
+            state.poetButtonClickCount++;
+            state.poetButtonClicked = true;
+            
+            // 直接添加动画效果和状态更新
+            btn.classList.add('text-change-animation');
+            
+            // 延迟更新文本（在动画中间点）
+            setTimeout(() => {
+                btn.innerHTML = getPoetButtonText(state.poetButtonClickCount);
+            }, 300); // 动画的一半时间
+            
+            // 动画结束后移除类
+            setTimeout(() => {
+                btn.classList.remove('text-change-animation');
+            }, 600);
+        }
+    }
+
+    async function handleListen() {
+        const aiPoetName = '陆家明';
+        const btn = $('#listen-button');
+        btn.disabled = true;
+        btn.innerHTML = `朋友，稍等，${aiPoetName}正在酝酿... <div class="loader"></div>`;
+        
+        // 重置"最好不要点"按钮状态
+        state.poetButtonClicked = false;
+        state.poetButtonClickCount = 0;
+        const textToRead = `${$('#poem-title').textContent}\n\n${$('#poem-body').textContent}`;
+        try {
+            const response = await fetch(`/api/listen`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: textToRead })
+            });
+            if (!response.ok) throw new Error('API请求失败');
+            const result = await response.json();
+            if (result.audioContent) {
+                const audioSrc = `data:audio/mp3;base64,${result.audioContent}`;
+                $('#audio-player').src = audioSrc;
+                $('#audio-player').play();
+            } else { throw new Error("未找到有效音频"); }
+        } catch (error) {
+            alert(`朋友，${aiPoetName}的嗓音似乎被风吹散了。`);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `听${aiPoetName}为你读诗`;
+        }
+    }
+
+    // --- Event Listeners ---
+    document.addEventListener('DOMContentLoaded', initGarden);
+    
+    $('#main-project-list').addEventListener('click', e => {
+        const card = e.target.closest('.project-card');
+        if (card) {
+            const projectId = card.dataset.projectId;
+            if (projectId) {
+                renderChapterSelection(projectId);
+            }
+        }
+    });
+
+    $('#sub-project-list').addEventListener('click', e => {
+        const card = e.target.closest('.project-card');
+        if (card) startQuiz(card.dataset.chapterName);
+    });
+    
+    $('#back-to-main-selection-button').addEventListener('click', () => showScreen('main'));
+    $('#back-to-sub-selection-button').addEventListener('click', () => {
+        renderChapterSelection(state.currentMainProject.id);
+    });
+    $('#restart-button').addEventListener('click', () => {
+        renderChapterSelection(state.currentMainProject.id);
+    });
+    
+    $('#option-a-button').addEventListener('click', () => handleAnswer('A'));
+    $('#option-b-button').addEventListener('click', () => handleAnswer('B'));
+    $('#interpret-button').addEventListener('click', handleInterpretation);
+    $('#listen-button').addEventListener('click', handleListen);
+    $('#poet-interpret-button').addEventListener('click', handlePoetInterpretation);
+    </script>
+</body>
+</html>

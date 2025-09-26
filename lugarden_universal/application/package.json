@@ -1,0 +1,43 @@
+{
+  "name": "lugarden-universal",
+  "description": "旨在通过数字技术重新诠释和体验诗歌",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --name init",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset --force",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
+    "test:clean-db": "npm run test && git restore --worktree -- data/lugarden.db"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.13.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "express-session": "^1.18.2",
+    "helmet": "^6.1.5",
+    "node-fetch": "^2.7.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "prisma": "^6.13.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "keywords": [
+    "poetry",
+    "management",
+    "quiz",
+    "lujia-garden"
+  ],
+  "author": "陆家明 & 朋友",
+  "license": "MIT",
+  "displayName": "陆家花园诗歌元宇宙"
+}

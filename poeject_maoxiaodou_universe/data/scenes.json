@@ -1,0 +1,272 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "2.0",
+    "description": "毛小豆宇宙场景数据库",
+    "created_at": "2025-08-01",
+    "last_updated": "2025-08-01"
+  },
+  "scenes": [
+    {
+      "id": "maoxiaodou_story_2_business_dinner",
+      "scenario": "商务宴请",
+      "type": "商务社交",
+      "description": "毛小豆与客户姚总、同事老蒋的商务宴请，在宴会厅进行权力博弈和社交表演",
+      "poem_id": "maoxiaodou_story_2",
+      "characters": ["maoxiaodou", "yaozong", "laojiang", "fifi"],
+      "terminology": ["louboutin_shoes", "wechat_voice", "mirror", "sanhao_bay"]
+    },
+    {
+      "id": "maoxiaodou_story_2_restroom_prep",
+      "scenario": "卫生间准备",
+      "type": "封闭空间",
+      "description": "毛小豆在卫生间进行自我审视和表演准备，通过镜子确认自己的社交状态",
+      "poem_id": "maoxiaodou_story_2",
+      "characters": ["maoxiaodou"],
+      "terminology": ["mirror"]
+    },
+    {
+      "id": "maoxiaodou_story_2_private_car",
+      "scenario": "专车对话",
+      "type": "封闭空间",
+      "description": "酒局结束后在专车内的私密对话，毛小豆与老蒋讨论预算和社交表现",
+      "poem_id": "maoxiaodou_story_2",
+      "characters": ["maoxiaodou", "laojiang"],
+      "terminology": []
+    },
+    {
+      "id": "shark_and_rock_poker_room",
+      "scenario": "德州扑克牌局",
+      "type": "兄弟会社交",
+      "description": "毛小豆与华少等人在牌局包间进行德州扑克，展现兄弟会内部的竞技与信任关系",
+      "poem_id": "shark_and_rock",
+      "characters": ["maoxiaodou", "huashao", "husuo", "dapao", "aning", "chenyuanzhuo", "poker_girl"],
+      "terminology": ["3_bet", "c_bet", "check_raise", "limp", "pinduoduo", "baiyi_butie", "adidas", "team_basketball_shoes", "slowroll", "utg", "weak_drawing_player", "dealer", "big_blind", "small_blind", "button", "call", "allin", "hj", "lj", "co", "backdoor_full_house", "daxue_road"]
+    },
+    {
+      "id": "shark_and_rock_stairwell",
+      "scenario": "楼梯间对话",
+      "type": "封闭空间",
+      "description": "毛小豆与华少在楼梯间的私密对话，确认兄弟会内部的信任法则",
+      "poem_id": "shark_and_rock",
+      "characters": ["maoxiaodou", "huashao"],
+      "terminology": ["stairwell"]
+    },
+    {
+      "id": "gold_medal_winner_office",
+      "scenario": "办公室职场",
+      "type": "办公室社交",
+      "description": "张秋在办公室处理RFP项目，与同事简宁和天琦进行职场互动",
+      "poem_id": "gold_medal_winner",
+      "characters": ["zhangqiu", "jianning", "fanlaoge", "tianqi"],
+      "terminology": ["byod", "byol", "deliverables", "rfp", "teams", "outlook", "rsvp", "in_person_or_online", "critical_year", "work_from_home", "round_table_meeting", "contact_person", "ciso"]
+    },
+    {
+      "id": "gold_medal_winner_gym",
+      "scenario": "健身房训练",
+      "type": "运动环境",
+      "description": "张秋在健身房进行身体训练，学习比基尼动作，与师娘明姐交流",
+      "poem_id": "gold_medal_winner",
+      "characters": ["zhangqiu", "mingjie"],
+      "terminology": ["bikini_workout", "certified_breasts", "toe_loop", "salchow", "axel"]
+    },
+    {
+      "id": "gold_medal_winner_skating_rink",
+      "scenario": "滑冰场观察",
+      "type": "运动环境",
+      "description": "张秋在滑冰场观察毛小豆的状态，对他进行评价",
+      "poem_id": "gold_medal_winner",
+      "characters": ["zhangqiu", "maoxiaodou"],
+      "terminology": []
+    },
+    {
+      "id": "remake_bathroom",
+      "scenario": "泡澡独白",
+      "type": "封闭空间",
+      "description": "毛小豆在工作日下午独自泡澡，进行反讽式独白",
+      "poem_id": "remake",
+      "characters": ["maoxiaodou"],
+      "terminology": ["bathtub", "leipingyang_quote"]
+    },
+    {
+      "id": "remake_ktv_memory",
+      "scenario": "KTV残局回忆",
+      "type": "商务社交",
+      "description": "回忆KTV残局，栋先生与烂醉的老楚、疲惫的华少形成对比",
+      "poem_id": "remake",
+      "characters": ["maoxiaodou", "huashao", "dongxiansheng", "laochu"],
+      "terminology": []
+    },
+    {
+      "id": "remake_barbershop",
+      "scenario": "理发店异常",
+      "type": "消费空间",
+      "description": "熟悉的理发师索尼被陌生的维尼取代，触发毛小豆的异常感",
+      "poem_id": "remake",
+      "characters": ["maoxiaodou"],
+      "terminology": ["barber_replacement"]
+    },
+    {
+      "id": "new_year_home",
+      "scenario": "家中游戏",
+      "type": "封闭空间",
+      "description": "毛小豆在家中获得PS5白金奖杯，与Dota挫败经历对比",
+      "poem_id": "new_year",
+      "characters": ["maoxiaodou"],
+      "terminology": ["ps5_platinum_trophy", "dota_rank", "vans_anaheim", "supra", "converse_allstar", "converse_allstar_knockoff", "hot_coffee_mod", "platform_09"]
+    },
+    {
+      "id": "new_year_party",
+      "scenario": "跨年派对",
+      "type": "个人社交",
+      "description": "毛小豆参加张秋姐妹的跨年派对，扮演完美的'+1'角色",
+      "poem_id": "new_year",
+      "characters": ["maoxiaodou", "zhangqiu", "mumu", "xiaoyueshan", "qianjie", "xiaoluo"],
+      "terminology": ["hooters", "b52"]
+    },
+    {
+      "id": "temple_wedding",
+      "scenario": "朋友婚礼",
+      "type": "个人社交",
+      "description": "毛小豆参加朋友婚礼，以反仪式的方式播放《求佛》",
+      "poem_id": "temple",
+      "characters": ["maoxiaodou", "xiaowu", "xiaoliao"],
+      "terminology": ["wedding", "plus_one"]
+    },
+    {
+      "id": "temple_home_party",
+      "scenario": "家庭派对",
+      "type": "个人社交",
+      "description": "家庭派对上观看《仙剑奇侠传》，张秋将众人拉回现实",
+      "poem_id": "temple",
+      "characters": ["maoxiaodou", "dongxiansheng", "zhangqiu", "huashao", "laochu", "yuanyuan"],
+      "terminology": ["xianjian_game"]
+    },
+    {
+      "id": "temple_yunnan_memory",
+      "scenario": "云南翻车回忆",
+      "type": "封闭空间",
+      "description": "回忆云南翻车事件，栋先生的创伤性记忆",
+      "poem_id": "temple",
+      "characters": ["maoxiaodou", "dongxiansheng", "zhangqiu"],
+      "terminology": ["yunnan_crash"]
+    },
+    {
+      "id": "fortune_office",
+      "scenario": "办公室日常",
+      "type": "办公室社交",
+      "description": "毛小豆在办公室的日常，被童年幻想和创伤记忆侵入",
+      "poem_id": "fortune",
+      "characters": ["maoxiaodou", "fifi", "huashao"],
+      "terminology": ["childhood_fantasy", "mechanics_exam", "abject_restroom", "relx_wildcard"]
+    },
+    {
+      "id": "fortune_bbq_restroom",
+      "scenario": "烧烤店厕所",
+      "type": "封闭空间",
+      "description": "得知母亲患癌消息后，毛小豆在烧烤店厕所的生理性崩溃",
+      "poem_id": "fortune",
+      "characters": ["maoxiaodou", "huashao"],
+      "terminology": ["abject_restroom"]
+    },
+    {
+      "id": "sodium_school_corridor",
+      "scenario": "校园走廊比赛",
+      "type": "兄弟会社交",
+      "description": "校园走廊中钠派与盖帮的吃饭比赛，兄弟会法则的奠基",
+      "poem_id": "sodium",
+      "characters": ["maoxiaodou", "huashao", "dongxiansheng", "yuanzhi", "baoge", "laochu"],
+      "terminology": ["sodium", "sodium_sect", "gai_gang"]
+    },
+    {
+      "id": "sodium_outdoor_cafe",
+      "scenario": "露天咖吧",
+      "type": "兄弟会社交",
+      "description": "露天咖吧中的零食分配，毛小豆通过语言游戏多拿牛板筋",
+      "poem_id": "sodium",
+      "characters": ["maoxiaodou", "laochu", "dongxiansheng", "huashao"],
+      "terminology": ["sodium"]
+    },
+    {
+      "id": "wheat_campus",
+      "scenario": "校园社团",
+      "type": "兄弟会社交",
+      "description": "毛小豆在校园中创建社团，通过各种投机手段获取官方认可",
+      "poem_id": "wheat",
+      "characters": ["maoxiaodou", "dongxiansheng", "keren", "baoge", "lizhong", "laochu"],
+      "terminology": ["yimengweima_plaque"]
+    },
+    {
+      "id": "museum_school",
+      "scenario": "高三毕业",
+      "type": "兄弟会社交",
+      "description": "高三毕业前夕，毛小豆面对未来的确定性和青春的终结",
+      "poem_id": "museum",
+      "characters": ["maoxiaodou", "dongxiansheng", "yuanzhi", "lizhong", "laochu"],
+      "terminology": ["disappearing_landmarks", "allergic_reaction", "jiangwan_town", "yingao_road", "yixian_road", "nanhe_railway", "jipu_road", "sanmen_road", "friends_restaurant"]
+    },
+    {
+      "id": "museum_playground",
+      "scenario": "操场过敏",
+      "type": "封闭空间",
+      "description": "操场上毛小豆的过敏反应，被压抑情感的生理性爆发",
+      "poem_id": "museum",
+      "characters": ["maoxiaodou"],
+      "terminology": ["allergic_reaction"]
+    },
+    {
+      "id": "canned_tuna_historical_montage",
+      "scenario": "历史蒙太奇",
+      "type": "兄弟会社交",
+      "description": "通过历史碎片的蒙太奇，探讨宏大叙事与个人经验的错位",
+      "poem_id": "canned_tuna",
+      "characters": ["maoxiaodou", "yuanzhi"],
+      "terminology": ["historical_montage", "personal_moment", "marvelon", "triquilar", "minulet", "diane_35", "neufert_act", "tether", "defi", "fallon_show"]
+    },
+    {
+      "id": "watch_out_office",
+      "scenario": "全景敞视办公室",
+      "type": "办公室社交",
+      "description": "阿伟在全景敞视的办公环境中应对监控与压力",
+      "poem_id": "watch_out",
+      "characters": ["maoxiaodou"],
+      "terminology": ["panopticon_office", "office_stretch", "nanbo", "xinchang_bookstore"]
+    },
+    {
+      "id": "watch_out_restroom",
+      "scenario": "监控下的抵抗",
+      "type": "封闭空间",
+      "description": "阿伟在卫生间进行微小的抵抗，试图逃避无处不在的监控",
+      "poem_id": "watch_out",
+      "characters": ["maoxiaodou"],
+      "terminology": []
+    },
+    {
+      "id": "interest_home",
+      "scenario": "家中争论",
+      "type": "兄弟会社交",
+      "description": "毛小豆在家中与朋友争论新爱好，最终宣称自己是A片之王",
+      "poem_id": "interest",
+      "characters": ["maoxiaodou", "dongxiansheng", "huashao"],
+      "terminology": ["art_vs_porn", "porn_king", "ye_qianyu", "li_zongtao", "zhu_xinjian", "bian_pingshan", "chen_danqing", "cheng_shifa", "zhong_achen"]
+    },
+    {
+      "id": "interest_friend_house",
+      "scenario": "朋友住所",
+      "type": "兄弟会社交",
+      "description": "在朋友住所中，毛小豆放弃寻求传统认可，转向另类本真性",
+      "poem_id": "interest",
+      "characters": ["maoxiaodou", "dongxiansheng", "huashao"],
+      "terminology": ["art_vs_porn", "porn_king"]
+    },
+    {
+      "id": "subtitles_late_night_stall",
+      "scenario": "宵夜摊独白",
+      "type": "封闭空间",
+      "description": "华少在宵夜摊的内心独白，展现彻底的犬儒主义和内部法则",
+      "poem_id": "subtitles",
+      "characters": ["huashao", "maoxiaodou", "dongxiansheng"],
+      "terminology": ["cynicism_levels", "female_body_standard", "dian", "ji", "xiao", "le", "bang", "ma", "shanghai_new_place", "maid_cafe"]
+    }
+  ]
+} 

@@ -1,0 +1,312 @@
+// 陆家花园主宇宙数据库 Schema - v3 (主宇宙中立实体架构)
+// 本设计采用"主宇宙中立实体 + 子宇宙桥接"的架构模型，实现跨宇宙数据融合与解耦
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 主宇宙中立实体
+model Theme { 
+  id String @id
+  name String @unique 
+  description String? 
+  bridges UniverseTheme[] 
+}
+
+model Emotion { 
+  id String @id
+  name String @unique 
+  polarity String 
+  intensity Int 
+  bridges UniverseEmotion[] 
+}
+
+model Universe { 
+  id String @id
+  code String @unique 
+  name String
+  type String
+  description String?
+  status String @default("draft")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  
+  // 桥表关系
+  universeThemes UniverseTheme[]
+  universeEmotions UniverseEmotion[]
+  
+  // 子宇宙表关系
+  zhouProjects ZhouProject[]
+  zhouSubProjects ZhouSubProject[]
+  zhouQAs ZhouQA[]
+  zhouMappings ZhouMapping[]
+  zhouPoems ZhouPoem[]
+  
+  maoxiaodouPoems MaoxiaodouPoem[]
+  maoxiaodouCharacters MaoxiaodouCharacter[]
+  maoxiaodouCharacterRelations MaoxiaodouCharacterRelation[]
+  maoxiaodouTerminologies MaoxiaodouTerminology[]
+  maoxiaodouThemes MaoxiaodouTheme[]
+  maoxiaodouScenes MaoxiaodouScene[]
+  maoxiaodouTimelines MaoxiaodouTimeline[]
+  maoxiaodouTheories MaoxiaodouTheory[]
+  maoxiaodouReadingLayers MaoxiaodouReadingLayer[]
+  maoxiaodouMappings MaoxiaodouMapping[]
+  maoxiaodouMetadatas MaoxiaodouMetadata[]
+  
+  // 跨宇宙关联关系
+  crossUniverseSourceLinks CrossUniverseContentLink[] @relation("CrossUniverseSource")
+  crossUniverseTargetLinks CrossUniverseContentLink[] @relation("CrossUniverseTarget")
+}
+
+// 桥表
+model UniverseTheme { 
+  id String @id
+  universeId String 
+  themeId String 
+  confidence Float? 
+  note String? 
+  universe Universe @relation(fields: [universeId], references: [id]) 
+  theme Theme @relation(fields: [themeId], references: [id]) 
+  @@unique([universeId, themeId]) 
+}
+
+model UniverseEmotion { 
+  id String @id
+  universeId String 
+  emotionId String 
+  weight Float? 
+  universe Universe @relation(fields: [universeId], references: [id]) 
+  emotion Emotion @relation(fields: [emotionId], references: [id]) 
+  @@unique([universeId, emotionId]) 
+}
+
+model CrossUniverseContentLink {
+  id String @id
+  sourceUniverseId String
+  sourceEntityType String
+  sourceEntityId String
+  targetUniverseId String
+  targetEntityType String
+  targetEntityId String
+  mappingType String
+  score Float?
+  note String?
+  createdAt DateTime @default(now())
+  
+  sourceUniverse Universe @relation("CrossUniverseSource", fields: [sourceUniverseId], references: [id])
+  targetUniverse Universe @relation("CrossUniverseTarget", fields: [targetUniverseId], references: [id])
+  
+  @@unique([sourceUniverseId, sourceEntityType, sourceEntityId, targetUniverseId, targetEntityType, targetEntityId])
+}
+
+// 周与春秋宇宙表 (对应 poeject_zhou_spring_autumn/data/content_draft/)
+model ZhouProject {
+  id String @id
+  name String
+  description String?
+  poet String?
+  status String?
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+  subProjects ZhouSubProject[]
+}
+
+model ZhouSubProject {
+  id String @id
+  projectId String
+  name String
+  description String?
+  universeId String
+  project ZhouProject @relation(fields: [projectId], references: [id])
+  universe Universe @relation(fields: [universeId], references: [id])
+  qas ZhouQA[]
+  poems ZhouPoem[]
+  mappings ZhouMapping[]
+}
+
+model ZhouQA {
+  id String @id
+  chapter String
+  index Int
+  question String
+  optionA String
+  optionB String
+  meaningA String
+  meaningB String
+  universeId String
+  subProjectId String?
+  universe Universe @relation(fields: [universeId], references: [id])
+  subProject ZhouSubProject? @relation(fields: [subProjectId], references: [id])
+}
+
+model ZhouMapping {
+  id String @id
+  chapter String
+  combination String
+  poemTitle String
+  meaning String? // 新增字段：用户原型解读功能
+  universeId String
+  subProjectId String?
+  universe Universe @relation(fields: [universeId], references: [id])
+  subProject ZhouSubProject? @relation(fields: [subProjectId], references: [id])
+  @@unique([universeId, chapter, combination])
+}
+
+model ZhouPoem {
+  id String @id
+  title String
+  chapter String
+  body Json? // 重构为JSON格式：支持结构化诗歌内容
+  filePath String?
+  coreTheme String?
+  problemSolved String?
+  spiritualConsolation String?
+  classicalEcho String?
+  poetExplanation String?
+  universeId String
+  subProjectId String?
+  universe Universe @relation(fields: [universeId], references: [id])
+  subProject ZhouSubProject? @relation(fields: [subProjectId], references: [id])
+  @@unique([universeId, title])
+}
+
+// 毛小豆宇宙表 (对应 poeject_maoxiaodou_universe/data/)
+model MaoxiaodouPoem {
+  id String @id
+  title String
+  section String
+  summary String?
+  body String?
+  emotionalTone String?
+  conflictExplicit String?
+  conflictImplicit String?
+  metadata String? // JSON
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+  scenes MaoxiaodouScene[]
+  @@unique([universeId, title])
+}
+
+model MaoxiaodouCharacter {
+  id String @id
+  name String
+  aliases String? // JSON
+  role String?
+  description String?
+  coreMotivation String?
+  developmentArc String? // JSON
+  notes String?
+  category String?
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+  sourceRelations MaoxiaodouCharacterRelation[] @relation("SourceCharacter")
+  targetRelations MaoxiaodouCharacterRelation[] @relation("TargetCharacter")
+  @@unique([universeId, name])
+}
+
+model MaoxiaodouCharacterRelation {
+  id String @id
+  sourceCharacterId String
+  targetCharacterId String
+  relationType String
+  description String?
+  strength Float?
+  universeId String
+  sourceCharacter MaoxiaodouCharacter @relation("SourceCharacter", fields: [sourceCharacterId], references: [id])
+  targetCharacter MaoxiaodouCharacter @relation("TargetCharacter", fields: [targetCharacterId], references: [id])
+  universe Universe @relation(fields: [universeId], references: [id])
+}
+
+model MaoxiaodouScene {
+  id String @id
+  scenario String
+  type String?
+  description String?
+  poemId String
+  universeId String
+  poem MaoxiaodouPoem @relation(fields: [poemId], references: [id])
+  universe Universe @relation(fields: [universeId], references: [id])
+}
+
+model MaoxiaodouTerminology {
+  id String @id
+  term String
+  category String?
+  definition String?
+  context String?
+  usage String?
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+  @@unique([universeId, term])
+}
+
+model MaoxiaodouTheme {
+  id String @id
+  name String
+  description String?
+  manifestations String? // JSON
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+  @@unique([universeId, name])
+}
+
+model MaoxiaodouTimeline {
+  id String @id
+  name String
+  timeRange String?
+  description String?
+  keyEvents String? // JSON
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+}
+
+model MaoxiaodouTheory {
+  id String @id
+  name String
+  concept String?
+  description String?
+  manifestations String? // JSON
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+  @@unique([universeId, name])
+}
+
+model MaoxiaodouReadingLayer {
+  id String @id
+  name String
+  description String?
+  accessibility String?
+  readingGoals String? // JSON
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+}
+
+model MaoxiaodouMapping {
+  id String @id
+  sourceType String
+  sourceId String
+  targetType String
+  targetId String
+  mappingType String
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+}
+
+model MaoxiaodouMetadata {
+  id String @id
+  universeName String
+  version String
+  description String?
+  dataSources String? // JSON
+  statistics String? // JSON
+  relationships String? // JSON
+  universeId String
+  universe Universe @relation(fields: [universeId], references: [id])
+}

@@ -1,0 +1,28 @@
+{
+    "projects": [
+        {
+            "id": "project_zhou_spring_autumn_001",
+            "name": "周与春秋练习",
+            "description": "也是你的诗歌在场",
+            "poet": "吴任几",
+            "subProjects": [
+                {
+                    "id": "subproject_guanwosheng_001",
+                    "name": "观我生",
+                    "description": "取自《易经》\n旨在引导你审视内心，看清在困境中的自我映像\n它不提供答案，只是想帮助你理解挣扎、接纳不完美，并在混乱中找到前行的力量。"
+                },
+                {
+                    "id": "subproject_yumubing_002",
+                    "name": "雨，木冰",
+                    "description": "取自《春秋公羊传》\n聚焦于人与人之间复杂而微妙的关系\n探讨在权力、道义、情感的交织中，个体如何自处，献给那些在人际关系的风暴中，寻求清明与力量的灵魂。"
+                },
+                {
+                    "id": "subproject_shezhi_003",
+                    "name": "是折枝",
+                    "description": "取自《孟子》\n探讨自我修养中的现实困境\n引导你辨析“不能”与“不为”，在复杂的世事中，找到那条通往“仁义”的路径。"
+                }
+            ],
+            "status": "published"
+        }
+    ]
+}

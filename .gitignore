@@ -1,5 +1,45 @@
-# 忽略所有 .key 私钥文件
-*.key
+# 毛小豆宇宙目录现在纳入版本控制
+# 毛小豆宇宙/
 
-# 或者，如果你不希望整个 ssl 目录被追踪
-ssl/
+# Node.js 依赖包
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 环境变量文件
+# 允许本地开发版本，但排除生产敏感配置
+lugarden_universal/application/.env.local
+# 本地开发环境文件 - 允许提交（不包含敏感信息）
+# lugarden_universal/application/.env
+
+# 数据库文件（纳入版本控制，确保开发一致性）
+# lugarden_universal/application/data/
+
+# Prisma生成文件（可重新生成）
+lugarden_universal/application/generated/
+
+# 注意：为了开发流畅性，以下设计文件被Git跟踪：
+# - lugarden_universal/application/prisma/schema.prisma (数据库设计文件)
+# - lugarden_universal/application/prisma/migrations/ (迁移历史)
+# - lugarden_universal/application/package.json (依赖配置)
+# - lugarden_universal/application/.env (环境变量配置)
+# Cursor - 本地AI配置
+.cursor/

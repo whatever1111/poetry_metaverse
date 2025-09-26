@@ -1,0 +1,263 @@
+{
+  "theoretical_framework": {
+    "version": "3.0",
+    "created_at": "2025-01-XX",
+    "description": "毛小豆宇宙理论框架结构化数据",
+    "controlled_redundancy": {
+      "referenced_files": [
+        "mappings.json",
+        "reading_experience.json",
+        "characters.json",
+        "poems.json",
+        "terminology.json"
+      ],
+      "cross_references": {
+        "character_mappings": "mappings.json.character_mappings",
+        "poem_mappings": "mappings.json.sections",
+        "theory_mappings": "mappings.json.theory_mappings",
+        "reading_layers": "reading_experience.json.reading_experience.reading_layers",
+        "character_data": "characters.json.characters",
+        "poem_data": "poems.json.poems",
+        "terminology_data": "terminology.json.terminology"
+      }
+    },
+    "theories": {
+      "obscene_supplement": {
+        "name": "齐泽克的'淫秽补充'理论",
+        "concept": "公共律法背后的潜规则系统",
+        "description": "在正式的社会规则之外，存在着一套不成文的、但被广泛认可的潜规则体系。这些潜规则往往与正式规则形成补充关系，甚至在某些情况下替代正式规则。",
+        "manifestations": {
+          "business_banquet": {
+            "title": "商务酒局的权力测试",
+            "description": "在正式的商务宴请中，酒量成为权力和地位的隐形测试标准",
+            "examples": [
+              {
+                "poem": {
+                  "id": "maoxiaodou_story_2",
+                  "title": "毛小豆故事演绎 Ⅱ"
+                },
+                "scene": "宴会厅",
+                "manifestation": "姚总'能干也能喝'，酒量成为获得认可的资本",
+                "power_dynamics": "酒量测试成为权力运作的潜规则"
+              },
+              {
+                "poem": {
+                  "id": "maoxiaodou_story_2",
+                  "title": "毛小豆故事演绎 Ⅱ"
+                },
+                "scene": "宴会厅",
+                "manifestation": "老蒋的'淫秽黑话'：'脚白才是真白'",
+                "power_dynamics": "男性同盟通过物化女性的语言巩固关系"
+              }
+            ]
+          },
+          "poker_game": {
+            "title": "牌局的羞辱行为",
+            "description": "德州扑克牌局中的'Slowroll'等行为，在规则允许的范围内进行羞辱",
+            "examples": [
+              {
+                "poem": {
+                  "id": "shark_and_rock",
+                  "title": "鲨鱼与岩石"
+                },
+                "scene": "牌局包间",
+                "manifestation": "华少对小铭'Slowroll'的愤怒",
+                "power_dynamics": "捍卫牌局的'体面'与'道义'"
+              }
+            ]
+          },
+          "workplace_politics": {
+            "title": "职场的背叛逻辑",
+            "description": "在正式的工作关系中，存在着一套关于忠诚、背叛和联盟的潜规则",
+            "examples": [
+              {
+                "poem": {
+                  "id": "gold_medal_winner",
+                  "title": "金牌得主"
+                },
+                "scene": "办公室",
+                "manifestation": "张秋与天琦结成'摸鱼搭子'",
+                "power_dynamics": "利用系统漏洞，将'work from home'转化为'不work'"
+              }
+            ]
+          }
+        }
+      },
+      "ugly_emotions": {
+        "name": "阮思艾的'丑陋情感'理论",
+        "concept": "当代都市的弥散性负面情绪",
+        "description": "在当代都市生活中，人们普遍经历着一种低强度的、持续的、无法带来解脱的负面情绪状态。这些情绪往往被压抑、被合理化，但从未真正消失。",
+        "types": {
+          "irritation": {
+            "name": "烦躁",
+            "description": "对日常生活的细微不满和不适感",
+            "examples": [
+              {
+                "poem": {
+                  "id": "remake",
+                  "title": "毛小豆故事演绎 | REMAKE"
+                },
+                "manifestation": "'能在工作日的下午/回家泡澡，这样的生活/真是充满压力'",
+                "analysis": "物质舒适与精神焦虑的错位"
+              }
+            ]
+          },
+          "anxiety": {
+            "name": "焦虑",
+            "description": "对未来的不确定性和对现状的不满",
+            "examples": [
+              {
+                "poem": {
+                  "id": "maoxiaodou_story_2",
+                  "title": "毛小豆故事演绎 Ⅱ"
+                },
+                "manifestation": "毛小豆在车里'盯着分针默默计时'",
+                "analysis": "表演面具下的内在真实"
+              }
+            ]
+          },
+          "cynicism": {
+            "name": "犬儒",
+            "description": "对世界和他人持怀疑和玩世不恭的态度",
+            "examples": [
+              {
+                "poem": {
+                  "id": "subtitles",
+                  "title": "论字幕的必要性"
+                },
+                "manifestation": "华少的彻底犬儒主义",
+                "analysis": "主动为虚伪立法，成为规则的强硬捍卫者"
+              }
+            ]
+          },
+          "alienation": {
+            "name": "疏离",
+            "description": "与他人和社会的距离感和陌生感",
+            "examples": [
+              {
+                "poem": {
+                  "id": "museum",
+                  "title": "馆"
+                },
+                "manifestation": "毛小豆对未来的过度确定导致虚无感",
+                "analysis": "清醒但没有掌控感，失去悬念和激情"
+              }
+            ]
+          },
+          "numbness": {
+            "name": "麻木",
+            "description": "对情感和刺激的迟钝反应",
+            "examples": [
+              {
+                "poem": {
+                  "id": "fortune",
+                  "title": "八方来财"
+                },
+                "manifestation": "面对母亲患癌消息的压抑反应",
+                "analysis": "真实情感被深度压抑，通过生理症状爆发"
+              }
+            ]
+          }
+        }
+      },
+      "microphysics_of_power": {
+        "name": "福柯的'微观权力'理论",
+        "concept": "日常生活中的规训机制",
+        "description": "权力并非以宏大的、压迫性的形态出现，而是像细菌一样渗透在每一个日常情境中，通过精微的、非强制性的规范来塑造'驯顺的身体'。",
+        "mechanisms": {
+          "panopticon": {
+            "name": "全景敞视",
+            "description": "通过无处不在的凝视和监控来规训个体",
+            "examples": [
+              {
+                "poem": {
+                  "id": "fortune",
+                  "title": "八方来财"
+                },
+                "manifestation": "毛小豆在办公室'最多看一眼'同事的穿着",
+                "analysis": "被社会规则驯化后的欲望表达"
+              }
+            ]
+          },
+          "body_discipline": {
+            "name": "身体规训",
+            "description": "通过身体管理来塑造符合社会规范的主体",
+            "examples": [
+              {
+                "poem": {
+                  "id": "gold_medal_winner",
+                  "title": "金牌得主"
+                },
+                "manifestation": "健身房的'项目化'身体管理",
+                "analysis": "身体需要被管理、被塑造、被量化"
+              }
+            ]
+          },
+          "knowledge_power": {
+            "name": "知识权力",
+            "description": "通过掌握特定知识来获得和行使权力",
+            "examples": [
+              {
+                "poem": {
+                  "id": "gold_medal_winner",
+                  "title": "金牌得主"
+                },
+                "manifestation": "掌握行业术语：'RFP'、'Deliverables'、'.pptx'",
+                "analysis": "权力的语言，区隔'圈内人'与'圈外人'"
+              }
+            ]
+          }
+        }
+      },
+      "gated_community_poetics": {
+        "name": "'门禁社区'诗学",
+        "concept": "分层阅读体验的设计",
+        "description": "诗歌文本被设计为具有不同层次的阅读体验，从表面的日常叙事到深层的理论探讨，读者可以根据自己的认知能力和理论背景选择不同的阅读深度。",
+        "layers": {
+          "open_narrative": {
+            "name": "开放叙事",
+            "description": "表面的、可被所有读者理解的日常故事",
+            "examples": [
+              {
+                "poem": {
+                  "id": "maoxiaodou_story_2",
+                  "title": "毛小豆故事演绎 Ⅱ"
+                },
+                "layer": "商务宴请的日常场景",
+                "accessibility": "所有读者"
+              }
+            ]
+          },
+          "cognitive_labor": {
+            "name": "认知劳动",
+            "description": "需要读者进行深度思考和解读的层次",
+            "examples": [
+              {
+                "poem": {
+                  "id": "shark_and_rock",
+                  "title": "鲨鱼与岩石"
+                },
+                "layer": "牌局中的权力动态和信任法则",
+                "accessibility": "有一定理论背景的读者"
+              }
+            ]
+          },
+          "theoretical_depth": {
+            "name": "理论深度",
+            "description": "涉及复杂理论概念的深层结构",
+            "examples": [
+              {
+                "poem": {
+                  "id": "fortune",
+                  "title": "八方来财"
+                },
+                "layer": "精神分析意义上的压抑与症状",
+                "accessibility": "具备相关理论知识的读者"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+} 

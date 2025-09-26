@@ -1,0 +1,250 @@
+{
+  "metadata": {
+    "universe_name": "毛小豆宇宙",
+    "version": "2.0",
+    "description": "毛小豆宇宙主题数据库",
+    "created_at": "2025-07-30",
+    "last_updated": "2025-07-30"
+  },
+  "themes": [
+    {
+      "id": "male_community",
+      "name": "男性共同体",
+      "description": "以毛小豆、华少、栋先生为核心的'兄弟会'，构成了一个高度内聚的男性情感联盟",
+      "manifestations": [
+        "兄弟会内部的信任关系",
+        "对外部世界的排他性认同",
+        "男性黑话和潜规则",
+        "情感避难所与成长牢笼的双重性"
+      ],
+      "related_characters": [
+        "maoxiaodou",
+        "huashao",
+        "husuo",
+        "dapao",
+        "aning",
+        "chenyuanzhuo",
+        "poker_girl",
+        "zhangqiu",
+        "mumu",
+        "xiaoyueshan",
+        "qianjie",
+        "xiaoluo",
+        "dongxiansheng",
+        "xiaowu",
+        "xiaoliao",
+        "laochu",
+        "yuanyuan",
+        "yuanzhi",
+        "baoge"
+      ],
+      "related_poems": [
+        "shark_and_rock",
+        "new_year",
+        "temple",
+        "sodium",
+        "subtitles"
+      ]
+    },
+    {
+      "id": "identity_anxiety",
+      "name": "身份焦虑",
+      "description": "在消费主义社会中，个体对自我身份和价值的持续焦虑",
+      "manifestations": [
+        "消费符号对身份的定义",
+        "职场中的角色表演",
+        "真实自我与表演自我的冲突",
+        "对'本真性'的追求与失落"
+      ],
+      "related_characters": [
+        "maoxiaodou",
+        "huashao",
+        "husuo",
+        "dapao",
+        "aning",
+        "chenyuanzhuo",
+        "poker_girl",
+        "zhangqiu",
+        "mumu",
+        "xiaoyueshan",
+        "qianjie",
+        "xiaoluo",
+        "dongxiansheng",
+        "keren",
+        "baoge",
+        "lizhong",
+        "laochu",
+        "yuanzhi"
+      ],
+      "related_poems": [
+        "shark_and_rock",
+        "new_year",
+        "wheat",
+        "canned_tuna",
+        "interest"
+      ]
+    },
+    {
+      "id": "microphysics_of_power",
+      "name": "权力的微观运作",
+      "description": "权力通过日常生活中的细节和规则进行运作，塑造个体的行为和思想",
+      "manifestations": [
+        "职场中的等级关系",
+        "酒局中的权力测试",
+        "牌局中的竞争法则",
+        "身体规训和审美标准"
+      ],
+      "related_characters": [
+        "maoxiaodou",
+        "yaozong",
+        "laojiang",
+        "fifi",
+        "xiao_tuzi_xiao_limin",
+        "huashao",
+        "husuo",
+        "dapao",
+        "aning",
+        "chenyuanzhuo",
+        "poker_girl",
+        "zhangqiu",
+        "jianning",
+        "fanlaoge",
+        "tianqi",
+        "mingjie",
+        "dongxiansheng",
+        "yuanzhi",
+        "baoge",
+        "laochu",
+        "keren",
+        "lizhong"
+      ],
+      "related_poems": [
+        "maoxiaodou_story_2",
+        "shark_and_rock",
+        "gold_medal_winner",
+        "sodium",
+        "wheat",
+        "watch_out",
+        "interest"
+      ]
+    },
+    {
+      "id": "ugly_feelings",
+      "name": "丑陋情感",
+      "description": "当代都市生活中的非宣泄性负面情绪，如焦虑、烦躁、疏离等",
+      "manifestations": [
+        "持续的焦虑和不安",
+        "犬儒式的疏离",
+        "被阻碍的能动性",
+        "情感的弥散性"
+      ],
+      "related_characters": [
+        "maoxiaodou",
+        "huashao",
+        "dongxiansheng",
+        "laochu",
+        "zhangqiu",
+        "xiaowu",
+        "xiaoliao",
+        "yuanyuan",
+        "fifi",
+        "yuanzhi",
+        "baoge",
+        "keren",
+        "lizhong"
+      ],
+      "related_poems": [
+        "remake",
+        "temple",
+        "fortune",
+        "sodium",
+        "wheat",
+        "museum",
+        "watch_out",
+        "subtitles"
+      ]
+    },
+    {
+      "id": "consumerism",
+      "name": "消费主义",
+      "description": "消费符号对个体身份和价值的影响",
+      "manifestations": [
+        "品牌崇拜",
+        "身份符号化",
+        "物化倾向",
+        "消费鄙视链"
+      ],
+      "related_characters": [
+        "maoxiaodou",
+        "yaozong",
+        "laojiang",
+        "fifi",
+        "xiao_tuzi_xiao_limin"
+      ],
+      "related_poems": [
+        "maoxiaodou_story_2"
+      ],
+      "examples": [
+        "VANS",
+        "路铂廷",
+        "阿迪达斯",
+        "PS5"
+      ]
+    },
+    {
+      "id": "time_and_stagnation",
+      "name": "时间的循环感与成长的停滞",
+      "description": "统摄整个宇宙的最高主题，人物似乎被困在一个无法逃离的时间循环中，不断重复着青春期的行为模式和情感困境。",
+      "manifestations": [
+        "诗集'先正篇，后前篇'的倒置结构带来的宿命感",
+        "核心行为逻辑与情感模式在不同人生阶段的高度重复",
+        "对宏大历史叙事失落的时代症候的回应",
+        "以'长胖但未长大'为代表的成长停滞状态"
+      ],
+      "related_characters": [
+        "maoxiaodou",
+        "yaozong",
+        "laojiang",
+        "fifi",
+        "xiao_tuzi_xiao_limin",
+        "huashao",
+        "husuo",
+        "dapao",
+        "aning",
+        "chenyuanzhuo",
+        "poker_girl",
+        "zhangqiu",
+        "jianning",
+        "fanlaoge",
+        "tianqi",
+        "mingjie",
+        "dongxiansheng",
+        "laochu",
+        "mumu",
+        "xiaoyueshan",
+        "qianjie",
+        "xiaoluo",
+        "xiaowu",
+        "xiaoliao",
+        "yuanyuan",
+        "yuanzhi",
+        "baoge",
+        "keren",
+        "lizhong"
+      ],
+      "related_poems": [
+        "maoxiaodou_story_2",
+        "shark_and_rock",
+        "gold_medal_winner",
+        "remake",
+        "new_year",
+        "temple",
+        "fortune",
+        "sodium",
+        "wheat",
+        "museum",
+        "canned_tuna"
+      ]
+    }
+  ]
+}
