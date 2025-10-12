@@ -25,7 +25,7 @@
 
 | 动画类型 | 持续时间 | 适用场景 | 缓动函数 |
 |---------|---------|---------|---------|
-| **微交互动画** | 0.2s | 按钮悬停、点击反馈、状态切换 | `cubic-bezier(0.25, 0.46, 0.45, 0.94)` |
+| **微交互动画** | 0.2s | 按钮悬停、点击反馈、状态切换、进度条填充 | `cubic-bezier(0.25, 0.46, 0.45, 0.94)` |
 | **主要过渡动画** | 0.4s | 内容切换、模态框显示、卡片动画 | `cubic-bezier(0.4, 0, 0.2, 1)` |
 | **页面切换动画** | 0.5s (进入) / 0.3s (退出) | 页面跳转、大范围内容切换 | `cubic-bezier(0.4, 0, 0.2, 1)` |
 | **加载状态动画** | 持续 | 加载指示器、进度条、错误提示 | `linear` 或 `ease-in-out` |
@@ -372,6 +372,48 @@
 }
 ```
 
+#### 进度条动画标准 ✨ 
+```css
+/* 进度条专用动画变量 */
+:root {
+  /* 阴影效果变量 */
+  --progress-shadow-inset-light: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+  --progress-shadow-inset-medium: inset 0 2px 4px rgba(0, 0, 0, 0.12);
+  --progress-shadow-inset-highlight: 0 1px 0 rgba(255, 255, 255, 0.4);
+  --progress-shadow-float-subtle: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --progress-shadow-float-inner: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* 进度条动画实现 */
+.progress-fill--smooth {
+  transition: width var(--animation-fast) var(--ease-fast);
+}
+
+.progress-track--primary {
+  box-shadow: 
+    var(--progress-shadow-inset-medium),
+    var(--progress-shadow-inset-light),
+    var(--progress-shadow-inset-highlight);
+  transition: all var(--animation-fast) var(--ease-fast);
+}
+
+.progress-fill--primary {
+  box-shadow: 
+    var(--progress-shadow-float-subtle),
+    var(--progress-shadow-float-inner);
+}
+
+.step-marker {
+  transition: all var(--animation-fast) var(--ease-fast);
+}
+```
+
+##### 进度条设计原则
+- **嵌入式阴影**: 轨道使用内阴影营造凹槽感
+- **浮动式阴影**: 填充使用外阴影营造浮起感
+- **统一动画时长**: 所有进度条相关动画使用0.2s快速响应
+- **视觉层次对比**: 与卡片的悬浮效果形成层次对比
+
 ### 3. 测试与验证
 
 #### 性能测试
@@ -430,7 +472,8 @@
 ### 版本管理
 - **v1.0**: 基于A.4阶段动画优化经验创建
 - **v1.1**: 更新页面切换动画规范，包含A.4.6复合动画方案
-- **更新日期**: 2025-01-27
+- **v1.2**: 补充进度条动画和阴影效果设计标准（B.3技术成果）
+- **更新日期**: 2025-08-24
 - **维护者**: AI Assistant
 
 ### 更新原则

@@ -1,0 +1,261 @@
+/* UnoCSS入口文件 */
+/* 这个文件作为UnoCSS样式的入口点 */
+/* UnoCSS将在这里注入生成的utility类 */
+
+/* ================================
+   CSS变量与UnoCSS令牌双向映射
+   确保现有CSS变量与UnoCSS utility类协同工作
+================================ */
+
+/* UnoCSS与现有CSS变量的兼容映射 */
+:root {
+  /* 
+    这些CSS变量与UnoCSS theme配置保持同步
+    现有组件可以继续使用CSS变量
+    新组件可以使用UnoCSS utility类
+  */
+  
+  /* UnoCSS颜色令牌映射 */
+  --uno-color-primary-50: theme('colors.primary.50');
+  --uno-color-primary-100: theme('colors.primary.100');
+  --uno-color-primary-200: theme('colors.primary.200');
+  --uno-color-primary-300: theme('colors.primary.300');
+  --uno-color-primary-400: theme('colors.primary.400');
+  --uno-color-primary-500: theme('colors.primary.500');
+  --uno-color-primary-600: theme('colors.primary.600');
+  --uno-color-primary-700: theme('colors.primary.700');
+  --uno-color-primary-800: theme('colors.primary.800');
+  --uno-color-primary-900: theme('colors.primary.900');
+  
+  --uno-color-brand-light: theme('colors.brand.light');
+  --uno-color-brand-primary: theme('colors.brand.primary');
+  --uno-color-brand-dark: theme('colors.brand.dark');
+  
+  --uno-color-success: theme('colors.success');
+  --uno-color-warning: theme('colors.warning');
+  --uno-color-error: theme('colors.error');
+  --uno-color-info: theme('colors.info');
+  
+  /* UnoCSS间距令牌映射 */
+  --uno-spacing-xs: theme('spacing.xs');
+  --uno-spacing-sm: theme('spacing.sm');
+  --uno-spacing-base: theme('spacing.base');
+  --uno-spacing-lg: theme('spacing.lg');
+  --uno-spacing-xl: theme('spacing.xl');
+  --uno-spacing-2xl: theme('spacing.2xl');
+  --uno-spacing-3xl: theme('spacing.3xl');
+  
+  /* UnoCSS圆角令牌映射 */
+  --uno-radius-sm: theme('borderRadius.sm');
+  --uno-radius-base: theme('borderRadius.base');
+  --uno-radius-lg: theme('borderRadius.lg');
+  --uno-radius-xl: theme('borderRadius.xl');
+  --uno-radius-full: theme('borderRadius.full');
+  
+  /* UnoCSS阴影令牌映射 */
+  --uno-shadow-sm: theme('boxShadow.sm');
+  --uno-shadow-base: theme('boxShadow.base');
+  --uno-shadow-md: theme('boxShadow.md');
+  --uno-shadow-lg: theme('boxShadow.lg');
+  --uno-shadow-xl: theme('boxShadow.xl');
+  --uno-shadow-2xl: theme('boxShadow.2xl');
+  
+  /* UnoCSS动画时长令牌映射 */
+  --uno-duration-fast: theme('transitionDuration.fast');
+  --uno-duration-normal: theme('transitionDuration.normal');
+  --uno-duration-slow: theme('transitionDuration.slow');
+  --uno-duration-slower: theme('transitionDuration.slower');
+}
+
+/* ================================
+   渐进式迁移支持类
+   帮助现有组件逐步迁移到UnoCSS
+================================ */
+
+/* ================================
+   现有类名与UnoCSS的双向映射桥接
+   支持渐进式迁移和向后兼容
+================================ */
+
+/* 现有工具类的UnoCSS等价映射 */
+.legacy-text-left { @apply text-left; }
+.legacy-text-center { @apply text-center; }
+.legacy-text-right { @apply text-right; }
+
+.legacy-font-normal { @apply font-normal; }
+.legacy-font-medium { @apply font-medium; }
+.legacy-font-semibold { @apply font-semibold; }
+.legacy-font-bold { @apply font-bold; }
+
+.legacy-flex { @apply flex; }
+.legacy-flex-col { @apply flex-col; }
+.legacy-items-center { @apply items-center; }
+.legacy-justify-center { @apply justify-center; }
+.legacy-justify-between { @apply justify-between; }
+
+.legacy-grid { @apply grid; }
+.legacy-grid-cols-1 { @apply grid-cols-1; }
+.legacy-grid-cols-2 { @apply grid-cols-2; }
+
+/* UnoCSS向现有系统的兼容映射 */
+.compat-color-primary { @apply text-primary-500; }
+.compat-color-secondary { @apply text-primary-400; }
+.compat-color-tertiary { @apply text-primary-300; }
+.compat-color-brand { @apply text-brand-primary; }
+
+.compat-bg-card { @apply bg-brand-light; }
+.compat-bg-overlay { @apply bg-white/30; }
+
+.compat-spacing-base { @apply p-base; }
+.compat-spacing-lg { @apply p-lg; }
+.compat-spacing-xl { @apply p-xl; }
+
+.compat-radius-base { @apply rounded-base; }
+.compat-radius-lg { @apply rounded-lg; }
+
+.compat-shadow-base { @apply shadow-base; }
+.compat-shadow-lg { @apply shadow-lg; }
+
+/* 现有组件样式的UnoCSS重构版本 */
+.uno-btn-base { 
+  @apply inline-flex items-center justify-center min-h-[44px] min-w-[120px] 
+         px-lg py-base text-base font-semibold leading-6 rounded-lg 
+         border border-transparent cursor-pointer transition-all duration-fast 
+         select-none outline-none;
+}
+
+.uno-btn-primary {
+  @apply uno-btn-base bg-gradient-to-br from-primary-600 to-primary-700 
+         text-light border-primary-700 shadow-base;
+}
+
+.uno-btn-primary:hover:not(:disabled) {
+  @apply bg-gradient-to-br from-primary-700 to-primary-800 
+         -translate-y-0.5 shadow-md;
+}
+
+.uno-card-base {
+  @apply bg-brand-light rounded-lg shadow-lg p-xl 
+         transition-all duration-normal;
+}
+
+.uno-card-base:hover {
+  @apply -translate-y-0.5 shadow-xl;
+}
+
+/* ================================
+   兼容层样式 - B.1阶段扩展
+   UnoCSS与现有CSS系统的兼容层
+================================ */
+
+/* ================================
+   CSS层级命名空间管理
+   确保渐进式覆盖策略的正确性
+================================ */
+
+/* 声明所有CSS层级，按照优先级从低到高排序 */
+@layer uno-base, legacy-components, uno-components, migration-bridge, uno-utilities;
+
+/* 现有CSS系统保护层 - 确保不被UnoCSS意外覆盖 */
+@layer legacy-components {
+  /* 保护现有组件类的优先级 - 仅保护未迁移的按钮 */
+  .btn-continue {
+    /* 未迁移至UnoCSS的按钮样式优先级保护 */
+  }
+  
+  .card-base, .card-project, .card-question, .unified-content-card {
+    /* 现有卡片样式优先级保护 */ 
+  }
+  
+  /* 防止UnoCSS utility类覆盖现有组件的重要样式 */
+  .loading-container, .error-container, .empty-container,
+  .content-title, .content-subtitle, .question-text,
+  .poem-title, .poem-body {
+    /* 现有内容组件样式优先级保护 */
+  }
+}
+
+/* UnoCSS与现有工具类的兼容映射 */
+@layer uno-utilities {
+  /* 解决冲突的工具类 - 为UnoCSS版本添加前缀 */
+  .uno-text-left { text-align: left !important; }
+  .uno-text-center { text-align: center !important; }
+  .uno-text-right { text-align: right !important; }
+  
+  .uno-flex { display: flex !important; }
+  .uno-flex-col { flex-direction: column !important; }
+  .uno-items-center { align-items: center !important; }
+  .uno-justify-center { justify-content: center !important; }
+  
+  .uno-grid { display: grid !important; }
+  .uno-grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+  .uno-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  
+  /* 命名空间化的间距工具类 */
+  .uno-gap-4 { gap: var(--spacing-base) !important; }
+  .uno-gap-6 { gap: var(--spacing-lg) !important; }
+}
+
+/* ================================
+   渐进式迁移桥接层
+   提供平滑的迁移路径和覆盖策略
+================================ */
+
+@layer migration-bridge {
+  /* 迁移期间的桥接类 - 优先级高于legacy但低于utilities */
+  .migrate-card {
+    @apply bg-brand-light rounded-lg shadow-lg p-xl;
+  }
+  
+  .migrate-button {
+    @apply inline-flex items-center justify-center px-lg py-base rounded-lg font-semibold transition-all duration-normal;
+  }
+  
+  .migrate-text-primary {
+    @apply text-primary-500;
+  }
+  
+  .migrate-bg-card {
+    @apply bg-brand-light;
+  }
+  
+  /* 渐进式覆盖规则 - 允许新样式逐步覆盖旧样式 */
+  .progressive-override {
+    /* 标记需要逐步迁移的元素 */
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+  
+  /* 迁移完成标记 - 表示已完全迁移到UnoCSS */
+  .migrated-to-uno {
+    /* 这些元素可以安全使用pure UnoCSS utility类 */
+  }
+}
+
+@layer uno-components {
+  /* UnoCSS组件层 - 可以覆盖migration-bridge层 */
+  .uno-component {
+    /* 完全基于UnoCSS的新组件样式 */
+  }
+}
+
+/* ================================
+   层级优先级说明和使用指南
+================================ */
+/*
+层级优先级（从低到高）：
+1. uno-base: UnoCSS基础样式和重置样式
+2. legacy-components: 现有组件样式（受保护，不被覆盖）
+3. uno-components: UnoCSS组件样式 
+4. migration-bridge: 迁移桥接样式（可以选择性覆盖legacy）
+5. uno-utilities: UnoCSS工具类（最高优先级，可覆盖一切）
+
+迁移策略：
+- Phase 1: 使用migration-bridge层的.migrate-*类替换现有组件
+- Phase 2: 逐步将.migrate-*类重构为uno-utilities类  
+- Phase 3: 移除migration-bridge层，完成迁移
+
+使用原则：
+- 现有功能：继续使用legacy-components（.btn-base等）
+- 新功能：直接使用uno-utilities（.flex .p-4等）
+- 迁移中：使用migration-bridge（.migrate-*类）
+*/

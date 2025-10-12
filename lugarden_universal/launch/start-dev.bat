@@ -47,12 +47,15 @@ if not exist ".env.local" (
 echo 🚀 正在启动开发模式...
 echo.
 echo 访问地址：
-echo   主页: http://localhost:3000
+echo   主页: http://localhost:3000 (现代化Vue门户)
 echo   管理后台: http://localhost:3000/admin
+echo   Vue开发服务器: http://localhost:5173 (开发调试用)
 echo.
 echo 开发模式特性：
 echo   - 文件修改后自动重启
 echo   - 实时错误提示
+echo   - Vue热重载开发体验
+echo   - 统一的现代化技术栈
 echo   - 按 Ctrl+C 停止服务器
 echo ========================================
 echo.

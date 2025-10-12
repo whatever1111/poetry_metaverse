@@ -1,0 +1,371 @@
+/* 
+  周与春秋 - 动画系统
+  统一的动画时间和效果管理
+*/
+
+/* 基础关键帧动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -6px, 0);
+  }
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -3px, 0);
+  }
+  90% {
+    transform: translate3d(0, -1px, 0);
+  }
+}
+
+@keyframes textChangeScale {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutToBottom {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* 动画工具类 */
+
+/* 基础进入动画 */
+.animate-fadeIn {
+  animation: fadeIn var(--duration-slower) var(--ease-out) forwards;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp var(--duration-slow) var(--ease-out) forwards;
+  opacity: 0;
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown var(--duration-slow) var(--ease-out) forwards;
+  opacity: 0;
+}
+
+.animate-fadeInLeft {
+  animation: fadeInLeft var(--duration-slow) var(--ease-out) forwards;
+  opacity: 0;
+}
+
+.animate-fadeInRight {
+  animation: fadeInRight var(--duration-slow) var(--ease-out) forwards;
+  opacity: 0;
+}
+
+/* 退出动画 */
+.animate-fadeOut {
+  animation: fadeOut var(--duration-normal) var(--ease-in) forwards;
+}
+
+/* 加载动画 */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* 文本变化动画 */
+.animate-textChange {
+  animation: textChangeScale var(--duration-slow) var(--ease-out);
+}
+
+/* 滑动动画 */
+.animate-slideInFromBottom {
+  animation: slideInFromBottom var(--duration-slow) var(--ease-out) forwards;
+}
+
+.animate-slideOutToBottom {
+  animation: slideOutToBottom var(--duration-slow) var(--ease-in) forwards;
+}
+
+/* 缩放动画 */
+.animate-zoomIn {
+  animation: zoomIn var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-zoomOut {
+  animation: zoomOut var(--duration-normal) var(--ease-in) forwards;
+}
+
+/* 动画延迟类 */
+.animate-delay-75 { animation-delay: 75ms; }
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-150 { animation-delay: 150ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-500 { animation-delay: 500ms; }
+.animate-delay-700 { animation-delay: 700ms; }
+.animate-delay-1000 { animation-delay: 1000ms; }
+
+/* 动画状态控制 */
+.animation-paused {
+  animation-play-state: paused;
+}
+
+.animation-running {
+  animation-play-state: running;
+}
+
+/* 防止重复触发动画 */
+.animation-played {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* 页面切换动画 */
+.page-enter-active,
+.page-leave-active {
+  transition: all var(--duration-slow) var(--ease-out);
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+/* 路由过渡动画 */
+.route-fade-enter-active,
+.route-fade-leave-active {
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.route-fade-enter-from,
+.route-fade-leave-to {
+  opacity: 0;
+}
+
+/* 模态框动画 */
+.modal-backdrop-enter-active,
+.modal-backdrop-leave-active {
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.modal-backdrop-enter-from,
+.modal-backdrop-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-active {
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.modal-leave-active {
+  transition: all var(--duration-fast) var(--ease-in);
+}
+
+.modal-enter-from {
+  opacity: 0;
+  transform: scale(0.9) translateY(-10px);
+}
+
+.modal-leave-to {
+  opacity: 0;
+  transform: scale(0.9) translateY(10px);
+}
+
+/* 下拉菜单动画 */
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all var(--duration-fast) var(--ease-out);
+  transform-origin: top;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: scaleY(0.8);
+}
+
+/* 列表项动画 */
+.list-enter-active,
+.list-leave-active {
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.list-move {
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+/* 响应式动画控制 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-fadeInUp,
+  .animate-fadeIn,
+  .animate-fadeInDown,
+  .animate-fadeInLeft,
+  .animate-fadeInRight {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* 移动端动画优化 */
+@media (max-width: 480px) {
+  /* 减少复杂动画，提高性能 */
+  .animate-fadeInUp {
+    animation-duration: calc(var(--duration-normal));
+  }
+  
+  .animate-fadeIn {
+    animation-duration: calc(var(--duration-normal));
+  }
+  
+  /* 简化页面切换动画 */
+  .page-enter-active,
+  .page-leave-active {
+    transition-duration: var(--duration-normal);
+  }
+}
