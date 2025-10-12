@@ -21,7 +21,7 @@
           {{ zhouStore.navigation.currentMainProject.description }}
         </div>
         <p class="text-gray-500 mb-8">
-          导游: {{ zhouStore.navigation.currentMainProject.poet || '未指定' }}
+          作者: {{ zhouStore.navigation.currentMainProject.poet || '未指定' }}
         </p>
       </div>
       

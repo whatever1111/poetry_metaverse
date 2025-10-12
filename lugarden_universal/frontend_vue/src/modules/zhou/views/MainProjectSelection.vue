@@ -68,7 +68,7 @@
           <div class="flex-1">
             <h2 class="text-2xl font-bold mb-2 text-gray-800">{{ project.name }}</h2>
             <div class="text-gray-600 mb-4 whitespace-pre-line">{{ project.description }}</div>
-            <p class="text-sm text-gray-500">导游: {{ project.poet || '未指定' }}</p>
+            <p class="text-sm text-gray-500">作者: {{ project.poet || '未指定' }}</p>
           </div>
           <div class="flex justify-end mt-4">
             <button class="btn-primary">
