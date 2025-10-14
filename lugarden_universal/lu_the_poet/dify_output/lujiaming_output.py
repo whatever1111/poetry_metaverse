@@ -59,33 +59,74 @@ def parse_dify_response(api_response, user_query=""):
     
     print("🔍 开始解析API响应...")
     print(f"📝 原始answer长度: {len(answer)} 字符")
+    print(f"📝 原始answer内容预览:")
+    print("=" * 50)
+    print(answer[-200:] if len(answer) > 200 else answer)  # 显示末尾200字符
+    print("=" * 50)
     
     # 1. 分离诗歌内容和D节点JSON
-    # 匹配最终裁决开始的JSON结构
-    json_pattern = r'\{\s*"最终裁决"[^}]*\}'
-    match = re.search(json_pattern, answer, re.DOTALL | re.MULTILINE)
+    # 修复：匹配完整的多行JSON结构
+    json_patterns = [
+        r'\{\s*"引文验证状态".*?\}',  # 匹配以"引文验证状态"开头的JSON
+        r'\{\s*"最终裁决".*?\}',     # 匹配以"最终裁决"开头的JSON
+        r'\{\s*[^}]*?"最终裁决".*?\}',  # 匹配包含"最终裁决"的JSON
+        r'\{\s*[^}]*?"风格保真度".*?\}'  # 匹配包含"风格保真度"的JSON
+    ]
+    
+    match = None
+    for i, pattern in enumerate(json_patterns):
+        match = re.search(pattern, answer, re.DOTALL | re.MULTILINE)
+        if match:
+            print(f"✅ 使用模式 {i+1} 匹配成功")
+            break
     
     if match:
         poetry_content = answer[:match.start()].strip()
         json_str = match.group()
-        print(f"✅ 找到D节点评估数据: {json_str[:50]}...")
+        print(f"✅ 找到D节点评估数据:")
+        print("JSON内容:")
+        print(json_str)
+        print("=" * 30)
         
         try:
             d_evaluation = json.loads(json_str)
             print("✅ D节点JSON解析成功")
+            print(f"解析结果: {d_evaluation}")
         except json.JSONDecodeError as e:
             print(f"❌ D节点JSON解析失败: {e}")
+            print(f"原始JSON: {json_str}")
             d_evaluation = {}
     else:
         print("⚠️  未找到D节点评估数据，使用全部内容作为诗歌")
+        print("📝 尝试的正则表达式模式:")
+        for i, pattern in enumerate(json_patterns):
+            print(f"  模式 {i+1}: {pattern}")
         poetry_content = answer
         d_evaluation = {}
     
     # 2. 提取经典引文信息（如果存在）
-    citation_pattern = r'"([^"]+)"\s*—— 《([^》]+)》'
-    citation_match = re.search(citation_pattern, poetry_content)
-    classic_quote = citation_match.group(1) if citation_match else ""
-    classic_source = citation_match.group(2) if citation_match else ""
+    # 修复：支持无引号的引文格式
+    # 格式1: "引文内容" —— 《出处》 (带引号)
+    # 格式2: 引文内容\n——《出处》 (无引号，换行分隔)
+    citation_patterns = [
+        r'"([^"]+)"\s*—— 《([^》]+)》',  # 带引号格式
+        r'([^\n]+)\n——《([^》]+)》',    # 无引号换行格式
+        r'([^—]+)——《([^》]+)》'        # 无引号无换行格式
+    ]
+    
+    classic_quote = ""
+    classic_source = ""
+    
+    for pattern in citation_patterns:
+        citation_match = re.search(pattern, poetry_content)
+        if citation_match:
+            classic_quote = citation_match.group(1).strip()
+            classic_source = citation_match.group(2).strip()
+            print(f"✅ 引文解析成功: '{classic_quote}' —— 《{classic_source}》")
+            break
+    
+    if not classic_quote:
+        print("⚠️  未找到引文信息")
     
     # 3. 构建YAML metadata
     timestamp = datetime.now()

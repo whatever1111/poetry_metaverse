@@ -39,8 +39,8 @@ def extract_yaml_and_content(file_path):
         print(f"❌ 读取文件失败 {file_path}: {e}")
         return None, None
 
-def extract_poem_details(poem_content, filename):
-    """从诗歌内容中提取系列、标题、引文、完整诗歌"""
+def extract_poem_details(poem_content, filename, metadata=None):
+    """从诗歌内容和metadata中提取系列、标题、引文、纯正文"""
     lines = poem_content.split('\n')
     
     # 从文件名提取系列名
@@ -63,29 +63,86 @@ def extract_poem_details(poem_content, filename):
     while i < len(lines) and not lines[i].strip():
         i += 1
     
-    # 提取引文（引号内容和出处）
+    # 优先从metadata中获取引文信息（已经正确解析的）
     citation = ""
-    if i < len(lines) and lines[i].strip().startswith('"'):
-        quote = lines[i].strip()
-        i += 1
-        
-        # 跳过空行
-        while i < len(lines) and not lines[i].strip():
+    if metadata and metadata.get('creation_meta'):
+        classic_quote = metadata['creation_meta'].get('classic_quote', '')
+        classic_source = metadata['creation_meta'].get('classic_source', '')
+        if classic_quote and classic_source:
+            citation = f"{classic_quote}\n——《{classic_source}》"
+    
+    # 如果metadata中没有，则尝试从内容中解析（兼容旧格式）
+    if not citation:
+        # 格式1: "引文内容" (带引号)
+        if i < len(lines) and lines[i].strip().startswith('"'):
+            quote = lines[i].strip()
             i += 1
             
-        # 提取出处（—— 开头）
-        if i < len(lines) and lines[i].strip().startswith('——'):
-            source = lines[i].strip()
-            citation = f"{quote}\n{source}"
-            i += 1
-        else:
-            citation = quote
+            # 跳过空行
+            while i < len(lines) and not lines[i].strip():
+                i += 1
+                
+            # 提取出处（—— 开头）
+            if i < len(lines) and lines[i].strip().startswith('——'):
+                source = lines[i].strip()
+                citation = f"{quote}\n{source}"
+                i += 1
+            else:
+                citation = quote
+        
+        # 格式2: 引文内容\n——《出处》 (无引号格式，新版本)
+        elif i < len(lines) and not lines[i].strip().startswith('——'):
+            # 检查是否是引文行（后面跟着——《...》）
+            quote_line = lines[i].strip()
+            next_i = i + 1
+            
+            # 跳过空行找到出处行
+            while next_i < len(lines) and not lines[next_i].strip():
+                next_i += 1
+                
+            # 如果下一行是出处格式，则当前行是引文
+            if (next_i < len(lines) and 
+                lines[next_i].strip().startswith('——') and
+                '《' in lines[next_i] and '》' in lines[next_i]):
+                source = lines[next_i].strip()
+                citation = f"{quote_line}\n{source}"
+                i = next_i + 1
+            else:
+                # 不是引文格式，保持原位置
+                pass
+    else:
+        # 如果从metadata获取了引文，需要跳过内容中的引文部分
+        # 寻找引文结束位置
+        while i < len(lines):
+            if lines[i].strip().startswith('——') and '《' in lines[i] and '》' in lines[i]:
+                i += 1
+                break
+            elif lines[i].strip() and not lines[i].strip().startswith('——'):
+                # 可能是引文行，继续
+                i += 1
+            else:
+                break
+    
+    # 跳过引文后的空行
+    while i < len(lines) and not lines[i].strip():
+        i += 1
+    
+    # 提取纯正文（剩余内容）
+    poem_body_lines = []
+    while i < len(lines):
+        line = lines[i].strip()
+        if line:  # 非空行
+            poem_body_lines.append(line)
+        i += 1
+    
+    poem_body = '\n'.join(poem_body_lines)
     
     return {
         'series': series,
         'title': title,
         'citation': citation,
-        'full_poem': poem_content
+        'poem_body': poem_body,  # 纯正文
+        'full_poem': poem_content  # 保留完整内容
     }
 
 def process_single_directory(dir_path, dir_name="单个目录"):
@@ -104,8 +161,8 @@ def process_single_directory(dir_path, dir_name="单个目录"):
             metadata, poem_content = extract_yaml_and_content(file_path)
             if metadata and poem_content:
                 
-                # 提取诗歌详细信息
-                poem_details = extract_poem_details(poem_content, file)
+                # 提取诗歌详细信息（传递metadata）
+                poem_details = extract_poem_details(poem_content, file, metadata)
                 
                 # 合并数据 - V5精简版（只保留关键人类评估）
                 row_data = {
@@ -117,7 +174,7 @@ def process_single_directory(dir_path, dir_name="单个目录"):
                     '系列': poem_details['series'],
                     '标题': poem_details['title'],
                     '引文': poem_details['citation'],
-                    '完整诗歌': poem_details['full_poem'],
+                    '诗歌正文': poem_details['poem_body'],  # 修复：使用纯正文
                     
                     # 判别器D评分结果
                     'D判别器_最终决策': metadata.get('evaluation', {}).get('final_decision', ''),
@@ -177,7 +234,7 @@ def create_excel_with_dropdown(poems_data, output_file='poetry_evaluation_v5.xls
         '用户问题', '生成轮次',
         
         # 诗歌内容详细拆分
-        '系列', '标题', '引文', '完整诗歌',
+        '系列', '标题', '引文', '诗歌正文',
         
         # 判别器D评分结果（评估重点）
         'D判别器_最终决策', 'D判别器_风格保真度', 'D判别器_引用验证', 
@@ -260,7 +317,7 @@ def create_excel_with_dropdown(poems_data, output_file='poetry_evaluation_v5.xls
             'C': 12,  # 系列
             'D': 20,  # 标题
             'E': 30,  # 引文
-            'F': 50,  # 完整诗歌
+            'F': 50,  # 诗歌正文
         }
         
         for col, width in col_widths.items():
