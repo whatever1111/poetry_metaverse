@@ -36,7 +36,7 @@
         >
           <div class="flex-1">
             <h2 class="text-2xl font-bold mb-4 text-gray-800">{{ subProject.name }}</h2>
-            <div class="text-gray-600 mb-4 whitespace-pre-line">{{ subProject.description }}</div>
+            <div class="text-base text-gray-600 mb-4 whitespace-pre-line leading-loose">{{ subProject.description }}</div>
           </div>
           <div class="flex justify-end mt-4">
             <button class="btn-primary">

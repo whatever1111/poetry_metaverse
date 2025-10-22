@@ -10,19 +10,19 @@
       @click="handleCardClick"
     >
       <!-- 内容区域 - 使用flex-1占据剩余空间 -->
-      <div class="card-content">
-        <div class="card-header">
-          <h3 class="universe-name">{{ universe.name }}</h3>
+      <div class="flex-1">
+        <div class="flex justify-between items-start mb-4">
+          <h3 class="text-2xl font-bold text-gray-800 m-0">{{ universe.name }}</h3>
           <span class="universe-status" :class="universe.status">
             {{ statusText }}
           </span>
         </div>
-        <p class="universe-description">{{ universe.description }}</p>
-        <p class="universe-meta">{{ universe.meta }}</p>
+        <p class="text-base text-gray-600 mb-4 whitespace-pre-line leading-loose">{{ universe.description }}</p>
       </div>
       
-      <!-- 按钮区域 - 与Zhou对齐 -->
-      <div class="card-footer">
+      <!-- 底部区域 - Meta文字与按钮左右对齐 -->
+      <div class="flex justify-between items-center mt-4">
+        <p class="text-xs text-gray-500 m-0">{{ universe.meta }}</p>
         <button 
           class="enter-button"
           :disabled="!isActive"
@@ -184,6 +184,7 @@ const handleEnterClick = () => {
 
 .universe-description {
   color: var(--text-tertiary); /* #6b7280 - 与Zhou统一 */
+  font-size: var(--font-size-base); /* 继承body字号，与Zhou一致：clamp(1rem, 3vw, 1.125rem) */
   line-height: 1.6;
   margin-bottom: 1rem;
   white-space: pre-line;
@@ -191,14 +192,15 @@ const handleEnterClick = () => {
 
 .universe-meta {
   color: var(--text-tertiary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs); /* 等比例缩小：14px，与Zhou的text-sm一致 */
   margin: 0;
 }
 
-/* 按钮区域 - 与Zhou对齐：靠右 + 顶部间距 */
+/* 底部区域 - Meta文字与按钮左右对齐，纵向居中 */
 .card-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; /* 左右两端对齐 */
+  align-items: center; /* 纵向居中 */
   margin-top: 1rem; /* 与Zhou的mt-4一致 */
 }
 
@@ -245,9 +247,9 @@ const handleEnterClick = () => {
     font-size: 1.25rem;
   }
   
-  /* 移动端按钮仍然靠右，与Zhou保持一致 */
+  /* 移动端保持Meta文字与按钮左右对齐 */
   .card-footer {
-    justify-content: flex-end;
+    justify-content: space-between;
   }
 }
 </style>

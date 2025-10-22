@@ -67,10 +67,10 @@
         >
           <div class="flex-1">
             <h2 class="text-2xl font-bold mb-2 text-gray-800">{{ project.name }}</h2>
-            <div class="text-gray-600 mb-4 whitespace-pre-line">{{ project.description }}</div>
-            <p class="text-sm text-gray-500">作者: {{ project.poet || '未指定' }}</p>
+            <div class="text-base text-gray-600 mb-4 whitespace-pre-line leading-loose">{{ project.description }}</div>
           </div>
-          <div class="flex justify-end mt-4">
+          <div class="flex justify-between items-center mt-4">
+            <p class="text-xs text-gray-500 m-0">作者: {{ project.poet || '未指定' }}</p>
             <button class="btn-primary">
               进入
             </button>
