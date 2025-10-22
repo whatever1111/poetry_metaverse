@@ -9,23 +9,28 @@
       :class="{ 'card-disabled': !isActive }"
       @click="handleCardClick"
     >
-    <div class="card-header">
-      <h3 class="universe-name">{{ universe.name }}</h3>
-      <span class="universe-status" :class="universe.status">
-        {{ statusText }}
-      </span>
-    </div>
-    <p class="universe-description">{{ universe.description }}</p>
-    <div class="card-footer">
-      <span class="universe-meta">{{ universe.meta }}</span>
-      <button 
-        class="enter-button"
-        :disabled="!isActive"
-        @click.stop="handleEnterClick"
-      >
-        {{ buttonText }}
-      </button>
-    </div>
+      <!-- 内容区域 - 使用flex-1占据剩余空间 -->
+      <div class="card-content">
+        <div class="card-header">
+          <h3 class="universe-name">{{ universe.name }}</h3>
+          <span class="universe-status" :class="universe.status">
+            {{ statusText }}
+          </span>
+        </div>
+        <p class="universe-description">{{ universe.description }}</p>
+        <p class="universe-meta">{{ universe.meta }}</p>
+      </div>
+      
+      <!-- 按钮区域 - 与Zhou对齐 -->
+      <div class="card-footer">
+        <button 
+          class="enter-button"
+          :disabled="!isActive"
+          @click.stop="handleEnterClick"
+        >
+          {{ buttonText }}
+        </button>
+      </div>
     </div>
   </AnimationWrapper>
 </template>
@@ -90,26 +95,50 @@ const handleEnterClick = () => {
 </script>
 
 <style scoped>
-/* 宇宙卡片样式 */
+/* 卡片包装器 - 确保flex布局生效 */
+.universe-card-wrapper {
+  height: 100%;
+}
+
+/* 宇宙卡片样式 - 与Zhou统一的玻璃态设计 */
 .universe-card {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  /* 玻璃态背景 - 与Zhou的unified-content-card一致 */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(248, 250, 252, 0.6) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-base); /* 8px */
+  padding: var(--spacing-lg); /* 1.5rem = 24px */
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-out);
+  min-height: 200px;
+  
+  /* Flex布局 - 与Zhou完全一致 */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .universe-card:hover:not(.card-disabled) {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .universe-card.card-disabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+/* 内容区域 - 占据剩余空间 */
+.card-content {
+  flex: 1;
 }
 
 .card-header {
@@ -120,9 +149,9 @@ const handleEnterClick = () => {
 }
 
 .universe-name {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #2d3748;
+  font-size: var(--font-size-2xl); /* 与Zhou的h2一致 */
+  font-weight: 700;
+  color: var(--text-primary); /* #1f2937 */
   margin: 0;
 }
 
@@ -154,44 +183,56 @@ const handleEnterClick = () => {
 }
 
 .universe-description {
-  color: #4a5568;
+  color: var(--text-tertiary); /* #6b7280 - 与Zhou统一 */
   line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  margin-bottom: 1rem;
+  white-space: pre-line;
 }
 
 .universe-meta {
-  color: #718096;
-  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+/* 按钮区域 - 与Zhou对齐：靠右 + 顶部间距 */
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem; /* 与Zhou的mt-4一致 */
 }
 
 .enter-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
+  /* 与Zhou btn-primary完全一致的深灰色渐变 */
+  background: linear-gradient(to bottom right, var(--color-primary-600), var(--color-primary-700));
+  color: var(--text-light);
+  border: 1px solid var(--color-primary-700);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--duration-fast) var(--ease-out);
+  box-shadow: var(--shadow-base);
+  min-width: 100px;
+  min-height: 36px;
 }
 
 .enter-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(to bottom right, var(--color-primary-700), var(--color-primary-800));
+  transform: translateY(-0.125rem);
+  box-shadow: var(--shadow-md);
+}
+
+.enter-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .enter-button:disabled {
-  background: #cbd5e0;
-  color: #4a5568;
+  opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  transform: translateY(0);
 }
 
 /* 响应式设计 */
@@ -204,15 +245,9 @@ const handleEnterClick = () => {
     font-size: 1.25rem;
   }
   
+  /* 移动端按钮仍然靠右，与Zhou保持一致 */
   .card-footer {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-  
-  .enter-button {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
+    justify-content: flex-end;
   }
 }
 </style>

@@ -137,31 +137,33 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* 主容器 */
+/* 主容器 - 与Zhou统一的淡雅背景 */
 .universe-portal {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
+  background-color: var(--bg-primary); /* #f3f4f6 - 与Zhou统一 */
+  padding: 4rem 2rem 2rem; /* 顶部增加额外间距，整体向下平移 */
 }
 
-/* 头部样式 */
+/* 头部样式 - 简洁诗意 */
 .portal-header {
   text-align: center;
   margin-bottom: 3rem;
+  margin-top: 2rem; /* 额外顶部间距 */
 }
 
 .portal-title {
   font-size: 3rem;
-  font-weight: 600;
-  color: white;
+  font-weight: 700;
+  color: var(--text-primary); /* #1f2937 */
   margin-bottom: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.05em;
 }
 
 .portal-subtitle {
-  font-size: 1.25rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.125rem;
+  color: var(--text-tertiary); /* #6b7280 */
   margin: 0;
+  font-weight: 400;
 }
 
 /* 宇宙容器 */
@@ -188,21 +190,21 @@ onMounted(async () => {
 
 .copyright {
   margin: 0;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
   font-weight: 400;
 }
 
 .beian-link {
   display: inline-block;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-primary-300);
   text-decoration: none;
-  font-size: 0.75rem;
-  transition: all 0.2s ease;
+  font-size: var(--font-size-xs);
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
 .beian-link:hover {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-tertiary);
 }
 
 /* 响应式设计 */
@@ -215,6 +217,10 @@ onMounted(async () => {
     font-size: 2rem;
   }
   
+  .portal-subtitle {
+    font-size: 1rem;
+  }
+  
   .universes-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -223,15 +229,6 @@ onMounted(async () => {
   .site-footer {
     margin-top: 2rem;
     padding: 1rem 0;
-    gap: 0.375rem;
-  }
-  
-  .copyright {
-    font-size: 0.8125rem;
-  }
-  
-  .beian-link {
-    font-size: 0.6875rem;
   }
 }
 </style>
