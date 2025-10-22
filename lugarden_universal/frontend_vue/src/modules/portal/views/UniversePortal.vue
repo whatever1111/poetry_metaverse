@@ -46,6 +46,19 @@
       </div>
     </main>
 
+    <!-- ICP备案信息 -->
+    <footer class="icp-footer">
+      <a 
+        href="https://beian.miit.gov.cn" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="icp-link"
+      >
+        沪ICP备2025147783号
+      </a>
+      <p class="copyright">© {{ currentYear }} 陆家花园 · 诗歌元宇宙</p>
+    </footer>
+
     <!-- 通知提示 -->
     <NotificationToast
       v-if="showToast"
@@ -76,6 +89,9 @@ const showToast = ref(false)
 const toastMessage = ref('')
 const toastType = ref<'success' | 'error' | 'warning' | 'info'>('info')
 
+// 当前年份
+const currentYear = computed(() => new Date().getFullYear())
+
 // 计算属性
 const loading = computed(() => portalStore.isLoading)
 const error = computed(() => ({
@@ -83,11 +99,6 @@ const error = computed(() => ({
   message: portalStore.errorMessage
 }))
 const universes = computed(() => portalStore.visibleUniverses)
-
-// 方法
-const loadUniverses = async () => {
-  await portalStore.loadUniverses()
-}
 
 // 显示Toast通知
 const showToastMessage = (message: string, type: 'success' | 'error' | 'warning' | 'info' = 'info') => {
@@ -165,7 +176,31 @@ onMounted(async () => {
   gap: 2rem;
 }
 
+/* ICP备案信息 */
+.icp-footer {
+  margin-top: 3rem;
+  padding: 1.5rem 0;
+  text-align: center;
+}
 
+.icp-link {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.icp-link:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.copyright {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+}
 
 /* 响应式设计 */
 @media (max-width: 768px) {
@@ -180,6 +215,16 @@ onMounted(async () => {
   .universes-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+  
+  .icp-footer {
+    margin-top: 2rem;
+    padding: 1rem 0;
+  }
+  
+  .icp-link,
+  .copyright {
+    font-size: 0.75rem;
   }
 }
 </style>
