@@ -46,17 +46,17 @@
       </div>
     </main>
 
-    <!-- ICP备案信息 -->
-    <footer class="icp-footer">
+    <!-- 版权与备案信息 -->
+    <footer class="site-footer">
+      <p class="copyright">© {{ currentYear }} 陆家花园</p>
       <a 
         href="https://beian.miit.gov.cn" 
         target="_blank" 
         rel="noopener noreferrer"
-        class="icp-link"
+        class="beian-link"
       >
         沪ICP备2025147783号
       </a>
-      <p class="copyright">© {{ currentYear }} 陆家花园 · 诗歌元宇宙</p>
     </footer>
 
     <!-- 通知提示 -->
@@ -176,30 +176,33 @@ onMounted(async () => {
   gap: 2rem;
 }
 
-/* ICP备案信息 */
-.icp-footer {
+/* 版权与备案信息 */
+.site-footer {
   margin-top: 3rem;
   padding: 1.5rem 0;
   text-align: center;
-}
-
-.icp-link {
-  display: block;
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-  transition: color 0.2s ease;
-}
-
-.icp-link:hover {
-  color: rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .copyright {
   margin: 0;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.85);
   font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.beian-link {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.beian-link:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* 响应式设计 */
@@ -217,14 +220,18 @@ onMounted(async () => {
     gap: 1rem;
   }
   
-  .icp-footer {
+  .site-footer {
     margin-top: 2rem;
     padding: 1rem 0;
+    gap: 0.375rem;
   }
   
-  .icp-link,
   .copyright {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
+  }
+  
+  .beian-link {
+    font-size: 0.6875rem;
   }
 }
 </style>
