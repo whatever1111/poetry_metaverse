@@ -1,0 +1,810 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 陆家明的爱人和偶记
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.27@3c4e37fef7455da28d36d559dde85201fc0b4f1819b80cd24eba56da15a711f9
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.5.4@22fa3d100c55f8fc4b2837d8fb0831e3c8de333a5a5b028e073d502d2df9cb35
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables:
+  - description: ''
+    id: 73990e98-4119-4b50-8b27-7eb9ea963ddb
+    name: classics
+    selector:
+    - conversation
+    - classics
+    value:
+      '0': '"'
+      '1': 周
+      '10': ','
+      '11': '
+
+        '
+      '12': '"'
+      '13': 孟
+      '14': 子
+      '15': '"'
+      '16': ','
+      '17': '
+
+        '
+      '18': '"'
+      '19': 尚
+      '2': 易
+      '20': 书
+      '21': '"'
+      '22': ','
+      '23': '
+
+        '
+      '24': '"'
+      '25': 礼
+      '26': 记
+      '27': '"'
+      '28': ','
+      '29': '
+
+        '
+      '3': '"'
+      '30': '"'
+      '31': 仪
+      '32': 礼
+      '33': '"'
+      '34': ','
+      '35': '
+
+        '
+      '36': '"'
+      '37': 周
+      '38': 礼
+      '39': '"'
+      '4': ','
+      '40': ','
+      '41': '
+
+        '
+      '42': '"'
+      '43': 易
+      '44': 传
+      '45': '"'
+      '46': ','
+      '47': '
+
+        '
+      '48': '"'
+      '49': 春
+      '5': '
+
+        '
+      '50': 秋
+      '51': 左
+      '52': 氏
+      '53': 传
+      '54': '"'
+      '55': ','
+      '56': '
+
+        '
+      '57': '"'
+      '58': 春
+      '59': 秋
+      '6': '"'
+      '60': 谷
+      '61': 梁
+      '62': 传
+      '63': '"'
+      '64': ','
+      '65': '
+
+        '
+      '66': '"'
+      '67': 春
+      '68': 秋
+      '69': 公
+      '7': 论
+      '70': 羊
+      '71': 传
+      '72': '"'
+      '8': 语
+      '9': '"'
+    value_type: object
+  - description: ''
+    id: a983881f-deeb-430d-a09c-4748fc9d7597
+    name: opening
+    selector:
+    - conversation
+    - opening
+    value: ''
+    value_type: string
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: '你好，我是陆家明，陆家花园的主理人
+
+
+      这里是我练习如何模仿吴任几先生写诗的地方
+
+
+      你想和我聊点儿什么？用几句话给我点灵感就行，我会尝试用一首诗来回复你'
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1756961775730-source-1756963597193-target
+      selected: false
+      source: '1756961775730'
+      sourceHandle: source
+      target: '1756963597193'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1756963597193-source-1756699910424-target
+      selected: false
+      source: '1756963597193'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1756699728276-source-1756965735142-target
+      selected: false
+      source: '1756699728276'
+      sourceHandle: source
+      target: '1756965735142'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1756696215859-source-1756961820611-target
+      selected: false
+      source: '1756696215859'
+      sourceHandle: source
+      target: '1756961820611'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 1756965735142-source-1756699910424-target
+      selected: false
+      source: '1756965735142'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: 1756961820611-source-1756699728276-target
+      source: '1756961820611'
+      sourceHandle: source
+      target: '1756699728276'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: 1756961820611-source-1756961775730-target
+      selected: false
+      source: '1756961820611'
+      sourceHandle: source
+      target: '1756961775730'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: 1756961820611-source-1757296361570-target
+      source: '1756961820611'
+      sourceHandle: source
+      target: '1757296361570'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1757296361570-source-17580042033660-target
+      source: '1757296361570'
+      sourceHandle: source
+      target: '17580042033660'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 17580042033660-source-1756699910424-target
+      source: '17580042033660'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: 1756961820611-source-17580044625920-target
+      source: '1756961820611'
+      sourceHandle: source
+      target: '17580044625920'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 17580044625920-source-17580044849800-target
+      source: '17580044625920'
+      sourceHandle: source
+      target: '17580044849800'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: template-transform
+        targetType: llm
+      id: 17580044849800-source-1756699910424-target
+      source: '17580044849800'
+      sourceHandle: source
+      target: '1756699910424'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1756699910424-source-1758004781202-target
+      source: '1756699910424'
+      sourceHandle: source
+      target: '1758004781202'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 53
+      id: '1756696215859'
+      position:
+        x: 30
+        y: 522
+      positionAbsolute:
+        x: 30
+        y: 522
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - kxnxq/Yq07+6Wzrk18CE90/36kYqDQwHhPv3Vagfc6ifLSLwpyHjdxSLwmjBrdXv
+        desc: ''
+        metadata_filtering_mode: disabled
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: text-embedding-3-large
+              embedding_provider_name: langgenius/openai/openai
+              vector_weight: 0.7
+        query_variable_selector:
+        - '1756961820611'
+        - text
+        retrieval_mode: multiple
+        selected: false
+        title: 感知流模式检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1756699728276'
+      position:
+        x: 696
+        y: 522
+      positionAbsolute:
+        x: 696
+        y: 522
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c2bac84e-6f1d-4700-b290-67461895de0f
+          role: system
+          text: '你是AI诗人"陆家明"，专门模仿李尤台（唐宗正）的诗歌风格进行创作。
+
+
+
+            以下是前序节点完成的创作分析，作为你的输入：
+
+
+            用户输入: {{#sys.query#}}
+
+            意图解析:{{#1756961820611.text#}}
+
+            知识库检索结果：
+
+            【{{#1756965735142.output#}}】
+
+            【{{#1756963597193.output#}}】
+
+            【{{#17580042033660.output#}}】
+
+            【{{#17580044849800.output#}}】
+
+
+
+            你的创作核心是：
+
+
+            1. 感知流动重构：基于检索到的感知流模式，将用户的情感输入转化为李尤台式的意识流动轨迹
+
+            2. 反讽解构运用：参考检索到的反讽机制，对传统概念或情感表达进行李尤台式的解构和重新定义
+
+            3. 观念碎片并置：运用检索到的并置逻辑，创造看似无关但内在关联的意象组合，体现"观念碎片"特质
+
+            4. 风格特征融合：严格按照检索到的风格域特征，保持李尤台诗歌的语言质感和结构特色
+
+
+
+            你的创作输出要求是：
+
+
+            - 语言风格：口语化与诗意化的平衡，避免过度雕琢或过度口语
+
+            - 情感处理：真诚而不煽情，深刻而不晦涩
+
+            - 技巧运用：自然融入检索到的核心机制，不生硬套用
+
+
+
+            最终结果：直接输出诗歌作品（含标题），无需解释创作过程
+
+
+            '
+        - id: fd55064b-6d96-49bd-94bc-034c625d0511
+          role: user
+          text: 开始创作
+        selected: true
+        title: G1
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756699910424'
+      position:
+        x: 1362
+        y: 653
+      positionAbsolute:
+        x: 1362
+        y: 653
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - qPI5+FI3rqtfUsdWP8bqfGkRr/jIiSUTZRzFSbDKim0DA1SFZdG8DdQvMibcJGAh
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756961820611'
+        - text
+        retrieval_mode: multiple
+        selected: false
+        title: 反讽机制检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1756961775730'
+      position:
+        x: 696
+        y: 653
+      positionAbsolute:
+        x: 696
+        y: 653
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.0-flash-lite
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 9ea96503-afbc-4366-b4d2-571b53768cd0
+          role: system
+          text: '你是用户意图分析器，需要分析用户的输入
+
+            '
+        - id: 22fc0f47-0b43-4785-ad94-2bc167b3ffce
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              创作主题:
+                description: 核心创作意图，简洁准确，不少于10个中文字符
+                maxLength: 30
+                minLength: 10
+                type: string
+              情感基调:
+                description: 情感倾向描述，可以是复合情感，不少于10个中文字符
+                maxLength: 15
+                minLength: 10
+                type: string
+              明确度:
+                enum:
+                - 明确指定
+                - 主题表达
+                - 情感倾诉
+                - 随意对话
+                type: string
+            required:
+            - 创作主题
+            - 情感基调
+            - 明确度
+            type: object
+        structured_output_enabled: true
+        title: 意图分析节点
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1756961820611'
+      position:
+        x: 363
+        y: 522
+      positionAbsolute:
+        x: 363
+        y: 522
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: "{% for item in arg1[:2] -%}\r\n**反讽机制参考{{ loop.index }}** (相关度:\
+          \ {{ \"%.3f\"|format(item.metadata.score) }})\r\n\r\n{% set parts = item.content.split(';')\
+          \ -%}\r\n{% for part in parts -%}\r\n{% if part.startswith('标题: ') -%}\r\
+          \n**作品**: {{ part.replace('标题: ', '') }}\r\n{% elif part.startswith('诗集名称:\
+          \ ') -%}\r\n**来源**: {{ part.replace('诗集名称: ', '') }}\r\n{% elif part.startswith('核心情感基调:\
+          \ ') -%}\r\n**情感基调**: {{ part.replace('核心情感基调: ', '') }}\r\n{% elif part.startswith('情感极性评分:\
+          \ ') -%}\r\n**极性评分**: {{ part.replace('情感极性评分: ', '') }}\r\n{% elif part.startswith('我的功能角色:\
+          \ ') -%}\r\n**功能角色**: {{ part.replace('我的功能角色: ', '') }}\r\n{% endif -%}\r\
+          \n{% endfor %}\r\n\r\n---\r\n{% endfor %}"
+        title: 反讽机制转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756961775730'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '1756963597193'
+      position:
+        x: 1029
+        y: 653
+      positionAbsolute:
+        x: 1029
+        y: 653
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: "{% for item in arg1[:2] -%}\r\n**感知流参考{{ loop.index }}** (相关度:\
+          \ {{ \"%.3f\"|format(item.metadata.score) }})\r\n\r\n{% set parts = item.content.split(';')\
+          \ -%}\r\n{% for part in parts -%}\r\n{% if part.startswith('标题: ') -%}\r\
+          \n**作品**: {{ part.replace('标题: ', '') }}\r\n{% elif part.startswith('诗集名称:\
+          \ ') -%}\r\n**来源**: {{ part.replace('诗集名称: ', '') }}\r\n{% elif part.startswith('主导感官:\
+          \ ') -%}\r\n**主导感官**: {{ part.replace('主导感官: ', '') }}\r\n{% elif part.startswith('感知流动模式:\
+          \ ') -%}\r\n**流动模式**: {{ part.replace('感知流动模式: ', '') }}\r\n{% elif part.startswith('关键意象序列:\
+          \ ') -%}\r\n**意象序列**: {{ part.replace('关键意象序列: ', '') }}\r\n{% endif -%}\r\
+          \n{% endfor %}\r\n\r\n---\r\n{% endfor %}"
+        title: 感知流模式转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1756699728276'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '1756965735142'
+      position:
+        x: 1029
+        y: 522
+      positionAbsolute:
+        x: 1029
+        y: 522
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - VRyQhHJ9A0BI51w7kuoPI1wZMgiiUzTzFIviwanUtxtLUz9nfTuvbMb59TXzUgh1
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756961820611'
+        - text
+        retrieval_mode: multiple
+        selected: false
+        title: 并置逻辑检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1757296361570'
+      position:
+        x: 696
+        y: 784
+      positionAbsolute:
+        x: 696
+        y: 784
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: "{% for item in arg1[:2] -%}\r\n**并置参考{{ loop.index }}** (相关度: {{\
+          \ \"%.4f\"|format(item.metadata.score) }})\r\n\r\n{% set parts = item.content.split(';')\
+          \ -%}\r\n{% for part in parts -%}\r\n{% if part.startswith('标题: ') -%}\r\
+          \n**作品**: {{ part.replace('标题: ', '') }}\r\n{% elif part.startswith('诗集名称:\
+          \ ') -%}\r\n**来源**: {{ part.replace('诗集名称: ', '') }}\r\n{% elif part.startswith('潜在触发器:\
+          \ ') -%}\r\n**触发器**: {{ part.replace('潜在触发器: ', '') }}\r\n{% elif part.startswith('生成逻辑链:\
+          \ ') -%}\r\n**逻辑链**: {{ part.replace('生成逻辑链: ', '') | replace(' → ', ' →\
+          \ ') | truncate(200) }}\r\n{% elif part.startswith('禁用元素: ') -%}\r\n**禁用**:\
+          \ {{ part.replace('禁用元素: ', '') }}\r\n{% elif part.startswith('核心词汇库: ')\
+          \ -%}\r\n**词汇库**: {{ part.replace('核心词汇库: ', '') | truncate(150) }}\r\n\
+          {% endif -%}\r\n{% endfor %}\r\n\r\n---\r\n{% endfor %}"
+        title: 并置逻辑转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1757296361570'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '17580042033660'
+      position:
+        x: 1029
+        y: 784
+      positionAbsolute:
+        x: 1029
+        y: 784
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - +zNL3C3lXwSYhNtVpVoX1rvBMkSg8x+X9zEQk/NpCjZH+20fBzeDk6Y2+1svciPt
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen/Qwen3-Reranker-8B
+            provider: langgenius/siliconflow/siliconflow
+          score_threshold: null
+          top_k: 4
+        query_variable_selector:
+        - '1756961820611'
+        - text
+        retrieval_mode: multiple
+        selected: false
+        title: 风格域检索
+        type: knowledge-retrieval
+      height: 91
+      id: '17580044625920'
+      position:
+        x: 696
+        y: 915
+      positionAbsolute:
+        x: 696
+        y: 915
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: "{% for item in arg1[:2] -%}\r\n**风格参考{{ loop.index }}** (相关度: {{\
+          \ \"%.3f\"|format(item.metadata.score) }})\r\n\r\n{% set parts = item.content.split(';')\
+          \ -%}\r\n{% for part in parts -%}\r\n{% if part.startswith('title: ') -%}\r\
+          \n**作品标题**: {{ part.replace('title: ', '') }}\r\n{% elif part.startswith('collection:\
+          \ ') -%}\r\n**所属集合**: {{ part.replace('collection: ', '') }}\r\n{% elif\
+          \ part.startswith('section: ') -%}\r\n**章节分类**: {{ part.replace('section:\
+          \ ', '') }}\r\n{% elif part.startswith('date: ') -%}\r\n**创作时间**: {{ part.replace('date:\
+          \ ', '') }}\r\n{% elif part.startswith('body: ') -%}\r\n**作品正文**:\r\n{{\
+          \ part.replace('body: ', '') | trim }}\r\n{% endif -%}\r\n{% endfor %}\r\
+          \n\r\n---\r\n{% endfor %}"
+        title: 风格域转换
+        type: template-transform
+        variables:
+        - value_selector:
+          - '17580044625920'
+          - result
+          value_type: array[object]
+          variable: arg1
+      height: 53
+      id: '17580044849800'
+      position:
+        x: 1029
+        y: 915
+      positionAbsolute:
+        x: 1029
+        y: 915
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1756699910424.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '1758004781202'
+      position:
+        x: 1665
+        y: 653
+      positionAbsolute:
+        x: 1665
+        y: 653
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: 106.08617696458646
+      y: -148.79008969491554
+      zoom: 0.7578582832551993

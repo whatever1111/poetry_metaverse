@@ -24,6 +24,9 @@ Thumbs.db
 *.tmp
 *.temp
 
+# 原始素材
+*.pdf
+
 # 环境变量文件
 # 允许本地开发版本，但排除生产敏感配置
 lugarden_universal/application/.env.local
@@ -43,3 +46,11 @@ lugarden_universal/application/generated/
 # - lugarden_universal/application/.env (环境变量配置)
 # Cursor - 本地AI配置
 .cursor/
+
+# 语料库文件 - 敏感数据，不应被版本控制跟踪
+lugarden_universal/lu_the_poet/corpus/
+
+# Dify API 配置文件 - 包含敏感的API密钥
+lugarden_universal/lu_the_poet/dify_output/.env.local
+lugarden_universal/lu_the_poet/dify_output/logs/
+lugarden_universal/lu_the_poet/dify_output/daily_output/
