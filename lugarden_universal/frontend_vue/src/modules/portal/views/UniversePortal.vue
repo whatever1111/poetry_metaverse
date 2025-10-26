@@ -53,9 +53,17 @@
         href="https://beian.miit.gov.cn" 
         target="_blank" 
         rel="noopener noreferrer"
-        class="beian-link"
+        class="beian-link icp-beian"
       >
         沪ICP备2025147783号
+      </a>
+      <a 
+        href="https://www.beian.gov.cn/portal/registerSystemInfo" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="beian-link police-beian"
+      >
+        沪公网安备31010702009727号
       </a>
     </footer>
 
@@ -201,10 +209,19 @@ onMounted(async () => {
   text-decoration: none;
   font-size: var(--font-size-xs);
   transition: all var(--duration-fast) var(--ease-out);
+  opacity: 0.5;
 }
 
 .beian-link:hover {
   color: var(--text-tertiary);
+  opacity: 0.7;
+}
+
+/* ICP备案和公安备案保持一致的样式 */
+.icp-beian,
+.police-beian {
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
 /* 响应式设计 */
