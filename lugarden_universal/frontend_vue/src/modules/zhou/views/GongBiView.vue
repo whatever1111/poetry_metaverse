@@ -18,7 +18,7 @@
         </div>
         
         <!-- 输入步骤 -->
-        <div v-if="!loading && !generatedPoem && !error" class="space-y-6 animate-fadeInUp">
+        <div v-if="!loading && !generatedPoem && !error" class="animate-fadeInUp">
           <!-- 标题 -->
           <div class="text-center mb-8">
             <h1 class="text-4xl font-bold mb-4" style="color: var(--text-primary);">共笔</h1>
@@ -26,7 +26,7 @@
           </div>
           
           <!-- 原诗展示（可折叠） -->
-          <div v-if="sourcePoem" class="source-poem-section mb-6">
+          <div v-if="sourcePoem" class="source-poem-section">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-2xl font-bold" style="color: var(--text-primary);">你读到的诗</h2>
               <button 
@@ -51,11 +51,9 @@
           </div>
           
           <!-- 输入区域 -->
-          <div class="card-base">
-            <label class="block mb-4">
-              <span class="input-label">
-                你的临时起意
-              </span>
+          <div class="input-section">
+            <h2 class="text-2xl font-bold mb-4" style="color: var(--text-primary);">你的临时起意</h2>
+            <div class="w-full">
               <textarea 
                 v-model="userFeeling"
                 :maxlength="50"
@@ -64,22 +62,21 @@
                 :class="{ 'feeling-input-limit': userFeeling.length >= 50 }"
                 placeholder=""
               />
-              <div class="flex justify-between items-center mt-2">
+              <div class="flex justify-end items-center mt-1 w-full">
+                <span v-if="userFeeling.length >= 50" class="limit-hint mr-2">
+                  念头不用太纷扰
+                </span>
                 <span 
                   class="char-count"
                   :class="{ 'char-count-limit': userFeeling.length >= 50 }"
                 >
                   {{ userFeeling.length }} / 50
                 </span>
-                <span v-if="userFeeling.length >= 50" class="limit-hint">
-                  念头不用太纷扰
-                </span>
               </div>
-            </label>
-          </div>
-          
-          <!-- 操作按钮 -->
-          <div class="grid grid-cols-2 gap-4">
+            </div>
+            
+            <!-- 操作按钮 - 移到input-section内部 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <button 
               @click="goBack"
               class="btn-control-base btn-control-hover btn-control-disabled px-6 py-3 rounded-lg font-medium text-body"
@@ -94,6 +91,7 @@
             >
               陆家明的闻言落笔
             </button>
+            </div>
           </div>
         </div>
         
@@ -123,7 +121,7 @@
           />
           
           <!-- 操作按钮 -->
-          <div class="grid grid-cols-2 gap-4 animate-fadeInUp" style="animation-delay: 0.2s;">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fadeInUp" style="animation-delay: 0.2s;">
             <button 
               @click="resetAndRetry"
               class="btn-control-base btn-control-hover px-6 py-3 rounded-lg font-medium text-body"
@@ -306,14 +304,6 @@ const goBack = () => {
 
 <style scoped>
 /* 使用全局样式变量 */
-.card-base {
-  padding: var(--spacing-xl);
-  background: rgba(var(--card-bg-rgb), 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-md);
-}
 
 /* 原诗展示区域 */
 .source-poem-section {
@@ -349,54 +339,78 @@ const goBack = () => {
   padding-bottom: 4rem; /* 64px，与pt-3xl对称 */
 }
 
-/* 输入框标签 */
-.input-label {
-  display: block;
-  font-size: var(--font-size-lg);
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
+/* 输入区域容器 - 与诗歌区域宽度对齐 */
+.input-section {
+  width: 100%;
+  padding: var(--spacing-lg);
 }
 
-/* 感受输入框 */
+/* 感受输入框 - 内嵌样式（参考进度条） */
 .feeling-input {
   width: 100%;
   padding: 1rem;
   border-radius: var(--radius-lg);
-  border: 2px solid var(--border-color);
-  background-color: var(--bg-secondary);
+  border: none;
+  background-color: rgba(107, 114, 128, 0.12);
   color: var(--text-primary);
   font-size: var(--font-size-base);
   line-height: 1.5;
   transition: all var(--duration-normal) var(--ease-out);
   resize: vertical;
+  /* 内嵌阴影效果 - 参考ProgressBar */
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.12),
+    inset 0 1px 2px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .feeling-input:focus {
   outline: none;
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+  background-color: rgba(107, 114, 128, 0.15);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
 }
 
 .feeling-input-limit {
-  border-color: var(--color-warning);
+  background-color: rgba(245, 158, 11, 0.08);
+  box-shadow: 
+    inset 0 2px 4px rgba(245, 158, 11, 0.15),
+    inset 0 1px 2px rgba(245, 158, 11, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .feeling-input-limit:focus {
-  border-color: var(--color-warning);
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+  background-color: rgba(245, 158, 11, 0.12);
+  box-shadow: 
+    inset 0 2px 4px rgba(245, 158, 11, 0.18),
+    inset 0 1px 2px rgba(245, 158, 11, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 3px rgba(245, 158, 11, 0.1);
 }
 
-/* 字数统计 */
+/* 字数统计 - 右对齐+透明度（参考备案信息） */
 .char-count {
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  transition: color var(--duration-fast) var(--ease-out);
+  opacity: 0.5;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.char-count:hover {
+  opacity: 0.7;
 }
 
 .char-count-limit {
   color: var(--color-warning);
   font-weight: 500;
+  opacity: 0.8;
+}
+
+.char-count-limit:hover {
+  opacity: 1;
 }
 
 /* 上限提示 */
@@ -404,20 +418,11 @@ const goBack = () => {
   font-size: var(--font-size-sm);
   color: var(--color-warning);
   font-style: italic;
+  opacity: 0.9;
 }
 
 /* 响应式调整 */
-@media (max-width: 768px) {
-  .card-base {
-    padding: var(--spacing-lg);
-  }
-}
-
 @media (max-width: 480px) {
-  .card-base {
-    padding: var(--spacing-base);
-  }
-  
   .feeling-input {
     padding: 0.75rem;
     font-size: var(--font-size-sm);
