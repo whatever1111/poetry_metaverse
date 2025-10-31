@@ -289,6 +289,32 @@ interface GongBiResponse {
   - [ ] 步骤A.4.4：替换为PoemViewer组件，适配sourcePoem数据
   - [ ] 步骤A.4.5：浏览器测试：原诗展示、折叠/展开功能
 
+#### - [ ] 任务A.5：优化原诗卡片视觉平衡（补充任务）
+
+- **核心思想**: 为GongBiView中"你读到的诗"的PoemViewer组件增加底部留白，使上下视觉平衡，与ResultScreen的诗歌卡片保持一致的视觉比例
+- **问题分析**：
+  - ResultScreen的PoemViewer有底部操作按钮区域，视觉上上下对称
+  - GongBiView的"你读到的诗"PoemViewer设置了`:show-actions="false"`，没有底部按钮
+  - 导致视觉上头重脚轻，不够平衡
+- **解决方案**：
+  - 为没有操作按钮的PoemViewer增加底部padding
+  - 使上下留白视觉等宽
+- 交付物：
+  - 修改后的 `GongBiView.vue` 样式
+- 验收标准：
+  - "你读到的诗"卡片视觉上上下平衡
+  - 与ResultScreen的诗歌卡片视觉比例一致
+  - 通过浏览器实际查看验证
+- **风险评估**: 零风险 - 纯CSS调整
+- 预期改动文件（预判）：
+  - `lugarden_universal/frontend_vue/src/modules/zhou/views/GongBiView.vue`
+- 实际改动文件: [待填写]
+- 完成状态：🔄 待开始
+- 执行步骤：
+  - [ ] 步骤A.5.1：分析PoemViewer组件的内部padding结构
+  - [ ] 步骤A.5.2：为GongBiView中的原诗PoemViewer外层添加底部padding样式
+  - [ ] 步骤A.5.3：浏览器对比验证，确保视觉平衡
+
 ---
 
 ## 测试与验收
