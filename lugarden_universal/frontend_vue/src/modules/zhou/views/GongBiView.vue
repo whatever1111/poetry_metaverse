@@ -22,7 +22,7 @@
           <!-- 标题 -->
           <div class="text-center mb-8">
             <h1 class="text-4xl font-bold mb-4" style="color: var(--text-primary);">共笔</h1>
-            <p class="text-lg" style="color: var(--text-secondary);">与陆家明一起，为你刚刚读到的诗歌创作回应</p>
+            <p class="text-lg" style="color: var(--text-secondary);">你起意，我落笔</p>
           </div>
           
           <!-- 原诗展示（可折叠） -->
@@ -57,31 +57,26 @@
           <!-- 输入区域 -->
           <div class="card-base">
             <label class="block mb-4">
-              <span class="text-lg font-medium block mb-2" style="color: var(--text-primary);">
-                写下你的感受（最多50字）
+              <span class="input-label">
+                你的临时起意
               </span>
               <textarea 
                 v-model="userFeeling"
                 :maxlength="50"
                 rows="4"
-                class="w-full p-4 rounded-lg border-2 transition-all text-body"
-                style="
-                  background-color: var(--bg-secondary);
-                  color: var(--text-primary);
-                  border-color: var(--border-color);
-                "
-                :style="{ borderColor: userFeeling.length >= 50 ? '#f59e0b' : 'var(--border-color)' }"
-                placeholder="说说这首诗给你的感受..."
+                class="feeling-input"
+                :class="{ 'feeling-input-limit': userFeeling.length >= 50 }"
+                placeholder=""
               />
               <div class="flex justify-between items-center mt-2">
                 <span 
-                  class="text-sm"
-                  :style="{ color: userFeeling.length >= 50 ? '#f59e0b' : 'var(--text-secondary)' }"
+                  class="char-count"
+                  :class="{ 'char-count-limit': userFeeling.length >= 50 }"
                 >
-                  {{ userFeeling.length }} / 50 字
+                  {{ userFeeling.length }} / 50
                 </span>
-                <span v-if="userFeeling.length >= 50" class="text-sm" style="color: #f59e0b;">
-                  已达字数上限
+                <span v-if="userFeeling.length >= 50" class="limit-hint">
+                  念头不用太纷扰
                 </span>
               </div>
             </label>
@@ -101,7 +96,7 @@
               :disabled="!userFeeling.trim()"
               class="btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-gongbi px-6 py-3 rounded-lg font-medium text-body"
             >
-              让陆家明为我写诗
+              陆家明的闻言落笔
             </button>
           </div>
         </div>
@@ -324,6 +319,63 @@ const goBack = () => {
   box-shadow: var(--shadow-md);
 }
 
+/* 输入框标签 */
+.input-label {
+  display: block;
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+/* 感受输入框 */
+.feeling-input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  transition: all var(--duration-normal) var(--ease-out);
+  resize: vertical;
+}
+
+.feeling-input:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.feeling-input-limit {
+  border-color: var(--color-warning);
+}
+
+.feeling-input-limit:focus {
+  border-color: var(--color-warning);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+/* 字数统计 */
+.char-count {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.char-count-limit {
+  color: var(--color-warning);
+  font-weight: 500;
+}
+
+/* 上限提示 */
+.limit-hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-warning);
+  font-style: italic;
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
   .card-base {
@@ -334,6 +386,11 @@ const goBack = () => {
 @media (max-width: 480px) {
   .card-base {
     padding: var(--spacing-base);
+  }
+  
+  .feeling-input {
+    padding: 0.75rem;
+    font-size: var(--font-size-sm);
   }
 }
 </style>
