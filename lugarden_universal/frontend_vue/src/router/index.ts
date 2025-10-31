@@ -65,6 +65,16 @@ const routes: Array<RouteRecordRaw> = [
       requiresQuizComplete: true
     }
   },
+  {
+    path: '/gongbi',
+    name: 'GongBiView',
+    component: () => import('@/modules/zhou/views/GongBiView.vue'),
+    meta: {
+      title: '共笔 - 与陆家明一起创作',
+      requiresAuth: false,
+      step: 6
+    }
+  },
   // 404 重定向
   {
     path: '/:pathMatch(.*)*',
