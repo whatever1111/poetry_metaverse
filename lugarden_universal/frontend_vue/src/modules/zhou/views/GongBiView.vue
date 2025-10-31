@@ -26,31 +26,27 @@
           </div>
           
           <!-- 原诗展示（可折叠） -->
-          <div v-if="sourcePoem" class="card-base mb-6">
+          <div v-if="sourcePoem" class="source-poem-section mb-6">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-2xl font-bold" style="color: var(--text-primary);">你读到的诗</h2>
               <button 
                 @click="showSourcePoem = !showSourcePoem"
-                class="text-sm px-4 py-2 rounded-lg transition-all"
-                style="background-color: var(--bg-secondary); color: var(--text-secondary);"
+                class="toggle-button"
               >
                 {{ showSourcePoem ? '折叠' : '展开' }}
               </button>
             </div>
             
-            <div v-if="showSourcePoem" class="space-y-4">
-              <h3 class="text-xl font-semibold text-center" style="color: var(--text-primary);">
-                《{{ sourcePoem.title }}》
-              </h3>
-              
-              <div v-if="sourcePoem.quote" class="text-center italic" style="color: var(--text-secondary);">
-                <p>{{ sourcePoem.quote }}</p>
-                <p v-if="sourcePoem.quoteSource" class="text-sm">——{{ sourcePoem.quoteSource }}</p>
-              </div>
-              
-              <div class="whitespace-pre-wrap" style="color: var(--text-primary);">
-                {{ sourcePoem.content }}
-              </div>
+            <div v-if="showSourcePoem">
+              <PoemViewer 
+                :poem-title="sourcePoem.title"
+                :quote-text="sourcePoem.quote"
+                :quote-citation="sourcePoem.quoteSource"
+                :main-text="sourcePoem.content"
+                animation-delay="0.1s"
+                :show-actions="false"
+                :show-download="false"
+              />
             </div>
           </div>
           
@@ -317,6 +313,33 @@ const goBack = () => {
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-md);
+}
+
+/* 原诗展示区域 */
+.source-poem-section {
+  padding: var(--spacing-lg);
+  background: rgba(var(--card-bg-rgb), 0.6);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+/* 折叠/展开按钮 */
+.toggle-button {
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-sm);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: var(--radius-base);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.toggle-button:hover {
+  background-color: var(--color-primary-500);
+  color: white;
+  border-color: var(--color-primary-500);
 }
 
 /* 输入框标签 */
