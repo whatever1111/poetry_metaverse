@@ -134,7 +134,7 @@ onMounted(() => {
   }
 })
 
-// 继续到结果页面
+// 继续到结果页面 - 通过URL参数传递数据，实现无状态架构
 const continueToResult = async () => {
   if (isTransitioning.value) return
   
@@ -149,8 +149,32 @@ const continueToResult = async () => {
     // 短暂延迟以提供更好的用户体验
     await new Promise(resolve => setTimeout(resolve, 1000))
     
+    // 获取必要数据用于构建URL参数
+    const chapterKey = zhouStore.navigation.currentChapterName
+    const poemTitle = zhouStore.result.poemTitle || zhouStore.result.selectedPoem?.title
+    
+    // 计算answerPattern (A=0, B=1)
+    const answerPattern = zhouStore.quiz.userAnswers
+      .map(answer => answer.selectedOption === 'A' ? '0' : '1')
+      .join('')
+    
+    // 验证数据完整性
+    if (!chapterKey || !poemTitle || !answerPattern) {
+      console.error('[ClassicalEcho] 缺少必要数据，回退到无参数导航')
+      zhouStore.showResult()
+      router.push('/result')
+      return
+    }
+    
+    // 构建URL参数
+    const params = new URLSearchParams({
+      chapter: chapterKey,
+      pattern: answerPattern,
+      poem: poemTitle
+    })
+    
     zhouStore.showResult()
-    router.push('/result')
+    router.push(`/result?${params.toString()}`)
   } catch (error) {
     console.error('跳转到结果页面失败:', error)
     zhouStore.showError('跳转失败，请重试')

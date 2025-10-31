@@ -492,6 +492,108 @@ export const useZhouStore = defineStore('zhou', () => {
     }
   }
 
+  // ================================
+  // B.0 无状态架构支持 (2025-10-31)
+  // ================================
+  // 基于URL参数加载诗歌，支持直接访问诗歌URL
+  // ================================
+  
+  // 基于URL参数加载诗歌
+  async function loadPoemByParams(
+    chapterName: string, 
+    answerPattern: string, 
+    poemTitle: string
+  ): Promise<void> {
+    try {
+      // 确保宇宙数据已加载
+      if (!appState.initialized || universeData.projects.length === 0) {
+        console.log('[loadPoemByParams] 宇宙数据未加载，先加载数据')
+        await loadUniverseContent()
+      }
+      
+      // 验证参数
+      if (!chapterName || !answerPattern || !poemTitle) {
+        throw new Error('URL参数不完整')
+      }
+      
+      // 设置导航状态
+      navigation.currentChapterName = chapterName
+      
+      // 查询映射验证
+      const chapterMappings = universeData.mappings.units[chapterName]
+      if (!chapterMappings || !chapterMappings[answerPattern]) {
+        throw new Error(`未找到匹配的诗歌映射: chapter=${chapterName}, pattern=${answerPattern}`)
+      }
+      
+      // 获取诗歌内容
+      const poemContent = universeData.poems[poemTitle]
+      if (!poemContent) {
+        throw new Error(`未找到诗歌内容: ${poemTitle}`)
+      }
+      
+      // 设置result状态
+      result.poemTitle = poemTitle
+      result.selectedPoem = {
+        title: poemTitle,
+        body: poemContent
+      }
+      
+      console.log('[loadPoemByParams] 诗歌加载成功:', { chapterName, answerPattern, poemTitle })
+      
+    } catch (error) {
+      console.error('[loadPoemByParams] 加载失败:', error)
+      throw error
+    }
+  }
+  
+  // 基于answerPattern重构问答答案（用于解诗等功能）
+  function reconstructQuizFromPattern(chapterName: string, answerPattern: string): void {
+    try {
+      // 获取章节问题列表
+      const questions = universeData.questions[chapterName]
+      if (!questions || questions.length === 0) {
+        console.warn('[reconstructQuizFromPattern] 未找到问题列表:', chapterName)
+        return
+      }
+      
+      // 验证pattern长度
+      if (answerPattern.length !== questions.length) {
+        console.warn('[reconstructQuizFromPattern] Pattern长度与问题数量不匹配:', {
+          patternLength: answerPattern.length,
+          questionsCount: questions.length
+        })
+        return
+      }
+      
+      // 重构userAnswers
+      quiz.userAnswers = answerPattern.split('').map((char, index) => {
+        const selectedOption = char === '0' ? 'A' : 'B'
+        const question = questions[index]
+        
+        return {
+          questionIndex: index,
+          selectedOption: selectedOption as 'A' | 'B',
+          questionText: question.question,
+          selectedText: question.options[selectedOption]
+        }
+      })
+      
+      // 设置问答状态
+      quiz.totalQuestions = questions.length
+      quiz.currentQuestionIndex = questions.length - 1
+      quiz.isQuizComplete = true
+      
+      console.log('[reconstructQuizFromPattern] 问答状态重构完成:', {
+        chapterName,
+        answerPattern,
+        answersCount: quiz.userAnswers.length
+      })
+      
+    } catch (error) {
+      console.error('[reconstructQuizFromPattern] 重构失败:', error)
+    }
+  }
+
   // 显示结果页面
   function showResult(): void {
     appState.currentStep = 5
@@ -722,6 +824,8 @@ export const useZhouStore = defineStore('zhou', () => {
 
     // 结果管理
     calculatePoemMapping,
+    loadPoemByParams,
+    reconstructQuizFromPattern,
     showResult,
 
     // AI功能

@@ -192,7 +192,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '@/modules/zhou/stores/zhou'
 import PoemViewer from '@/modules/zhou/components/PoemViewer.vue'
 import ControlButtons from '@/modules/zhou/components/ControlButtons.vue'
@@ -201,6 +201,7 @@ import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import ErrorState from '@/shared/components/ErrorState.vue'
 
 const router = useRouter()
+const route = useRoute()
 const zhouStore = useZhouStore()
 
 // ================================
@@ -253,10 +254,46 @@ const selectedPoemMainText = computed(() => {
   return null
 })
 
-onMounted(() => {
-  // 检查是否有结果数据
+onMounted(async () => {
+  // ================================
+  // B.0 无状态架构支持 (2025-10-31)
+  // ================================
+  // 优先从URL参数读取数据，实现诗歌URL可分享、可收藏
+  // 降级策略：URL参数 → Store → 错误提示
+  // ================================
+  
+  // 步骤1: 尝试从URL参数读取
+  const chapterParam = route.query.chapter as string | undefined
+  const patternParam = route.query.pattern as string | undefined
+  const poemParam = route.query.poem as string | undefined
+  
+  if (chapterParam && patternParam && poemParam) {
+    // URL参数完整，优先使用URL参数加载诗歌
+    console.log('[ResultScreen] 从URL参数加载诗歌:', { chapterParam, patternParam, poemParam })
+    
+    try {
+      // 调用store方法，基于URL参数查询诗歌
+      await zhouStore.loadPoemByParams(chapterParam, patternParam, poemParam)
+      
+      // 如果store中没有问答数据，重构用户答案（用于解诗等功能）
+      if (zhouStore.quiz.userAnswers.length === 0) {
+        zhouStore.reconstructQuizFromPattern(chapterParam, patternParam)
+      }
+      
+      return // 成功加载，直接返回
+    } catch (error) {
+      console.error('[ResultScreen] 从URL参数加载失败:', error)
+      // 继续执行降级逻辑
+    }
+  }
+  
+  // 步骤2: 降级到store数据
+  console.log('[ResultScreen] URL参数缺失或加载失败，尝试使用store数据')
+  
+  // 检查是否有问答完成的标记
   if (!zhouStore.quiz.isQuizComplete) {
-    router.replace('/')
+    console.error('[ResultScreen] 无URL参数且问答未完成，重定向到首页')
+    router.replace('/zhou')
     return
   }
 
