@@ -903,6 +903,79 @@ depends_on:
 
 **解决方案**：使用一次性容器执行构建任务
 
+---
+
+#### ⚠️ **生产环境部署策略（重要）**
+
+> **实践教训（2025-10-31）**：在2c2G VPS上，frontend_vue容器配置错误导致CPU持续90%+。
+
+**错误配置（导致CPU飙升）**：
+
+```yaml
+frontend_vue:
+  image: node:20-alpine
+  restart: unless-stopped           # ❌ 致命错误！
+  command: npm ci && npm run build  # ❌ 构建完成后容器退出
+```
+
+**问题根源**：
+```
+容器启动 → 构建(CPU 90%) → 完成退出 → Docker自动重启 → 再次构建 → ♻️
+```
+
+**推荐策略**：
+
+| 策略 | 适用场景 | dist处理 | 优点 | 缺点 |
+|------|----------|----------|------|------|
+| **策略A：dist提交到Git** | **推荐：资源受限的VPS** | 构建在本地，提交到Git | ✅ VPS无构建开销<br>✅ 部署速度快<br>✅ 资源占用低 | ❌ Git仓库变大（通常<1MB）<br>❌ 需本地构建 |
+| **策略B：一次性构建容器** | 初次部署或dist未提交 | `restart: "no"` | ✅ 自动化构建<br>✅ 环境一致性 | ❌ 占用CPU 1-2分钟<br>❌ 需要足够内存 |
+| **策略C：CI/CD构建** | 企业级/团队项目 | GitHub Actions构建并部署 | ✅ 完全自动化<br>✅ VPS零负担 | ❌ 需配置CI/CD |
+
+**策略A实现（推荐）**：
+
+```bash
+# 1. 本地构建
+cd lugarden_universal/frontend_vue
+npm run build  # 生成dist/
+
+# 2. 修改.gitignore（取消忽略dist）
+# lugarden_universal/frontend_vue/.gitignore
+# dist  # ← 注释掉这行
+
+# 3. 提交到Git
+git add lugarden_universal/frontend_vue/dist
+git commit -m "build: 提交前端构建产物"
+git push
+
+# 4. VPS上拉取并部署（无需构建！）
+ssh your-server
+cd /path/to/project
+git pull
+docker-compose restart nginx  # 只需重启nginx
+```
+
+**策略B实现（初次部署）**：
+
+```yaml
+frontend_vue:
+  image: node:20-alpine
+  restart: "no"                    # ✅ 构建完成后不重启
+  command: sh -lc "npm ci --include=dev && npm run build"
+```
+
+**策略选择决策树**：
+
+```
+是否有Git权限提交dist？
+├─ 是 → 使用策略A（dist提交到Git）
+│      ├─ VPS资源 < 4G → 强烈推荐
+│      └─ VPS资源 >= 4G → 也推荐（简化部署）
+│
+└─ 否 → 使用策略B（一次性构建）
+       ├─ VPS资源 < 2G → ⚠️ 构建可能OOM，考虑增加swap
+       └─ VPS资源 >= 2G → 可行
+```
+
 #### 完整配置
 
 ```yaml
@@ -2421,6 +2494,187 @@ docker compose logs -f app | grep -E "query|duration"
 | 容器内存不足 | 增加`memory`限制到1GB+ |
 | 外部API调用慢 | 添加缓存、使用代理 |
 | Nginx反向代理开销 | 调整`keepalive`、`worker_connections` |
+
+---
+
+#### 问题6：CPU持续高负载（90%+）- frontend_vue容器重启循环 🚨
+
+> **真实案例（2025-10-31）**：2c2G阿里云VPS，CPU持续87%+，系统几乎不可用。
+
+**症状**：
+
+```bash
+# 系统监控显示CPU负载极高
+$ top -bn1 | head -5
+top - 14:23:45 up 2 days,  3:42,  1 user,  load average: 7.73, 6.91, 5.42
+%Cpu(s): 87.5 us,  5.2 sy,  0.0 ni,  6.2 id,  0.0 wa,  0.0 hi,  1.1 si,  0.0 st
+MiB Mem :   1827.3 total,    254.2 free,    965.4 used,    607.7 buff/cache
+
+# 发现node进程占用CPU 186%+
+PID  USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+80618 node      20   0  364.5m 156.3m  52.1m R 186.7  8.8   45:23.45 node
+
+# 查看容器状态：frontend_vue不断重启
+$ docker ps -a
+CONTAINER ID   NAME                    STATUS
+600ef8a738e4   lugarden-frontend-vue   Up 31 seconds    # ← 只运行了31秒！
+8748f4e16e34   lugarden-nginx          Up 2 hours
+771e6f51fce8   lugarden-app            Up 2 hours (healthy)
+```
+
+**问题诊断流程**：
+
+```bash
+# 1️⃣ 确认是Docker容器导致
+docker stats --no-stream
+# 如果某容器CPU持续>80%，继续
+
+# 2️⃣ 检查容器重启频率
+docker ps -a --format "table {{.Names}}\t{{.Status}}"
+# 看到"Up X seconds"（X<60）说明频繁重启
+
+# 3️⃣ 查看容器配置
+docker inspect lugarden-frontend-vue | grep -A 5 "RestartPolicy"
+# 输出：
+# "RestartPolicy": {
+#     "Name": "unless-stopped",  # ← 问题所在！
+# }
+
+# 4️⃣ 查看容器启动命令
+docker inspect lugarden-frontend-vue | grep -A 2 "Cmd"
+# 输出：
+# "Cmd": [
+#     "npm ci && npm run build"  # ← 构建完成后容器退出
+# ]
+
+# 5️⃣ 查看容器日志（验证构建在循环执行）
+docker logs lugarden-frontend-vue --tail 50
+# 看到反复的构建日志：
+# > Building...
+# > Build completed in 45s
+# [容器退出]
+# [Docker重启容器]
+# > Installing dependencies...
+# > Building...
+```
+
+**根本原因**：
+
+```yaml
+# docker-compose.yml中的致命配置
+frontend_vue:
+  image: node:20-alpine
+  restart: unless-stopped           # ❌ 问题1：自动重启
+  command: npm ci && npm run build  # ❌ 问题2：构建完成后容器退出
+```
+
+**问题机制**：
+```
+┌─────────────────────────────────────┐
+│ Docker重启死循环                     │
+├─────────────────────────────────────┤
+│ 1. 容器启动                         │
+│ 2. npm ci（安装依赖，CPU 50%）      │
+│ 3. npm run build（构建，CPU 95%）   │
+│ 4. 构建完成，命令退出 → exit 0      │
+│ 5. Docker检测到容器退出             │
+│ 6. restart: unless-stopped触发      │
+│ 7. 🔄 回到步骤1（无限循环）          │
+└─────────────────────────────────────┘
+```
+
+**立即止损方案**：
+
+```bash
+# 方案1：停止并禁用自动重启（推荐）
+docker stop lugarden-frontend-vue
+docker update --restart=no lugarden-frontend-vue
+
+# 方案2：直接删除容器
+docker rm -f lugarden-frontend-vue
+
+# 验证CPU恢复
+top -bn1 | head -3
+# 应该看到CPU降到<10%
+```
+
+**永久解决方案**：
+
+**方案A：dist提交到Git（强烈推荐，适用于资源受限VPS）**
+
+```bash
+# 1. 本地构建
+cd lugarden_universal/frontend_vue
+npm run build
+
+# 2. 修改.gitignore
+# frontend_vue/.gitignore
+# dist  # ← 注释掉
+
+# 3. 提交到Git
+git add dist
+git commit -m "build: 提交前端构建产物（避免VPS构建开销）"
+git push
+
+# 4. 修改docker-compose.yml（注释掉frontend_vue服务）
+# frontend_vue:  # ← 完全注释掉
+#   image: node:20-alpine
+#   ...
+
+# 5. VPS上部署
+ssh your-server
+cd /path/to/project
+git pull
+docker-compose down
+docker-compose up -d  # 只启动app和nginx
+```
+
+**方案B：修改restart策略（仅初次部署需构建）**
+
+```yaml
+frontend_vue:
+  image: node:20-alpine
+  restart: "no"                    # ✅ 改为"no"
+  command: sh -lc "npm ci --include=dev && npm run build"
+  profiles:
+    - build                        # ✅ 添加profile（可选）
+```
+
+```bash
+# 需要构建时手动触发
+docker-compose --profile build up frontend_vue
+
+# 平时启动不包含frontend_vue
+docker-compose up -d  # 只启动app和nginx
+```
+
+**效果对比**：
+
+| 指标 | 问题时 | 修复后 | 改善 |
+|------|--------|--------|------|
+| 系统CPU | 87%+ | 6.2% | ✅ 下降93% |
+| Load Average | 7.73 | 2.43 | ✅ 下降68% |
+| app容器内存 | 364MB | 27MB | ✅ 节省92% |
+| 容器数量 | 4个（1个死循环） | 3个 | ✅ 移除问题容器 |
+| 系统可用内存 | 254MB | 675MB | ✅ 释放420MB |
+
+**预防措施**：
+
+1. **构建容器永远使用 `restart: "no"`**
+2. **生产环境优先考虑预构建方案**（dist提交到Git或CI/CD）
+3. **监控容器重启频率**：
+   ```bash
+   # 添加到crontab，每小时检查
+   docker ps --format "table {{.Names}}\t{{.Status}}" | \
+     awk '$2 ~ /Up [0-9]+ seconds/ {print "⚠️ "$1" 频繁重启"}'
+   ```
+4. **资源受限环境（<4G内存）应避免在VPS上构建前端**
+
+**相关参考**：
+- Docker Restart Policies: https://docs.docker.com/config/containers/start-containers-automatically/
+- 本文档"frontend_vue服务配置详解 → 生产环境部署策略"章节
+
+---
 
 ### Linux常用命令速查
 
