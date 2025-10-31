@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import fetch from 'node-fetch';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 import session from 'express-session';
@@ -53,11 +54,15 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 静态文件目录配置：支持Vue前端和传统前端切换
+// 静态文件目录配置：支持Vue前端和传统前端切换（带存在性回退）
 const USE_VUE_FRONTEND = process.env.USE_VUE_FRONTEND !== 'false';
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const VUE_DIST_DIR = path.join(__dirname, '..', 'frontend_vue', 'dist');
-const STATIC_DIR = USE_VUE_FRONTEND ? VUE_DIST_DIR : PUBLIC_DIR;
+const VUE_INDEX_PATH = path.join(VUE_DIST_DIR, 'index.html');
+const vueReady = (() => {
+  try { return fs.existsSync(VUE_INDEX_PATH); } catch { return false; }
+})();
+const STATIC_DIR = USE_VUE_FRONTEND && vueReady ? VUE_DIST_DIR : PUBLIC_DIR;
 
 // 中间件
 app.use(cors());
@@ -110,8 +115,9 @@ app.post('/api/logout', (req, res) => {
 
 // 管理页面
 app.get('/admin', requireAuth, (_req, res) => {
-  const adminFile = USE_VUE_FRONTEND ? 'index.html' : 'admin.html';
-  const adminPath = USE_VUE_FRONTEND ? VUE_DIST_DIR : PUBLIC_DIR;
+  const useVue = USE_VUE_FRONTEND && vueReady;
+  const adminFile = useVue ? 'index.html' : 'admin.html';
+  const adminPath = useVue ? VUE_DIST_DIR : PUBLIC_DIR;
   res.sendFile(path.join(adminPath, adminFile));
 });
 
@@ -673,7 +679,11 @@ if (USE_VUE_FRONTEND) {
         req.path.startsWith('/admin')) {
       return res.status(404).send('Not Found');
     }
-    res.sendFile(path.join(VUE_DIST_DIR, 'index.html'));
+    if (vueReady) {
+      return res.sendFile(path.join(VUE_DIST_DIR, 'index.html'));
+    }
+    // 回退至传统静态首页
+    return res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
   });
 }
 
@@ -682,7 +692,7 @@ app.listen(PORT, () => {
   const frontendType = USE_VUE_FRONTEND ? 'Vue' : '传统HTML';
   console.log(`🚀 "陆家花园"已在 http://localhost:${PORT} 盛开 (${frontendType}前端)`);
   console.log(`🔑 后台管理入口: http://localhost:${PORT}/admin`);
-  console.log(`📁 静态文件目录: ${STATIC_DIR}`);
+  console.log(`📁 静态文件目录: ${STATIC_DIR} (vueReady=${vueReady})`);
 });
 
 // 全局错误处理
