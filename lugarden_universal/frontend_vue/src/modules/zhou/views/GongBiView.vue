@@ -96,15 +96,15 @@
         </div>
         
         <!-- 生成中状态 -->
-        <div v-if="loading" class="space-y-6 animate-fadeInUp">
-          <LoadingSpinner 
-            size="large"
-            loading-text="陆家明正在为你创作..."
-            subtitle="请稍候，这可能需要几秒钟"
-            variant="pulse"
-            :show-progress="false"
-            centered
-          />
+        <div v-if="loading" class="gongbi-loading animate-fadeInUp">
+          <div class="loading-icon-wrapper">
+            <img 
+              src="/lujiaming_icon.png" 
+              alt="陆家明"
+              class="loading-icon"
+            />
+          </div>
+          <p class="loading-text">诗渐浓，君稍待</p>
         </div>
         
         <!-- 结果展示 - 使用PoemViewer组件 -->
@@ -149,7 +149,6 @@ import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '@/modules/zhou/stores/zhou'
 import { createGongBi, getGongBiErrorMessage } from '@/modules/zhou/services/gongBiApi'
 import PoemViewer from '@/modules/zhou/components/PoemViewer.vue'
-import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import ErrorState from '@/shared/components/ErrorState.vue'
 
 const router = useRouter()
@@ -397,6 +396,43 @@ const goBack = () => {
   color: var(--text-secondary);
   opacity: 0.5;
   transition: all var(--duration-fast) var(--ease-out);
+}
+
+/* 共笔加载状态 - 诗意化设计 */
+.gongbi-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: var(--spacing-2xl);
+}
+
+.loading-icon-wrapper {
+  margin-bottom: var(--spacing-xl);
+}
+
+.loading-icon {
+  width: 80px;
+  height: 80px;
+  animation: fadeInOut 2s ease-in-out infinite;
+}
+
+.loading-text {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .char-count:hover {
