@@ -3,6 +3,175 @@
 > **🤖 AI 助手注意 (AI Assistant Attention)**
 > 在执行本文件中的任何任务前，你必须首先阅读并严格遵守位于 `documentation/ai-collaboration-guide.md` 的全局协作指南。
 
+## ⚠️ 首次实施经验教训（2025-10-31）
+
+### 关键问题总结
+
+在首次实施过程中，我们遇到了一个根本性的架构问题，导致功能无法正常工作。虽然所有代码都已实现且通过编译，但在实际测试中发现**整个共笔页面为空白**。经过深入排查，我们发现了以下核心问题：
+
+#### 🔴 根本问题：Pinia Store数据在路由导航时丢失
+
+**现象**：
+- 从结果页点击"共笔"按钮后，页面一闪而过，然后变为空白
+- 虽然DOM结构存在（通过`browser_snapshot`工具可以看到），但视觉上完全不可见
+- `GongBiView`组件的`onMounted`钩子检测到`!zhouStore.quiz.isQuizComplete || !zhouStore.result.selectedPoem`，触发错误状态
+- 2秒后自动重定向回`/zhou`首页
+
+**根本原因**：
+1. **Store未持久化**：`useZhouStore`没有配置`persist: true`，页面刷新或路由切换后数据全部丢失
+2. **路由导航数据传递缺失**：从`/result`导航到`/gongbi`时，仅使用`router.push('/gongbi')`，没有通过URL参数或其他机制传递必要的上下文数据（`chapterKey`、`answerPattern`、`poemTitle`等）
+3. **组件依赖不存在的数据**：`GongBiView.vue`的设计假设store中始终有数据，但实际上这个假设在路由导航时不成立
+
+**错误的验证判断**：
+```vue
+<!-- GongBiView.vue Line 7 -->
+<div v-if="!loading && !generatedPoem && !error" class="space-y-6 animate-fadeInUp">
+```
+初版缺少`&& !error`条件，导致错误界面和输入界面同时满足渲染条件，虽然DOM存在，但视觉上不可见。
+
+#### 🔴 次要问题：条件渲染逻辑冲突
+
+**现象**：
+- 即使修复了条件判断（添加`&& !error`），页面仍然只是显示错误提示，而非正常的输入界面
+
+**原因**：
+- `onMounted`中的检测逻辑在store数据丢失时立即设置`error.value`，并在2秒后跳转
+- 这是symptom而非root cause，真正的问题是数据为什么会丢失
+
+### 技术债务与设计缺陷
+
+1. **`zhouStore`架构问题**：
+   - 整个`zhou`模块的store设计为内存状态，无持久化
+   - 这在单页应用内导航（问答流程）中工作良好
+   - 但在跨路由传递数据时完全失效
+
+2. **过度依赖全局状态**：
+   - `GongBiView`组件假设`zhouStore`中始终有完整的问答和诗歌数据
+   - 没有考虑用户可能直接访问`/gongbi`URL的情况
+   - 没有设计URL参数传递或LocalStorage备份机制
+
+3. **缺少健壮的数据获取策略**：
+   - 应该在`GongBiView`的`onMounted`中主动获取必要数据（通过URL参数或API）
+   - 而不是被动依赖store中可能不存在的数据
+
+### 🎯 正确的解决方案（重新设计方案）
+
+#### 方案A：URL参数传递（推荐，符合无状态架构原则）
+
+**思路**：将所有必要的上下文数据通过URL参数传递，完全独立于store
+
+**导航方式**：
+```typescript
+// ResultScreen.vue
+const navigateToGongBi = () => {
+  const params = new URLSearchParams({
+    chapter: zhouStore.navigation.currentChapterName!,
+    pattern: zhouStore.quiz.userAnswers.map(a => a.selectedOption === 'A' ? '0' : '1').join(''),
+    poemTitle: zhouStore.result.poemTitle!
+  })
+  router.push(`/gongbi?${params.toString()}`)
+}
+```
+
+**GongBiView接收**：
+```typescript
+// GongBiView.vue
+onMounted(() => {
+  const route = useRoute()
+  const chapterKey = route.query.chapter as string
+  const answerPattern = route.query.pattern as string
+  const poemTitle = route.query.pattern as string
+  
+  if (!chapterKey || !answerPattern || !poemTitle) {
+    error.value = '缺少必要参数，请重新完成问答'
+    setTimeout(() => router.replace('/zhou'), 2000)
+    return
+  }
+  
+  // 从API重新获取诗歌数据（或从store中获取，如果存在的话）
+  // ...
+})
+```
+
+**优点**：
+- 符合RESTful和无状态设计原则
+- URL可分享、可收藏
+- 不依赖store或localStorage
+- 数据来源明确
+
+**缺点**：
+- URL较长（但可接受）
+- 需要修改后端API，增加通过`chapterKey + answerPattern`查询诗歌的接口
+
+#### 方案B：Pinia Store持久化
+
+**思路**：使用`pinia-plugin-persistedstate`持久化store到localStorage
+
+**实现**：
+```typescript
+// stores/zhou.ts
+export const useZhouStore = defineStore('zhou', () => {
+  // ...
+}, {
+  persist: {
+    key: 'zhou-store',
+    paths: ['quiz', 'result', 'navigation'] // 只持久化必要的数据
+  }
+})
+```
+
+**优点**：
+- 最小改动量
+- 用户刷新页面后数据仍存在
+
+**缺点**：
+- 与"无状态架构"原则冲突
+- localStorage可能被用户清除
+- 数据同步问题（多标签页）
+- 增加了状态管理复杂度
+
+#### 方案C：结合方案A和B（最佳实践）
+
+1. **主路径**：使用URL参数传递核心上下文（chapterKey, answerPattern, poemTitle）
+2. **优化体验**：在store中缓存诗歌内容，避免重复请求
+3. **降级方案**：如果URL参数缺失，尝试从store中读取；如果store也没有，则友好提示并重定向
+
+### 🔄 需要修改的任务
+
+基于以上分析，我们需要在TODO中增加以下任务：
+
+#### 新增任务A.0：数据传递机制设计（前置任务）
+- 确定数据传递方案（URL参数 vs Store持久化 vs 混合方案）
+- 设计API接口（如需要支持URL参数方式）
+- 确定降级策略
+
+#### 任务B.1需要增强：
+- 修改`navigateToGongBi`方法，通过URL参数传递上下文数据
+- 或者确保导航时store数据已持久化
+
+#### 任务B.2需要重新设计：
+- `onMounted`中增加从URL参数读取数据的逻辑
+- 增加降级策略（URL参数 → Store → API请求 → 错误提示）
+- 移除对`zhouStore.quiz.isQuizComplete`的硬性依赖
+
+### 📋 执行顺序调整
+
+**新的执行顺序**：
+1. **A.0**：数据传递机制设计与决策
+2. **A.1-A.2**：后端API开发（可能需要增加新接口）
+3. **B.1**：修改导航逻辑，传递完整上下文
+4. **B.2-B.5**：前端开发（基于新的数据传递方案）
+5. **C.1-C.3**：测试与优化
+
+### 💡 关键启示
+
+1. **先设计数据流，再编写代码**：我们在首次实施时直接假设store中有数据，没有考虑数据的来源和生命周期
+2. **无状态架构的真正含义**：不仅是服务端无状态，前端也应该避免过度依赖内存状态，尤其是跨路由的场景
+3. **测试工具的局限性**：`browser_snapshot`可以看到DOM结构，但看不到视觉呈现；需要结合`browser_take_screenshot`才能发现空白页面问题
+4. **提前考虑边界情况**：用户可能直接访问`/gongbi`URL、可能刷新页面、可能清除localStorage等
+
+---
+
 ## 目标
 
 在周与春秋宇宙的诗歌展示页增加"共笔"功能，允许用户输入50字以内的感受，然后调用陆家明AI诗人（Dify工作流）为用户创作一首回应诗歌，并通过Vue3响应式特性流畅展示。
