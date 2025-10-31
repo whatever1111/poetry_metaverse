@@ -118,10 +118,18 @@
           />
         </div>
         
-        <!-- 结果展示 - 使用GongBiPoemCard组件 -->
+        <!-- 结果展示 - 使用PoemViewer组件 -->
         <div v-if="generatedPoem && !loading" class="space-y-6">
           <!-- 陆家明生成的诗歌卡片 -->
-          <GongBiPoemCard :poem="generatedPoem" />
+          <PoemViewer 
+            :poem-title="generatedPoem.title"
+            :quote-text="generatedPoem.quote"
+            :quote-citation="generatedPoem.quoteSource"
+            :main-text="generatedPoem.content"
+            animation-delay="0.2s"
+            :show-actions="true"
+            :show-download="true"
+          />
           
           <!-- 操作按钮 -->
           <div class="grid grid-cols-2 gap-4 animate-fadeInUp" style="animation-delay: 0.2s;">
@@ -151,7 +159,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '@/modules/zhou/stores/zhou'
 import { createGongBi, getGongBiErrorMessage } from '@/modules/zhou/services/gongBiApi'
-import GongBiPoemCard from '@/modules/zhou/components/GongBiPoemCard.vue'
+import PoemViewer from '@/modules/zhou/components/PoemViewer.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import ErrorState from '@/shared/components/ErrorState.vue'
 
