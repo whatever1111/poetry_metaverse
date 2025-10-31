@@ -37,7 +37,7 @@
               </button>
             </div>
             
-            <div v-if="showSourcePoem">
+            <div v-if="showSourcePoem" class="source-poem-viewer">
               <PoemViewer 
                 :poem-title="sourcePoem.title"
                 :quote-text="sourcePoem.quote"
@@ -340,6 +340,13 @@ const goBack = () => {
   background-color: var(--color-primary-500);
   color: white;
   border-color: var(--color-primary-500);
+}
+
+/* 原诗PoemViewer容器 - 修改卡片内部底部padding以保持视觉平衡 */
+/* PoemViewer内部使用card-padding-poem: pt-3xl(64px) pb-lg(24px) */
+/* 覆盖卡片本身的底部padding，使其与顶部对称 */
+.source-poem-viewer :deep(.poem-content) {
+  padding-bottom: 4rem; /* 64px，与pt-3xl对称 */
 }
 
 /* 输入框标签 */
