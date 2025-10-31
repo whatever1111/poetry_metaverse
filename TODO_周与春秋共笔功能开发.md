@@ -170,6 +170,49 @@ export const useZhouStore = defineStore('zhou', () => {
 3. **测试工具的局限性**：`browser_snapshot`可以看到DOM结构，但看不到视觉呈现；需要结合`browser_take_screenshot`才能发现空白页面问题
 4. **提前考虑边界情况**：用户可能直接访问`/gongbi`URL、可能刷新页面、可能清除localStorage等
 
+## ⚠️ 第二次实施架构调整（2025-10-31）
+
+### 新发现的系统性问题
+
+在完成任务B.1（添加共笔按钮）后，用户测试时发现：
+- 点击"共笔"按钮后，URL变为 `/?chapter=观我生&pattern=0000&poem=论学会忍受虚无`（而非 `/gongbi?...`）
+- 页面显示的是主页，而非共笔页面
+- **根本原因**：`/gongbi` 路由尚未配置（任务B.5）
+
+### 更深层的架构洞察
+
+用户提出了一个关键问题：**"为什么这个功能是共笔专属的呢？每一首诗有它专属的URL，不是一个很正常的事儿么？"**
+
+这个洞察揭示了一个系统性架构缺陷：
+
+**当前架构的问题**：
+- `/result` 页面完全依赖Pinia store的内存状态
+- 用户**不能**通过URL直接访问特定诗歌
+- 用户**不能**分享诗歌链接
+- 刷新页面后数据全部丢失
+- 只有共笔页面用URL参数，架构不一致
+
+**正确的设计应该是**：
+- `/result?chapter=X&pattern=XXXX&poem=XXX` 应该能直接访问特定诗歌
+- 支持分享、收藏、刷新页面后保持
+- 所有诗歌相关页面（/result、/gongbi）都应采用URL参数传递数据
+
+### 架构重构决策：选项2（重构ResultScreen + 共笔）
+
+**决策**：不仅让共笔页面使用URL参数，也要重构ResultScreen支持URL参数
+
+**理由**：
+- 实现真正的无状态架构
+- 诗歌URL可分享、可收藏
+- 架构统一，代码可维护性更好
+- 为未来功能（如诗歌详情页、社交分享）奠定基础
+
+**实施计划**：
+1. **新增任务B.0**：重构ResultScreen支持URL参数（前置任务）
+2. 修改问答完成后的导航逻辑，带上URL参数
+3. ResultScreen的`onMounted`优先从URL参数读取数据
+4. 保持对现有流程的兼容（降级使用store）
+
 ---
 
 ## 目标
@@ -223,7 +266,7 @@ export const useZhouStore = defineStore('zhou', () => {
 
 ### **阶段11-01_A：后端API开发**
 
-#### - [ ] 任务A.1：实现后端API - /api/zhou/gongbi
+#### - [x] 任务A.1：实现后端API - /api/zhou/gongbi
 - **核心思想**: 建立陆家花园主平台与Dify AI诗人的桥接API，负责数据查询、API调用和结果解析，采用无状态的请求-响应模式
 - 交付物：
   - POST `/api/zhou/gongbi` API端点
@@ -245,7 +288,8 @@ export const useZhouStore = defineStore('zhou', () => {
 - 预期改动文件（预判）：
   - `lugarden_universal/application/server.js`
 - 实际改动文件: 
-- 完成状态：🔄 待开始
+  - `lugarden_universal/application/server.js` ✅
+- 完成状态：✅ 已完成 (commit: a48cf8c)
 - 执行步骤：
    - [ ] 步骤A.1.1：在server.js中创建POST `/api/zhou/gongbi`路由
    - [ ] 步骤A.1.2：实现数据库**读取**逻辑（ZhouMapping + ZhouPoem）
@@ -255,7 +299,7 @@ export const useZhouStore = defineStore('zhou', () => {
    - [ ] 步骤A.1.6：实现完整的错误处理和日志记录
    - [ ] 步骤A.1.7：添加环境变量验证（DIFY_API_KEY）
 
-#### - [ ] 任务A.2：配置环境变量
+#### - [x] 任务A.2：配置环境变量
 - **核心思想**: 安全地配置Dify API密钥，避免泄露到版本控制
 - 交付物：
   - 更新 `.env.local` 文件（本地开发）
@@ -269,7 +313,9 @@ export const useZhouStore = defineStore('zhou', () => {
   - `lugarden_universal/application/.env.local` (不提交)
   - `lugarden_universal/application/.env` (仅添加注释)
 - 实际改动文件: 
-- 完成状态：🔄 待开始
+  - `lugarden_universal/application/.env` ✅
+  - `lugarden_universal/application/.env.local` ✅
+- 完成状态：✅ 已完成 (commit: a48cf8c)
 - 执行步骤：
    - [ ] 步骤A.2.1：在.env中添加DIFY_API_KEY的注释说明
    - [ ] 步骤A.2.2：在.env.local中配置实际的API密钥
@@ -279,24 +325,67 @@ export const useZhouStore = defineStore('zhou', () => {
 
 ### **阶段11-01_B：前端功能开发**
 
-#### - [ ] 任务B.1：在诗歌展示页添加"共笔"按钮
-- **核心思想**: 为用户提供进入共笔功能的入口，与现有按钮视觉统一
+#### - [x] 任务B.0：重构ResultScreen支持URL参数（新增前置任务）
+- **核心思想**: 让ResultScreen支持通过URL参数直接访问特定诗歌，实现真正的无状态架构
+- **问题背景**: 
+  - 当前ResultScreen完全依赖store内存状态
+  - 用户无法分享诗歌URL、无法刷新页面
+  - 只有共笔页面用URL参数，架构不一致
 - 交付物：
-  - 在ResultView.vue中添加"共笔"按钮
-  - 按钮样式与现有按钮保持一致
+  - 重构ResultScreen的`onMounted`逻辑
+  - 修改问答完成后的导航（带URL参数）
+  - 支持URL参数读取诗歌数据
+  - 保持对现有流程的向后兼容
 - 验收标准：
-  - 按钮显示在正确位置（与"解诗"、"最好不要点"、"重新开始"同一行）
-  - 点击按钮能触发路由跳转到 `/gongbi`
-  - 按钮样式符合设计规范（UnoCSS类）
+  - `/result?chapter=X&pattern=XXXX&poem=XXX` 能直接访问特定诗歌
+  - 从问答流程进入时，URL自动带上参数
+  - 刷新页面后诗歌仍然显示
+  - 如果URL参数缺失，降级使用store（兼容性）
+  - 如果都没有，友好提示并重定向
+- **风险评估**: 中等风险
+  - 需要修改核心流程
+  - 需要测试原有流程是否受影响
+  - 需要处理URL参数和store的优先级
+- 预期改动文件（预判）：
+  - `lugarden_universal/frontend_vue/src/modules/zhou/views/ResultScreen.vue`
+  - `lugarden_universal/frontend_vue/src/modules/zhou/stores/zhou.ts` (可能需要修改calculatePoemMapping的导航逻辑)
+- 实际改动文件: 
+- 完成状态：🔄 进行中
+- 执行步骤：
+   - [ ] 步骤B.0.1：修改ResultScreen的onMounted，优先从URL参数读取数据
+   - [ ] 步骤B.0.2：如果URL参数存在，从API重新查询诗歌（或优先使用store缓存）
+   - [ ] 步骤B.0.3：修改问答完成后的导航逻辑，router.push带上URL参数
+   - [ ] 步骤B.0.4：保持降级兼容：URL参数 → Store → 错误提示
+   - [ ] 步骤B.0.5：测试现有流程是否正常（问答 → 结果页）
+   - [ ] 步骤B.0.6：测试新功能（直接访问带参数的URL）
+
+#### - [x] 任务B.1：在诗歌展示页添加"共笔"按钮
+- **核心思想**: 为用户提供进入共笔功能的入口，与现有按钮视觉统一，通过URL参数传递必要数据
+- 交付物：
+  - 在ResultScreen.vue移动端和PC端布局中添加"共笔"按钮
+  - 按钮样式与现有按钮保持一致
+  - 通过URL参数传递chapterKey、answerPattern、poemTitle
+- 验收标准：
+  - 按钮显示在正确位置（移动端：独立区域；PC端：与其他按钮同行）
+  - 点击按钮能触发路由跳转到 `/gongbi?chapter=X&pattern=XXXX&poem=XXX`
+  - 按钮样式符合设计规范（UnoCSS类：暖褐色渐变）
+  - 在ControlButtons中新增第4个按钮
 - **风险评估**: 零风险
 - 预期改动文件（预判）：
-  - `lugarden_universal/frontend_vue/src/modules/zhou/views/ResultView.vue`
+  - `lugarden_universal/frontend_vue/src/modules/zhou/views/ResultScreen.vue`
+  - `lugarden_universal/frontend_vue/src/modules/zhou/components/ControlButtons.vue`
+  - `lugarden_universal/frontend_vue/uno.config.ts`
 - 实际改动文件: 
-- 完成状态：🔄 待开始
+  - `lugarden_universal/frontend_vue/src/modules/zhou/views/ResultScreen.vue` ✅
+  - `lugarden_universal/frontend_vue/src/modules/zhou/components/ControlButtons.vue` ✅
+  - `lugarden_universal/frontend_vue/uno.config.ts` ✅
+- 完成状态：✅ 已完成 (commit: d2fd1e3)
 - 执行步骤：
-   - [ ] 步骤B.1.1：在ResultView.vue的按钮区添加"共笔"按钮
-   - [ ] 步骤B.1.2：绑定点击事件，跳转到/gongbi路由
-   - [ ] 步骤B.1.3：调整按钮布局确保视觉协调
+   - [x] 步骤B.1.1：在ResultScreen.vue的移动端布局添加"共笔"按钮
+   - [x] 步骤B.1.2：在ControlButtons组件添加第4个"共笔"按钮
+   - [x] 步骤B.1.3：实现navigateToGongBi方法，通过URL参数传递数据
+   - [x] 步骤B.1.4：在uno.config.ts添加btn-gongbi样式（暖褐色渐变）
+   - [x] 步骤B.1.5：调整按钮布局确保视觉协调（grid-cols-4）
 
 #### - [ ] 任务B.2：创建共笔输入界面（GongBiView.vue）
 - **核心思想**: 创建用户友好的响应式界面，利用Vue3的reactive特性实现流畅的状态切换和诗歌展示
