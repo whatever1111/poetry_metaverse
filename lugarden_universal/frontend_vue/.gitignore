@@ -9,7 +9,7 @@ lerna-debug.log*
 
 node_modules
 .DS_Store
-dist
+# dist  # 注释掉：前端构建产物(638KB)提交到git，避免在VPS上构建导致CPU飙升
 dist-ssr
 coverage
 *.local

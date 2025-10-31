@@ -54,3 +54,6 @@ lugarden_universal/lu_the_poet/corpus/
 lugarden_universal/lu_the_poet/dify_output/.env.local
 lugarden_universal/lu_the_poet/dify_output/logs/
 lugarden_universal/lu_the_poet/dify_output/daily_output/
+
+# VPS配置文件 - 包含服务器配置和敏感信息
+VPS_review/
