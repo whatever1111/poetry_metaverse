@@ -26,6 +26,15 @@
         <span>{{ poetButtonText }}</span>
       </button>
       
+      <!-- 共笔按钮 -->
+      <button 
+        @click="handleGongBi" 
+        class="btn-gongbi text-body font-medium"
+        :disabled="disabled"
+      >
+        <span>共笔</span>
+      </button>
+      
       <!-- 重新开始按钮 -->
       <button 
         @click="handleRestart" 
@@ -73,6 +82,7 @@ interface Props {
 interface Emits {
   interpret: []
   poetExplanation: []
+  gongBi: []
   restart: []
 }
 
@@ -99,7 +109,7 @@ const gridClass = computed(() => {
       return 'grid-cols-1'
     case 'grid-responsive':
     default:
-      return 'grid-cols-3 max-md:grid-cols-1 max-md:gap-3 lg:gap-4'
+      return 'grid-cols-4 max-md:grid-cols-1 max-md:gap-3 lg:gap-4'
   }
 })
 
@@ -121,6 +131,11 @@ const handlePoetExplanation = () => {
   }, 400) // 与动画时间一致
   
   emit('poetExplanation')
+}
+
+const handleGongBi = () => {
+  if (props.disabled) return
+  emit('gongBi')
 }
 
 const handleRestart = () => {
@@ -151,6 +166,7 @@ const handleRestart = () => {
 .grid > *:nth-child(1) { animation-delay: 0.1s; }
 .grid > *:nth-child(2) { animation-delay: 0.2s; }
 .grid > *:nth-child(3) { animation-delay: 0.3s; }
+.grid > *:nth-child(4) { animation-delay: 0.4s; }
 
 @keyframes fadeInUp {
   from {

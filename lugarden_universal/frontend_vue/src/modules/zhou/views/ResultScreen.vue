@@ -86,8 +86,20 @@
             </div>
           </div>
           
+          <!-- 共笔按钮 -->
+          <div class="action-group animate-fadeInUp" style="animation-delay: 0.3s;">
+            <div class="max-w-2xl mx-auto">
+              <button 
+                @click="navigateToGongBi"
+                class="w-full btn-gongbi text-body font-medium"
+              >
+                <span>共笔</span>
+              </button>
+            </div>
+          </div>
+          
           <!-- 重新开始按钮 -->
-          <div class="action-group action-group-last animate-fadeInUp" style="animation-delay: 0.3s;">
+          <div class="action-group action-group-last animate-fadeInUp" style="animation-delay: 0.4s;">
             <div class="max-w-2xl mx-auto">
               <button 
                 @click="startOver"
@@ -126,6 +138,7 @@
               :poet-button-text="zhouStore.getPoetButtonText()"
               @interpret="getInterpretation"
               @poet-explanation="showPoetExplanation"
+              @gong-bi="navigateToGongBi"
               @restart="startOver"
             />
           </div>
@@ -282,6 +295,34 @@ const showPoetExplanation = () => {
   }, 400) // 与ControlButtons组件动画时间一致
   
   zhouStore.showPoetExplanation()
+}
+
+// 导航到共笔页面 - 通过URL参数传递必要数据
+const navigateToGongBi = () => {
+  // 获取必要数据
+  const chapterKey = zhouStore.navigation.currentChapterName
+  const poemTitle = zhouStore.result.poemTitle || zhouStore.result.selectedPoem?.title
+  
+  // 计算answerPattern (A=0, B=1)
+  const answerPattern = zhouStore.quiz.userAnswers
+    .map(answer => answer.selectedOption === 'A' ? '0' : '1')
+    .join('')
+  
+  // 验证数据完整性
+  if (!chapterKey || !poemTitle || !answerPattern) {
+    console.error('[ResultScreen] 缺少必要数据，无法导航到共笔页面')
+    return
+  }
+  
+  // 构建URL参数
+  const params = new URLSearchParams({
+    chapter: chapterKey,
+    pattern: answerPattern,
+    poem: poemTitle
+  })
+  
+  // 导航到共笔页面
+  router.push(`/gongbi?${params.toString()}`)
 }
 
 // 重新开始 - 智能导航回到当前项目的子项目选择页

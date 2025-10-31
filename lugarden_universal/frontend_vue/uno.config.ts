@@ -183,6 +183,7 @@ export default defineConfig({
     ['btn-control-interpret', 'bg-gradient-to-br from-[#789a9a] to-[#527a7a] border-[#4a6869] hover:from-[#527a7a] hover:to-[#3d6667]'],
     ['btn-control-listen', 'bg-gradient-to-br from-[#9d6b53] to-[#804d39] border-[#6a3e2f] hover:from-[#804d39] hover:to-[#6b3f2a]'],
     ['btn-control-poet', 'bg-gradient-to-br from-[#8b5a96] to-[#6a4c7a] border-[#5a3d6a] hover:from-[#6a4c7a] hover:to-[#583d66]'],
+    ['btn-control-gongbi', 'bg-gradient-to-br from-[#b8916d] to-[#9a7653] border-[#7a5d3f] hover:from-[#9a7653] hover:to-[#7a5d3f]'],
     ['btn-control-restart', 'bg-gradient-to-br from-[#6c757d] to-[#495057] border-[#343a40] hover:from-[#495057] hover:to-[#343a40]'],
     
     // 控制按钮特殊状态
@@ -193,6 +194,7 @@ export default defineConfig({
     ['btn-interpret', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-interpret'],
     ['btn-listen', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-listen'],
     ['btn-poet', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-poet'],
+    ['btn-gongbi', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-gongbi'],
     ['btn-restart', 'btn-control-base btn-control-hover btn-control-active btn-control-disabled btn-control-restart'],
     
     // Typography Design System - D.1 基于主流实践的统一排版规范
