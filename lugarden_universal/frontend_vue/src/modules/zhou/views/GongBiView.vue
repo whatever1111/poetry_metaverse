@@ -118,32 +118,13 @@
           />
         </div>
         
-        <!-- 结果展示 -->
-        <div v-if="generatedPoem && !loading" class="space-y-6 animate-fadeInUp">
-          <!-- 这里将使用GongBiPoemCard组件 -->
-          <div class="card-base">
-            <h2 class="text-3xl font-bold text-center mb-6" style="color: var(--text-primary);">
-              陆家明的回应
-            </h2>
-            
-            <div class="space-y-4">
-              <h3 class="text-2xl font-semibold text-center" style="color: var(--text-primary);">
-                《{{ generatedPoem.title }}》
-              </h3>
-              
-              <div v-if="generatedPoem.quote" class="text-center italic" style="color: var(--text-secondary);">
-                <p>{{ generatedPoem.quote }}</p>
-                <p v-if="generatedPoem.quoteSource" class="text-sm">——{{ generatedPoem.quoteSource }}</p>
-              </div>
-              
-              <div class="whitespace-pre-wrap text-lg" style="color: var(--text-primary);">
-                {{ generatedPoem.content }}
-              </div>
-            </div>
-          </div>
+        <!-- 结果展示 - 使用GongBiPoemCard组件 -->
+        <div v-if="generatedPoem && !loading" class="space-y-6">
+          <!-- 陆家明生成的诗歌卡片 -->
+          <GongBiPoemCard :poem="generatedPoem" />
           
           <!-- 操作按钮 -->
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-2 gap-4 animate-fadeInUp" style="animation-delay: 0.2s;">
             <button 
               @click="resetAndRetry"
               class="btn-control-base btn-control-hover px-6 py-3 rounded-lg font-medium text-body"
@@ -170,6 +151,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '@/modules/zhou/stores/zhou'
 import { createGongBi, getGongBiErrorMessage } from '@/modules/zhou/services/gongBiApi'
+import GongBiPoemCard from '@/modules/zhou/components/GongBiPoemCard.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import ErrorState from '@/shared/components/ErrorState.vue'
 
