@@ -232,8 +232,135 @@ ${poem}
 // ================================
 
 // ================================
+// Dify API辅助函数 - Fire-and-Track机制
+// @description 两阶段异步获取机制，解决504超时问题
+// @author AI Assistant
+// @date 2025-10-31
+// ================================
+
+/**
+ * 阶段2.1：通过query关键词查找conversation_id
+ * @param {string} query - 原始query（取前20字符作为关键词）
+ * @param {string} apiKey - Dify API密钥
+ * @returns {Promise<string|null>} conversation_id或null
+ */
+async function findConversationByQuery(query, apiKey) {
+  const queryKeywords = query.substring(0, 20);
+  const maxRetries = 3;
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    // 递增等待：5秒, 8秒, 11秒
+    const waitTime = 5 + (attempt - 1) * 3;
+    console.log(`[/api/zhou/gongbi] 🔍 阶段2.1：查找conversation_id，第${attempt}/${maxRetries}次，等待${waitTime}秒...`);
+    await new Promise(resolve => setTimeout(resolve, waitTime * 1000));
+    
+    try {
+      const response = await fetch('https://api.dify.ai/v1/conversations?user=gongbi&limit=20', {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const conversations = data.data || [];
+        
+        console.log(`[/api/zhou/gongbi] 📊 获取到 ${conversations.length} 个会话`);
+        console.log(`[/api/zhou/gongbi] 🔍 匹配关键词: "${queryKeywords}"`);
+        
+        // 通过name字段匹配（conversations按创建时间降序，最新在前）
+        for (const conv of conversations) {
+          const convName = conv.name || '';
+          if (convName.includes(queryKeywords) || queryKeywords.includes(convName)) {
+            console.log(`[/api/zhou/gongbi] ✅ 找到匹配的conversation: ${conv.id}`);
+            console.log(`[/api/zhou/gongbi]    Name: "${convName}"`);
+            return conv.id;
+          }
+        }
+        
+        console.log(`[/api/zhou/gongbi] ⚠️  第${attempt}次未找到匹配`);
+      } else {
+        console.error(`[/api/zhou/gongbi] ❌ 查询失败: ${response.status}`);
+      }
+    } catch (error) {
+      console.error(`[/api/zhou/gongbi] ❌ 查询异常: ${error.message}`);
+    }
+  }
+  
+  console.error('[/api/zhou/gongbi] ❌ conversation_id查找失败：超过最大尝试次数');
+  return null;
+}
+
+/**
+ * 阶段2.2：轮询消息内容直到answer有内容
+ * @param {string} conversationId - 会话ID
+ * @param {string} apiKey - Dify API密钥
+ * @returns {Promise<Object|null>} Dify响应对象或null
+ */
+async function pollMessageContent(conversationId, apiKey) {
+  const maxWaitTime = 300; // 5分钟
+  const pollInterval = 10; // 10秒
+  const startTime = Date.now();
+  
+  console.log(`[/api/zhou/gongbi] ⏱️  阶段2.2：轮询消息内容，conversation_id: ${conversationId}`);
+  
+  while ((Date.now() - startTime) / 1000 < maxWaitTime) {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    console.log(`[/api/zhou/gongbi] 📨 轮询检查 [${elapsed}s]...`);
+    
+    try {
+      const response = await fetch(
+        `https://api.dify.ai/v1/messages?conversation_id=${conversationId}&user=gongbi&limit=1`,
+        {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        const messages = data.data || [];
+        
+        if (messages.length > 0) {
+          const message = messages[0];
+          const answer = message.answer || '';
+          
+          console.log(`[/api/zhou/gongbi] 📊 Answer长度: ${answer.length}`);
+          
+          if (answer.length > 0) {
+            console.log(`[/api/zhou/gongbi] ✅ 获取成功，answer长度: ${answer.length}`);
+            return {
+              answer: message.answer,
+              conversation_id: conversationId,
+              message_id: message.id,
+              metadata: message.metadata || {}
+            };
+          } else {
+            console.log(`[/api/zhou/gongbi] ⏳ Answer仍为空，继续等待...`);
+          }
+        } else {
+          console.log(`[/api/zhou/gongbi] ⏳ 暂无消息，继续等待...`);
+        }
+      } else {
+        console.error(`[/api/zhou/gongbi] ❌ 查询失败: ${response.status}`);
+      }
+    } catch (error) {
+      console.error(`[/api/zhou/gongbi] ❌ 轮询异常: ${error.message}`);
+    }
+    
+    await new Promise(resolve => setTimeout(resolve, pollInterval * 1000));
+  }
+  
+  console.error('[/api/zhou/gongbi] ❌ 轮询超时：超过300秒');
+  return null;
+}
+
+// ================================
 // 周与春秋共笔API
-// @description 接收用户感受，调用陆家明AI诗人（Dify），生成回应诗歌
+// @description 接收用户感受，调用陆家明AI诗人（Dify），生成回应诗歌（两阶段Fire-and-Track机制）
 // @author AI Assistant
 // @date 2025-10-31
 // ================================
@@ -352,12 +479,18 @@ ta的感受是：${userFeeling}
       });
     }
     
-    console.log('[/api/zhou/gongbi] 开始调用Dify API...');
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 120000); // 120秒超时（AI诗歌生成需要较长时间）
+    // ================================
+    // 两阶段Fire-and-Track机制
+    // ================================
     
+    // 阶段1：快速触发请求（3秒超时）
+    console.log('[/api/zhou/gongbi] 📤 阶段1：发送请求触发Dify处理');
+    const controller = new AbortController();
+    const shortTimeoutId = setTimeout(() => controller.abort(), 3000); // 3秒超时
+    
+    let requestSent = false;
     try {
-      const difyResponse = await fetch('https://api.dify.ai/v1/chat-messages', {
+      await fetch('https://api.dify.ai/v1/chat-messages', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${process.env.DIFY_API_KEY}`,
@@ -366,120 +499,135 @@ ta的感受是：${userFeeling}
         body: JSON.stringify({
           inputs: {},
           query: difyPrompt,
-          response_mode: 'blocking', // 阻塞式同步响应
+          response_mode: 'blocking',
           conversation_id: '',
-          user: `gongbi_${Date.now()}`
+          user: 'gongbi'
         }),
         signal: controller.signal
       });
-      
-      clearTimeout(timeoutId);
-      
-      if (!difyResponse.ok) {
-        const errorText = await difyResponse.text();
-        console.error('[/api/zhou/gongbi] Dify API调用失败:', errorText);
-        return res.status(500).json({
-          success: false,
-          error: {
-            code: 'DIFY_API_ERROR',
-            message: 'Dify API调用失败',
-            details: errorText
-          }
-        });
-      }
-      
-      const difyData = await difyResponse.json();
-      console.log('[/api/zhou/gongbi] Dify API调用成功');
-      
-      // 5. 解析Dify响应（answer字段格式："标题\n\n引文\n——出处\n\n正文"）
-      const answer = difyData.answer;
-      if (!answer) {
-        console.error('[/api/zhou/gongbi] Dify响应中缺少answer字段');
-        return res.status(500).json({
-          success: false,
-          error: {
-            code: 'DIFY_RESPONSE_INVALID',
-            message: 'Dify响应格式异常'
-          }
-        });
-      }
-      
-      // 解析answer字段
-      const sections = answer.split('\n\n');
-      
-      let title = '';
-      let quote = '';
-      let quoteSource = '';
-      let content = '';
-      
-      if (sections.length >= 3) {
-        // 标准格式：标题\n\n引文\n——出处\n\n正文
-        title = sections[0].trim();
-        
-        const quotePart = sections[1];
-        if (quotePart.includes('——')) {
-          const [quoteText, source] = quotePart.split('——');
-          quote = quoteText.trim();
-          quoteSource = source.trim();
-        } else {
-          quote = quotePart.trim();
-        }
-        
-        content = sections.slice(2).join('\n\n').trim();
-      } else if (sections.length === 2) {
-        // 简化格式：标题\n\n正文（无引文）
-        title = sections[0].trim();
-        content = sections[1].trim();
-      } else {
-        // 极简格式：只有正文
-        content = answer.trim();
-        title = '致你';
-      }
-      
-      console.log('[/api/zhou/gongbi] 诗歌解析完成:', { title, quote: quote.substring(0, 20), content: content.substring(0, 50) });
-      
-      // 6. 返回结果
-      const result = {
-        success: true,
-        poem: {
-          title,
-          quote,
-          quoteSource,
-          content,
-          userFeeling,
-          sourcePoem: {
-            title: poemTitle,
-            quote: poemQuote,
-            quoteCitation: poemQuoteCitation,
-            content: poemContent
-          }
-        },
-        metadata: {
-          conversationId: difyData.conversation_id,
-          messageId: difyData.message_id,
-          tokens: difyData.metadata?.usage?.total_tokens || 0
-        }
-      };
-      
-      console.log('[/api/zhou/gongbi] 共笔请求处理完成');
-      return res.json(result);
-      
+      console.log('[/api/zhou/gongbi] ✅ 请求已发送');
+      requestSent = true;
     } catch (error) {
-      clearTimeout(timeoutId);
+      // 超时/错误也算发送成功（Dify后台已开始处理）
+      console.log('[/api/zhou/gongbi] ✅ 请求已发送（超时/异常）');
+      requestSent = true;
+    } finally {
+      clearTimeout(shortTimeoutId);
+    }
+    
+    if (!requestSent) {
+      console.error('[/api/zhou/gongbi] ❌ 请求发送失败');
+      return res.status(500).json({
+        success: false,
+        error: {
+          code: 'DIFY_REQUEST_FAILED',
+          message: '请求发送失败'
+        }
+      });
+    }
+    
+    // 阶段2.1：查找conversation_id
+    const conversationId = await findConversationByQuery(difyPrompt, process.env.DIFY_API_KEY);
+    
+    if (!conversationId) {
+      console.error('[/api/zhou/gongbi] ❌ 无法找到对应的conversation');
+      return res.status(504).json({
+        success: false,
+        error: {
+          code: 'DIFY_CONVERSATION_NOT_FOUND',
+          message: 'AI诗人创作初始化失败，请稍后重试'
+        }
+      });
+    }
+    
+    // 阶段2.2：轮询消息内容
+    const difyData = await pollMessageContent(conversationId, process.env.DIFY_API_KEY);
+    
+    if (!difyData) {
+      console.error('[/api/zhou/gongbi] ❌ 轮询超时');
+      return res.status(504).json({
+        success: false,
+        error: {
+          code: 'DIFY_POLL_TIMEOUT',
+          message: 'AI诗人创作时间过长，请稍后重试'
+        }
+      });
+    }
+    
+    console.log('[/api/zhou/gongbi] ✅ 两阶段获取成功');
+    
+    // 5. 解析Dify响应（answer字段格式："标题\n\n引文\n——出处\n\n正文"）
+    const answer = difyData.answer;
+    if (!answer) {
+      console.error('[/api/zhou/gongbi] Dify响应中缺少answer字段');
+      return res.status(500).json({
+        success: false,
+        error: {
+          code: 'DIFY_RESPONSE_INVALID',
+          message: 'Dify响应格式异常'
+        }
+      });
+    }
+    
+    // 解析answer字段
+    const sections = answer.split('\n\n');
+    
+    let title = '';
+    let quote = '';
+    let quoteSource = '';
+    let content = '';
+    
+    if (sections.length >= 3) {
+      // 标准格式：标题\n\n引文\n——出处\n\n正文
+      title = sections[0].trim();
       
-      if (error.name === 'AbortError') {
-        console.error('[/api/zhou/gongbi] Dify API调用超时（120秒）');
-        return res.status(504).json({
-          success: false,
-          error: {
-            code: 'DIFY_API_TIMEOUT',
-            message: 'AI诗人创作时间过长，请稍后重试'
-          }
-        });
+      const quotePart = sections[1];
+      if (quotePart.includes('——')) {
+        const [quoteText, source] = quotePart.split('——');
+        quote = quoteText.trim();
+        quoteSource = source.trim();
+      } else {
+        quote = quotePart.trim();
       }
       
-      throw error; // 其他错误继续抛出
+      content = sections.slice(2).join('\n\n').trim();
+    } else if (sections.length === 2) {
+      // 简化格式：标题\n\n正文（无引文）
+      title = sections[0].trim();
+      content = sections[1].trim();
+    } else {
+      // 极简格式：只有正文
+      content = answer.trim();
+      title = '致你';
     }
+    
+    console.log('[/api/zhou/gongbi] 诗歌解析完成:', { title, quote: quote.substring(0, 20), content: content.substring(0, 50) });
+    
+    // 6. 返回结果
+    const result = {
+      success: true,
+      poem: {
+        title,
+        quote,
+        quoteSource,
+        content,
+        userFeeling,
+        sourcePoem: {
+          title: poemTitle,
+          quote: poemQuote,
+          quoteCitation: poemQuoteCitation,
+          content: poemContent
+        }
+      },
+      metadata: {
+        conversationId: difyData.conversation_id,
+        messageId: difyData.message_id,
+        tokens: difyData.metadata?.usage?.total_tokens || 0
+      }
+    };
+      
+    console.log('[/api/zhou/gongbi] 共笔请求处理完成');
+    return res.json(result);
     
   } catch (error) {
     console.error('[/api/zhou/gongbi] 处理错误:', error);
