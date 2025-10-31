@@ -166,9 +166,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useZhouStore } from '@/modules/zhou/stores/zhou'
+import { createGongBi, getGongBiErrorMessage } from '@/modules/zhou/services/gongBiApi'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import ErrorState from '@/shared/components/ErrorState.vue'
 
@@ -273,34 +274,26 @@ const handleSubmit = async () => {
   error.value = null
   
   try {
-    // 这里将调用gongBiApi
     console.log('[GongBiView] 提交感受:', {
       feeling: userFeeling.value,
       params: urlParams.value
     })
     
-    // TODO: 实际API调用将在任务B.3完成
-    // const response = await gongBiApi.create({
-    //   chapterKey: urlParams.value.chapter,
-    //   answerPattern: urlParams.value.pattern,
-    //   poemTitle: urlParams.value.poem,
-    //   userFeeling: userFeeling.value
-    // })
-    
-    // 临时模拟数据
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    generatedPoem.value = {
-      title: '致你的回响（临时）',
-      quote: '此处将显示引文',
-      quoteSource: '引文出处',
-      content: '这是陆家明为你创作的诗歌内容...\n\n（任务B.3完成后将显示真实内容）',
+    // 调用真实的共笔API
+    const poem = await createGongBi({
+      chapterKey: urlParams.value.chapter,
+      answerPattern: urlParams.value.pattern,
+      poemTitle: urlParams.value.poem,
       userFeeling: userFeeling.value
-    }
+    })
+    
+    generatedPoem.value = poem
+    
+    console.log('[GongBiView] 诗歌生成成功:', poem.title)
     
   } catch (err) {
     console.error('[GongBiView] 生成诗歌失败:', err)
-    error.value = '生成诗歌失败，请稍后重试'
+    error.value = getGongBiErrorMessage(err)
   } finally {
     loading.value = false
   }
