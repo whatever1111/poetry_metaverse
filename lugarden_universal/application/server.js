@@ -354,7 +354,7 @@ ta的感受是：${userFeeling}
     
     console.log('[/api/zhou/gongbi] 开始调用Dify API...');
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
+    const timeoutId = setTimeout(() => controller.abort(), 120000); // 120秒超时（AI诗歌生成需要较长时间）
     
     try {
       const difyResponse = await fetch('https://api.dify.ai/v1/chat-messages', {
@@ -468,12 +468,12 @@ ta的感受是：${userFeeling}
       clearTimeout(timeoutId);
       
       if (error.name === 'AbortError') {
-        console.error('[/api/zhou/gongbi] Dify API调用超时（30秒）');
+        console.error('[/api/zhou/gongbi] Dify API调用超时（120秒）');
         return res.status(504).json({
           success: false,
           error: {
             code: 'DIFY_API_TIMEOUT',
-            message: 'AI诗人响应超时，请稍后重试'
+            message: 'AI诗人创作时间过长，请稍后重试'
           }
         });
       }
