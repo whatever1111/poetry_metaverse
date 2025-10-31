@@ -231,6 +231,270 @@ ${poem}
 // 3. 考虑添加音频缓存机制以优化性能和成本
 // ================================
 
+// ================================
+// 周与春秋共笔API
+// @description 接收用户感受，调用陆家明AI诗人（Dify），生成回应诗歌
+// @author AI Assistant
+// @date 2025-10-31
+// ================================
+app.post('/api/zhou/gongbi', async (req, res) => {
+  console.log('[/api/zhou/gongbi] 接到共笔请求:', req.body);
+  
+  try {
+    // 1. 参数验证
+    const { chapterKey, answerPattern, poemTitle, userFeeling } = req.body || {};
+    
+    if (!chapterKey || !answerPattern || !poemTitle || !userFeeling) {
+      console.error('[/api/zhou/gongbi] 缺少必要参数');
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 'MISSING_PARAMS',
+          message: '缺少必要参数：chapterKey, answerPattern, poemTitle, userFeeling'
+        }
+      });
+    }
+    
+    if (userFeeling.length > 50) {
+      console.error('[/api/zhou/gongbi] 用户感受超过50字');
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 'FEELING_TOO_LONG',
+          message: '用户感受不能超过50字'
+        }
+      });
+    }
+    
+    // 2. 从数据库读取数据
+    const prisma = getPrismaClient();
+    
+    // 2.1 读取用户原型（ZhouMapping）
+    console.log(`[/api/zhou/gongbi] 查询用户原型: chapter="${chapterKey}", combination="${answerPattern}"`);
+    const mapping = await prisma.zhouMapping.findUnique({
+      where: {
+        universeId_chapter_combination: {
+          universeId: 'universe_zhou_spring_autumn',
+          chapter: chapterKey,
+          combination: answerPattern
+        }
+      }
+    });
+    
+    if (!mapping || !mapping.meaning) {
+      console.error('[/api/zhou/gongbi] 未找到用户原型数据');
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'USER_PROFILE_NOT_FOUND',
+          message: '未找到用户原型数据'
+        }
+      });
+    }
+    
+    const userProfile = mapping.meaning;
+    console.log(`[/api/zhou/gongbi] 用户原型: ${userProfile.substring(0, 50)}...`);
+    
+    // 2.2 读取诗歌内容（ZhouPoem）
+    console.log(`[/api/zhou/gongbi] 查询诗歌: title="${poemTitle}"`);
+    const poem = await prisma.zhouPoem.findUnique({
+      where: {
+        universeId_title: {
+          universeId: 'universe_zhou_spring_autumn',
+          title: poemTitle
+        }
+      }
+    });
+    
+    if (!poem) {
+      console.error('[/api/zhou/gongbi] 未找到诗歌数据');
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'POEM_NOT_FOUND',
+          message: '未找到诗歌数据'
+        }
+      });
+    }
+    
+    // 解析诗歌body（JSON格式）
+    const poemBody = typeof poem.body === 'string' ? JSON.parse(poem.body) : poem.body;
+    const poemQuote = poemBody?.quote_text || '';
+    const poemQuoteCitation = poemBody?.quote_citation || '';
+    const poemContent = poemBody?.main_text || '';
+    
+    console.log(`[/api/zhou/gongbi] 诗歌内容已获取: ${poemContent.substring(0, 50)}...`);
+    
+    // 3. 构建Dify Prompt
+    const difyPrompt = `用户今天在lugarden.space上，完成了一系列问答，问答呈现了ta是一个${userProfile}的人。
+
+ta读到了这首诗：
+《${poemTitle}》
+
+${poemQuote ? `${poemQuote}\n——${poemQuoteCitation}\n` : ''}
+${poemContent}
+
+ta的感受是：${userFeeling}
+
+请为ta创作一首回应诗。`;
+    
+    console.log('[/api/zhou/gongbi] Dify Prompt已构建');
+    
+    // 4. 调用Dify API（30秒超时）
+    if (!process.env.DIFY_API_KEY) {
+      console.error('[/api/zhou/gongbi] 未配置DIFY_API_KEY');
+      return res.status(500).json({
+        success: false,
+        error: {
+          code: 'DIFY_API_KEY_MISSING',
+          message: '服务器未配置Dify API密钥'
+        }
+      });
+    }
+    
+    console.log('[/api/zhou/gongbi] 开始调用Dify API...');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
+    
+    try {
+      const difyResponse = await fetch('https://api.dify.ai/v1/chat-messages', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.DIFY_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          inputs: {},
+          query: difyPrompt,
+          response_mode: 'blocking', // 阻塞式同步响应
+          conversation_id: '',
+          user: `gongbi_${Date.now()}`
+        }),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!difyResponse.ok) {
+        const errorText = await difyResponse.text();
+        console.error('[/api/zhou/gongbi] Dify API调用失败:', errorText);
+        return res.status(500).json({
+          success: false,
+          error: {
+            code: 'DIFY_API_ERROR',
+            message: 'Dify API调用失败',
+            details: errorText
+          }
+        });
+      }
+      
+      const difyData = await difyResponse.json();
+      console.log('[/api/zhou/gongbi] Dify API调用成功');
+      
+      // 5. 解析Dify响应（answer字段格式："标题\n\n引文\n——出处\n\n正文"）
+      const answer = difyData.answer;
+      if (!answer) {
+        console.error('[/api/zhou/gongbi] Dify响应中缺少answer字段');
+        return res.status(500).json({
+          success: false,
+          error: {
+            code: 'DIFY_RESPONSE_INVALID',
+            message: 'Dify响应格式异常'
+          }
+        });
+      }
+      
+      // 解析answer字段
+      const sections = answer.split('\n\n');
+      
+      let title = '';
+      let quote = '';
+      let quoteSource = '';
+      let content = '';
+      
+      if (sections.length >= 3) {
+        // 标准格式：标题\n\n引文\n——出处\n\n正文
+        title = sections[0].trim();
+        
+        const quotePart = sections[1];
+        if (quotePart.includes('——')) {
+          const [quoteText, source] = quotePart.split('——');
+          quote = quoteText.trim();
+          quoteSource = source.trim();
+        } else {
+          quote = quotePart.trim();
+        }
+        
+        content = sections.slice(2).join('\n\n').trim();
+      } else if (sections.length === 2) {
+        // 简化格式：标题\n\n正文（无引文）
+        title = sections[0].trim();
+        content = sections[1].trim();
+      } else {
+        // 极简格式：只有正文
+        content = answer.trim();
+        title = '致你';
+      }
+      
+      console.log('[/api/zhou/gongbi] 诗歌解析完成:', { title, quote: quote.substring(0, 20), content: content.substring(0, 50) });
+      
+      // 6. 返回结果
+      const result = {
+        success: true,
+        poem: {
+          title,
+          quote,
+          quoteSource,
+          content,
+          userFeeling,
+          sourcePoem: {
+            title: poemTitle,
+            quote: poemQuote,
+            quoteCitation: poemQuoteCitation,
+            content: poemContent
+          }
+        },
+        metadata: {
+          conversationId: difyData.conversation_id,
+          messageId: difyData.message_id,
+          tokens: difyData.metadata?.usage?.total_tokens || 0
+        }
+      };
+      
+      console.log('[/api/zhou/gongbi] 共笔请求处理完成');
+      return res.json(result);
+      
+    } catch (error) {
+      clearTimeout(timeoutId);
+      
+      if (error.name === 'AbortError') {
+        console.error('[/api/zhou/gongbi] Dify API调用超时（30秒）');
+        return res.status(504).json({
+          success: false,
+          error: {
+            code: 'DIFY_API_TIMEOUT',
+            message: 'AI诗人响应超时，请稍后重试'
+          }
+        });
+      }
+      
+      throw error; // 其他错误继续抛出
+    }
+    
+  } catch (error) {
+    console.error('[/api/zhou/gongbi] 处理错误:', error);
+    return res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: '服务器内部错误',
+        details: error.message
+      }
+    });
+  }
+});
+// ================================
+
 // 路由挂载（仅 DB）
 app.use('/api/universes', universesRouter);
 app.use('/api/admin', adminRouter);
