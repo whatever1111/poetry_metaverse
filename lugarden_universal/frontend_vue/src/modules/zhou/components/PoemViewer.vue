@@ -1,8 +1,18 @@
 <template>
   <div class="poem-viewer max-w-3xl mx-auto">
     <div class="poem-content unified-content-card card-padding-poem content-spacing-normal rounded-base animate-fadeInUp relative" :style="{ animationDelay: animationDelay }">
-      <h2 class="text-display-spaced text-center">
+      <h2 class="text-display-spaced text-center relative inline-block w-full">
         {{ cleanTitle(poemTitle) }}
+        <!-- AI标识图标 -->
+        <button 
+          v-if="showAiLabel"
+          @click="showAiInfo = true"
+          class="ai-label-icon absolute"
+          aria-label="AI生成内容说明"
+          type="button"
+        >
+          <InformationCircleIcon class="w-4 h-4" />
+        </button>
       </h2>
       
       <!-- 引文内容 -->
@@ -97,6 +107,34 @@
           </div>
         </div>
       </div>
+      
+      <!-- AI说明弹框 - 放在卡片最后，覆盖所有内容 -->
+      <div 
+        v-if="showAiInfo"
+        class="absolute z-30 backdrop-blur-sm bg-black bg-opacity-10 rounded-base"
+        style="top: -64px; left: -24px; right: -24px; bottom: -24px;"
+        @click="showAiInfo = false"
+      >
+        <div class="ai-info-modal flex items-center justify-center h-full px-4" @click.stop>
+          <div class="bg-white rounded-lg shadow-2xl border border-gray-100 py-3 px-4 max-w-xs w-full animate-fadeInUp">
+            <h4 class="text-sm font-bold mb-2 text-center">注</h4>
+            <p class="text-sm text-gray-700 leading-relaxed">
+              该内容由陆家明创作。陆家明是一位AI诗人，同时也是陆家花园的主理人。
+            </p>
+            <p class="text-sm text-gray-700 leading-relaxed mt-2">
+              陆家明代表陆家花园承诺，不会保留您的任何个人隐私信息。
+            </p>
+            <div class="mt-3 pt-2 border-t border-gray-100">
+              <button 
+                @click="showAiInfo = false"
+                class="w-full py-2 text-xs text-gray-500 hover:text-gray-700 transition-colors duration-200"
+              >
+                关闭
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -110,7 +148,8 @@ import {
   ShareIcon, 
   ArrowDownTrayIcon,
   CheckIcon,
-  GlobeAltIcon
+  GlobeAltIcon,
+  InformationCircleIcon
 } from '@heroicons/vue/24/outline'
 
 // 使用统一的类型定义
@@ -139,7 +178,8 @@ const props = withDefaults(defineProps<Props>(), {
   additionalInfo: '',
   animationDelay: '0s',
   showActions: false,
-  showDownload: false
+  showDownload: false,
+  showAiLabel: false
 })
 
 const emit = defineEmits<Emits>()
@@ -148,6 +188,7 @@ const emit = defineEmits<Emits>()
 const isCopied = ref(false)
 const isActionLoading = ref(false)
 const showFallbackMenu = ref(false)
+const showAiInfo = ref(false) // AI标识弹框状态
 
 // 计算菜单位置 - 从底部ShareTools分享按钮展开
 const menuPosition = computed(() => {
@@ -471,6 +512,7 @@ const downloadPoem = () => {
 .poem-content {
   text-align: center;
   position: relative;
+  overflow: hidden; /* 裁剪毛玻璃到圆角边缘 */
 }
 
 /* 所有Typography样式已迁移至UnoCSS shortcuts - D.1.2 标准化 */
@@ -502,6 +544,33 @@ const downloadPoem = () => {
 .share-tools-active {
   position: relative;
   z-index: 35; /* 高于毛玻璃z-30，确保所有按钮都在上方 */
+}
+
+/* AI标识图标样式 */
+.ai-label-icon {
+  top: 0;
+  right: 0;
+  transform: translate(120%, -20%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(156 163 175); /* text-gray-400 */
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.ai-label-icon:hover {
+  opacity: 1;
+  color: rgb(107 114 128); /* text-gray-500 */
+}
+
+/* AI说明弹框样式 */
+.ai-info-modal {
+  cursor: default;
 }
 
 /* 清理：已不需要单独的分享按钮层级控制 */

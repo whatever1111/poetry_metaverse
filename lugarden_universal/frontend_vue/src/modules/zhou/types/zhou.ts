@@ -122,6 +122,7 @@ export interface PoemViewerProps {
   animationDelay?: string
   showActions?: boolean
   showDownload?: boolean
+  showAiLabel?: boolean          // 显示AI标识（用于合规要求）
 }
 
 // 状态域接口定义

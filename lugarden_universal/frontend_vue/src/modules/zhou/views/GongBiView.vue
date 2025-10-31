@@ -118,6 +118,7 @@
             animation-delay="0.2s"
             :show-actions="true"
             :show-download="true"
+            :show-ai-label="true"
           />
           
           <!-- 操作按钮 -->

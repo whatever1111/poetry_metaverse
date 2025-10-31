@@ -565,6 +565,148 @@ interface GongBiResponse {
   - [x] 步骤A.7.6：移除LoadingSpinner导入
   - [x] 步骤A.7.7：用户测试验收
 
+#### ✅ 任务A.8：添加AI生成内容合规标识（补充任务）
+
+- **核心思想**: 按照中国《生成式人工智能服务管理暂行办法》的合规要求，在AI生成内容的显著位置添加标识，告知用户该内容由AI生成
+- **法规依据**：
+  - 《生成式人工智能服务管理暂行办法》（2023年7月发布）
+  - 要求：在显著位置添加可识别的标识或有效的警示信息
+  - 目的：让公众能够区分AI生成内容与人类创作内容
+- **问题分析**：
+  - 当前项目中，"陆家明"作为AI诗人生成的内容（解诗、共笔诗歌）没有明确的AI标识
+  - 虽然用户可能知道"陆家明"是AI，但缺乏符合法规的显式标识
+  - 需要在不破坏诗学美学的前提下，优雅地添加合规标识
+- **需要添加标识的位置（2处）**：
+  1. **ResultScreen页面 - InterpretationDisplay组件**：
+     - 位置：陆家明AI解读的标题区域右上角
+     - 当前结构：
+       ```vue
+       <div class="interpretation-header">
+         <h3 class="text-heading flex items-center">
+           <SparklesIcon class="w-5 h-5 mr-2 text-gray-500" />
+           陆家明
+         </h3>
+       </div>
+       ```
+  
+  2. **GongBiView结果页 - PoemViewer组件**：
+     - 位置：共笔生成诗歌的标题区域右上角
+     - 当前结构：
+       ```vue
+       <h2 class="text-display-spaced text-center">
+         {{ cleanTitle(poemTitle) }}
+       </h2>
+       ```
+- **设计方案**：
+  - **图标**：使用圆圈内的信息图标（InformationCircleIcon from @heroicons/vue/24/outline）
+  - **位置**：标题右上角，使用absolute定位
+  - **样式**：小尺寸（w-4 h-4），灰色（text-gray-400），hover时显示（opacity: 0.5 → opacity: 1）
+  - **弹框**：与分享弹框样式完全一致
+    - 毛玻璃蒙版（backdrop-blur-sm bg-black bg-opacity-10）
+    - 白色圆角卡片（bg-white rounded-lg shadow-2xl）
+    - 淡入动画（animate-fadeInUp）
+  - **文案**：
+    ```
+    标题：AI生成内容说明
+    
+    该内容由陆家明创作。陆家明是一位AI诗人，同时也是陆家花园的主理人。
+    
+    陆家明代表陆家花园承诺，不会保留您的任何个人隐私信息。
+    ```
+- 交付物：
+  - 修改后的 `InterpretationDisplay.vue` 组件（添加AI标识到陆家明标题）
+  - 修改后的 `PoemViewer.vue` 组件（添加AI标识到诗歌标题，通过props控制显示）
+  - 修改后的 `GongBiView.vue`（传递showAiLabel prop）
+- 验收标准：
+  - InterpretationDisplay中"陆家明"标题右上角有信息图标
+  - GongBiView结果页诗歌标题右上角有信息图标
+  - 点击图标弹出合规说明弹框
+  - 弹框样式与分享弹框完全一致
+  - 点击蒙版关闭弹框
+  - 图标不影响整体美学（低调、hover可见）
+  - 通过浏览器实际测试验证
+- **风险评估**: 低风险 - UI增强，不改变现有功能
+- 预期改动文件（预判）：
+  - `lugarden_universal/frontend_vue/src/modules/zhou/components/InterpretationDisplay.vue`
+  - `lugarden_universal/frontend_vue/src/modules/zhou/components/PoemViewer.vue`
+  - `lugarden_universal/frontend_vue/src/modules/zhou/views/GongBiView.vue`
+- 实际改动文件: 
+  - `lugarden_universal/frontend_vue/src/modules/zhou/components/InterpretationDisplay.vue`
+  - `lugarden_universal/frontend_vue/src/modules/zhou/components/PoemViewer.vue`
+  - `lugarden_universal/frontend_vue/src/modules/zhou/views/GongBiView.vue`
+  - `lugarden_universal/frontend_vue/src/modules/zhou/types/zhou.ts`
+- 完成状态：✅ 已完成
+- **技术实现细节**：
+  
+  **1. InterpretationDisplay组件改动**：
+  ```vue
+  <!-- 在陆家明标题区域添加 -->
+  <div class="interpretation-header relative">
+    <h3 class="text-heading flex items-center">
+      <SparklesIcon class="w-5 h-5 mr-2 text-gray-500" />
+      陆家明
+      <!-- AI标识图标 -->
+      <button 
+        @click="showAiInfo = true"
+        class="ai-label-icon ml-1"
+        aria-label="AI生成内容说明"
+      >
+        <InformationCircleIcon class="w-4 h-4" />
+      </button>
+    </h3>
+  </div>
+  
+  <!-- AI说明弹框 -->
+  <div 
+    v-if="showAiInfo"
+    class="absolute inset-0 z-30 backdrop-blur-sm bg-black bg-opacity-10 rounded-base"
+    @click="showAiInfo = false"
+  >
+    <div class="ai-info-modal" @click.stop>
+      <div class="bg-white rounded-lg shadow-2xl border border-gray-100 py-3 px-4 max-w-md">
+        <h4 class="text-sm font-bold mb-2">AI生成内容说明</h4>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          该内容由陆家明创作。陆家明是一位AI诗人，同时也是陆家花园的主理人。
+        </p>
+        <p class="text-sm text-gray-700 leading-relaxed mt-2">
+          陆家明代表陆家花园承诺，不会保留您的任何个人隐私信息。
+        </p>
+      </div>
+    </div>
+  </div>
+  ```
+  
+  **2. PoemViewer组件改动**：
+  - 添加props: `showAiLabel?: boolean`（默认false，向后兼容）
+  - 在标题区域添加AI标识图标
+  - 添加相同的弹框结构
+  
+  **3. GongBiView改动**：
+  - 在PoemViewer调用处添加`:show-ai-label="true"`
+  
+  **4. 弹框优化（基于用户反馈）**：
+  - 毛玻璃用负值扩展完整覆盖卡片（抵消padding）
+    - InterpretationDisplay: `top: -48px; left: -24px; right: -24px; bottom: -24px;`
+    - PoemViewer: `top: -64px; left: -24px; right: -24px; bottom: -24px;`
+  - 父容器添加 `overflow: hidden` 裁剪圆角
+  - 弹框缩小至 `max-w-xs w-full`（320px）
+  - 添加"关闭"按钮（与分享弹框样式一致）
+  - 标题改为"注"（居中，无冒号）
+
+- 执行步骤：
+  - [x] 步骤A.8.1：修改InterpretationDisplay组件，在"陆家明"标题添加AI标识图标
+  - [x] 步骤A.8.2：在InterpretationDisplay添加AI说明弹框（复用分享弹框样式）
+  - [x] 步骤A.8.3：添加showAiInfo响应式状态和样式（.ai-label-icon, .ai-info-modal）
+  - [x] 步骤A.8.4：修改PoemViewer组件，添加showAiLabel prop
+  - [x] 步骤A.8.5：在PoemViewer标题区域添加条件渲染的AI标识图标
+  - [x] 步骤A.8.6：在PoemViewer添加AI说明弹框
+  - [x] 步骤A.8.7：修改GongBiView，在PoemViewer调用处传递show-ai-label="true"
+  - [x] 步骤A.8.8：优化毛玻璃蒙版覆盖（使用负值扩展匹配padding）
+  - [x] 步骤A.8.9：缩小弹框尺寸（max-w-xs）并添加关闭按钮
+  - [x] 步骤A.8.10：修改弹框标题为"注"（居中，无冒号）
+  - [x] 步骤A.8.11：测试InterpretationDisplay的AI标识（点击、弹框、关闭）
+  - [x] 步骤A.8.12：测试GongBiView结果页的AI标识
+
 ---
 
 ## 测试与验收
@@ -619,7 +761,17 @@ interface GongBiResponse {
 - [ ] 更新 `当前进展.md`（如有必要）
 
 ## 当前状态
-🔄 待开始
+✅ 已完成任务A.1-A.8（核心UI优化与AI合规标识）
+
+**已完成**：
+- ✅ A.1: 删除冗余GongBiPoemCard，统一使用PoemViewer
+- ✅ A.2: 优化输入框样式（内嵌效果）
+- ✅ A.3: 诗学化文案
+- ✅ A.4: 统一"你读到的诗"卡片样式
+- ✅ A.5: 优化源诗卡片视觉平衡（上下padding一致）
+- ✅ A.6: 输入区域细节优化（间距、对齐、响应式）
+- ✅ A.7: 加载状态诗学化（陆家明icon + 淡入淡出 + "诗渐浓，君稍待"）
+- ✅ A.8: AI生成内容合规标识（ⓘ图标 + 弹框 + 毛玻璃优化）
 
 ---
 *本TODO基于首次实施的经验教训重新设计，强调架构一致性和组件复用原则*

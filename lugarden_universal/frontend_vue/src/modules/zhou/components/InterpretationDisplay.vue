@@ -3,13 +3,22 @@
     <!-- AI解读 -->
     <div 
       v-if="aiInterpretation" 
-      class="interpretation-content unified-content-card card-padding-interpret content-spacing-normal rounded-base animate-fadeInUp" 
+      class="interpretation-content unified-content-card card-padding-interpret content-spacing-normal rounded-base animate-fadeInUp relative" 
       :style="{ animationDelay: aiAnimationDelay }"
     >
       <div class="interpretation-header">
         <h3 class="text-heading flex items-center">
           <SparklesIcon class="w-5 h-5 mr-2 text-gray-500" aria-hidden="true" />
           陆家明
+          <!-- AI标识图标 -->
+          <button 
+            @click="showAiInfo = true"
+            class="ai-label-icon ml-1"
+            aria-label="AI生成内容说明"
+            type="button"
+          >
+            <InformationCircleIcon class="w-4 h-4" />
+          </button>
         </h3>
         <div v-if="showTimestamp && aiTimestamp" class="text-label absolute right-0 italic text-gray-600">
           {{ formatTimestamp(aiTimestamp) }}
@@ -27,6 +36,34 @@
             <span v-if="regenerating">重新生成中...</span>
             <span v-else>重新解读</span>
           </button>
+        </div>
+      </div>
+      
+      <!-- AI说明弹框 - 放在卡片最后，覆盖所有内容 -->
+      <div 
+        v-if="showAiInfo"
+        class="absolute z-30 backdrop-blur-sm bg-black bg-opacity-10 rounded-base"
+        style="top: -48px; left: -24px; right: -24px; bottom: -24px;"
+        @click="showAiInfo = false"
+      >
+        <div class="ai-info-modal flex items-center justify-center h-full px-4" @click.stop>
+          <div class="bg-white rounded-lg shadow-2xl border border-gray-100 py-3 px-4 max-w-xs w-full animate-fadeInUp">
+            <h4 class="text-sm font-bold mb-2 text-center">注</h4>
+            <p class="text-sm text-gray-700 leading-relaxed">
+              该内容由陆家明创作。陆家明是一位AI诗人，同时也是陆家花园的主理人。
+            </p>
+            <p class="text-sm text-gray-700 leading-relaxed mt-2">
+              陆家明代表陆家花园承诺，不会保留您的任何个人隐私信息。
+            </p>
+            <div class="mt-3 pt-2 border-t border-gray-100">
+              <button 
+                @click="showAiInfo = false"
+                class="w-full py-2 text-xs text-gray-500 hover:text-gray-700 transition-colors duration-200"
+              >
+                关闭
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -95,7 +132,8 @@
 // 清理原因: 移除读诗功能后，这些图标不再被使用
 // 恢复说明: 如需恢复相关功能，可根据需要重新导入对应的图标组件
 // ================================
-import { ExclamationTriangleIcon, AcademicCapIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+import { ExclamationTriangleIcon, AcademicCapIcon, SparklesIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+import { ref } from 'vue'
 
 // 组件Props
 interface Props {
@@ -142,6 +180,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
+// AI标识弹框状态
+const showAiInfo = ref(false)
+
 // 格式化时间戳
 const formatTimestamp = (timestamp: Date): string => {
   return new Intl.DateTimeFormat('zh-CN', {
@@ -173,6 +214,7 @@ const handleRetryAi = () => {
 .custom-interpretation {
   text-align: left;
   margin-bottom: var(--spacing-lg);
+  overflow: hidden; /* 裁剪毛玻璃到圆角边缘 */
 }
 
 .interpretation-content:last-child,
@@ -200,6 +242,30 @@ const handleRetryAi = () => {
 /* 悬停效果 - 与分享按钮一致 */
 .interpretation-header:hover .interpretation-title svg {
   color: rgb(55 65 81); /* text-gray-700 的实际值 */
+}
+
+/* AI标识图标样式 */
+.ai-label-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(156 163 175); /* text-gray-400 */
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.ai-label-icon:hover {
+  opacity: 1;
+  color: rgb(107 114 128); /* text-gray-500 */
+}
+
+/* AI说明弹框样式 */
+.ai-info-modal {
+  cursor: default;
 }
 
 /* .poet-info样式已迁移至UnoCSS shortcuts - D.1.3 标准化 */
