@@ -289,7 +289,7 @@ interface GongBiResponse {
   - [ ] 步骤A.4.4：替换为PoemViewer组件，适配sourcePoem数据
   - [ ] 步骤A.4.5：浏览器测试：原诗展示、折叠/展开功能
 
-#### - [ ] 任务A.5：优化原诗卡片视觉平衡（补充任务）
+#### ✅ 任务A.5：优化原诗卡片视觉平衡（补充任务）
 
 - **核心思想**: 为GongBiView中"你读到的诗"的PoemViewer组件增加底部留白，使上下视觉平衡，与ResultScreen的诗歌卡片保持一致的视觉比例
 - **问题分析**：
@@ -297,8 +297,8 @@ interface GongBiResponse {
   - GongBiView的"你读到的诗"PoemViewer设置了`:show-actions="false"`，没有底部按钮
   - 导致视觉上头重脚轻，不够平衡
 - **解决方案**：
-  - 为没有操作按钮的PoemViewer增加底部padding
-  - 使上下留白视觉等宽
+  - 使用`:deep()`覆盖PoemViewer卡片内部的底部padding
+  - 将pb-lg(24px)改为4rem(64px)，与pt-3xl对称
 - 交付物：
   - 修改后的 `GongBiView.vue` 样式
 - 验收标准：
@@ -308,12 +308,57 @@ interface GongBiResponse {
 - **风险评估**: 零风险 - 纯CSS调整
 - 预期改动文件（预判）：
   - `lugarden_universal/frontend_vue/src/modules/zhou/views/GongBiView.vue`
+- 实际改动文件: `lugarden_universal/frontend_vue/src/modules/zhou/views/GongBiView.vue`
+- 完成状态：✅ 已完成（commit: 97a16e4）
+- 执行步骤：
+  - [x] 步骤A.5.1：分析PoemViewer组件的内部padding结构（card-padding-poem: pt-3xl(64px) pb-lg(24px)）
+  - [x] 步骤A.5.2：使用:deep()覆盖原诗PoemViewer卡片底部padding为4rem(64px)
+  - [x] 步骤A.5.3：浏览器对比验证，确保视觉平衡
+
+#### - [ ] 任务A.6：输入区域细节优化（补充任务）
+
+- **核心思想**: 解决输入区域的多个视觉和布局问题：卡片间距、输入框样式、标题对齐、字数统计样式
+- **问题分析**：
+  - **问题1**：两个卡片（"你读到的诗"和"你的临时起意"）间距太大，不符合标准间距系统
+  - **问题2**：输入框使用`.card-base`卡片样式不必要，应该改为内嵌样式（类似进度条的inset效果）
+  - **问题3**："你的临时起意"标题与"你读到的诗"标题样式不一致（大小、粗细、对齐）
+  - **问题4**："0/50"字数统计缺乏视觉层次感，应右对齐且有透明度（参考首页备案信息 opacity: 0.5）
+- **解决方案**：
+  - **间距调整**：检查并修正卡片间距为标准spacing值（可能是mb-6或space-y-6）
+  - **输入框改造**：
+    - 移除`.card-base`卡片背景
+    - 使用进度条风格的内嵌阴影：
+      ```css
+      box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.12),
+        inset 0 1px 2px rgba(0, 0, 0, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.4);
+      ```
+  - **标题统一**："你的临时起意"改用与"你读到的诗"相同的标题样式（text-2xl font-bold）
+  - **字数统计优化**：
+    - 右对齐（text-right 或 flex justify-end）
+    - 添加透明度 opacity: 0.5
+    - hover时增加到 opacity: 0.7（参考备案链接）
+- 交付物：
+  - 修改后的 `GongBiView.vue` 样式和结构
+- 验收标准：
+  - 卡片间距符合标准spacing系统
+  - 输入框呈现内嵌感，无卡片背景
+  - "你的临时起意"与"你读到的诗"标题样式完全一致
+  - 字数统计右对齐，opacity: 0.5，hover时0.7
+  - 通过浏览器实际查看验证
+- **风险评估**: 低风险 - CSS样式调整
+- 预期改动文件（预判）：
+  - `lugarden_universal/frontend_vue/src/modules/zhou/views/GongBiView.vue`
 - 实际改动文件: [待填写]
 - 完成状态：🔄 待开始
 - 执行步骤：
-  - [ ] 步骤A.5.1：分析PoemViewer组件的内部padding结构
-  - [ ] 步骤A.5.2：为GongBiView中的原诗PoemViewer外层添加底部padding样式
-  - [ ] 步骤A.5.3：浏览器对比验证，确保视觉平衡
+  - [ ] 步骤A.6.1：分析当前卡片间距，修正为标准spacing值
+  - [ ] 步骤A.6.2：移除输入区域的`.card-base`类，重构为内嵌样式输入框
+  - [ ] 步骤A.6.3：应用进度条风格的inset阴影到输入框
+  - [ ] 步骤A.6.4：统一"你的临时起意"标题样式与"你读到的诗"一致
+  - [ ] 步骤A.6.5：优化字数统计样式（右对齐、opacity: 0.5）
+  - [ ] 步骤A.6.6：浏览器测试所有交互状态（正常、focus、hover、达到上限）
 
 ---
 
